@@ -258,10 +258,10 @@ function renderRound(round=null){
   updateStats();
 }
 function leoLookup(w){
-  let query=w.de.replace(/\([^)]*\)/g,' ').replace(/\+\s*(?:Akk|Dat|Gen|Nom)\.?/g,' ').replace(/\s+/g,' ').trim();
+  let query=w.de.replace(/\(\s*sich\s*\)/g,' sich ').replace(/\([^)]*\)/g,' ').replace(/\+\s*(?:Akk|Dat|Gen|Nom)\.?/g,' ').replace(/\s+/g,' ').trim();
   if(w.type==='noun')query=query.replace(/^(?:der|die|das)\s+/,'');
-  query=query.replace(/^(?:(?:sich|jdn\.|jdm\.|jmdn\.|jmdm\.|etw\.)\s+)+/,'');
-  if(w.type==='verb'||w.type==='preposition')query=query.split(/\s+/)[0];
+  // Keep reflexivity and prepositions: these distinguish dictionary meanings.
+  query=query.replace(/\b(?:jdn|jdm|jmdn|jmdm|etw)\.(?=\s|$)/g,' ').replace(/\s+/g,' ').trim();
   return 'https://dict.leo.org/russisch-deutsch/'+encodeURIComponent(query||w.de.trim());
 }
 function showMatchExample(w){

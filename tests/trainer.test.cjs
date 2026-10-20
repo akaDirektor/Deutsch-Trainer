@@ -9,9 +9,9 @@ function harness(){
  vm.runInContext(html.match(/<script>\n([\s\S]*?)<\/script>/)[1],ctx);
  return {ctx,el,timers,run:s=>vm.runInContext(s,ctx)};
 }
-test('LEO uses a German lemma for nouns and verb constructions, preserving complete phrases',()=>{
+test('LEO preserves reflexive verbs and their prepositions as distinct searches',()=>{
  const h=harness();
- for(const [de,type,query] of [['die Abteilung','noun','Abteilung'],['sich bewerben um + Akk.','preposition','bewerben'],['jdm. etw. raten','verb','raten'],['(eine Prüfung) bestehen','verb','bestehen'],['sich etw. überlegen','verb','überlegen'],['eine Entscheidung treffen','phrase','eine Entscheidung treffen']]){
+ for(const [de,type,query] of [['die Abteilung','noun','Abteilung'],['halten','verb','halten'],['sich halten','verb','sich halten'],['sich halten in + Dat.','preposition','sich halten in'],['sich bewerben um + Akk.','preposition','sich bewerben um'],['jdm. etw. raten','verb','raten'],['(eine Prüfung) bestehen','verb','bestehen'],['sich etw. überlegen','verb','sich überlegen'],['(sich) ändern','verb','sich ändern'],['eine Entscheidung treffen','phrase','eine Entscheidung treffen']]){
   h.ctx.lookupWord={de,type};assert.equal(h.run('leoLookup(lookupWord)'),'https://dict.leo.org/russisch-deutsch/'+encodeURIComponent(query));
  }
 });
