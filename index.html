@@ -245,10 +245,19 @@ function renderRecall(){
   document.getElementById('recallJudge').classList.add('hidden');
   document.getElementById('recallInput').focus();
 }
+function makeExample(w){
+  const d=w.de.replace(/^\([^)]*\)\s*/,'');
+  if(w.type==='noun') return 'Im Berufsalltag spielt <b>'+d+'</b> eine wichtige Rolle.';
+  if(w.type==='verb') return 'Im Arbeitsalltag muss man oft <b>'+d+'</b>.';
+  if(w.type==='adjective') return 'Diese Information ist für unsere Arbeit <b>'+d+'</b>.';
+  if(w.type==='adverb') return 'Das ist <b>'+d+'</b> auch im Berufsalltag wichtig.';
+  return 'Im Berufsalltag verwendet man den Ausdruck <b>„'+d+'“</b> häufig.';
+}
 function showRecallAnswer(){
   if(!recallWord)return;
   const typed=document.getElementById('recallInput').value.trim();
-  document.getElementById('recallAnswer').innerHTML='<b>Твоя відповідь:</b> '+(typed||'—')+'<br><b>Правильний переклад:</b> '+recallWord.uk;
+  const ex=recallWord.example||makeExample(recallWord);
+  document.getElementById('recallAnswer').innerHTML='<b>Твоя відповідь:</b> '+(typed||'—')+'<br><b>Правильний переклад:</b> '+recallWord.uk+'<br><br><b>Приклад:</b><br>'+ex;
   document.getElementById('recallAnswer').classList.remove('hidden');
   document.getElementById('recallJudge').classList.remove('hidden');
 }
