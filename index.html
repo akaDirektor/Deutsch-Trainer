@@ -99,6 +99,7 @@ button:disabled{opacity:.45}
       <div class="col" id="rightCol"></div>
     </div>
     <div class="row" style="margin-top:12px">
+      <button id="prevBtn">← Назад</button>
       <button id="nextBtn" class="primary">Наступні 5</button>
       <button id="stopBtn">Зупинити</button>
     </div>
@@ -172,7 +173,7 @@ let data=seed;
 let stats=JSON.parse(localStorage.getItem(STATS_KEY)||'{}');
 let hiddenWords=new Set(JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'));
 let cycle=JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}');
-let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
+let typeFilter='all', dateFilter='all', currentRound=[], previousRound=null, selectedL=null, selectedR=null, solved=new Set();
 
 function key(w){return w.de.toLowerCase().trim()}
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
@@ -216,8 +217,9 @@ function rightText(w){
   let mode=document.getElementById('mode').value;
   return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : w.uk;
 }
-function renderRound(){
-  currentRound=pick5(); solved.clear(); selectedL=selectedR=null;
+function renderRound(round=null){
+  if(!round&&currentRound.length)previousRound=[...currentRound];
+  currentRound=round?[...round]:pick5(); solved.clear(); selectedL=selectedR=null;
   document.getElementById('leftCol').innerHTML=''; document.getElementById('rightCol').innerHTML='';
   if(!currentRound.length){document.getElementById('msg').textContent='Для цього фільтра немає слів.'; updateStats(); return}
   document.getElementById('msg').textContent='Знайди 5 пар';
@@ -342,6 +344,7 @@ document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWr
 document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
 ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')showVerbWriteAnswer()});
 document.getElementById('startBtn').onclick=()=>{const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
+document.getElementById('prevBtn').onclick=()=>{if(previousRound&&previousRound.length){const back=[...previousRound];previousRound=[...currentRound];renderRound(back)}};
 document.getElementById('nextBtn').onclick=renderRound;
 document.getElementById('stopBtn').onclick=()=>document.getElementById('training').classList.add('hidden');
 updateStats();updateRecallStats();
