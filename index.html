@@ -227,10 +227,22 @@ function renderRound(round=null){
   shuffle(currentRound).forEach(w=>addCard('rightCol','R',w,rightText(w)));
   updateStats();
 }
+function showMatchExample(w){
+  const box=document.getElementById('matchExample');
+  if(!box)return;
+  box.innerHTML='<b>Приклад:</b><br>'+(w.example||makeExample(w));
+  box.classList.remove('hidden');
+}
 function addCard(col,side,w,text){
   const e=document.createElement('div'); e.className='card'; e.textContent=text; e.dataset.k=key(w);
-  if(side==='L'){e.title='Утримуй, щоб прибрати слово';let t=null;e.addEventListener('pointerdown',()=>{t=setTimeout(()=>{if(hideWord(w))renderRound()},650)});['pointerup','pointercancel','pointerleave'].forEach(ev=>e.addEventListener(ev,()=>{if(t)clearTimeout(t)}));}
-  e.onclick=()=>select(side,e,w); document.getElementById(col).appendChild(e);
+  if(side==='L'){
+    e.title='Натисни ще раз для прикладу · утримуй, щоб прибрати слово';
+    let t=null,longPressed=false;
+    e.addEventListener('pointerdown',()=>{longPressed=false;t=setTimeout(()=>{longPressed=true;if(hideWord(w))renderRound()},650)});
+    ['pointerup','pointercancel','pointerleave'].forEach(ev=>e.addEventListener(ev,()=>{if(t)clearTimeout(t)}));
+    e.onclick=()=>{if(longPressed)return;if(selectedL&&selectedL.e===e){showMatchExample(w);return;}select(side,e,w);};
+  } else e.onclick=()=>select(side,e,w);
+  document.getElementById(col).appendChild(e);
 }
 function select(side,e,w){
   if(e.classList.contains('done')) return;
