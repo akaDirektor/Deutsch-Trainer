@@ -2,7 +2,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "(sich) abgrenzen von + Dat.",
     "uk": "(від)межовувати(ся) від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -11,7 +11,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "abhängen von + Dat.",
     "uk": "залежати від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -20,7 +20,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich abheben von + Dat.",
     "uk": "вирізнятися на тлі; відрізнятися від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -29,7 +29,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "ablenken von + Dat.",
     "uk": "відволікати від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -38,7 +38,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "abraten von + Dat.",
     "uk": "відмовляти; не радити",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -47,7 +47,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "abweichen von + Dat.",
     "uk": "відхилятися від; відрізнятися від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -56,7 +56,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "achten auf + Akk.",
     "uk": "звертати увагу на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -65,7 +65,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "etwas ändern an + Dat.",
     "uk": "змінювати щось у",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -74,7 +74,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "anfangen mit + Dat.",
     "uk": "починати з",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -83,7 +83,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich ängstigen um + Akk.",
     "uk": "турбуватися; боятися за",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -92,7 +92,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "ankommen auf + Akk.",
     "uk": "залежати від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -101,7 +101,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "anrufen bei + Dat.",
     "uk": "телефонувати комусь / кудись",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -110,7 +110,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "ansehen als + Nom.",
     "uk": "розглядати як; вважати",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -119,7 +119,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "antworten auf + Akk.",
     "uk": "відповідати на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -128,7 +128,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "arbeiten als + Nom.",
     "uk": "працювати як / ким",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -137,7 +137,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "arbeiten an + Dat.",
     "uk": "працювати над",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -146,7 +146,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "arbeiten bei + Dat.",
     "uk": "працювати в / у роботодавця",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -155,7 +155,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "arbeiten für + Akk.",
     "uk": "працювати на / для",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -164,7 +164,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich ärgern über + Akk.",
     "uk": "сердитися через / на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -173,7 +173,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "auffordern zu + Dat.",
     "uk": "закликати до; вимагати",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -182,7 +182,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "aufhören mit + Dat.",
     "uk": "припиняти; переставати",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -191,7 +191,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "aufpassen auf + Akk.",
     "uk": "доглядати за; стежити за",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -200,7 +200,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich aufregen über + Akk.",
     "uk": "обурюватися; нервувати через",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -209,7 +209,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich ausdrücken in + Dat.",
     "uk": "виражатися в",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -218,7 +218,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich auseinandersetzen mit + Dat.",
     "uk": "детально займатися; розбиратися з",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -227,7 +227,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich auswirken auf + Akk.",
     "uk": "впливати на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -236,7 +236,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich auszeichnen durch + Akk.",
     "uk": "вирізнятися завдяки",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -245,7 +245,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich bedanken bei + Dat.",
     "uk": "дякувати комусь",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -254,7 +254,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich bedanken für + Akk.",
     "uk": "дякувати за",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -263,7 +263,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich beeilen mit + Dat.",
     "uk": "поспішати з",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -272,7 +272,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich befassen mit + Dat.",
     "uk": "займатися; розглядати",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -281,7 +281,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "befördern zu + Dat.",
     "uk": "підвищувати до посади",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -290,7 +290,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich befreien von + Dat.",
     "uk": "звільнятися від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -299,7 +299,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "beginnen mit + Dat.",
     "uk": "починати з",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -308,7 +308,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "beglückwünschen zu + Dat.",
     "uk": "вітати з",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -317,7 +317,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "beitragen zu + Dat.",
     "uk": "сприяти; робити внесок у",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -326,7 +326,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich beklagen bei + Dat.",
     "uk": "скаржитися комусь",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -335,7 +335,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich beklagen über + Akk.",
     "uk": "скаржитися на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -344,7 +344,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich bemühen um + Akk.",
     "uk": "докладати зусиль заради; добиватися",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -353,7 +353,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "berichten über + Akk.",
     "uk": "повідомляти; розповідати про",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -362,7 +362,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "berichten von + Dat.",
     "uk": "розповідати про",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -371,7 +371,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "(sich) beschränken auf + Akk.",
     "uk": "обмежувати(ся) чимось",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -380,7 +380,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich beschweren bei + Dat.",
     "uk": "скаржитися комусь",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -389,7 +389,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich beschweren über + Akk.",
     "uk": "скаржитися на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -398,7 +398,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "bestehen auf + Dat.",
     "uk": "наполягати на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -407,7 +407,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "bestehen aus + Dat.",
     "uk": "складатися з",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -416,7 +416,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "bestehen in + Dat.",
     "uk": "полягати в",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -425,7 +425,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "betrachten als + Akk.",
     "uk": "розглядати як",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -434,7 +434,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich bewerben um + Akk.",
     "uk": "подаватися на; претендувати на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -443,7 +443,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "bewirken bei + Dat.",
     "uk": "спричиняти; давати ефект у",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -452,7 +452,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "bezeichnen als + Akk.",
     "uk": "називати; характеризувати як",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -461,7 +461,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich beziehen auf + Akk.",
     "uk": "посилатися на; стосуватися",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -470,7 +470,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "bitten um + Akk.",
     "uk": "просити про",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -479,7 +479,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "bringen zu + Dat.",
     "uk": "спонукати до; доводити до",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -488,7 +488,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "danken für + Akk.",
     "uk": "дякувати за",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -497,7 +497,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "denken an + Akk.",
     "uk": "думати про",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -506,7 +506,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich eignen als + Nom.",
     "uk": "підходити як",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -515,7 +515,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich eignen für + Akk.",
     "uk": "підходити для",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -524,7 +524,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich eignen zu + Dat.",
     "uk": "бути придатним для",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -533,7 +533,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich einbringen in + Akk.",
     "uk": "активно долучатися до",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -542,7 +542,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "eingehen auf + Akk.",
     "uk": "детально реагувати на; розглядати",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -551,7 +551,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich einigen auf + Akk.",
     "uk": "домовитися про",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -560,7 +560,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich einigen mit + Dat.",
     "uk": "домовитися з",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -569,7 +569,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "einladen zu + Dat.",
     "uk": "запрошувати на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -578,7 +578,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich einmischen in + Akk.",
     "uk": "втручатися в",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -587,7 +587,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich ekeln vor + Dat.",
     "uk": "відчувати огиду до",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -596,7 +596,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich engagieren für + Akk.",
     "uk": "активно виступати; долучатися заради",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -605,7 +605,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich entscheiden für + Akk.",
     "uk": "вирішувати на користь",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -614,7 +614,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich entscheiden gegen + Akk.",
     "uk": "вирішувати проти; відмовлятися від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -623,7 +623,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich entschließen zu + Dat.",
     "uk": "зважитися на",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -632,7 +632,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich entschuldigen bei + Dat.",
     "uk": "вибачатися перед",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -641,7 +641,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich entschuldigen für + Akk.",
     "uk": "вибачатися за",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -650,7 +650,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "entstehen aus + Dat.",
     "uk": "виникати з",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -659,7 +659,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich erholen von + Dat.",
     "uk": "відпочивати; відновлюватися після",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -668,7 +668,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich erinnern an + Akk.",
     "uk": "пам’ятати; згадувати про",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -677,7 +677,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich erkundigen bei + Dat.",
     "uk": "дізнаватися; наводити довідки у когось",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -686,7 +686,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich erkundigen nach + Dat.",
     "uk": "розпитувати про",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -695,7 +695,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "sich ernähren von + Dat.",
     "uk": "харчуватися чимось",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -704,7 +704,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "ernennen zu + Dat.",
     "uk": "призначати на посаду",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -713,7 +713,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "erschrecken über + Akk.",
     "uk": "лякатися через",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -722,7 +722,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "erschrecken vor + Dat.",
     "uk": "лякатися когось / чогось",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
@@ -731,7 +731,7 @@ window.WORDS = (window.WORDS || []).concat([
   {
     "de": "erwarten von + Dat.",
     "uk": "очікувати від",
-    "type": "phrase",
+    "type": "preposition",
     "plural": "",
     "addedAt": "2026-10-20",
     "article": "",
