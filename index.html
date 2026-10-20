@@ -78,6 +78,7 @@ button:disabled{opacity:.45}
         <option value="translation">Німецьке ↔ український переклад</option>
         <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>
         <option value="verbPast">Дієслово ↔ Präteritum + Perfekt</option>
+        <option value="verbWrite">✍️ Дієслова: переклад + Präteritum + Perfekt</option>
       </select>
       <select id="focus">
         <option value="all">Усі слова</option>
@@ -123,6 +124,18 @@ button:disabled{opacity:.45}
     </div>
   </div>
 
+  <div id="verbWriteTraining" class="recall hidden">
+    <div class="sectionTitle">Дієслова — активне тренування</div>
+    <div class="muted">Напиши переклад, Präteritum і Perfekt самостійно.</div>
+    <div id="verbWriteWord" class="recallWord"></div>
+    <input id="verbWriteUk" class="recallInput" autocomplete="off" placeholder="Український переклад">
+    <input id="verbWritePraet" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Präteritum">
+    <input id="verbWritePerf" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Perfekt">
+    <div class="row"><button id="verbWriteCheck" class="primary">Перевірити</button><button id="verbWriteDontKnow">Не знаю</button></div>
+    <div id="verbWriteAnswer" class="recallAnswer hidden"></div>
+    <div id="verbWriteJudge" class="row hidden"><button id="verbWriteCorrect" class="primary">✓ Правильно</button><button id="verbWriteWrong">✕ Неправильно</button></div>
+  </div>
+
   <div class="details">
     <b>Як працює засвоєння</b>
     <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
@@ -161,7 +174,7 @@ function ageDays(w){return Math.floor((new Date(TODAY+'T12:00:00')-new Date((w.a
 function eligible(w){
   let mode=document.getElementById('mode').value;
   if(mode==='nounPlural' && (w.type!=='noun' || !w.plural)) return false;
-  if(mode==='verbPast' && (w.type!=='verb' || !w.praeteritum || !w.perfekt)) return false;
+  if((mode==='verbPast'||mode==='verbWrite') && (w.type!=='verb' || !w.praeteritum || !w.perfekt)) return false;
   if(typeFilter!=='all' && w.type!==typeFilter) return false;
   if(dateFilter==='today' && ageDays(w)!==0) return false;
   if(dateFilter==='7' && !(ageDays(w)>=0 && ageDays(w)<7)) return false;
@@ -239,7 +252,7 @@ function updateStats(){
 }
 document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
 document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
-document.getElementById('mode').onchange=()=>{if(document.getElementById('mode').value==='nounPlural'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} else if(document.getElementById('mode').value==='verbPast'){typeFilter='verb';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='verb'));} updateStats()};
+document.getElementById('mode').onchange=()=>{const m=document.getElementById('mode').value;if(m==='nounPlural'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} else if(m==='verbPast'||m==='verbWrite'){typeFilter='verb';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='verb'));} updateStats()};
 let recallWord=null;
 function recallPool(){return data.filter(w=>s(w).mastered && (typeFilter==='all'||w.type===typeFilter) && (dateFilter==='all'||(dateFilter==='today'&&ageDays(w)===0)||(dateFilter==='7'&&ageDays(w)>=0&&ageDays(w)<7)||(dateFilter==='30'&&ageDays(w)>=0&&ageDays(w)<30)))}
 function renderRecall(){
@@ -286,7 +299,25 @@ document.getElementById('recallCorrect').onclick=()=>judgeRecall(true);
 document.getElementById('recallWrong').onclick=()=>judgeRecall(false);
 document.getElementById('recallInput').onkeydown=e=>{if(e.key==='Enter')showRecallAnswer()};
 document.getElementById('focus').onchange=()=>{updateStats();if(document.getElementById('focus').value==='recall'){document.getElementById('training').classList.add('hidden');document.getElementById('recallTraining').classList.remove('hidden');renderRecall()}else document.getElementById('recallTraining').classList.add('hidden')};
-document.getElementById('startBtn').onclick=()=>{if(document.getElementById('focus').value==='recall'){document.getElementById('training').classList.add('hidden');document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('recallTraining').classList.add('hidden');document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
+let verbWriteWord=null;
+function verbWritePool(){return data.filter(w=>w.type==='verb'&&w.praeteritum&&w.perfekt&&eligible(w))}
+function renderVerbWrite(){
+ const p=verbWritePool(); if(!p.length){document.getElementById('verbWriteWord').textContent='Для цього фільтра немає дієслів.';verbWriteWord=null;return}
+ verbWriteWord=shuffle(p)[0]; document.getElementById('verbWriteWord').textContent=verbWriteWord.de;
+ ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('verbWriteAnswer').classList.add('hidden');document.getElementById('verbWriteJudge').classList.add('hidden');document.getElementById('verbWriteUk').focus();
+}
+function showVerbWriteAnswer(){
+ if(!verbWriteWord)return; const vals=['verbWriteUk','verbWritePraet','verbWritePerf'].map(id=>document.getElementById(id).value.trim()||'—');
+ document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+vals[0]+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+verbWriteWord.uk+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
+ document.getElementById('verbWriteAnswer').classList.remove('hidden');document.getElementById('verbWriteJudge').classList.remove('hidden');
+}
+function judgeVerbWrite(ok){if(!verbWriteWord)return;const st=s(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
+document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
+document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');showVerbWriteAnswer()};
+document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
+['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')showVerbWriteAnswer()});
+document.getElementById('startBtn').onclick=()=>{const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
 document.getElementById('nextBtn').onclick=renderRound;
 document.getElementById('stopBtn').onclick=()=>document.getElementById('training').classList.add('hidden');
 updateStats();updateRecallStats();
