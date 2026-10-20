@@ -98,11 +98,7 @@ button:disabled{opacity:.45}
       <div class="col" id="leftCol"></div>
       <div class="col" id="rightCol"></div>
     </div>
-    <div class="row" style="margin-top:12px">
-      <button id="prevBtn">← Назад</button>
-      <button id="nextBtn" class="primary">Наступні 5</button>
-      <button id="stopBtn">Зупинити</button>
-    </div>
+
   </div>
 
   <div id="recallTraining" class="recall hidden">
@@ -344,9 +340,7 @@ document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWr
 document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
 ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')showVerbWriteAnswer()});
 document.getElementById('startBtn').onclick=()=>{const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
-document.getElementById('prevBtn').onclick=()=>{if(previousRound&&previousRound.length){const back=[...previousRound];previousRound=[...currentRound];renderRound(back)}};
-document.getElementById('nextBtn').onclick=renderRound;
-document.getElementById('stopBtn').onclick=()=>document.getElementById('training').classList.add('hidden');
+
 updateStats();updateRecallStats();
 </script>
 </body></html>
