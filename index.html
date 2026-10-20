@@ -61,6 +61,7 @@ button:disabled{opacity:.45}
       <button data-type="adjective">Прикметники</button>
       <button data-type="adverb">Прислівники</button>
       <button data-type="phrase">Вирази</button>
+      <button data-type="preposition">Дієслова + Präposition</button>
     </div>
 
     <div class="sectionTitle">2. Період</div>
@@ -135,11 +136,12 @@ button:disabled{opacity:.45}
 <script src="words-5.js"></script>
 <script src="words-6.js"></script>
 <script src="words-7.js"></script>
+<script src="words-8.js"></script>
 <script>
 const seed=window.WORDS || [];
 const DATA_KEY='deutsch_match_b2_data_v3';
 const STATS_KEY='deutsch_match_b2_stats_v3';
-const TODAY='2026-10-19';
+const TODAY=new Date().toISOString().slice(0,10);
 
 let data=JSON.parse(localStorage.getItem(DATA_KEY)||'null') || seed;
 if(!Array.isArray(data) || data.length < seed.length) data=seed;
@@ -216,18 +218,19 @@ function check(){
 function updateStats(){
   let correct=0,wrong=0,mastered=0; data.forEach(w=>{let st=s(w);correct+=st.correct;wrong+=st.wrong;if(st.mastered)mastered++});
   document.getElementById('totalCount').textContent=data.length;
-  document.getElementById('poolCount').textContent=pool().length;
-  document.getElementById('masteredCount').textContent=mastered;
+  document.getElementById('recallMasteredCount').textContent=mastered+' / '+data.length;
+  let activeKnown=0; data.forEach(w=>{if((s(w).recallCorrect||0)>=3)activeKnown++});
+  document.getElementById('activeKnownCount').textContent=activeKnown+' / '+data.length;
   document.getElementById('accuracy').textContent=(correct+wrong)?Math.round(correct/(correct+wrong)*100)+'%':'0%';
   document.getElementById('progressBar').style.width=(data.length?Math.round(mastered/data.length*100):0)+'%';
-  const counts={noun:0,verb:0,adjective:0,adverb:0,phrase:0,other:0};
+  const counts={noun:0,verb:0,adjective:0,adverb:0,phrase:0,preposition:0,other:0};
   data.forEach(w=>counts[w.type]=(counts[w.type]||0)+1);
   document.getElementById('typeLegend').innerHTML=
     '<span class="typecount">Іменники: '+counts.noun+'</span>'+
     '<span class="typecount">Дієслова: '+counts.verb+'</span>'+
     '<span class="typecount">Прикметники: '+counts.adjective+'</span>'+
     '<span class="typecount">Прислівники: '+counts.adverb+'</span>'+
-    '<span class="typecount">Вирази: '+counts.phrase+'</span>';
+    '<span class="typecount">Вирази: '+counts.phrase+'</span>'+ '<span class="typecount">Präpositionen: '+counts.preposition+'</span>';
 }
 document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
 document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
