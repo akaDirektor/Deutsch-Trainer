@@ -1,0 +1,740 @@
+window.WORDS = (window.WORDS || []).concat([
+  {
+    "de": "(sich) abgrenzen von + Dat.",
+    "uk": "(від)межовувати(ся) від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ich möchte diesen Themenbereich von den übrigen abgrenzen."
+  },
+  {
+    "de": "abhängen von + Dat.",
+    "uk": "залежати від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ob du dieses Musikstück spielen kannst, hängt ganz von dir ab."
+  },
+  {
+    "de": "sich abheben von + Dat.",
+    "uk": "вирізнятися на тлі; відрізнятися від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Dieses Rot hebt sich deutlich von den anderen Farben ab."
+  },
+  {
+    "de": "ablenken von + Dat.",
+    "uk": "відволікати від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Bitte mach die Musik leiser, sie lenkt mich von der Arbeit ab."
+  },
+  {
+    "de": "abraten von + Dat.",
+    "uk": "відмовляти; не радити",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Mein Bruder hat mir vom Kauf dieses Autos abgeraten."
+  },
+  {
+    "de": "abweichen von + Dat.",
+    "uk": "відхилятися від; відрізнятися від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Die neuen Laborwerte weichen von den früheren stark ab."
+  },
+  {
+    "de": "achten auf + Akk.",
+    "uk": "звертати увагу на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Du solltest besser auf die Verkehrszeichen achten!"
+  },
+  {
+    "de": "etwas ändern an + Dat.",
+    "uk": "змінювати щось у",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Anja muss etwas an ihrem Verhalten ändern."
+  },
+  {
+    "de": "anfangen mit + Dat.",
+    "uk": "починати з",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Fang jetzt bitte endlich mit den Hausaufgaben an!"
+  },
+  {
+    "de": "sich ängstigen um + Akk.",
+    "uk": "турбуватися; боятися за",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Er ängstigt sich um seine Zukunft."
+  },
+  {
+    "de": "ankommen auf + Akk.",
+    "uk": "залежати від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ob ich die Wohnung nehme? Es kommt darauf an, ob ich den Job bekomme."
+  },
+  {
+    "de": "anrufen bei + Dat.",
+    "uk": "телефонувати комусь / кудись",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ich bin morgen im Büro, du kannst gern bis 18 Uhr bei mir anrufen."
+  },
+  {
+    "de": "ansehen als + Nom.",
+    "uk": "розглядати як; вважати",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ich sehe Nadine als meine beste Freundin an."
+  },
+  {
+    "de": "antworten auf + Akk.",
+    "uk": "відповідати на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Was hast du ihm auf seine Mail geantwortet?"
+  },
+  {
+    "de": "arbeiten als + Nom.",
+    "uk": "працювати як / ким",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ich arbeite erst seit Kurzem als IT-Berater."
+  },
+  {
+    "de": "arbeiten an + Dat.",
+    "uk": "працювати над",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Wir arbeiten zurzeit an einem großen Projekt."
+  },
+  {
+    "de": "arbeiten bei + Dat.",
+    "uk": "працювати в / у роботодавця",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Frau Schmitz arbeitet bei dieser Firma schon seit 20 Jahren."
+  },
+  {
+    "de": "arbeiten für + Akk.",
+    "uk": "працювати на / для",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Pauls Firma arbeitet für mehrere Großunternehmen."
+  },
+  {
+    "de": "sich ärgern über + Akk.",
+    "uk": "сердитися через / на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ich habe mich sehr über Peters Verhalten geärgert!"
+  },
+  {
+    "de": "auffordern zu + Dat.",
+    "uk": "закликати до; вимагати",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Der Abteilungsleiter forderte die Mitarbeiter zu besserer Teamarbeit auf."
+  },
+  {
+    "de": "aufhören mit + Dat.",
+    "uk": "припиняти; переставати",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Hört endlich mit dem Lärm auf!"
+  },
+  {
+    "de": "aufpassen auf + Akk.",
+    "uk": "доглядати за; стежити за",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Kannst du bitte auf die Kinder aufpassen, während ich einkaufe?"
+  },
+  {
+    "de": "sich aufregen über + Akk.",
+    "uk": "обурюватися; нервувати через",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Evelyn hat sich sehr über die Unordnung aufgeregt."
+  },
+  {
+    "de": "sich ausdrücken in + Dat.",
+    "uk": "виражатися в",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "In den Arbeitslosenzahlen drückt sich die Wirtschaftslage aus."
+  },
+  {
+    "de": "sich auseinandersetzen mit + Dat.",
+    "uk": "детально займатися; розбиратися з",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Die Firmen müssen sich mit diesem Thema intensiv auseinandersetzen."
+  },
+  {
+    "de": "sich auswirken auf + Akk.",
+    "uk": "впливати на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Das neue Energiegesetz wirkt sich auf die Luftqualität aus."
+  },
+  {
+    "de": "sich auszeichnen durch + Akk.",
+    "uk": "вирізнятися завдяки",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Der neue Motor zeichnet sich durch geringere Emissionen aus."
+  },
+  {
+    "de": "sich bedanken bei + Dat.",
+    "uk": "дякувати комусь",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Tolles Geschenk! Sag mal, hast du dich bei deinen Kollegen eigentlich schon bedankt?"
+  },
+  {
+    "de": "sich bedanken für + Akk.",
+    "uk": "дякувати за",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Stell dir vor, unser Kollege hat sich für das Geschenk noch gar nicht bedankt!"
+  },
+  {
+    "de": "sich beeilen mit + Dat.",
+    "uk": "поспішати з",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Bitte beeil dich mit den Einkäufen, unser Zug fährt schon um 12 Uhr!"
+  },
+  {
+    "de": "sich befassen mit + Dat.",
+    "uk": "займатися; розглядати",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Haben Sie sich mit dem Thema „Mitarbeiterführung“ bereits befasst?"
+  },
+  {
+    "de": "befördern zu + Dat.",
+    "uk": "підвищувати до посади",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Schon nach drei Jahren wurde Martin F. zum Abteilungsleiter befördert."
+  },
+  {
+    "de": "sich befreien von + Dat.",
+    "uk": "звільнятися від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Hans-Martin hat sich von seinen Schulden endlich befreit!"
+  },
+  {
+    "de": "beginnen mit + Dat.",
+    "uk": "починати з",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Wann beginnt ihr eigentlich mit der Renovierung?"
+  },
+  {
+    "de": "beglückwünschen zu + Dat.",
+    "uk": "вітати з",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Wir beglückwünschen Sie zu Ihrem Lotto-Gewinn!"
+  },
+  {
+    "de": "beitragen zu + Dat.",
+    "uk": "сприяти; робити внесок у",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Wer möchte zu diesem Thema noch etwas beitragen?"
+  },
+  {
+    "de": "sich beklagen bei + Dat.",
+    "uk": "скаржитися комусь",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Die neue Mitarbeiterin hat sich beim Chef beklagt."
+  },
+  {
+    "de": "sich beklagen über + Akk.",
+    "uk": "скаржитися на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Sie hat sich sehr über ihren Kollegen beklagt."
+  },
+  {
+    "de": "sich bemühen um + Akk.",
+    "uk": "докладати зусиль заради; добиватися",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Matthias bemüht sich momentan sehr um ein Stipendium."
+  },
+  {
+    "de": "berichten über + Akk.",
+    "uk": "повідомляти; розповідати про",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Hat Max euch über seinen Italien-Urlaub wirklich alles berichtet?"
+  },
+  {
+    "de": "berichten von + Dat.",
+    "uk": "розповідати про",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Hat Max euch schon von seinen Berufsplänen berichtet?"
+  },
+  {
+    "de": "(sich) beschränken auf + Akk.",
+    "uk": "обмежувати(ся) чимось",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Bitte beschränken Sie sich in Ihrem Kurzvortrag auf das Wichtigste!"
+  },
+  {
+    "de": "sich beschweren bei + Dat.",
+    "uk": "скаржитися комусь",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Der Kollege beschwerte sich bei seinem Chef."
+  },
+  {
+    "de": "sich beschweren über + Akk.",
+    "uk": "скаржитися на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ralf Müller beschwerte sich über den schlechten Zustand des Ferienhauses."
+  },
+  {
+    "de": "bestehen auf + Dat.",
+    "uk": "наполягати на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Der Verteidiger bestand auf einer Prüfung des Antrags."
+  },
+  {
+    "de": "bestehen aus + Dat.",
+    "uk": "складатися з",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Der Schrank besteht aus Holz und Aluminium."
+  },
+  {
+    "de": "bestehen in + Dat.",
+    "uk": "полягати в",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Das Problem besteht in der Zusammensetzung des Medikaments."
+  },
+  {
+    "de": "betrachten als + Akk.",
+    "uk": "розглядати як",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Fachleute betrachten diese Erfindung als Quantensprung."
+  },
+  {
+    "de": "sich bewerben um + Akk.",
+    "uk": "подаватися на; претендувати на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Meine Schwester bewarb sich um eine Stelle als Patentprüferin."
+  },
+  {
+    "de": "bewirken bei + Dat.",
+    "uk": "спричиняти; давати ефект у",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Haben deine Vorschläge beim Chef irgendetwas bewirkt?"
+  },
+  {
+    "de": "bezeichnen als + Akk.",
+    "uk": "називати; характеризувати як",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Die Oppositionspartei bezeichnete den Minister als Lügner."
+  },
+  {
+    "de": "sich beziehen auf + Akk.",
+    "uk": "посилатися на; стосуватися",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ich beziehe mich auf Ihre Mail vom 26.7."
+  },
+  {
+    "de": "bitten um + Akk.",
+    "uk": "просити про",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ich möchte dich um einen Gefallen bitten."
+  },
+  {
+    "de": "bringen zu + Dat.",
+    "uk": "спонукати до; доводити до",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Wie hast du ihn dazu gebracht, dir sein Haus zu verkaufen?"
+  },
+  {
+    "de": "danken für + Akk.",
+    "uk": "дякувати за",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Tempo 30 km/h wegen Baustelle. Wir danken Ihnen für Ihr Verständnis."
+  },
+  {
+    "de": "denken an + Akk.",
+    "uk": "думати про",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Anna denkt oft an das letzte Treffen mit ihrem Freund."
+  },
+  {
+    "de": "sich eignen als + Nom.",
+    "uk": "підходити як",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Unsere neue Couch eignet sich auch als Bett."
+  },
+  {
+    "de": "sich eignen für + Akk.",
+    "uk": "підходити для",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Dieser Film eignet sich auch für Kinder."
+  },
+  {
+    "de": "sich eignen zu + Dat.",
+    "uk": "бути придатним для",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Max, komm, die Musik eignet sich wirklich zum Tanzen!"
+  },
+  {
+    "de": "sich einbringen in + Akk.",
+    "uk": "активно долучатися до",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "In unseren Workshop sollen sich alle Mitarbeiter aktiv einbringen."
+  },
+  {
+    "de": "eingehen auf + Akk.",
+    "uk": "детально реагувати на; розглядати",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Unser Dozent ist auf alle Fragen zur Prüfung genau eingegangen."
+  },
+  {
+    "de": "sich einigen auf + Akk.",
+    "uk": "домовитися про",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Wir hatten uns darauf geeinigt, dass du die Blumen für Tante Frida kaufst!"
+  },
+  {
+    "de": "sich einigen mit + Dat.",
+    "uk": "домовитися з",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Nach langem Streit hat sich Stefan mit seinem Nachbarn geeinigt."
+  },
+  {
+    "de": "einladen zu + Dat.",
+    "uk": "запрошувати на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Endlich Sommer! Wir haben alle Freunde zum Grillen eingeladen."
+  },
+  {
+    "de": "sich einmischen in + Akk.",
+    "uk": "втручатися в",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Stella mischt sich in jedes Gespräch ein, obwohl sie das gar nichts angeht."
+  },
+  {
+    "de": "sich ekeln vor + Dat.",
+    "uk": "відчувати огиду до",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Tanja ekelt sich vor Spinnen und Schlangen."
+  },
+  {
+    "de": "sich engagieren für + Akk.",
+    "uk": "активно виступати; долучатися заради",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Viele Menschen engagieren sich für Frieden."
+  },
+  {
+    "de": "sich entscheiden für + Akk.",
+    "uk": "вирішувати на користь",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Peter oder Paul? Lisbeth hat sich für Paul entschieden."
+  },
+  {
+    "de": "sich entscheiden gegen + Akk.",
+    "uk": "вирішувати проти; відмовлятися від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Ich habe mich dagegen entschieden, mir ein neues Handy zu kaufen."
+  },
+  {
+    "de": "sich entschließen zu + Dat.",
+    "uk": "зважитися на",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Lena hat sich dazu entschlossen, ihr Praktikum in London zu machen."
+  },
+  {
+    "de": "sich entschuldigen bei + Dat.",
+    "uk": "вибачатися перед",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Andy hat sich endlich bei seinem Chef entschuldigt."
+  },
+  {
+    "de": "sich entschuldigen für + Akk.",
+    "uk": "вибачатися за",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Wir entschuldigen uns für die entstandene Verspätung."
+  },
+  {
+    "de": "entstehen aus + Dat.",
+    "uk": "виникати з",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Aus der lockeren Beziehung ist eine echte Freundschaft entstanden."
+  },
+  {
+    "de": "sich erholen von + Dat.",
+    "uk": "відпочивати; відновлюватися після",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Anita muss sich von ihrem anstrengenden Job erholen."
+  },
+  {
+    "de": "sich erinnern an + Akk.",
+    "uk": "пам’ятати; згадувати про",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "An die Lehrerin im letzten Deutschkurs kann ich mich erinnern."
+  },
+  {
+    "de": "sich erkundigen bei + Dat.",
+    "uk": "дізнаватися; наводити довідки у когось",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Wir haben uns beim Reiseleiter erkundigt, wann der Ausflug stattfindet."
+  },
+  {
+    "de": "sich erkundigen nach + Dat.",
+    "uk": "розпитувати про",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Endlich kommst du! Der Chef hat sich schon dreimal nach dir erkundigt."
+  },
+  {
+    "de": "sich ernähren von + Dat.",
+    "uk": "харчуватися чимось",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Hans will abnehmen, er ernährt sich nur noch von Steaks und Salat."
+  },
+  {
+    "de": "ernennen zu + Dat.",
+    "uk": "призначати на посаду",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Frau Thompson wurde zur neuen Kulturministerin ernannt."
+  },
+  {
+    "de": "erschrecken über + Akk.",
+    "uk": "лякатися через",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Über die Nachricht von Toms Unfall sind wir sehr erschrocken."
+  },
+  {
+    "de": "erschrecken vor + Dat.",
+    "uk": "лякатися когось / чогось",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Die kleine Tina ist vor dem riesigen Hund erschrocken."
+  },
+  {
+    "de": "erwarten von + Dat.",
+    "uk": "очікувати від",
+    "type": "phrase",
+    "plural": "",
+    "addedAt": "2026-10-20",
+    "article": "",
+    "example": "Leo, ich erwarte von dir, dass du das nächste Mal pünktlich bist!"
+  }
+]);
