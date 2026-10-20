@@ -49,6 +49,7 @@ button:disabled{opacity:.45}
     <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b></div>
     <div class="stat"><span class="muted">Активно пригадано</span><b id="activeKnownCount">0</b></div>
     <div class="stat"><span class="muted">Точність</span><b id="accuracy">0%</b></div>
+    <div class="stat"><span class="muted">Опрацьовано сьогодні</span><b id="todayWorked">0</b></div>
   </div>
   <div class="progress"><div id="progressBar" style="width:0"></div></div>
 
@@ -169,6 +170,7 @@ let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selecte
 
 function key(w){return w.de.toLowerCase().trim()}
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
+function markWorked(w){s(w).lastWorked=TODAY}
 function save(){localStorage.setItem(DATA_KEY,JSON.stringify(data));localStorage.setItem(STATS_KEY,JSON.stringify(stats))}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(TODAY+'T12:00:00')-new Date((w.addedAt||TODAY)+'T12:00:00'))/86400000)}
@@ -222,11 +224,11 @@ function select(side,e,w){
   if(selectedL && selectedR) check();
 }
 function check(){
-  const a=selectedL,b=selectedR; const ok=key(a.w)===key(b.w); const st=s(a.w);
+  const a=selectedL,b=selectedR; const ok=key(a.w)===key(b.w); const st=s(a.w); markWorked(a.w);
   if(ok){
     st.correct++; st.streak++; if(st.streak>=3) st.mastered=true;
     a.e.classList.add('ok'); b.e.classList.add('ok');
-    setTimeout(()=>{a.e.classList.add('done');b.e.classList.add('done');solved.add(key(a.w)); if(solved.size===currentRound.length) document.getElementById('msg').textContent='Раунд завершено ✓';},180);
+    setTimeout(()=>{a.e.classList.add('done');b.e.classList.add('done');solved.add(key(a.w)); if(solved.size===currentRound.length){document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(!document.getElementById('training').classList.contains('hidden'))renderRound()},650)};},180);
   }else{
     st.wrong++; st.streak=0; st.mastered=false;
     a.e.classList.add('bad'); b.e.classList.add('bad');
@@ -241,6 +243,7 @@ function updateStats(){
   let activeKnown=0; data.forEach(w=>{if((s(w).recallCorrect||0)>=3)activeKnown++});
   document.getElementById('activeKnownCount').textContent=activeKnown+' / '+data.length;
   document.getElementById('accuracy').textContent=(correct+wrong)?Math.round(correct/(correct+wrong)*100)+'%':'0%';
+  document.getElementById('todayWorked').textContent=data.filter(w=>s(w).lastWorked===TODAY).length+' / '+data.length;
   document.getElementById('progressBar').style.width=(data.length?Math.round(mastered/data.length*100):0)+'%';
   const counts={noun:0,verb:0,adjective:0,adverb:0,phrase:0,preposition:0,other:0};
   data.forEach(w=>counts[w.type]=(counts[w.type]||0)+1);
@@ -285,7 +288,7 @@ function showRecallAnswer(){
 }
 function judgeRecall(ok){
   if(!recallWord)return; const st=s(recallWord);
-  if(ok)st.recallCorrect++;else st.recallWrong++;
+  markWorked(recallWord); if(ok)st.recallCorrect++;else st.recallWrong++;
   save(); updateRecallStats(); renderRecall();
 }
 function updateRecallStats(){
@@ -314,7 +317,7 @@ function showVerbWriteAnswer(){
  document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+(verbWriteUkSkipped?'пропущено':vals[0])+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+verbWriteWord.uk+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
  document.getElementById('verbWriteAnswer').classList.remove('hidden');document.getElementById('verbWriteJudge').classList.remove('hidden');
 }
-function judgeVerbWrite(ok){if(!verbWriteWord)return;const st=s(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
+function judgeVerbWrite(ok){if(!verbWriteWord)return;const st=s(verbWriteWord);markWorked(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
 document.getElementById('verbWriteSkipUk').onclick=()=>{verbWriteUkSkipped=true;const e=document.getElementById('verbWriteUk');e.value='';e.disabled=true;e.placeholder='Переклад пропущено';document.getElementById('verbWritePraet').focus()};
 document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
 document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');showVerbWriteAnswer()};
