@@ -13,6 +13,7 @@
 h1{font-size:26px;margin:0 0 4px} .muted{color:var(--muted)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
 .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px} .stat b{display:block;font-size:22px}
+.readinessSteps{display:flex;gap:6px 12px;flex-wrap:wrap;margin-top:6px;font-size:13px;color:var(--muted)}
 .controls{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:7px 0}
 button,select{font:inherit;border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff;color:#111}
@@ -63,7 +64,7 @@ button:disabled{opacity:.45}
 
   <div class="stats">
     <div class="stat"><span class="muted">Усього слів</span><b id="totalCount">612</b></div>
-    <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b></div>
+    <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Кількість слів із 1 або 2 правильними зіставленнями поспіль. Після третього слово готове до активного пригадування."><span>1 із 3: <strong id="matchingOnceCount">0</strong></span><span>2 із 3: <strong id="matchingTwiceCount">0</strong></span></div></div>
     <div class="stat"><span class="muted">Активно пригадано</span><b id="activeKnownCount">0</b></div>
     <div class="stat"><span class="muted">Точність</span><b id="accuracy">0%</b></div>
     <div class="stat"><span class="muted">Опрацьовано сьогодні</span><b id="todayWorked">0</b></div>
@@ -296,7 +297,16 @@ function check(){
   selectedL=selectedR=null; save(); updateStats();
 }
 function updateStats(){
-  let correct=0,wrong=0,mastered=0; data.forEach(w=>{let st=s(w);correct+=st.correct;wrong+=st.wrong;if(st.mastered&&!hiddenWords.has(key(w)))mastered++});
+  let correct=0,wrong=0,mastered=0,once=0,twice=0;
+  data.forEach(w=>{
+    const st=s(w);correct+=st.correct;wrong+=st.wrong;
+    if(hiddenWords.has(key(w)))return;
+    if(st.mastered)mastered++;
+    else if(st.streak===1)once++;
+    else if(st.streak===2)twice++;
+  });
+  document.getElementById('matchingOnceCount').textContent=once;
+  document.getElementById('matchingTwiceCount').textContent=twice;
   const activeTotal=data.filter(w=>!hiddenWords.has(key(w))).length;
   document.getElementById('totalCount').textContent=activeTotal;
   document.getElementById('recallMasteredCount').textContent=mastered+' / '+activeTotal;
