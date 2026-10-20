@@ -9,10 +9,15 @@ window.Cloud=(()=>{
   el('loginForm').hidden=Boolean(session);
   el('accountIdentity').textContent=session?'Вхід виконано: '+(session.user.email||'твій профіль'):'';
   for(const id of ['importFile','importProgress','newProfile','importPreview'])el(id).hidden=ready;
-  const required=blocked||Boolean(session&&!ready);
+  const required=!session||blocked||Boolean(session&&!ready);
   if(required!==toolsRequired){el('accountTools').open=required;toolsRequired=required;}
  }
- const status=t=>{el('syncStatus').textContent=t;accountView();};
+ const status=t=>{
+  el('syncStatus').textContent=t;
+  const attention=blocked||/Офлайн|помилка|Конфлікт|Не вдалося|Очікує|не налаштовано|не підтримує|іншій вкладці/.test(t);
+  el('syncAlert').textContent=t;el('syncAlert').hidden=!attention;
+  accountView();
+ };
  const lock=()=>{adapter.lock(!ready||blocked);accountView();};
  const cacheKey=()=>`deutsch_cloud_cache_v1:${session.user.id}`;
  function persist(){localStorage.setItem(cacheKey(),JSON.stringify(cache));}
