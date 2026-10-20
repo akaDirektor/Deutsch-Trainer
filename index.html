@@ -26,6 +26,7 @@ button:disabled{opacity:.45}
 .card{min-height:58px;background:#fff;border:2px solid transparent;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.05)}
 .card.selected{border-color:#5777ff;background:var(--sel)} .exampleBox{margin:8px 0 12px;padding:12px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:15px;line-height:1.4} .card.ok{border-color:#55a96a;background:var(--ok)} .card.bad{border-color:#e06969;background:var(--bad)} .card.done{opacity:.28;pointer-events:none}
 .msg{min-height:28px;font-weight:700;margin:10px 0}
+.dictionaryLink{display:inline-flex;align-items:center;min-height:36px;margin-top:8px;padding:6px 10px;border:1px solid var(--line);border-radius:9px;color:#294eb8;text-decoration:none;font-size:14px;background:#fff}.dictionaryLink:focus-visible{outline:2px solid #5777ff;outline-offset:2px}
 .progress{height:9px;border-radius:99px;background:#e5e5ea;overflow:hidden} .progress div{height:100%;background:#111}
 .sectionTitle{font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
 .legend{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
@@ -256,10 +257,22 @@ function renderRound(round=null){
   shuffle(currentRound).forEach(w=>addCard('rightCol','R',w,rightText(w)));
   updateStats();
 }
+function leoLookup(w){
+  let query=w.de.replace(/\([^)]*\)/g,' ').replace(/\+\s*(?:Akk|Dat|Gen|Nom)\.?/g,' ').replace(/\s+/g,' ').trim();
+  if(w.type==='noun')query=query.replace(/^(?:der|die|das)\s+/,'');
+  query=query.replace(/^(?:(?:sich|jdn\.|jdm\.|jmdn\.|jmdm\.|etw\.)\s+)+/,'');
+  if(w.type==='verb'||w.type==='preposition')query=query.split(/\s+/)[0];
+  return 'https://dict.leo.org/russisch-deutsch/'+encodeURIComponent(query||w.de.trim());
+}
 function showMatchExample(w){
   const box=document.getElementById('matchExample');
   if(!box)return;
   box.innerHTML='<b>Приклад:</b><br>'+(w.example||makeExample(w));
+  const link=document.createElement('a');
+  link.className='dictionaryLink';link.textContent='LEO ↗';link.href=leoLookup(w);
+  link.target='_blank';link.rel='noopener noreferrer';link.title='Перевірити «'+w.de+'» у німецько-російському словнику LEO (нова вкладка)';
+  link.ariaLabel=link.title;
+  box.appendChild(document.createElement('br'));box.appendChild(link);
   box.classList.remove('hidden');
 }
 function addCard(col,side,w,text){
