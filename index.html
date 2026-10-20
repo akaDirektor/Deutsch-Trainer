@@ -37,7 +37,14 @@ button:disabled{opacity:.45}
 .recallStats{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .hidden,[hidden]{display:none!important}
 .cloudSummary{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--muted)}
-.cloudSummary p{margin:0} #accountTools{margin-top:8px;font-size:14px} #accountTools summary{cursor:pointer;color:var(--muted)}
+.cloudSummary p{margin:0}
+.hero{position:relative;padding-right:42px}
+.accountMenu{position:absolute;right:0;top:0;font-size:14px}
+.accountMenu>summary{list-style:none;cursor:pointer;color:var(--muted);font-size:23px;padding:4px 8px;border-radius:8px}
+.accountMenu>summary::-webkit-details-marker{display:none}
+.accountPopover{position:absolute;right:0;top:40px;width:min(520px,calc(100vw - 32px));padding:14px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 28px #0002;z-index:20}
+.accountPopover .row input{max-width:100%}.accountPopover button{font-size:14px;padding:8px 10px}
+.syncAlert{margin:8px 0;font-size:14px;color:#8b4d00}
 @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)} .board{grid-template-columns:1fr} .card{min-height:52px}}
 </style>
 </head>
@@ -45,16 +52,15 @@ button:disabled{opacity:.45}
 <div class="wrap">
   <div class="hero">
     <div><h1>Deutsch Match — B2 Beruf</h1><div class="muted">Клікай відповідні пари. Нічого писати не треба.</div></div>
-  </div>
-
-  <div class="controls">
+    <details id="accountTools" class="accountMenu"><summary aria-label="Налаштування облікового запису" title="Налаштування">⚙</summary><div class="accountPopover">
     <form id="loginForm" class="row"><input id="email" type="email" autocomplete="username" placeholder="Email" required><input id="password" type="password" autocomplete="current-password" placeholder="Пароль" required><button>Увійти</button></form>
     <div class="cloudSummary"><p id="syncStatus" role="status" aria-live="polite"></p><span id="accountIdentity" class="muted"></span></div>
-    <details id="accountTools"><summary>⚙ Налаштування</summary>
     <div class="row"><button id="exportProgress">Експорт / резервна копія</button><input id="importFile" type="file" accept="application/json"><button id="importProgress" disabled>Імпорт у порожню хмару</button><button id="newProfile" disabled>Новий профіль</button><button id="logout">Вийти</button><button id="syncNow">Синхронізувати</button><button id="loadCloud" disabled>Завантажити хмарну версію</button></div>
     <pre id="importPreview" style="white-space:pre-wrap"></pre>
-    </details>
+    </div></details>
   </div>
+  <p id="syncAlert" class="syncAlert" role="status" aria-live="polite" hidden></p>
+
   <div class="stats">
     <div class="stat"><span class="muted">Усього слів</span><b id="totalCount">612</b></div>
     <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b></div>
@@ -166,9 +172,9 @@ button:disabled{opacity:.45}
 <script src="words-9.js"></script>
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
-<script src="progress.js"></script>
-<script src="cloud-config.js"></script>
-<script src="cloud.js"></script>
+<script src="progress.js?v=20261020-account-menu"></script>
+<script src="cloud-config.js?v=20261020-account-menu"></script>
+<script src="cloud.js?v=20261020-account-menu"></script>
 <script>
 const rawSeed=window.WORDS || [];
 const seenSeed=new Set();
