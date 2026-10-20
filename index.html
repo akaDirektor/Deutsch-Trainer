@@ -173,7 +173,7 @@ const TODAY=new Date().toISOString().slice(0,10);
 let data=seed;
 let stats=JSON.parse(localStorage.getItem(STATS_KEY)||'{}');
 let hiddenWords=new Set(JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'));
-let cycle=JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}');
+let cycle=JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[],"mode":"translation","scope":"all|all|all"}');
 let typeFilter='all', dateFilter='all', currentRound=[], previousRound=null, selectedL=null, selectedR=null, solved=new Set();
 
 function key(w){return w.de.toLowerCase().trim()}
@@ -199,15 +199,18 @@ function eligible(w){
   return true;
 }
 function pool(){return data.filter(eligible)}
+function cycleSignature(){
+  return document.getElementById('mode').value+'|'+typeFilter+'|'+dateFilter+'|'+document.getElementById('focus').value;
+}
 function cyclePool(){
-  let p=pool(), seen=new Set(cycle.seen||[]), unseen=p.filter(w=>!seen.has(key(w)));
-  if(!unseen.length&&p.length){const eligibleKeys=new Set(p.map(key));cycle.seen=(cycle.seen||[]).filter(k=>!eligibleKeys.has(k));save();unseen=p}
+  let p=pool(), sig=cycleSignature();
+  if(cycle.scope!==sig){cycle={seen:[],scope:sig};save()}
+  let seen=new Set(cycle.seen||[]), unseen=p.filter(w=>!seen.has(key(w)));
+  if(!unseen.length&&p.length){cycle.seen=[];save();unseen=p}
   return unseen;
 }
-function weight(w){let st=s(w); return (st.wrong*4) - st.correct + (st.mastered?-50:0) + (st.correct===0?4:0)}
 function pick5(){
-  let p=cyclePool();
-  p=shuffle(p).sort((a,b)=>weight(b)-weight(a));
+  let p=shuffle(cyclePool());
   return p.slice(0,Math.min(5,p.length));
 }
 function markCycleSeen(w){const k=key(w);if(!(cycle.seen||[]).includes(k))cycle.seen.push(k)}
