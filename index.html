@@ -75,12 +75,14 @@ button:disabled{opacity:.45}
     <div class="row">
       <select id="mode">
         <option value="translation">Німецьке ↔ український переклад</option>
-        <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>\n        <option value="verbPast">Дієслово ↔ Präteritum + Perfekt</option>
+        <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>
+        <option value="verbPast">Дієслово ↔ Präteritum + Perfekt</option>
       </select>
       <select id="focus">
         <option value="all">Усі слова</option>
         <option value="unmastered">Ще не засвоєні</option>
-        <option value="weak">Слабкі / з помилками</option>\n        <option value="recall">Активне пригадування (після 3 збігів)</option>
+        <option value="weak">Слабкі / з помилками</option>
+        <option value="recall">Активне пригадування (після 3 збігів)</option>
       </select>
     </div>
     <button id="startBtn" class="primary start">▶ Почати тренування</button>
@@ -151,14 +153,16 @@ function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(TODAY+'T12:00:00')-new Date((w.addedAt||TODAY)+'T12:00:00'))/86400000)}
 function eligible(w){
   let mode=document.getElementById('mode').value;
-  if(mode==='nounPlural' && (w.type!=='noun' || !w.plural)) return false;\n  if(mode==='verbPast' && (w.type!=='verb' || !w.praeteritum || !w.perfekt)) return false;
+  if(mode==='nounPlural' && (w.type!=='noun' || !w.plural)) return false;
+  if(mode==='verbPast' && (w.type!=='verb' || !w.praeteritum || !w.perfekt)) return false;
   if(typeFilter!=='all' && w.type!==typeFilter) return false;
   if(dateFilter==='today' && ageDays(w)!==0) return false;
   if(dateFilter==='7' && !(ageDays(w)>=0 && ageDays(w)<7)) return false;
   if(dateFilter==='30' && !(ageDays(w)>=0 && ageDays(w)<30)) return false;
   let f=document.getElementById('focus').value, st=s(w);
   if(f==='unmastered' && st.mastered) return false;
-  if(f==='weak' && !(st.wrong>0 || st.streak===0)) return false;\n  if(f==='recall' && !st.mastered) return false;
+  if(f==='weak' && !(st.wrong>0 || st.streak===0)) return false;
+  if(f==='recall' && !st.mastered) return false;
   return true;
 }
 function pool(){return data.filter(eligible)}
@@ -268,5 +272,6 @@ document.getElementById('focus').onchange=()=>{updateStats();if(document.getElem
 document.getElementById('startBtn').onclick=()=>{if(document.getElementById('focus').value==='recall'){document.getElementById('training').classList.add('hidden');document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('recallTraining').classList.add('hidden');document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
 document.getElementById('nextBtn').onclick=renderRound;
 document.getElementById('stopBtn').onclick=()=>document.getElementById('training').classList.add('hidden');
-updateStats();updateRecallStats();\n</script>
+updateStats();updateRecallStats();
+</script>
 </body></html>
