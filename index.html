@@ -29,6 +29,11 @@ button:disabled{opacity:.45}
 .legend{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
 .typecount{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 10px}
 .details{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
+.recall{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.recallWord{font-size:30px;font-weight:800;margin:14px 0}
+.recallInput{width:100%;font:inherit;font-size:18px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff}
+.recallAnswer{margin-top:10px;padding:12px;border-radius:12px;background:var(--bg)}
+.recallStats{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .hidden{display:none!important}
 @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)} .board{grid-template-columns:1fr} .card{min-height:52px}}
 </style>
@@ -75,7 +80,7 @@ button:disabled{opacity:.45}
       <select id="focus">
         <option value="all">Усі слова</option>
         <option value="unmastered">Ще не засвоєні</option>
-        <option value="weak">Слабкі / з помилками</option>
+        <option value="weak">Слабкі / з помилками</option>\n        <option value="recall">Активне пригадування (після 3 збігів)</option>
       </select>
     </div>
     <button id="startBtn" class="primary start">▶ Почати тренування</button>
@@ -91,6 +96,27 @@ button:disabled{opacity:.45}
     <div class="row" style="margin-top:12px">
       <button id="nextBtn" class="primary">Наступні 5</button>
       <button id="stopBtn">Зупинити</button>
+    </div>
+  </div>
+
+  <div id="recallTraining" class="recall hidden">
+    <div class="sectionTitle">Активне пригадування</div>
+    <div class="muted">Напиши український переклад самостійно.</div>
+    <div id="recallWord" class="recallWord"></div>
+    <input id="recallInput" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Український переклад">
+    <div class="row">
+      <button id="recallCheck" class="primary">Перевірити</button>
+      <button id="recallDontKnow">Не знаю</button>
+    </div>
+    <div id="recallAnswer" class="recallAnswer hidden"></div>
+    <div id="recallJudge" class="row hidden">
+      <button id="recallCorrect" class="primary">✓ Правильно</button>
+      <button id="recallWrong">✕ Неправильно</button>
+    </div>
+    <div class="recallStats">
+      <span class="typecount">Готові: <b id="recallReady">0</b></span>
+      <span class="typecount">Правильно: <b id="recallGood">0</b></span>
+      <span class="typecount">Помилки: <b id="recallBad">0</b></span>
     </div>
   </div>
 
@@ -119,7 +145,7 @@ let stats=JSON.parse(localStorage.getItem(STATS_KEY)||'{}');
 let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
 
 function key(w){return w.de.toLowerCase().trim()}
-function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; return stats[k]}
+function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
 function save(){localStorage.setItem(DATA_KEY,JSON.stringify(data));localStorage.setItem(STATS_KEY,JSON.stringify(stats))}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(TODAY+'T12:00:00')-new Date((w.addedAt||TODAY)+'T12:00:00'))/86400000)}
@@ -132,7 +158,7 @@ function eligible(w){
   if(dateFilter==='30' && !(ageDays(w)>=0 && ageDays(w)<30)) return false;
   let f=document.getElementById('focus').value, st=s(w);
   if(f==='unmastered' && st.mastered) return false;
-  if(f==='weak' && !(st.wrong>0 || st.streak===0)) return false;
+  if(f==='weak' && !(st.wrong>0 || st.streak===0)) return false;\n  if(f==='recall' && !st.mastered) return false;
   return true;
 }
 function pool(){return data.filter(eligible)}
@@ -202,10 +228,45 @@ function updateStats(){
 document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
 document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
 document.getElementById('mode').onchange=()=>{if(document.getElementById('mode').value==='nounPlural'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} else if(document.getElementById('mode').value==='verbPast'){typeFilter='verb';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='verb'));} updateStats()};
-document.getElementById('focus').onchange=updateStats;
-document.getElementById('startBtn').onclick=()=>{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})};
+let recallWord=null;
+function recallPool(){return data.filter(w=>s(w).mastered && (typeFilter==='all'||w.type===typeFilter) && (dateFilter==='all'||(dateFilter==='today'&&ageDays(w)===0)||(dateFilter==='7'&&ageDays(w)>=0&&ageDays(w)<7)||(dateFilter==='30'&&ageDays(w)>=0&&ageDays(w)<30)))}
+function renderRecall(){
+  const p=recallPool();
+  document.getElementById('recallReady').textContent=p.length;
+  if(!p.length){document.getElementById('recallWord').textContent='Ще немає слів після 3 правильних збігів';recallWord=null;return}
+  recallWord=shuffle(p).sort((a,b)=>(s(a).recallCorrect-s(a).recallWrong)-(s(b).recallCorrect-s(b).recallWrong))[0];
+  document.getElementById('recallWord').textContent=recallWord.de;
+  document.getElementById('recallInput').value='';
+  document.getElementById('recallAnswer').classList.add('hidden');
+  document.getElementById('recallJudge').classList.add('hidden');
+  document.getElementById('recallInput').focus();
+}
+function showRecallAnswer(){
+  if(!recallWord)return;
+  const typed=document.getElementById('recallInput').value.trim();
+  document.getElementById('recallAnswer').innerHTML='<b>Твоя відповідь:</b> '+(typed||'—')+'<br><b>Правильний переклад:</b> '+recallWord.uk;
+  document.getElementById('recallAnswer').classList.remove('hidden');
+  document.getElementById('recallJudge').classList.remove('hidden');
+}
+function judgeRecall(ok){
+  if(!recallWord)return; const st=s(recallWord);
+  if(ok)st.recallCorrect++;else st.recallWrong++;
+  save(); updateRecallStats(); renderRecall();
+}
+function updateRecallStats(){
+  let good=0,bad=0;data.forEach(w=>{good+=s(w).recallCorrect||0;bad+=s(w).recallWrong||0});
+  document.getElementById('recallReady').textContent=recallPool().length;
+  document.getElementById('recallGood').textContent=good;
+  document.getElementById('recallBad').textContent=bad;
+}
+document.getElementById('recallCheck').onclick=showRecallAnswer;
+document.getElementById('recallDontKnow').onclick=()=>{document.getElementById('recallInput').value='';showRecallAnswer()};
+document.getElementById('recallCorrect').onclick=()=>judgeRecall(true);
+document.getElementById('recallWrong').onclick=()=>judgeRecall(false);
+document.getElementById('recallInput').onkeydown=e=>{if(e.key==='Enter')showRecallAnswer()};
+document.getElementById('focus').onchange=()=>{updateStats();if(document.getElementById('focus').value==='recall'){document.getElementById('training').classList.add('hidden');document.getElementById('recallTraining').classList.remove('hidden');renderRecall()}else document.getElementById('recallTraining').classList.add('hidden')};
+document.getElementById('startBtn').onclick=()=>{if(document.getElementById('focus').value==='recall'){document.getElementById('training').classList.add('hidden');document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('recallTraining').classList.add('hidden');document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
 document.getElementById('nextBtn').onclick=renderRound;
 document.getElementById('stopBtn').onclick=()=>document.getElementById('training').classList.add('hidden');
-updateStats();
-</script>
+updateStats();updateRecallStats();\n</script>
 </body></html>
