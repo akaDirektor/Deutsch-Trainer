@@ -165,17 +165,19 @@ const seed=rawSeed.filter(w=>{const k=w.de.toLowerCase().trim();if(seenSeed.has(
 const DATA_KEY='deutsch_match_b2_data_v4';
 const STATS_KEY='deutsch_match_b2_stats_v4';
 const HIDDEN_KEY='deutsch_match_b2_hidden_v1';
+const CYCLE_KEY='deutsch_match_b2_cycle_v1';
 const TODAY=new Date().toISOString().slice(0,10);
 
 let data=seed;
 let stats=JSON.parse(localStorage.getItem(STATS_KEY)||'{}');
 let hiddenWords=new Set(JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'));
+let cycle=JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}');
 let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
 
 function key(w){return w.de.toLowerCase().trim()}
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
 function markWorked(w){s(w).lastWorked=TODAY}
-function save(){localStorage.setItem(DATA_KEY,JSON.stringify(data));localStorage.setItem(STATS_KEY,JSON.stringify(stats));localStorage.setItem(HIDDEN_KEY,JSON.stringify([...hiddenWords]))}
+function save(){localStorage.setItem(DATA_KEY,JSON.stringify(data));localStorage.setItem(STATS_KEY,JSON.stringify(stats));localStorage.setItem(HIDDEN_KEY,JSON.stringify([...hiddenWords]));localStorage.setItem(CYCLE_KEY,JSON.stringify(cycle))}
 function hideWord(w){if(!w)return false;if(confirm('Прибрати «'+w.de+'» з тренувань?')){hiddenWords.add(key(w));save();updateStats();return true}return false}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(TODAY+'T12:00:00')-new Date((w.addedAt||TODAY)+'T12:00:00'))/86400000)}
@@ -195,12 +197,18 @@ function eligible(w){
   return true;
 }
 function pool(){return data.filter(eligible)}
+function cyclePool(){
+  let p=pool(), seen=new Set(cycle.seen||[]), unseen=p.filter(w=>!seen.has(key(w)));
+  if(!unseen.length&&p.length){const eligibleKeys=new Set(p.map(key));cycle.seen=(cycle.seen||[]).filter(k=>!eligibleKeys.has(k));save();unseen=p}
+  return unseen;
+}
 function weight(w){let st=s(w); return (st.wrong*4) - st.correct + (st.mastered?-50:0) + (st.correct===0?4:0)}
 function pick5(){
-  let p=pool();
+  let p=cyclePool();
   p=shuffle(p).sort((a,b)=>weight(b)-weight(a));
   return p.slice(0,Math.min(5,p.length));
 }
+function markCycleSeen(w){const k=key(w);if(!(cycle.seen||[]).includes(k))cycle.seen.push(k)}
 function leftText(w){
   return w.de;
 }
@@ -233,7 +241,7 @@ function select(side,e,w){
 function check(){
   const a=selectedL,b=selectedR; const ok=key(a.w)===key(b.w); const st=s(a.w); markWorked(a.w);
   if(ok){
-    st.correct++; st.streak++; if(st.streak>=3) st.mastered=true;
+    st.correct++; st.streak++; if(st.streak>=3) st.mastered=true; markCycleSeen(a.w);
     a.e.classList.add('ok'); b.e.classList.add('ok');
     setTimeout(()=>{a.e.classList.add('done');b.e.classList.add('done');solved.add(key(a.w)); if(solved.size===currentRound.length){document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(!document.getElementById('training').classList.contains('hidden'))renderRound()},650)};},180);
   }else{
@@ -296,7 +304,7 @@ function showRecallAnswer(){
 }
 function judgeRecall(ok){
   if(!recallWord)return; const st=s(recallWord);
-  markWorked(recallWord); if(ok)st.recallCorrect++;else st.recallWrong++;
+  markWorked(recallWord); markCycleSeen(recallWord); if(ok)st.recallCorrect++;else st.recallWrong++;
   save(); updateRecallStats(); renderRecall();
 }
 function updateRecallStats(){
@@ -313,7 +321,7 @@ document.getElementById('recallWrong').onclick=()=>judgeRecall(false);
 document.getElementById('recallInput').onkeydown=e=>{if(e.key==='Enter')showRecallAnswer()};
 document.getElementById('focus').onchange=()=>{updateStats();if(document.getElementById('focus').value==='recall'){document.getElementById('training').classList.add('hidden');document.getElementById('recallTraining').classList.remove('hidden');renderRecall()}else document.getElementById('recallTraining').classList.add('hidden')};
 let verbWriteWord=null;
-function verbWritePool(){return data.filter(w=>w.type==='verb'&&w.praeteritum&&w.perfekt&&eligible(w))}
+function verbWritePool(){let p=data.filter(w=>w.type==='verb'&&w.praeteritum&&w.perfekt&&eligible(w));let seen=new Set(cycle.seen||[]),u=p.filter(w=>!seen.has(key(w)));if(!u.length&&p.length){const ks=new Set(p.map(key));cycle.seen=(cycle.seen||[]).filter(k=>!ks.has(k));save();u=p}return u}
 function renderVerbWrite(){
  const p=verbWritePool(); if(!p.length){document.getElementById('verbWriteWord').textContent='Для цього фільтра немає дієслів.';verbWriteWord=null;return}
  verbWriteWord=shuffle(p)[0]; document.getElementById('verbWriteWord').textContent=verbWriteWord.de;
@@ -326,7 +334,7 @@ function showVerbWriteAnswer(){
  document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+(verbWriteUkSkipped?'пропущено':vals[0])+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+verbWriteWord.uk+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
  document.getElementById('verbWriteAnswer').classList.remove('hidden');document.getElementById('verbWriteJudge').classList.remove('hidden');
 }
-function judgeVerbWrite(ok){if(!verbWriteWord)return;const st=s(verbWriteWord);markWorked(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
+function judgeVerbWrite(ok){if(!verbWriteWord)return;const st=s(verbWriteWord);markWorked(verbWriteWord);markCycleSeen(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
 document.getElementById('verbWriteRemove').onclick=()=>{if(hideWord(verbWriteWord))renderVerbWrite()};
 document.getElementById('verbWriteSkipUk').onclick=()=>{verbWriteUkSkipped=true;const e=document.getElementById('verbWriteUk');e.value='';e.disabled=true;e.placeholder='Переклад пропущено';document.getElementById('verbWritePraet').focus()};
 document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
