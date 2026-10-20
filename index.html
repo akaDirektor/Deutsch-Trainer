@@ -129,6 +129,7 @@ button:disabled{opacity:.45}
     <div class="muted">Напиши переклад, Präteritum і Perfekt самостійно.</div>
     <div id="verbWriteWord" class="recallWord"></div>
     <input id="verbWriteUk" class="recallInput" autocomplete="off" placeholder="Український переклад">
+    <div class="row"><button id="verbWriteSkipUk">Пропустити переклад</button></div>
     <input id="verbWritePraet" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Präteritum">
     <input id="verbWritePerf" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Perfekt">
     <div class="row"><button id="verbWriteCheck" class="primary">Перевірити</button><button id="verbWriteDontKnow">Не знаю</button></div>
@@ -304,15 +305,17 @@ function verbWritePool(){return data.filter(w=>w.type==='verb'&&w.praeteritum&&w
 function renderVerbWrite(){
  const p=verbWritePool(); if(!p.length){document.getElementById('verbWriteWord').textContent='Для цього фільтра немає дієслів.';verbWriteWord=null;return}
  verbWriteWord=shuffle(p)[0]; document.getElementById('verbWriteWord').textContent=verbWriteWord.de;
- ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');
+ ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value=''); verbWriteUkSkipped=false; document.getElementById('verbWriteUk').disabled=false; document.getElementById('verbWriteUk').placeholder='Український переклад';
  document.getElementById('verbWriteAnswer').classList.add('hidden');document.getElementById('verbWriteJudge').classList.add('hidden');document.getElementById('verbWriteUk').focus();
 }
+let verbWriteUkSkipped=false;
 function showVerbWriteAnswer(){
  if(!verbWriteWord)return; const vals=['verbWriteUk','verbWritePraet','verbWritePerf'].map(id=>document.getElementById(id).value.trim()||'—');
- document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+vals[0]+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+verbWriteWord.uk+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
+ document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+(verbWriteUkSkipped?'пропущено':vals[0])+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+verbWriteWord.uk+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
  document.getElementById('verbWriteAnswer').classList.remove('hidden');document.getElementById('verbWriteJudge').classList.remove('hidden');
 }
 function judgeVerbWrite(ok){if(!verbWriteWord)return;const st=s(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
+document.getElementById('verbWriteSkipUk').onclick=()=>{verbWriteUkSkipped=true;const e=document.getElementById('verbWriteUk');e.value='';e.disabled=true;e.placeholder='Переклад пропущено';document.getElementById('verbWritePraet').focus()};
 document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
 document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');showVerbWriteAnswer()};
 document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
