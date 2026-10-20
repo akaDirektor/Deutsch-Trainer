@@ -215,6 +215,7 @@ function cycleSignature(){
   return document.getElementById('mode').value+'|'+typeFilter+'|'+dateFilter+'|'+document.getElementById('focus').value;
 }
 function cyclePool(){
+  const before=JSON.stringify(cycle);
   const sig=cycleSignature();
   // Older Safari cycles contain only seen; retain them in the default matching scope.
   if(!cycle.scope)cycle.scope='translation|all|all|all';
@@ -224,7 +225,7 @@ function cyclePool(){
     const old=cycle.scopes[sig]||{seen:[],number:0};
     cycle={...cycle,...old,scope:sig};
   }
-  const p=Progress.unseen(cycle,pool(),key);save();return p;
+  const p=Progress.unseen(cycle,pool(),key);if(JSON.stringify(cycle)!==before)save();return p;
 }
 function pick5(){
   let p=shuffle(cyclePool());
@@ -386,7 +387,13 @@ function legacy(){return Progress.validate({schema:1,stats:JSON.parse(localStora
 Cloud.init({snapshot,legacy,rawLegacy,
  active:()=>['training','recallTraining','verbWriteTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
  lock(value){trainingLocked=value;document.getElementById('startBtn').disabled=value;if(value){roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}},
- apply(value){const x=Progress.validate(value);stats=x.stats;hiddenWords=new Set(x.hidden);cycle=x.cycle;roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));updateStats();updateRecallStats();},
+ apply(value,options={}){
+  const sections=['training','recallTraining','verbWriteTraining'];
+  const active=options.resume&&sections.find(id=>!document.getElementById(id).classList.contains('hidden'));
+  const x=Progress.validate(value);stats=x.stats;hiddenWords=new Set(x.hidden);cycle=x.cycle;roundEpoch++;
+  sections.forEach(id=>document.getElementById(id).classList.add('hidden'));updateStats();updateRecallStats();
+  if(active){document.getElementById(active).classList.remove('hidden');if(active==='training')renderRound();else if(active==='recallTraining')renderRecall();else renderVerbWrite();}
+ },
  preview(value){imported=Progress.validate(value);const known=new Set(data.map(key));document.getElementById('importPreview').textContent=JSON.stringify({wordsWithProgress:Object.keys(imported.stats).length,hidden:imported.hidden.length,cycleSeen:imported.cycle.seen.length,unknownKeysPreserved:Object.keys(imported.stats).filter(k=>!known.has(k)).length},null,2);},
  importCandidate(){return imported||legacy();}
 });

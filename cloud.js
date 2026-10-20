@@ -36,8 +36,12 @@ window.Cloud=(()=>{
     if(!rows.length){conflict();return;}
     cache.revision=rows[0].revision;cache.pending=JSON.stringify(cache.state)!==JSON.stringify(snapshot);persist();
     status(cache.pending?'Синхронізація…':'Збережено у хмарі');
-   }else if(!adapter.active()){
-    const row=await pull();if(row&&row.revision!==cache.revision){cache={revision:row.revision,state:Progress.validate(row.state),pending:false};persist();adapter.apply(cache.state);status('Оновлено з хмари');}
+   }else{
+    const baseRevision=cache.revision;
+    const row=await pull();
+    // A response arriving after a local answer must never replace that answer.
+    if(cache.pending||cache.revision!==baseRevision)return;
+    if(row&&row.revision!==cache.revision){cache={revision:row.revision,state:Progress.validate(row.state),pending:false};persist();adapter.apply(cache.state,{resume:true});status('Оновлено з хмари');}
    }
   }catch(e){status('Офлайн / помилка синхронізації: '+e.message+'. Локальні зміни збережено.');}
   finally{busy=false;if(cache?.pending&&!blocked&&dirty){dirty=false;setTimeout(sync,100);}}
@@ -94,7 +98,7 @@ window.Cloud=(()=>{
    el('syncNow').onclick=sync;
    if(!cfg.url||!cfg.publishableKey){status('Supabase ще не налаштовано. Експорт Safari доступний; тренування заблоковано для захисту прогресу.');return;}
    try{session=JSON.parse(localStorage.getItem(sessionKey)||'null');if(session)connect();else status('Увійди до хмарного профілю. Safari-прогрес збережено.');}catch(e){status(e.message);}
-   addEventListener('online',sync);addEventListener('focus',sync);setInterval(sync,15000);
+   addEventListener('online',sync);addEventListener('focus',sync);document.addEventListener?.('visibilitychange',()=>{if(!document.hidden)sync();});setInterval(sync,15000);
   }
  };
 })();
