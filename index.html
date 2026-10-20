@@ -46,8 +46,8 @@ button:disabled{opacity:.45}
 
   <div class="stats">
     <div class="stat"><span class="muted">Усього слів</span><b id="totalCount">612</b></div>
-    <div class="stat"><span class="muted">У вибірці</span><b id="poolCount">0</b></div>
-    <div class="stat"><span class="muted">Засвоєно</span><b id="masteredCount">0</b></div>
+    <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b></div>
+    <div class="stat"><span class="muted">Активно пригадано</span><b id="activeKnownCount">0</b></div>
     <div class="stat"><span class="muted">Точність</span><b id="accuracy">0%</b></div>
   </div>
   <div class="progress"><div id="progressBar" style="width:0"></div></div>
@@ -122,7 +122,7 @@ button:disabled{opacity:.45}
 
   <div class="details">
     <b>Як працює засвоєння</b>
-    <div class="muted" style="margin-top:6px">Слово вважається засвоєним після 3 правильних збігів поспіль. Якщо помиляєшся — серія скидається, а слово частіше повертається.</div>
+    <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
   </div>
 </div>
 
