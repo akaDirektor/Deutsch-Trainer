@@ -212,6 +212,8 @@ function cycleSignature(){
 }
 function cyclePool(){
   const sig=cycleSignature();
+  // Older Safari cycles contain only seen; retain them in the default matching scope.
+  if(!cycle.scope)cycle.scope='translation|all|all|all';
   cycle.scopes=cycle.scopes||{};
   if(cycle.scope!==sig){
     if(cycle.scope)cycle.scopes[cycle.scope]={seen:[...cycle.seen],number:cycle.number||0};
