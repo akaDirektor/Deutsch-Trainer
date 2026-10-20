@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Deutsch Match — B2 Beruf</title>
+<style>
+:root{--bg:#f5f5f7;--card:#fff;--text:#111;--muted:#6b6b70;--line:#dedee3;--accent:#111;--sel:#e9efff;--ok:#dff5e6;--bad:#ffe3e3}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:960px;margin:auto;padding:16px}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+h1{font-size:26px;margin:0 0 4px} .muted{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px} .stat b{display:block;font-size:22px}
+.controls{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:7px 0}
+button,select{font:inherit;border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff;color:#111}
+button.primary{background:#111;color:#fff;border-color:#111;font-weight:700}
+button.active{background:#111;color:#fff;border-color:#111}
+button:disabled{opacity:.45}
+.start{width:100%;font-size:18px;padding:14px}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.col{display:flex;flex-direction:column;gap:9px}
+.card{min-height:58px;background:#fff;border:2px solid transparent;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.05)}
+.card.selected{border-color:#5777ff;background:var(--sel)} .card.ok{border-color:#55a96a;background:var(--ok)} .card.bad{border-color:#e06969;background:var(--bad)} .card.done{opacity:.28;pointer-events:none}
+.msg{min-height:28px;font-weight:700;margin:10px 0}
+.progress{height:9px;border-radius:99px;background:#e5e5ea;overflow:hidden} .progress div{height:100%;background:#111}
+.sectionTitle{font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
+.typecount{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 10px}
+.details{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
+.hidden{display:none!important}
+@media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)} .board{grid-template-columns:1fr} .card{min-height:52px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div><h1>Deutsch Match — B2 Beruf</h1><div class="muted">Клікай відповідні пари. Нічого писати не треба.</div></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="muted">Усього слів</span><b id="totalCount">612</b></div>
+    <div class="stat"><span class="muted">У вибірці</span><b id="poolCount">0</b></div>
+    <div class="stat"><span class="muted">Засвоєно</span><b id="masteredCount">0</b></div>
+    <div class="stat"><span class="muted">Точність</span><b id="accuracy">0%</b></div>
+  </div>
+  <div class="progress"><div id="progressBar" style="width:0"></div></div>
+
+  <div class="controls">
+    <div class="sectionTitle">1. Що тренуємо</div>
+    <div class="row" id="typeButtons">
+      <button class="active" data-type="all">Усі</button>
+      <button data-type="noun">Іменники</button>
+      <button data-type="verb">Дієслова</button>
+      <button data-type="adjective">Прикметники</button>
+      <button data-type="adverb">Прислівники</button>
+      <button data-type="phrase">Вирази</button>
+    </div>
+
+    <div class="sectionTitle">2. Період</div>
+    <div class="row" id="dateButtons">
+      <button class="active" data-date="all">Вся база</button>
+      <button data-date="today">Сьогодні</button>
+      <button data-date="7">7 днів</button>
+      <button data-date="30">30 днів</button>
+    </div>
+
+    <div class="sectionTitle">3. Режим</div>
+    <div class="row">
+      <select id="mode">
+        <option value="translation">Німецьке ↔ український переклад</option>
+        <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>
+      </select>
+      <select id="focus">
+        <option value="all">Усі слова</option>
+        <option value="unmastered">Ще не засвоєні</option>
+        <option value="weak">Слабкі / з помилками</option>
+      </select>
+    </div>
+    <button id="startBtn" class="primary start">▶ Почати тренування</button>
+    <div class="legend" id="typeLegend"></div>
+  </div>
+
+  <div id="training" class="hidden">
+    <div class="msg" id="msg"></div>
+    <div class="board">
+      <div class="col" id="leftCol"></div>
+      <div class="col" id="rightCol"></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button id="nextBtn" class="primary">Наступні 5</button>
+      <button id="stopBtn">Зупинити</button>
+    </div>
+  </div>
+
+  <div class="details">
+    <b>Як працює засвоєння</b>
+    <div class="muted" style="margin-top:6px">Слово вважається засвоєним після 3 правильних збігів поспіль. Якщо помиляєшся — серія скидається, а слово частіше повертається.</div>
+  </div>
+</div>
+
+<script src="words-1.js"></script>
+<script src="words-2.js"></script>
+<script src="words-3.js"></script>
+<script src="words-4.js"></script>
+<script src="words-5.js"></script>
+<script src="words-6.js"></script>
+<script src="words-7.js"></script>
+<script>
+const seed=window.WORDS || [];
+const DATA_KEY='deutsch_match_b2_data_v3';
+const STATS_KEY='deutsch_match_b2_stats_v3';
+const TODAY='2026-10-19';
+
+let data=JSON.parse(localStorage.getItem(DATA_KEY)||'null') || seed;
+if(!Array.isArray(data) || data.length < seed.length) data=seed;
+let stats=JSON.parse(localStorage.getItem(STATS_KEY)||'{}');
+let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
+
+function key(w){return w.de.toLowerCase().trim()}
+function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; return stats[k]}
+function save(){localStorage.setItem(DATA_KEY,JSON.stringify(data));localStorage.setItem(STATS_KEY,JSON.stringify(stats))}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function ageDays(w){return Math.floor((new Date(TODAY+'T12:00:00')-new Date((w.addedAt||TODAY)+'T12:00:00'))/86400000)}
+function eligible(w){
+  let mode=document.getElementById('mode').value;
+  if(mode==='nounPlural' && (w.type!=='noun' || !w.plural)) return false;
+  if(typeFilter!=='all' && w.type!==typeFilter) return false;
+  if(dateFilter==='today' && ageDays(w)!==0) return false;
+  if(dateFilter==='7' && !(ageDays(w)>=0 && ageDays(w)<7)) return false;
+  if(dateFilter==='30' && !(ageDays(w)>=0 && ageDays(w)<30)) return false;
+  let f=document.getElementById('focus').value, st=s(w);
+  if(f==='unmastered' && st.mastered) return false;
+  if(f==='weak' && !(st.wrong>0 || st.streak===0)) return false;
+  return true;
+}
+function pool(){return data.filter(eligible)}
+function weight(w){let st=s(w); return (st.wrong*4) - st.correct + (st.mastered?-50:0) + (st.correct===0?4:0)}
+function pick5(){
+  let p=pool();
+  p=shuffle(p).sort((a,b)=>weight(b)-weight(a));
+  return p.slice(0,Math.min(5,p.length));
+}
+function leftText(w){
+  return w.de;
+}
+function rightText(w){
+  let mode=document.getElementById('mode').value;
+  return mode==='nounPlural' ? w.plural : w.uk;
+}
+function renderRound(){
+  currentRound=pick5(); solved.clear(); selectedL=selectedR=null;
+  document.getElementById('leftCol').innerHTML=''; document.getElementById('rightCol').innerHTML='';
+  if(!currentRound.length){document.getElementById('msg').textContent='Для цього фільтра немає слів.'; updateStats(); return}
+  document.getElementById('msg').textContent='Знайди 5 пар';
+  shuffle(currentRound).forEach(w=>addCard('leftCol','L',w,leftText(w)));
+  shuffle(currentRound).forEach(w=>addCard('rightCol','R',w,rightText(w)));
+  updateStats();
+}
+function addCard(col,side,w,text){
+  const e=document.createElement('div'); e.className='card'; e.textContent=text; e.dataset.k=key(w);
+  e.onclick=()=>select(side,e,w); document.getElementById(col).appendChild(e);
+}
+function select(side,e,w){
+  if(e.classList.contains('done')) return;
+  const col=side==='L'?'leftCol':'rightCol';
+  document.querySelectorAll('#'+col+' .card').forEach(x=>x.classList.remove('selected'));
+  e.classList.add('selected');
+  if(side==='L') selectedL={e,w}; else selectedR={e,w};
+  if(selectedL && selectedR) check();
+}
+function check(){
+  const a=selectedL,b=selectedR; const ok=key(a.w)===key(b.w); const st=s(a.w);
+  if(ok){
+    st.correct++; st.streak++; if(st.streak>=3) st.mastered=true;
+    a.e.classList.add('ok'); b.e.classList.add('ok');
+    setTimeout(()=>{a.e.classList.add('done');b.e.classList.add('done');solved.add(key(a.w)); if(solved.size===currentRound.length) document.getElementById('msg').textContent='Раунд завершено ✓';},180);
+  }else{
+    st.wrong++; st.streak=0; st.mastered=false;
+    a.e.classList.add('bad'); b.e.classList.add('bad');
+    setTimeout(()=>{a.e.classList.remove('bad','selected');b.e.classList.remove('bad','selected')},260);
+  }
+  selectedL=selectedR=null; save(); updateStats();
+}
+function updateStats(){
+  let correct=0,wrong=0,mastered=0; data.forEach(w=>{let st=s(w);correct+=st.correct;wrong+=st.wrong;if(st.mastered)mastered++});
+  document.getElementById('totalCount').textContent=data.length;
+  document.getElementById('poolCount').textContent=pool().length;
+  document.getElementById('masteredCount').textContent=mastered;
+  document.getElementById('accuracy').textContent=(correct+wrong)?Math.round(correct/(correct+wrong)*100)+'%':'0%';
+  document.getElementById('progressBar').style.width=(data.length?Math.round(mastered/data.length*100):0)+'%';
+  const counts={noun:0,verb:0,adjective:0,adverb:0,phrase:0,other:0};
+  data.forEach(w=>counts[w.type]=(counts[w.type]||0)+1);
+  document.getElementById('typeLegend').innerHTML=
+    '<span class="typecount">Іменники: '+counts.noun+'</span>'+
+    '<span class="typecount">Дієслова: '+counts.verb+'</span>'+
+    '<span class="typecount">Прикметники: '+counts.adjective+'</span>'+
+    '<span class="typecount">Прислівники: '+counts.adverb+'</span>'+
+    '<span class="typecount">Вирази: '+counts.phrase+'</span>';
+}
+document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
+document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
+document.getElementById('mode').onchange=()=>{if(document.getElementById('mode').value==='nounPlural'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} updateStats()};
+document.getElementById('focus').onchange=updateStats;
+document.getElementById('startBtn').onclick=()=>{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})};
+document.getElementById('nextBtn').onclick=renderRound;
+document.getElementById('stopBtn').onclick=()=>document.getElementById('training').classList.add('hidden');
+updateStats();
+</script>
+</body></html>
