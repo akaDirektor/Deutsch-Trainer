@@ -4,8 +4,16 @@ window.Cloud=(()=>{
  const cfg=window.CLOUD_CONFIG, sessionKey='deutsch_cloud_session_v1';
  let session=null,cache=null,busy=false,dirty=false,blocked=false,ready=false,adapter,exported=false,previewed=false;
  const el=id=>document.getElementById(id);
- const status=t=>el('syncStatus').textContent=t;
- const lock=()=>adapter.lock(!ready||blocked);
+ let toolsRequired=null;
+ function accountView(){
+  el('loginForm').hidden=Boolean(session);
+  el('accountIdentity').textContent=session?'Вхід виконано: '+(session.user.email||'твій профіль'):'';
+  for(const id of ['importFile','importProgress','newProfile','importPreview'])el(id).hidden=ready;
+  const required=blocked||Boolean(session&&!ready);
+  if(required!==toolsRequired){el('accountTools').open=required;toolsRequired=required;}
+ }
+ const status=t=>{el('syncStatus').textContent=t;accountView();};
+ const lock=()=>{adapter.lock(!ready||blocked);accountView();};
  const cacheKey=()=>`deutsch_cloud_cache_v1:${session.user.id}`;
  function persist(){localStorage.setItem(cacheKey(),JSON.stringify(cache));}
  async function request(path,body,auth=true){
