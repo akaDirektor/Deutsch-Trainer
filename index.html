@@ -70,7 +70,7 @@ button:disabled{opacity:.45}
     <div class="row">
       <select id="mode">
         <option value="translation">Німецьке ↔ український переклад</option>
-        <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>
+        <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>\n        <option value="verbPast">Дієслово ↔ Präteritum + Perfekt</option>
       </select>
       <select id="focus">
         <option value="all">Усі слова</option>
@@ -125,7 +125,7 @@ function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(TODAY+'T12:00:00')-new Date((w.addedAt||TODAY)+'T12:00:00'))/86400000)}
 function eligible(w){
   let mode=document.getElementById('mode').value;
-  if(mode==='nounPlural' && (w.type!=='noun' || !w.plural)) return false;
+  if(mode==='nounPlural' && (w.type!=='noun' || !w.plural)) return false;\n  if(mode==='verbPast' && (w.type!=='verb' || !w.praeteritum || !w.perfekt)) return false;
   if(typeFilter!=='all' && w.type!==typeFilter) return false;
   if(dateFilter==='today' && ageDays(w)!==0) return false;
   if(dateFilter==='7' && !(ageDays(w)>=0 && ageDays(w)<7)) return false;
@@ -147,7 +147,7 @@ function leftText(w){
 }
 function rightText(w){
   let mode=document.getElementById('mode').value;
-  return mode==='nounPlural' ? w.plural : w.uk;
+  return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : w.uk;
 }
 function renderRound(){
   currentRound=pick5(); solved.clear(); selectedL=selectedR=null;
@@ -201,7 +201,7 @@ function updateStats(){
 }
 document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
 document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
-document.getElementById('mode').onchange=()=>{if(document.getElementById('mode').value==='nounPlural'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} updateStats()};
+document.getElementById('mode').onchange=()=>{if(document.getElementById('mode').value==='nounPlural'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} else if(document.getElementById('mode').value==='verbPast'){typeFilter='verb';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='verb'));} updateStats()};
 document.getElementById('focus').onchange=updateStats;
 document.getElementById('startBtn').onclick=()=>{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})};
 document.getElementById('nextBtn').onclick=renderRound;
