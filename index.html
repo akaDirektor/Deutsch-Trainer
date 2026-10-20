@@ -45,6 +45,12 @@ button:disabled{opacity:.45}
     <div><h1>Deutsch Match — B2 Beruf</h1><div class="muted">Клікай відповідні пари. Нічого писати не треба.</div></div>
   </div>
 
+  <div class="controls">
+    <form id="loginForm" class="row"><input id="email" type="email" autocomplete="username" placeholder="Email" required><input id="password" type="password" autocomplete="current-password" placeholder="Пароль" required><button>Увійти</button></form>
+    <p id="syncStatus" role="status" aria-live="polite"></p>
+    <div class="row"><button id="exportProgress">Експорт / резервна копія</button><input id="importFile" type="file" accept="application/json"><button id="importProgress" disabled>Імпорт у порожню хмару</button><button id="newProfile" disabled>Новий профіль</button><button id="logout">Вийти</button><button id="syncNow">Синхронізувати</button><button id="loadCloud" disabled>Завантажити хмарну версію</button></div>
+    <pre id="importPreview" style="white-space:pre-wrap"></pre>
+  </div>
   <div class="stats">
     <div class="stat"><span class="muted">Усього слів</span><b id="totalCount">612</b></div>
     <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b></div>
@@ -156,6 +162,9 @@ button:disabled{opacity:.45}
 <script src="words-9.js"></script>
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
+<script src="progress.js"></script>
+<script src="cloud-config.js"></script>
+<script src="cloud.js"></script>
 <script>
 const rawSeed=window.WORDS || [];
 const seenSeed=new Set();
@@ -164,21 +173,24 @@ const DATA_KEY='deutsch_match_b2_data_v4';
 const STATS_KEY='deutsch_match_b2_stats_v4';
 const HIDDEN_KEY='deutsch_match_b2_hidden_v1';
 const CYCLE_KEY='deutsch_match_b2_cycle_v1';
-const TODAY=new Date().toISOString().slice(0,10);
+function today(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
 
 let data=seed;
-let stats=JSON.parse(localStorage.getItem(STATS_KEY)||'{}');
-let hiddenWords=new Set(JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'));
-let cycle=JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[],"mode":"translation","scope":"all|all|all"}');
-let typeFilter='all', dateFilter='all', currentRound=[], previousRound=null, selectedL=null, selectedR=null, solved=new Set();
+let stats={};
+let hiddenWords=new Set();
+let cycle={seen:[],scopes:{}};
+let trainingLocked=true, roundEpoch=0;
+function cancelTraining(){roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
+let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
 
 function key(w){return w.de.toLowerCase().trim()}
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
-function markWorked(w){s(w).lastWorked=TODAY}
-function save(){localStorage.setItem(DATA_KEY,JSON.stringify(data));localStorage.setItem(STATS_KEY,JSON.stringify(stats));localStorage.setItem(HIDDEN_KEY,JSON.stringify([...hiddenWords]));localStorage.setItem(CYCLE_KEY,JSON.stringify(cycle))}
-function hideWord(w){if(!w)return false;if(confirm('Прибрати «'+w.de+'» з тренувань?')){hiddenWords.add(key(w));save();updateStats();return true}return false}
+function markWorked(w){s(w).lastWorked=today()}
+function snapshot(){return {schema:1,stats,hidden:[...hiddenWords],cycle}}
+function save(){Cloud.save(snapshot())}
+function hideWord(w){if(trainingLocked||!w)return false;if(confirm('Прибрати «'+w.de+'» з тренувань?')){hiddenWords.add(key(w));save();updateStats();return true}return false}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function ageDays(w){return Math.floor((new Date(TODAY+'T12:00:00')-new Date((w.addedAt||TODAY)+'T12:00:00'))/86400000)}
+function ageDays(w){return Math.floor((new Date(today()+'T12:00:00')-new Date((w.addedAt||today())+'T12:00:00'))/86400000)}
 function eligible(w){
   if(hiddenWords.has(key(w))) return false;
   let mode=document.getElementById('mode').value;
@@ -199,11 +211,14 @@ function cycleSignature(){
   return document.getElementById('mode').value+'|'+typeFilter+'|'+dateFilter+'|'+document.getElementById('focus').value;
 }
 function cyclePool(){
-  let p=pool(), sig=cycleSignature();
-  if(cycle.scope!==sig){cycle={seen:[],scope:sig};save()}
-  let seen=new Set(cycle.seen||[]), unseen=p.filter(w=>!seen.has(key(w)));
-  if(!unseen.length&&p.length){cycle.seen=[];save();unseen=p}
-  return unseen;
+  const sig=cycleSignature();
+  cycle.scopes=cycle.scopes||{};
+  if(cycle.scope!==sig){
+    if(cycle.scope)cycle.scopes[cycle.scope]={seen:[...cycle.seen],number:cycle.number||0};
+    const old=cycle.scopes[sig]||{seen:[],number:0};
+    cycle={...cycle,...old,scope:sig};
+  }
+  const p=Progress.unseen(cycle,pool(),key);save();return p;
 }
 function pick5(){
   let p=shuffle(cyclePool());
@@ -218,7 +233,7 @@ function rightText(w){
   return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : w.uk;
 }
 function renderRound(round=null){
-  if(!round&&currentRound.length)previousRound=[...currentRound];
+  const epoch=++roundEpoch;
   currentRound=round?[...round]:pick5(); solved.clear(); selectedL=selectedR=null;
   document.getElementById('leftCol').innerHTML=''; document.getElementById('rightCol').innerHTML=''; const exBox=document.getElementById('matchExample');if(exBox){exBox.classList.add('hidden');exBox.innerHTML='';}
   if(!currentRound.length){document.getElementById('msg').textContent='Для цього фільтра немає слів.'; updateStats(); return}
@@ -245,7 +260,7 @@ function addCard(col,side,w,text){
   document.getElementById(col).appendChild(e);
 }
 function select(side,e,w){
-  if(e.classList.contains('done')) return;
+  if(trainingLocked||e.classList.contains('done')) return;
   const col=side==='L'?'leftCol':'rightCol';
   document.querySelectorAll('#'+col+' .card').forEach(x=>x.classList.remove('selected'));
   e.classList.add('selected');
@@ -253,11 +268,13 @@ function select(side,e,w){
   if(selectedL && selectedR) check();
 }
 function check(){
+  const epoch=roundEpoch;
   const a=selectedL,b=selectedR; const ok=key(a.w)===key(b.w); const st=s(a.w); markWorked(a.w);
   if(ok){
+    a.e.classList.add('done');b.e.classList.add('done');
     st.correct++; st.streak++; if(st.streak>=3) st.mastered=true; markCycleSeen(a.w);
     a.e.classList.add('ok'); b.e.classList.add('ok');
-    setTimeout(()=>{a.e.classList.add('done');b.e.classList.add('done');solved.add(key(a.w)); if(solved.size===currentRound.length){document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(!document.getElementById('training').classList.contains('hidden'))renderRound()},650)};},180);
+    setTimeout(()=>{if(epoch!==roundEpoch)return;a.e.classList.add('done');b.e.classList.add('done');solved.add(key(a.w)); if(solved.size===currentRound.length){document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(epoch===roundEpoch&&!trainingLocked&&!document.getElementById('training').classList.contains('hidden'))renderRound()},650)};},180);
   }else{
     st.wrong++; st.streak=0; st.mastered=false;
     a.e.classList.add('bad'); b.e.classList.add('bad');
@@ -273,8 +290,8 @@ function updateStats(){
   let activeKnown=0; data.forEach(w=>{if(!hiddenWords.has(key(w))&&(s(w).recallCorrect||0)>=3)activeKnown++});
   document.getElementById('activeKnownCount').textContent=activeKnown+' / '+activeTotal;
   document.getElementById('accuracy').textContent=(correct+wrong)?Math.round(correct/(correct+wrong)*100)+'%':'0%';
-  document.getElementById('todayWorked').textContent=data.filter(w=>!hiddenWords.has(key(w))&&s(w).lastWorked===TODAY).length+' / '+activeTotal;
-  document.getElementById('progressBar').style.width=(data.length?Math.round(mastered/activeTotal*100):0)+'%';
+  document.getElementById('todayWorked').textContent=data.filter(w=>!hiddenWords.has(key(w))&&s(w).lastWorked===today()).length+' / '+activeTotal;
+  document.getElementById('progressBar').style.width=(activeTotal?Math.round(mastered/activeTotal*100):0)+'%';
   const counts={noun:0,verb:0,adjective:0,adverb:0,phrase:0,preposition:0,other:0};
   data.forEach(w=>counts[w.type]=(counts[w.type]||0)+1);
   document.getElementById('typeLegend').innerHTML=
@@ -284,11 +301,11 @@ function updateStats(){
     '<span class="typecount">Прислівники: '+counts.adverb+'</span>'+
     '<span class="typecount">Вирази: '+counts.phrase+'</span>'+ '<span class="typecount">Präpositionen: '+counts.preposition+'</span>';
 }
-document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
-document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
-document.getElementById('mode').onchange=()=>{const m=document.getElementById('mode').value;if(m==='nounPlural'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} else if(m==='verbPast'||m==='verbWrite'){typeFilter='verb';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='verb'));} updateStats()};
+document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{cancelTraining();document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
+document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{cancelTraining();document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
+document.getElementById('mode').onchange=()=>{cancelTraining();const m=document.getElementById('mode').value;if(m==='nounPlural'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} else if(m==='verbPast'||m==='verbWrite'){typeFilter='verb';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='verb'));} updateStats()};
 let recallWord=null;
-function recallPool(){return data.filter(w=>s(w).mastered && (typeFilter==='all'||w.type===typeFilter) && (dateFilter==='all'||(dateFilter==='today'&&ageDays(w)===0)||(dateFilter==='7'&&ageDays(w)>=0&&ageDays(w)<7)||(dateFilter==='30'&&ageDays(w)>=0&&ageDays(w)<30)))}
+function recallPool(){return data.filter(w=>!hiddenWords.has(key(w)) && s(w).mastered && (typeFilter==='all'||w.type===typeFilter) && (dateFilter==='all'||(dateFilter==='today'&&ageDays(w)===0)||(dateFilter==='7'&&ageDays(w)>=0&&ageDays(w)<7)||(dateFilter==='30'&&ageDays(w)>=0&&ageDays(w)<30)))}
 function renderRecall(){
   const p=recallPool();
   document.getElementById('recallReady').textContent=p.length;
@@ -317,8 +334,8 @@ function showRecallAnswer(){
   document.getElementById('recallJudge').classList.remove('hidden');
 }
 function judgeRecall(ok){
-  if(!recallWord)return; const st=s(recallWord);
-  markWorked(recallWord); markCycleSeen(recallWord); if(ok)st.recallCorrect++;else st.recallWrong++;
+  if(trainingLocked||!recallWord)return; const st=s(recallWord);
+  markWorked(recallWord); if(ok)st.recallCorrect++;else st.recallWrong++;
   save(); updateRecallStats(); renderRecall();
 }
 function updateRecallStats(){
@@ -333,9 +350,9 @@ document.getElementById('recallDontKnow').onclick=()=>{document.getElementById('
 document.getElementById('recallCorrect').onclick=()=>judgeRecall(true);
 document.getElementById('recallWrong').onclick=()=>judgeRecall(false);
 document.getElementById('recallInput').onkeydown=e=>{if(e.key==='Enter')showRecallAnswer()};
-document.getElementById('focus').onchange=()=>{updateStats();if(document.getElementById('focus').value==='recall'){document.getElementById('training').classList.add('hidden');document.getElementById('recallTraining').classList.remove('hidden');renderRecall()}else document.getElementById('recallTraining').classList.add('hidden')};
+document.getElementById('focus').onchange=()=>{if(trainingLocked)return;cancelTraining();updateStats();if(document.getElementById('focus').value==='recall'){document.getElementById('training').classList.add('hidden');document.getElementById('recallTraining').classList.remove('hidden');renderRecall()}else document.getElementById('recallTraining').classList.add('hidden')};
 let verbWriteWord=null;
-function verbWritePool(){let p=data.filter(w=>w.type==='verb'&&w.praeteritum&&w.perfekt&&eligible(w));let seen=new Set(cycle.seen||[]),u=p.filter(w=>!seen.has(key(w)));if(!u.length&&p.length){const ks=new Set(p.map(key));cycle.seen=(cycle.seen||[]).filter(k=>!ks.has(k));save();u=p}return u}
+function verbWritePool(){return cyclePool()}
 function renderVerbWrite(){
  const p=verbWritePool(); if(!p.length){document.getElementById('verbWriteWord').textContent='Для цього фільтра немає дієслів.';verbWriteWord=null;return}
  verbWriteWord=shuffle(p)[0]; document.getElementById('verbWriteWord').textContent=verbWriteWord.de;
@@ -348,18 +365,25 @@ function showVerbWriteAnswer(){
  document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+(verbWriteUkSkipped?'пропущено':vals[0])+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+verbWriteWord.uk+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
  document.getElementById('verbWriteAnswer').classList.remove('hidden');document.getElementById('verbWriteJudge').classList.remove('hidden');
 }
-function judgeVerbWrite(ok){if(!verbWriteWord)return;const st=s(verbWriteWord);markWorked(verbWriteWord);markCycleSeen(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
+function judgeVerbWrite(ok){if(trainingLocked||!verbWriteWord)return;const st=s(verbWriteWord);markWorked(verbWriteWord);markCycleSeen(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
 document.getElementById('verbWriteRemove').onclick=()=>{if(hideWord(verbWriteWord))renderVerbWrite()};
 document.getElementById('verbWriteSkipUk').onclick=()=>{verbWriteUkSkipped=true;const e=document.getElementById('verbWriteUk');e.value='';e.disabled=true;e.placeholder='Переклад пропущено';document.getElementById('verbWritePraet').focus()};
 document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
 document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');showVerbWriteAnswer()};
 document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
 ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')showVerbWriteAnswer()});
-document.getElementById('prevBtn').onclick=()=>{if(previousRound&&previousRound.length){const back=[...previousRound];previousRound=[...currentRound];renderRound(back)}};
+document.getElementById('startBtn').onclick=()=>{if(trainingLocked)return;roundEpoch++;const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
 
-document.getElementById('stopBtn').onclick=()=>document.getElementById('training').classList.add('hidden');
-document.getElementById('startBtn').onclick=()=>{const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
-
+let imported=null;
+function rawLegacy(){return Object.fromEntries([DATA_KEY,STATS_KEY,HIDDEN_KEY,CYCLE_KEY].map(k=>[k,localStorage.getItem(k)]))}
+function legacy(){return Progress.validate({schema:1,stats:JSON.parse(localStorage.getItem(STATS_KEY)||'{}'),hidden:JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'),cycle:JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}')})}
+Cloud.init({snapshot,legacy,rawLegacy,
+ active:()=>['training','recallTraining','verbWriteTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
+ lock(value){trainingLocked=value;document.getElementById('startBtn').disabled=value;if(value){roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}},
+ apply(value){const x=Progress.validate(value);stats=x.stats;hiddenWords=new Set(x.hidden);cycle=x.cycle;roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));updateStats();updateRecallStats();},
+ preview(value){imported=Progress.validate(value);const known=new Set(data.map(key));document.getElementById('importPreview').textContent=JSON.stringify({wordsWithProgress:Object.keys(imported.stats).length,hidden:imported.hidden.length,cycleSeen:imported.cycle.seen.length,unknownKeysPreserved:Object.keys(imported.stats).filter(k=>!known.has(k)).length},null,2);},
+ importCandidate(){return imported||legacy();}
+});
 updateStats();updateRecallStats();
 </script>
 </body></html>
