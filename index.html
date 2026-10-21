@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="app.css?v=20261021-daily">
 </head>
 <body>
 <div class="wrap">
@@ -35,6 +35,15 @@
   </div>
   <div class="progress" aria-hidden="true"><div id="progressBar" style="width:0"></div></div>
   <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Активно пригадано <strong id="activeKnownCount">0</strong></span></div></details>
+  <details class="dailyActivity" id="dailyActivity" open>
+    <summary><span>Прогрес за 7 днів</span><span class="dailySummary" id="dailySummary"></span></summary>
+    <div class="dailyBody">
+      <div class="dailyChart" id="dailyChart" role="group" aria-label="Частка бази, опрацьована за кожен з останніх семи днів"></div>
+      <p id="dailyDetail" class="dailyDetail" role="status" aria-live="polite"></p>
+      <p id="dailyHistoryNote" class="dailyNote"></p>
+      <p class="dailyNote">Одне слово рахується один раз на день в усіх режимах, навіть після помилки. Відсоток — від усієї поточної бази, включно з прихованими словами.</p>
+    </div>
+  </details>
   <section id="wordProgressPanel" class="wordProgressPanel" hidden aria-labelledby="wordProgressTitle">
     <div class="row"><h2 id="wordProgressTitle" tabindex="-1"></h2><button type="button" id="closeWordProgress">Закрити список</button></div>
     <p id="wordProgressDescription" class="muted"></p>
@@ -155,7 +164,7 @@
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
 <script src="examples.js"></script>
-<script src="progress.js?v=20261020-account-menu"></script>
+<script src="progress.js?v=20261021-daily-history"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261020-account-menu"></script>
 <script>
@@ -179,7 +188,47 @@ let recentMatched=[];
 
 function key(w){return w.de.toLowerCase().trim()}
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
-function markWorked(w){s(w).lastWorked=today()}
+function addWorkedDay(st,day){
+  const cutoff=new Date(day+'T12:00:00');cutoff.setDate(cutoff.getDate()-30);
+  const first=[cutoff.getFullYear(),String(cutoff.getMonth()+1).padStart(2,'0'),String(cutoff.getDate()).padStart(2,'0')].join('-');
+  st.workedDays=[...new Set([...(st.workedDays||[]),day])].filter(date=>date>=first).sort();
+}
+function markWorked(w){
+  const day=today();
+  // Preserve today's complete legacy count before lastWorked can move forward.
+  for(const st of Object.values(stats))if(st.lastWorked===day&&!st.workedDays?.includes(day))addWorkedDay(st,day);
+  const st=s(w);st.lastWorked=day;addWorkedDay(st,day);renderDailyChart();
+}
+let selectedActivityDay=null;
+function activitySeries(endDay=today()){
+  let since;for(const st of Object.values(stats))for(const day of st.workedDays||[])if(!since||day<since)since=day;
+  return Array.from({length:7},(_,index)=>{
+    const date=new Date(endDay+'T12:00:00');date.setDate(date.getDate()-6+index);
+    const day=[date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
+    const known=day===endDay||!!(since&&day>=since);
+    const count=known?data.filter(w=>{const st=stats[key(w)];return st&&(st.lastWorked===day||st.workedDays?.includes(day));}).length:null;
+    return {day,date,known,count,total:data.length,percent:known&&data.length?count/data.length*100:0};
+  });
+}
+function activityPercent(value){return value.toLocaleString('uk-UA',{maximumFractionDigits:1})+'%';}
+function renderDailyChart(){
+  const series=activitySeries(),chart=document.getElementById('dailyChart'),end=series[6];chart.innerHTML='';
+  if(!series.some(item=>item.day===selectedActivityDay))selectedActivityDay=end.day;
+  document.getElementById('dailySummary').textContent='Сьогодні '+activityPercent(end.percent);
+  series.forEach((item,index)=>{
+    const button=document.createElement('button'),value=document.createElement('span'),track=document.createElement('span'),bar=document.createElement('span'),label=document.createElement('span');
+    button.type='button';button.className='dailyDay'+(item.day===end.day?' isToday':'')+(item.known?'':' isUnknown');button.setAttribute('aria-pressed',String(item.day===selectedActivityDay));
+    const fullDate=item.date.toLocaleDateString('uk-UA',{day:'numeric',month:'long'}),description=fullDate+': '+(item.known?item.count+' із '+item.total+' слів, '+activityPercent(item.percent):'історія ще не зберігалася');
+    button.setAttribute('aria-label',description);button.title=description;
+    value.className='dailyValue';value.textContent=item.known?activityPercent(item.percent):'—';track.className='dailyTrack';track.setAttribute('aria-hidden','true');bar.className='dailyBar';bar.style.height=item.known?Math.min(100,item.percent)+'%':'0%';
+    label.className='dailyLabel';label.textContent=item.day===end.day?'Сьог.':item.date.toLocaleDateString('uk-UA',{weekday:'short'});track.appendChild(bar);button.appendChild(value);button.appendChild(track);button.appendChild(label);
+    button.onclick=()=>{selectedActivityDay=item.day;renderDailyChart();document.getElementById('dailyChart').children[index].focus();};chart.appendChild(button);
+  });
+  const selected=series.find(item=>item.day===selectedActivityDay);
+  document.getElementById('dailyDetail').textContent=selected.date.toLocaleDateString('uk-UA',{day:'numeric',month:'long'})+' · '+(selected.known?selected.count+' із '+selected.total+' слів · '+activityPercent(selected.percent):'Дані за цей день не накопичені.');
+  document.getElementById('dailyHistoryNote').textContent=series.some(item=>!item.known)?'«—» означає, що точної історії за цей день немає. Нові дні заповнюватимуться під час навчання.':'Шкала стовпчиків: від 0 до 100% бази. Натисни на день, щоб побачити кількість слів.';
+}
+document.addEventListener?.('visibilitychange',()=>{if(!document.hidden)renderDailyChart();});
 function snapshot(){return {schema:1,stats,hidden:[...hiddenWords],cycle}}
 function save(){Cloud.save(snapshot())}
 let wordProgressView=null;
@@ -350,6 +399,7 @@ function check(){
   selectedL=selectedR=null; save(); updateStats();
 }
 function updateStats(){
+  renderDailyChart();
   const typeNames={all:'Усі слова',noun:'Іменники',verb:'Дієслова',adjective:'Прикметники',adverb:'Прислівники',phrase:'Вирази',preposition:'Дієслова + Präposition'};
   const modeNames={translation:'Переклад',nounPlural:'Множина',verbPast:'Форми дієслів',verbWrite:'Письмові дієслова'};
   const focusNames={all:'',unmastered:'Ще не засвоєні',weak:'З помилками',recall:'Пригадування'};
