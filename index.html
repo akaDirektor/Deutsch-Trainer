@@ -194,6 +194,7 @@ button:disabled{opacity:.45}
 <script src="words-9.js"></script>
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
+<script src="examples.js"></script>
 <script src="progress.js?v=20261020-account-menu"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261020-account-menu"></script>
@@ -319,7 +320,7 @@ function leoLookup(w){
 function showMatchExample(w,boxId='matchExample'){
   const box=document.getElementById(boxId);
   if(!box)return;
-  box.innerHTML='<b>Приклад:</b><br>'+(w.example||makeExample(w));
+  box.innerHTML='<b>'+exampleLabel(w)+':</b><br>'+escapeExample(w.example||makeExample(w));
   const link=document.createElement('a');
   link.className='dictionaryLink';link.textContent='LEO ↗';link.href=leoLookup(w);
   link.target='_blank';link.rel='noopener noreferrer';link.title='Перевірити «'+w.de+'» у німецько-російському словнику LEO (нова вкладка)';
@@ -430,19 +431,24 @@ function renderRecall(){
   document.getElementById('recallJudge').classList.add('hidden');
   document.getElementById('recallInput').focus();
 }
+const previousExample=new Map();
+function escapeExample(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function exampleLabel(w){return w.example?'Збережений приклад':window.WORD_EXAMPLES?.[key(w)]?.length?'Авторський приклад (ШІ)':'Приклад';}
 function makeExample(w){
-  const d=w.de.replace(/^\([^)]*\)\s*/,'');
-  if(w.type==='noun') return 'Im Berufsalltag spielt <b>'+d+'</b> eine wichtige Rolle.';
-  if(w.type==='verb') return 'Im Arbeitsalltag muss man oft <b>'+d+'</b>.';
-  if(w.type==='adjective') return 'Diese Information ist für unsere Arbeit <b>'+d+'</b>.';
-  if(w.type==='adverb') return 'Das ist <b>'+d+'</b> auch im Berufsalltag wichtig.';
-  return 'Im Berufsalltag verwendet man den Ausdruck <b>„'+d+'“</b> häufig.';
+  // Never rotate, replace or edit a sentence supplied with the vocabulary.
+  if(w.example)return w.example;
+  const choices=window.WORD_EXAMPLES?.[key(w)];
+  if(!choices?.length)return 'Для цього слова приклад ще не підготовлено. Значення можна перевірити в LEO.';
+  const previous=previousExample.get(key(w));
+  const index=previous===undefined?Math.floor(Math.random()*choices.length):(previous+1)%choices.length;
+  previousExample.set(key(w),index);
+  return choices[index];
 }
 function showRecallAnswer(){
   if(!recallWord)return;
   const typed=document.getElementById('recallInput').value.trim();
   const ex=recallWord.example||makeExample(recallWord);
-  document.getElementById('recallAnswer').innerHTML='<b>Твоя відповідь:</b> '+(typed||'—')+'<br><b>Правильний переклад:</b> '+recallWord.uk+'<br><br><b>Приклад:</b><br>'+ex;
+  document.getElementById('recallAnswer').innerHTML='<b>Твоя відповідь:</b> '+escapeExample(typed||'—')+'<br><b>Правильний переклад:</b> '+escapeExample(recallWord.uk)+'<br><br><b>'+exampleLabel(recallWord)+':</b><br>'+escapeExample(ex);
   document.getElementById('recallAnswer').classList.remove('hidden');
   document.getElementById('recallJudge').classList.remove('hidden');
 }
