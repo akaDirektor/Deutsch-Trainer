@@ -51,3 +51,22 @@ test('progress lists use current streaks and recorded errors, exclude hidden wor
  h.el('showMistakes').onclick();assert.equal(h.el('wordProgressPanel').hidden,true);
  assert.equal(h.run('JSON.stringify(snapshot())'),before);
 });
+
+test('search covers German, Ukrainian and hidden words without changing progress',()=>{
+ const h=harness();h.run('hiddenWords.add(key(data[0]))');const before=h.run('JSON.stringify(snapshot())');
+ assert.equal(h.run('findWords(data[0].de.toUpperCase()).some(w=>key(w)===key(data[0]))'),true);
+ assert.equal(h.run('findWords(data[0].uk.split(";")[0]).some(w=>key(w)===key(data[0]))'),true);
+ assert.equal(h.run('searchText("GRÖẞER")'), 'grosser');assert.equal(h.run('findWords("   ").length'),0);
+ h.el('wordSearchInput').value=h.run('data[0].de');h.el('wordSearchInput').oninput();
+ const button=h.el('wordSearchResults').children[0].children[0];assert.match(button.children[0].textContent,/приховане/);button.onclick();assert(!h.el('wordSearchDetail').classList.contains('hidden'));
+ assert.equal(h.run('JSON.stringify(snapshot())'),before);
+});
+test('solved German cards and recent matches open examples without another answer, including after round changes',()=>{
+ const h=harness();h.run('trainingLocked=false;renderRound(data.slice(0,2));globalThis.word=currentRound[0]');
+ const left=h.el('leftCol').children.find(e=>e.dataset.k===h.run('key(word)')),right=h.el('rightCol').children.find(e=>e.dataset.k===h.run('key(word)'));
+ left.onclick();right.onclick();assert.equal(h.run('s(word).correct'),1);const before=h.run('JSON.stringify(snapshot())');
+ left.onclick();assert(!h.el('matchExample').classList.contains('hidden'));assert.equal(h.run('selectedL'),null);
+ left.onkeydown({key:'Enter',preventDefault(){}});assert.equal(h.run('JSON.stringify(snapshot())'),before);
+ h.run('renderRound(data.slice(2,4))');h.el('recentMatchWords').children.at(-1).onclick();assert(!h.el('matchExample').classList.contains('hidden'));assert.equal(h.run('JSON.stringify(snapshot())'),before);
+ assert(!html.includes('.card.done{opacity:.28;pointer-events:none}'));assert(html.includes('.card.done.reviewable{pointer-events:auto}'));
+});

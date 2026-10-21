@@ -24,7 +24,7 @@ button:disabled{opacity:.45}
 .board{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .col{display:flex;flex-direction:column;gap:9px}
 .card{min-height:58px;background:#fff;border:2px solid transparent;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.05)}
-.card.selected{border-color:#5777ff;background:var(--sel)} .exampleBox{margin:8px 0 12px;padding:12px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:15px;line-height:1.4} .card.ok{border-color:#55a96a;background:var(--ok)} .card.bad{border-color:#e06969;background:var(--bad)} .card.done{opacity:.28;pointer-events:none}
+.card.selected{border-color:#5777ff;background:var(--sel)} .exampleBox{margin:8px 0 12px;padding:12px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:15px;line-height:1.4} .card.ok{border-color:#55a96a;background:var(--ok)} .card.bad{border-color:#e06969;background:var(--bad)} .card.done{opacity:.55;pointer-events:none}.card.done.reviewable{pointer-events:auto}.card:focus-visible{outline:2px solid #5777ff;outline-offset:2px}
 .msg{min-height:28px;font-weight:700;margin:10px 0}
 .dictionaryLink{display:inline-flex;align-items:center;min-height:36px;margin-top:8px;padding:6px 10px;border:1px solid var(--line);border-radius:9px;color:#294eb8;text-decoration:none;font-size:14px;background:#fff}.dictionaryLink:focus-visible{outline:2px solid #5777ff;outline-offset:2px}
 .progress{height:9px;border-radius:99px;background:#e5e5ea;overflow:hidden} .progress div{height:100%;background:#111}
@@ -52,6 +52,7 @@ button:disabled{opacity:.45}
 .wordProgressList li{padding:10px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
 .wordProgressList strong,.wordProgressList small{display:block}.wordProgressList small{color:var(--muted);margin-top:4px}
 .readinessSteps button{font-size:14px;padding:6px 8px}
+.wordSearch{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.wordSearch summary{cursor:pointer;font-weight:600}.wordSearch input{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;margin-top:12px}.searchResults{max-height:35vh;overflow:auto;list-style:none;padding:0}.searchResults button{width:100%;text-align:left;margin:3px 0;overflow-wrap:anywhere}.searchResults small{display:block;color:var(--muted)}.recentMatches{margin:10px 0}.recentMatches summary{cursor:pointer}.recentMatches .row{max-height:160px;overflow:auto}
 @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)} .board{grid-template-columns:1fr} .card{min-height:52px}}
 </style>
 </head>
@@ -81,6 +82,14 @@ button:disabled{opacity:.45}
     <ul id="wordProgressList" class="wordProgressList"></ul>
   </section>
   <div class="progress"><div id="progressBar" style="width:0"></div></div>
+  <details class="wordSearch" id="wordSearch">
+    <summary>Пошук слова</summary>
+    <label for="wordSearchInput" class="muted">Німецькою або українською — у всій базі, включно з прихованими словами</label>
+    <input id="wordSearchInput" type="search" placeholder="Наприклад: sich halten або триматися" autocomplete="off">
+    <p id="wordSearchStatus" class="muted" role="status" aria-live="polite">Введи слово або частину слова.</p>
+    <ul id="wordSearchResults" class="searchResults"></ul>
+    <div id="wordSearchDetail" class="exampleBox hidden"></div>
+  </details>
 
   <div class="controls">
     <div class="sectionTitle">1. Що тренуємо</div>
@@ -124,6 +133,7 @@ button:disabled{opacity:.45}
   <div id="training" class="hidden">
     <div class="msg" id="msg"></div>
     <div id="matchExample" class="answer hidden" style="margin:0 0 12px 0"></div>
+    <details id="recentMatches" class="recentMatches" hidden><summary>Останні вгадані слова</summary><div id="recentMatchWords" class="row"></div></details>
     <div class="board">
       <div class="col" id="leftCol"></div>
       <div class="col" id="rightCol"></div>
@@ -204,6 +214,7 @@ let cycle={seen:[],scopes:{}};
 let trainingLocked=true, roundEpoch=0;
 function cancelTraining(){roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
 let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
+let recentMatched=[];
 
 function key(w){return w.de.toLowerCase().trim()}
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
@@ -305,8 +316,8 @@ function leoLookup(w){
   query=query.replace(/\b(?:jdn|jdm|jmdn|jmdm|etw)\.(?=\s|$)/g,' ').replace(/\s+/g,' ').trim();
   return 'https://dict.leo.org/russisch-deutsch/'+encodeURIComponent(query||w.de.trim());
 }
-function showMatchExample(w){
-  const box=document.getElementById('matchExample');
+function showMatchExample(w,boxId='matchExample'){
+  const box=document.getElementById(boxId);
   if(!box)return;
   box.innerHTML='<b>Приклад:</b><br>'+(w.example||makeExample(w));
   const link=document.createElement('a');
@@ -316,14 +327,36 @@ function showMatchExample(w){
   box.appendChild(document.createElement('br'));box.appendChild(link);
   box.classList.remove('hidden');
 }
+function searchText(text){return text.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[’‘ʼ]/g,"'").trim();}
+function findWords(query){
+  const terms=searchText(query).split(/\s+/).filter(Boolean);
+  return terms.length?data.filter(w=>terms.every(term=>searchText(w.de+' '+w.uk).includes(term))):[];
+}
+function renderSearch(){
+  const query=document.getElementById('wordSearchInput').value,words=findWords(query),list=document.getElementById('wordSearchResults');list.innerHTML='';
+  document.getElementById('wordSearchDetail').classList.add('hidden');
+  document.getElementById('wordSearchStatus').textContent=!query.trim()?'Введи слово або частину слова.':words.length?'Знайдено: '+words.length:'Нічого не знайдено.';
+  words.forEach(w=>{
+    const item=document.createElement('li'),button=document.createElement('button'),de=document.createElement('span'),uk=document.createElement('small');button.type='button';
+    de.textContent=w.de+(hiddenWords.has(key(w))?' · приховане':'');uk.textContent=w.uk;button.appendChild(de);button.appendChild(uk);
+    button.onclick=()=>{showMatchExample(w,'wordSearchDetail');document.getElementById('wordSearchDetail').scrollIntoView({block:'nearest'});};item.appendChild(button);list.appendChild(item);
+  });
+}
+document.getElementById('wordSearchInput').oninput=renderSearch;
+function renderRecentMatches(){
+  const words=recentMatched.filter(w=>!hiddenWords.has(key(w))),list=document.getElementById('recentMatchWords');list.innerHTML='';document.getElementById('recentMatches').hidden=!words.length;
+  words.forEach(w=>{const button=document.createElement('button');button.type='button';button.textContent=w.de;button.onclick=()=>showMatchExample(w);list.appendChild(button);});
+}
 function addCard(col,side,w,text){
   const e=document.createElement('div'); e.className='card'; e.textContent=text; e.dataset.k=key(w);
   if(side==='L'){
+    e.classList.add('reviewable');e.setAttribute('role','button');e.tabIndex=0;
     e.title='Натисни ще раз для прикладу · утримуй, щоб прибрати слово';
     let t=null,longPressed=false;
     e.addEventListener('pointerdown',()=>{longPressed=false;t=setTimeout(()=>{longPressed=true;if(hideWord(w))renderRound()},650)});
     ['pointerup','pointercancel','pointerleave'].forEach(ev=>e.addEventListener(ev,()=>{if(t)clearTimeout(t)}));
-    e.onclick=()=>{if(longPressed)return;if(selectedL&&selectedL.e===e){showMatchExample(w);return;}select(side,e,w);};
+    e.onclick=()=>{if(longPressed)return;if(e.classList.contains('done')||(selectedL&&selectedL.e===e)){showMatchExample(w);return;}select(side,e,w);};
+    e.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();e.onclick();}};
   } else e.onclick=()=>select(side,e,w);
   document.getElementById(col).appendChild(e);
 }
@@ -339,6 +372,7 @@ function check(){
   const epoch=roundEpoch;
   const a=selectedL,b=selectedR; const ok=key(a.w)===key(b.w); const st=s(a.w); markWorked(a.w);
   if(ok){
+    recentMatched=[a.w,...recentMatched.filter(w=>key(w)!==key(a.w))].slice(0,20);renderRecentMatches();
     a.e.classList.add('done');b.e.classList.add('done');
     st.correct++; st.streak++; if(st.streak>=3) st.mastered=true; markCycleSeen(a.w);
     a.e.classList.add('ok'); b.e.classList.add('ok');
@@ -352,6 +386,7 @@ function check(){
 }
 function updateStats(){
   renderWordProgress();
+  renderRecentMatches();
   let correct=0,wrong=0,mastered=0,once=0,twice=0;
   data.forEach(w=>{
     const st=s(w);correct+=st.correct;wrong+=st.wrong;
