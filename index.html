@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-example-forms">
+<link rel="stylesheet" href="app.css?v=20261021-article-accuracy">
 </head>
 <body>
 <div class="wrap">
@@ -31,8 +31,8 @@
 
   <div class="stats" aria-label="Твій прогрес">
     <div class="stat statToday"><span class="statLabel">Сьогодні опрацьовано</span><b id="todayWorked">0</b><span class="statNote">Кожне слово — крок уперед</span></div>
-    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Поточна серія правильних зіставлень. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0</strong></button></div>
-    <div class="stat statAccuracy"><span class="statLabel">Точність</span><b id="accuracy">0%</b><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div>
+    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Поточна серія правильних зіставлень. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0 з 0</strong></button></div>
+    <div class="stat statAccuracy"><span class="statLabel">Точність</span><div class="accuracyRow"><span>Слова</span><b id="accuracy">0%</b></div><div class="accuracyRow" title="Частка правильних відповідей на артиклі за весь час"><span>Артиклі</span><b id="articleAccuracy">—</b></div><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div>
   </div>
   <div class="progress" aria-hidden="true"><div id="progressBar" style="width:0"></div></div>
   <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Активно пригадано <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Мої зауваження</button></div></details>
@@ -559,9 +559,10 @@ function updateStats(){
   document.getElementById('trainingSelection').textContent=[typeNames[typeFilter],modeNames[document.getElementById('mode').value],focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
   renderWordProgress();
   renderRecentMatches();
-  let correct=0,wrong=0,mastered=0,once=0,twice=0;
+  let correct=0,wrong=0,mastered=0,once=0,twice=0,articleCorrect=0,articleWrong=0;
   data.forEach(w=>{
     const st=s(w);correct+=st.correct;wrong+=st.wrong;
+    if(w.type==='noun'){articleCorrect+=st.articleCorrect||0;articleWrong+=st.articleWrong||0;}
     if(hiddenWords.has(key(w)))return;
     if(st.mastered)mastered++;
     else if(st.streak===1)once++;
@@ -569,7 +570,10 @@ function updateStats(){
   });
   document.getElementById('matchingOnceCount').textContent=once;
   document.getElementById('matchingTwiceCount').textContent=twice;
-  document.getElementById('articleMistakesCount').textContent=data.filter(w=>!hiddenWords.has(key(w))&&w.type==='noun'&&(s(w).articleWrong||0)>0).length;
+  const articleTotal=articleCorrect+articleWrong;
+  document.getElementById('articleMistakesCount').textContent=articleWrong+' з '+articleTotal;
+  document.getElementById('showArticleMistakes').title='Помилкові відповіді з усіх відповідей на артиклі за весь час. Натисни, щоб переглянути слова.';
+  document.getElementById('articleAccuracy').textContent=articleTotal?Math.round(articleCorrect/articleTotal*100)+'%':'—';
   const activeTotal=data.filter(w=>!hiddenWords.has(key(w))).length;
   document.getElementById('totalCount').textContent=activeTotal;
   document.getElementById('recallMasteredCount').textContent=mastered+' / '+activeTotal;

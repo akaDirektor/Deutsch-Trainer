@@ -193,3 +193,10 @@ test('completed round remains reviewable after automatic advance without changin
  h.el('previousRoundWords').children[4].onclick();assert(h.el('previousRoundExample').innerHTML.includes(h.ctx.batch[4].de));assert(h.el('previousRoundExample').children.some(e=>e.textContent==='LEO ↗'));
  assert.equal(h.run('JSON.stringify({snapshot:snapshot(),round:currentRound.map(key),epoch:roundEpoch,follow:followMatchExamples,selectedL,selectedR})'),before);
 });
+
+test('article mistake ratio and accuracy use article attempts independently of translation accuracy',()=>{
+ const h=harness();assert.equal(h.el('articleAccuracy').textContent,'—');assert.equal(h.el('articleMistakesCount').textContent,'0 з 0');
+ h.run('globalThis.word=data.find(w=>w.type==="noun");s(word).articleCorrect=8;s(word).articleWrong=2;s(word).correct=99;s(word).wrong=1;updateStats()');
+ assert.equal(h.el('articleMistakesCount').textContent,'2 з 10');assert.equal(h.el('articleAccuracy').textContent,'80%');assert.equal(h.el('accuracy').textContent,'99%');
+ const state=h.run('Progress.clone(snapshot())');h.ctx.restored=state;h.run('adapter.apply(restored)');assert.equal(h.el('articleAccuracy').textContent,'80%');assert.equal(h.el('articleMistakesCount').textContent,'2 з 10');
+});

@@ -31,3 +31,5 @@
 .articleChoices button:not(.correctArticle),.articleChoices button:not(.correctArticle):hover:not(:disabled){background:#f3f5f4;border-color:#d5ddd8;color:#707c76;-webkit-text-fill-color:#707c76;opacity:1;box-shadow:none}
 
 .exampleVerbForms{border-top:1px solid #cbded1;margin-top:12px;padding-top:9px;overflow-wrap:anywhere}.exampleVerbForms>div{margin:4px 0}.exampleVerbForms span{color:var(--muted)}
+
+.statAccuracy{display:block}.accuracyRow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 8px;margin:6px 0}.accuracyRow>span{font-size:calc(12px * var(--text-scale,1));color:var(--muted)}.statAccuracy .accuracyRow b{font-size:calc(23px * var(--text-scale,1));margin:0}.statAccuracy>.textButton{margin-top:4px}
