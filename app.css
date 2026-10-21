@@ -27,3 +27,5 @@
 .previousRound{margin:0 0 16px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#f1f7f3}.previousRound>summary{min-height:44px;align-content:center;font-weight:600;color:var(--accent)}.previousRoundWords{display:grid;gap:8px;margin-top:10px}.previousRoundWords button{text-align:left;overflow-wrap:anywhere;min-width:0}.previousRoundWords strong,.previousRoundWords span{display:block}.previousRoundWords span{color:var(--muted);margin-top:4px}.previousRoundWords .previousArticleError strong{color:#a3372b}
 
 .articleChoices button.correctArticle:disabled{background:#192f27;border-color:#192f27;color:#fff;opacity:1;-webkit-text-fill-color:#fff;box-shadow:0 0 0 2px #192f27;font-weight:750}
+
+.articleChoices button:not(.correctArticle),.articleChoices button:not(.correctArticle):hover:not(:disabled){background:#f3f5f4;border-color:#d5ddd8;color:#707c76;-webkit-text-fill-color:#707c76;opacity:1;box-shadow:none}
