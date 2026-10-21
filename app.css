@@ -39,3 +39,5 @@
 @media(max-width:680px){.stats{gap:10px}.stat{padding:14px 12px}.statReady .readinessSteps{gap:6px}.boardLabels,.board{column-gap:8px}.statReady>#showArticleMistakes{font-size:calc(12px * var(--text-scale,1));text-align:left;line-height:1.4}.statAccuracy .accuracyRow b{font-size:calc(23px * var(--text-scale,1))}}
 .statReady .readinessSteps button{display:block;text-align:center;white-space:nowrap;min-height:52px}.readinessSteps strong{display:block;margin:2px 0 0}.statReady #articleMistakesCount{white-space:nowrap}
 @media(max-width:680px){:root[data-text-size="large"] .statReady .readinessSteps,:root[data-text-size="largest"] .statReady .readinessSteps{grid-template-columns:1fr}}
+
+.searchField{position:relative}.searchIcon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:22px;height:22px;color:var(--muted);pointer-events:none}.wordSearch .searchField input{padding-left:46px}
