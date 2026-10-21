@@ -174,3 +174,13 @@ test('automatic next round waits for the final noun article, then continues with
  let cursor=0;while(cursor<h.timers.length)h.timers[cursor++]();assert.equal(h.run('currentRound[4].de'),h.run('batch[4].de'));assert.equal(h.run('solved.size'),4);assert.equal(h.run('articleQuestion.w.de'),h.run('batch[4].de'));
  h.run('answerArticle(batch[4].article);acknowledgeArticle()');while(cursor<h.timers.length)h.timers[cursor++]();assert.equal(h.run('currentRound.some(w=>batch.some(old=>key(old)===key(w)))'),false);assert.equal(h.run('currentRound.length'),5);
 });
+
+test('article results stay visible until acknowledged and wrong articles retain the full noun with an error marker',()=>{
+ for(const correct of [true,false]){
+  const h=harness();h.ctx.correct=correct;
+  h.run('trainingLocked=false;globalThis.word=data.find(w=>w.type==="noun");currentRound=[word,data.find(w=>w.type!=="noun")];globalThis.left=document.createElement("div");globalThis.right=document.createElement("div");selectedL={w:word,e:left};selectedR={w:word,e:right};check();answerArticle(correct?word.article:(word.article==="der"?"das":"der"))');
+  let cursor=0;while(cursor<h.timers.length)h.timers[cursor++]();
+  assert.equal(h.run('articleQuestion.answered'),true);assert.equal(h.el('articleNoun').textContent,h.ctx.word.de);assert.equal(h.el('articleContinue').hidden,false);assert(h.el('articleResult').textContent.startsWith(correct?'✓':'✕'));
+  h.run('acknowledgeArticle()');assert.equal(h.run('left.textContent'),h.ctx.word.de);assert.equal(h.run('left.classList.contains("articleMistake")'),!correct);assert(h.run('left["aria-label"]').includes(correct?'✓':'✕'));
+ }
+});
