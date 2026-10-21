@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-previous-round">
+<link rel="stylesheet" href="app.css?v=20261021-article-highlight">
 </head>
 <body>
 <div class="wrap">
@@ -477,7 +477,7 @@ function closeArticleDialog(){const dialog=document.getElementById('articleQuiz'
 function openArticleQuestion(w,pair=null){
   articleQuestion={w,pair,answered:false};
   document.getElementById('articleNoun').textContent=nounPromptName(w);document.getElementById('articleTranslation').textContent=w.uk;document.getElementById('articleResult').textContent='';document.getElementById('articleContinue').hidden=true;
-  for(const id of ['articleDer','articleDie','articleDas'])document.getElementById(id).disabled=false;
+  for(const id of ['articleDer','articleDie','articleDas']){const button=document.getElementById(id);button.disabled=false;button.classList.remove('correctArticle');}
   const dialog=document.getElementById('articleQuiz');if(dialog.showModal)dialog.showModal();else dialog.open=true;
 }
 function resumePendingArticle(){
@@ -512,6 +512,7 @@ function answerArticle(article){
   if(ok){st.articleCorrect=(st.articleCorrect||0)+1;st.articleNeedsReview=false;st.streak++;if(st.streak>=3)st.mastered=true;}
   else{st.articleWrong=(st.articleWrong||0)+1;st.articleNeedsReview=true;st.streak=0;st.mastered=false;}
   for(const id of ['articleDer','articleDie','articleDas'])document.getElementById(id).disabled=true;
+  document.getElementById('article'+question.w.article[0].toUpperCase()+question.w.article.slice(1)).classList.add('correctArticle');
   document.getElementById('articleNoun').textContent=question.w.de;
   document.getElementById('articleResult').textContent=ok?'✓ Правильно':'✕ Неправильно';
   document.getElementById('articleContinue').hidden=false;save();updateStats();
