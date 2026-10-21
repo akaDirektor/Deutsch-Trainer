@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-calm-layout">
+<link rel="stylesheet" href="app.css?v=20261021-round-return">
 </head>
 <body>
 <div class="wrap">
@@ -88,7 +88,7 @@
 
   <section id="training" class="hidden" aria-label="Зіставлення слів">
     <div class="trainingHeader"><div><span class="eyebrow">Зіставлення</span><div class="msg" id="msg" role="status" aria-live="polite"></div></div><span id="roundDirection" class="roundBadge">DE ↔ UA</span></div>
-    <details id="previousRound" class="previousRound" hidden><summary>Попередній раунд · переглянути</summary><div id="previousRoundWords" class="previousRoundWords"></div><div id="previousRoundExample" class="exampleBox hidden" aria-live="polite"></div></details>
+    <button type="button" id="previousRound" class="roundReturn" hidden>← Попередній раунд</button>
     <div class="boardLabels" aria-hidden="true"><span id="leftColumnLabel">Німецькою</span><span id="rightColumnLabel">Українською</span></div>
     <div class="board"><div class="col" id="leftCol"></div><div class="col" id="rightCol"></div></div>
     <details class="gestureHelp"><summary>Підказки до карток</summary><p class="gestureHint">Німецьке: повторне натискання — приклад, утримання — приховати. Українське: утримання — зауваження до перекладу.</p></details>
@@ -213,7 +213,7 @@ let trainingLocked=true, roundEpoch=0;
 function cancelTraining(){roundEpoch++;articleQuestion=null;closeArticleDialog();['training','recallTraining','verbWriteTraining','articleReviewTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
 let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
 let recentMatched=[];
-let previousRoundWords=[];
+let previousRoundState=null,activeRoundState=null,viewingPreviousRound=false;
 let followMatchExamples=false;
 let articleQuestion=null;
 
@@ -360,6 +360,7 @@ function rightText(w){
   return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : w.uk;
 }
 function renderRound(round=null){
+  viewingPreviousRound=false;activeRoundState=null;document.getElementById('previousRound').textContent='← Попередній раунд';document.getElementById('previousRound').disabled=false;document.getElementById('previousRound').hidden=!previousRoundState;
   articleQuestion=null;closeArticleDialog();
   document.getElementById('rightColumnLabel').textContent=({articleReview:'Артиклі з помилками',nounPlural:'Множина',verbPast:'Präteritum · Perfekt'})[document.getElementById('mode').value]||'Українською';
   document.getElementById('roundDirection').textContent=document.getElementById('mode').value==='translation'?'DE ↔ UA':'DE ↔ DE';
@@ -427,7 +428,7 @@ function showMatchExample(w,boxId='matchExample'){
   box.appendChild(document.createElement('br'));box.appendChild(link);
   const report=document.createElement('button');report.type='button';report.className='reportTranslation';report.textContent='Уточнити переклад';report.onclick=()=>openTranslationReport(w,report);box.appendChild(report);
   const close=document.createElement('button');close.type='button';close.className='exampleClose';close.textContent='×';close.setAttribute('aria-label','Закрити приклад');close.title='Закрити приклад';
-  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else if(boxId==='previousRoundExample')document.getElementById('previousRound').focus();else document.getElementById('wordSearchInput').focus();};
+  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else document.getElementById('wordSearchInput').focus();};
   box.appendChild(close);
   box.classList.remove('hidden');
   if(boxId==='matchExample'&&wasHidden)box.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
@@ -460,7 +461,7 @@ function addCard(col,side,w,text){
     e.classList.add('reviewable');e.setAttribute('role','button');e.tabIndex=0;
     e.title='Натисни ще раз для прикладу · утримуй, щоб прибрати слово';
     let t=null,longPressed=false;
-    e.addEventListener('pointerdown',()=>{longPressed=false;t=setTimeout(()=>{longPressed=true;if(hideWord(w))renderRound()},650)});
+    e.addEventListener('pointerdown',()=>{longPressed=false;if(viewingPreviousRound)return;t=setTimeout(()=>{longPressed=true;if(hideWord(w))renderRound()},650)});
     ['pointerup','pointercancel','pointerleave'].forEach(ev=>e.addEventListener(ev,()=>{if(t)clearTimeout(t)}));
     e.onclick=()=>{if(longPressed)return;if(e.classList.contains('done')||(selectedL&&selectedL.e===e)){showMatchExample(w);return;}if(followMatchExamples)showMatchExample(w);select(side,e,w);};
     e.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();e.onclick();}};
@@ -480,7 +481,7 @@ function addCard(col,side,w,text){
   document.getElementById(col).appendChild(e);
 }
 function select(side,e,w){
-  if(trainingLocked||articleQuestion||e.classList.contains('done')) return;
+  if(trainingLocked||viewingPreviousRound||articleQuestion||e.classList.contains('done')) return;
   const col=side==='L'?'leftCol':'rightCol';
   document.querySelectorAll('#'+col+' .card').forEach(x=>x.classList.remove('selected'));
   e.classList.add('selected');
@@ -512,18 +513,22 @@ function resumePendingArticle(){
   const w=data.find(w=>!hiddenWords.has(key(w))&&w.type==='noun'&&['der','die','das'].includes(w.article)&&stats[key(w)]?.pendingArticle);
   if(w){openArticleQuestion(w);return true;}return false;
 }
-function rememberCompletedRound(){
-  previousRoundWords=currentRound.map(w=>({w,right:rightText(w),articleError:document.getElementById('mode').value==='translation'&&w.type==='noun'&&!!s(w).articleNeedsReview}));
-  const panel=document.getElementById('previousRound'),list=document.getElementById('previousRoundWords');
-  panel.hidden=false;panel.open=false;list.innerHTML='';document.getElementById('previousRoundExample').classList.add('hidden');
-  previousRoundWords.forEach(item=>{
-    const button=document.createElement('button');button.type='button';
-    const german=document.createElement('strong');german.lang='de';german.textContent=(item.articleError?'✕ ':'✓ ')+item.w.de;
-    const translation=document.createElement('span');translation.textContent=item.right;button.appendChild(german);button.appendChild(translation);
-    if(item.articleError)button.classList.add('previousArticleError');
-    button.onclick=()=>showMatchExample(item.w,'previousRoundExample');list.appendChild(button);
-  });
+function captureRoundScreen(){
+  const columns=['leftCol','rightCol','matchExample'].map(id=>{const element=document.getElementById(id);return {id,nodes:[...(element.childNodes||element.children)],html:element.innerHTML,hidden:element.classList.contains('hidden')};});
+  return {columns,message:document.getElementById('msg').textContent,direction:document.getElementById('roundDirection').textContent,rightLabel:document.getElementById('rightColumnLabel').textContent,follow:followMatchExamples};
 }
+function showRoundScreen(screen){
+  screen.columns.forEach(({id,nodes,hidden})=>{const element=document.getElementById(id);element.innerHTML='';nodes.forEach(node=>element.appendChild(node));if(hidden)element.classList.add('hidden');else element.classList.remove('hidden');});
+  document.getElementById('msg').textContent=screen.message;document.getElementById('roundDirection').textContent=screen.direction;document.getElementById('rightColumnLabel').textContent=screen.rightLabel;followMatchExamples=screen.follow;
+}
+function rememberCompletedRound(){previousRoundState=captureRoundScreen();previousRoundState.message='Раунд завершено';document.getElementById('previousRound').disabled=true;}
+function togglePreviousRound(){
+  if(trainingLocked||articleQuestion||!previousRoundState||document.getElementById('previousRound').disabled)return;
+  if(viewingPreviousRound){showRoundScreen(activeRoundState);activeRoundState=null;viewingPreviousRound=false;}
+  else{activeRoundState=captureRoundScreen();viewingPreviousRound=true;showRoundScreen(previousRoundState);}
+  document.getElementById('previousRound').textContent=viewingPreviousRound?'До поточного раунду →':'← Попередній раунд';
+}
+document.getElementById('previousRound').onclick=togglePreviousRound;
 function finishMatchedPair(pair){
   if(!pair||pair.epoch!==roundEpoch)return;
   const {a,b,epoch}=pair;
