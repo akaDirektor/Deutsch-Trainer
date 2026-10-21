@@ -47,6 +47,11 @@ button:disabled{opacity:.45}
 .accountPopover{position:absolute;right:0;top:40px;width:min(520px,calc(100vw - 32px));padding:14px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 28px #0002;z-index:20}
 .accountPopover .row input{max-width:100%}.accountPopover button{font-size:14px;padding:8px 10px}
 .syncAlert{margin:8px 0;font-size:14px;color:#8b4d00}
+.wordProgressPanel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.wordProgressList{max-height:50vh;overflow:auto;padding:0;list-style:none}
+.wordProgressList li{padding:10px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.wordProgressList strong,.wordProgressList small{display:block}.wordProgressList small{color:var(--muted);margin-top:4px}
+.readinessSteps button{font-size:14px;padding:6px 8px}
 @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)} .board{grid-template-columns:1fr} .card{min-height:52px}}
 </style>
 </head>
@@ -65,11 +70,16 @@ button:disabled{opacity:.45}
 
   <div class="stats">
     <div class="stat"><span class="muted">Усього слів</span><b id="totalCount">612</b></div>
-    <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Кількість слів із 1 або 2 правильними зіставленнями поспіль. Після третього слово готове до активного пригадування."><span>1 із 3: <strong id="matchingOnceCount">0</strong></span><span>2 із 3: <strong id="matchingTwiceCount">0</strong></span></div></div>
+    <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Кількість слів із 1 або 2 правильними зіставленнями поспіль. Після третього слово готове до активного пригадування."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3: <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3: <strong id="matchingTwiceCount">0</strong></button></div></div>
     <div class="stat"><span class="muted">Активно пригадано</span><b id="activeKnownCount">0</b></div>
-    <div class="stat"><span class="muted">Точність</span><b id="accuracy">0%</b></div>
+    <div class="stat"><span class="muted">Точність</span><b id="accuracy">0%</b><button type="button" id="showMistakes" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками</button></div>
     <div class="stat"><span class="muted">Опрацьовано сьогодні</span><b id="todayWorked">0</b></div>
   </div>
+  <section id="wordProgressPanel" class="wordProgressPanel" hidden aria-labelledby="wordProgressTitle">
+    <div class="row"><h2 id="wordProgressTitle" tabindex="-1"></h2><button type="button" id="closeWordProgress">Закрити список</button></div>
+    <p id="wordProgressDescription" class="muted"></p>
+    <ul id="wordProgressList" class="wordProgressList"></ul>
+  </section>
   <div class="progress"><div id="progressBar" style="width:0"></div></div>
 
   <div class="controls">
@@ -200,6 +210,37 @@ function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,m
 function markWorked(w){s(w).lastWorked=today()}
 function snapshot(){return {schema:1,stats,hidden:[...hiddenWords],cycle}}
 function save(){Cloud.save(snapshot())}
+let wordProgressView=null;
+const wordProgressButtons={once:'showMatchingOnce',twice:'showMatchingTwice',mistakes:'showMistakes'};
+function wordProgressWords(view){
+  return data.filter(w=>{
+    if(hiddenWords.has(key(w)))return false;
+    const st=stats[key(w)]||{};
+    return view==='mistakes'?(st.wrong||0)+(st.recallWrong||0)>0:!st.mastered&&st.streak===(view==='once'?1:2);
+  }).sort((a,b)=>{
+    const x=stats[key(a)]||{},y=stats[key(b)]||{};
+    if(view==='mistakes')return Number(!!x.mastered)-Number(!!y.mastered)||((y.wrong||0)+(y.recallWrong||0))-((x.wrong||0)+(x.recallWrong||0))||(x.streak||0)-(y.streak||0)||a.de.localeCompare(b.de,'de');
+    return a.de.localeCompare(b.de,'de');
+  });
+}
+function renderWordProgress(){
+  const panel=document.getElementById('wordProgressPanel');panel.hidden=!wordProgressView;
+  Object.entries(wordProgressButtons).forEach(([view,id])=>document.getElementById(id).setAttribute('aria-expanded',String(view===wordProgressView)));
+  if(!wordProgressView)return;
+  const words=wordProgressWords(wordProgressView),list=document.getElementById('wordProgressList');list.innerHTML='';
+  const title=wordProgressView==='once'?'Вгадано 1 із 3':wordProgressView==='twice'?'Вгадано 2 із 3':'Слова з помилками';
+  document.getElementById('wordProgressTitle').textContent=title+' — '+words.length;
+  document.getElementById('wordProgressDescription').textContent=wordProgressView==='mistakes'?'Усі слова з помилками в зіставленні або активному пригадуванні. Першими — ще не засвоєні слова з найбільшою кількістю помилок. Історія першої спроби не зберігалася. Приховані слова не показані.':'Поточна серія правильних зіставлень поспіль. Після третього слово готове до активного пригадування. Приховані слова не показані.';
+  if(!words.length){const item=document.createElement('li');item.textContent='У цьому списку поки немає слів.';list.appendChild(item);}
+  words.forEach(w=>{
+    const st=stats[key(w)]||{},item=document.createElement('li'),de=document.createElement('strong'),uk=document.createElement('span'),detail=document.createElement('small');
+    de.textContent=w.de;uk.textContent=w.uk;
+    detail.textContent='Серія: '+(st.streak||0)+' / 3 · Помилок у зіставленні: '+(st.wrong||0)+' · У пригадуванні: '+(st.recallWrong||0)+(st.mastered?' · Готове до пригадування':'');
+    item.appendChild(de);item.appendChild(uk);item.appendChild(detail);list.appendChild(item);
+  });
+}
+Object.entries(wordProgressButtons).forEach(([view,id])=>document.getElementById(id).onclick=()=>{wordProgressView=wordProgressView===view?null:view;renderWordProgress();if(wordProgressView)document.getElementById('wordProgressTitle').focus();});
+document.getElementById('closeWordProgress').onclick=()=>{const id=wordProgressButtons[wordProgressView];wordProgressView=null;renderWordProgress();if(id)document.getElementById(id).focus();};
 function hideWord(w){if(trainingLocked||!w)return false;if(confirm('Прибрати «'+w.de+'» з тренувань?')){hiddenWords.add(key(w));save();updateStats();return true}return false}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(today()+'T12:00:00')-new Date((w.addedAt||today())+'T12:00:00'))/86400000)}
@@ -310,6 +351,7 @@ function check(){
   selectedL=selectedR=null; save(); updateStats();
 }
 function updateStats(){
+  renderWordProgress();
   let correct=0,wrong=0,mastered=0,once=0,twice=0;
   data.forEach(w=>{
     const st=s(w);correct+=st.correct;wrong+=st.wrong;
