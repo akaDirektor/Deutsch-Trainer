@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-search">
+<link rel="stylesheet" href="app.css?v=20261021-example-panel">
 </head>
 <body>
 <div class="wrap">
@@ -183,6 +183,7 @@ let trainingLocked=true, roundEpoch=0;
 function cancelTraining(){roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
 let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
 let recentMatched=[];
+let followMatchExamples=false;
 
 function key(w){return w.de.toLowerCase().trim()}
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
@@ -329,14 +330,19 @@ function leoLookup(w){
 function showMatchExample(w,boxId='matchExample'){
   const box=document.getElementById(boxId);
   if(!box)return;
-  box.innerHTML='<b>'+exampleLabel(w)+':</b><br>'+escapeExample(w.example||makeExample(w));
+  const wasHidden=box.classList.contains('hidden');
+  if(boxId==='matchExample')followMatchExamples=true;
+  box.innerHTML='<div class="exampleHeading">'+escapeExample(w.de)+'</div><b>'+exampleLabel(w)+':</b><br>'+escapeExample(w.example||makeExample(w));
   const link=document.createElement('a');
   link.className='dictionaryLink';link.textContent='LEO ↗';link.href=leoLookup(w);
   link.target='_blank';link.rel='noopener noreferrer';link.title='Перевірити «'+w.de+'» у німецько-російському словнику LEO (нова вкладка)';
   link.ariaLabel=link.title;
   box.appendChild(document.createElement('br'));box.appendChild(link);
+  const close=document.createElement('button');close.type='button';close.className='exampleClose';close.textContent='×';close.setAttribute('aria-label','Закрити приклад');close.title='Закрити приклад';
+  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else document.getElementById('wordSearchInput').focus();};
+  box.appendChild(close);
   box.classList.remove('hidden');
-  if(boxId==='matchExample')box.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
+  if(boxId==='matchExample'&&wasHidden)box.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
 }
 function searchText(text){return text.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[’‘ʼ]/g,"'").trim();}
 function findWords(query){
@@ -368,7 +374,7 @@ function addCard(col,side,w,text){
     let t=null,longPressed=false;
     e.addEventListener('pointerdown',()=>{longPressed=false;t=setTimeout(()=>{longPressed=true;if(hideWord(w))renderRound()},650)});
     ['pointerup','pointercancel','pointerleave'].forEach(ev=>e.addEventListener(ev,()=>{if(t)clearTimeout(t)}));
-    e.onclick=()=>{if(longPressed)return;if(e.classList.contains('done')||(selectedL&&selectedL.e===e)){showMatchExample(w);return;}select(side,e,w);};
+    e.onclick=()=>{if(longPressed)return;if(e.classList.contains('done')||(selectedL&&selectedL.e===e)){showMatchExample(w);return;}if(followMatchExamples)showMatchExample(w);select(side,e,w);};
     e.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();e.onclick();}};
   } else e.onclick=()=>select(side,e,w);
   document.getElementById(col).appendChild(e);
