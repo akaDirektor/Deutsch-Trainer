@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-card-contrast">
+<link rel="stylesheet" href="app.css?v=20261021-noun-article">
 </head>
 <body>
 <div class="wrap">
@@ -30,7 +30,7 @@
 
   <div class="stats" aria-label="Твій прогрес">
     <div class="stat statToday"><span class="statLabel">Сьогодні опрацьовано</span><b id="todayWorked">0</b><span class="statNote">Кожне слово — крок уперед</span></div>
-    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Поточна серія правильних зіставлень. Після третього слово готове до активного пригадування."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div></div>
+    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Поточна серія правильних зіставлень. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0</strong></button></div>
     <div class="stat statAccuracy"><span class="statLabel">Точність</span><b id="accuracy">0%</b><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div>
   </div>
   <div class="progress" aria-hidden="true"><div id="progressBar" style="width:0"></div></div>
@@ -145,10 +145,18 @@
 
   <details class="learningHelp">
     <summary>Як працює засвоєння</summary>
-    <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
+    <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Для іменника в режимі перекладу успішне повторення — це правильний переклад і артикль. Помилки в артиклях мають окремий облік. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
   </details>
 </div>
 
+<dialog id="articleQuiz" class="articleQuiz" aria-labelledby="articleQuizTitle">
+  <span class="eyebrow">Переклад знайдено ✓</span><h2 id="articleQuizTitle">Який артикль?</h2>
+  <strong id="articleNoun" lang="de"></strong><p id="articleTranslation" class="muted"></p>
+  <div class="articleChoices"><button type="button" id="articleDer" lang="de">der</button><button type="button" id="articleDie" lang="de">die</button><button type="button" id="articleDas" lang="de">das</button></div>
+  <p id="articleResult" role="status" aria-live="polite"></p>
+  <p class="dailyNote">Правильний переклад і артикль разом зараховуються як успішне повторення. Помилка в артиклі обліковується окремо.</p>
+  <button type="button" id="articleContinue" class="primary" hidden>Зрозуміло</button>
+</dialog>
 <dialog id="translationReport" class="translationReport" aria-labelledby="translationReportTitle">
   <form id="translationReportForm">
     <div class="reportHeading"><h2 id="translationReportTitle">Уточнити переклад</h2><button type="button" id="closeTranslationReport" class="reportClose" aria-label="Закрити зауваження">×</button></div>
@@ -177,7 +185,7 @@
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
 <script src="examples.js"></script>
-<script src="progress.js?v=20261021-feedback"></script>
+<script src="progress.js?v=20261021-noun-article"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261020-account-menu"></script>
 <script>
@@ -195,10 +203,11 @@ let stats={};
 let hiddenWords=new Set();
 let cycle={seen:[],scopes:{}};
 let trainingLocked=true, roundEpoch=0;
-function cancelTraining(){roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
+function cancelTraining(){roundEpoch++;articleQuestion=null;closeArticleDialog();['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
 let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
 let recentMatched=[];
 let followMatchExamples=false;
+let articleQuestion=null;
 
 function key(w){return w.de.toLowerCase().trim()}
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
@@ -252,15 +261,17 @@ document.addEventListener?.('visibilitychange',()=>{if(!document.hidden)renderDa
 function snapshot(){return {schema:1,stats,hidden:[...hiddenWords],cycle}}
 function save(){Cloud.save(snapshot())}
 let wordProgressView=null;
-const wordProgressButtons={once:'showMatchingOnce',twice:'showMatchingTwice',mistakes:'showMistakes',feedback:'showFeedback'};
+const wordProgressButtons={once:'showMatchingOnce',twice:'showMatchingTwice',mistakes:'showMistakes',feedback:'showFeedback',articles:'showArticleMistakes'};
 function wordProgressWords(view){
   return data.filter(w=>{
     const st=stats[key(w)]||{};
     if(view==='feedback')return !!st.translationFeedback;
     if(hiddenWords.has(key(w)))return false;
+    if(view==='articles')return w.type==='noun'&&(st.articleWrong||0)>0;
     return view==='mistakes'?(st.wrong||0)+(st.recallWrong||0)>0:!st.mastered&&st.streak===(view==='once'?1:2);
   }).sort((a,b)=>{
     const x=stats[key(a)]||{},y=stats[key(b)]||{};
+    if(view==='articles')return Number(!!y.articleNeedsReview)-Number(!!x.articleNeedsReview)||(y.articleWrong||0)-(x.articleWrong||0)||a.de.localeCompare(b.de,'de');
     if(view==='mistakes')return Number(!!x.mastered)-Number(!!y.mastered)||((y.wrong||0)+(y.recallWrong||0))-((x.wrong||0)+(x.recallWrong||0))||(x.streak||0)-(y.streak||0)||a.de.localeCompare(b.de,'de');
     return a.de.localeCompare(b.de,'de');
   });
@@ -274,6 +285,7 @@ function renderWordProgress(){
   document.getElementById('wordProgressTitle').textContent=title+' — '+words.length;
   document.getElementById('wordProgressDescription').textContent=wordProgressView==='mistakes'?'Усі слова з помилками в зіставленні або активному пригадуванні. Першими — ще не засвоєні слова з найбільшою кількістю помилок. Історія першої спроби не зберігалася. Приховані слова не показані.':'Поточна серія правильних зіставлень поспіль. Після третього слово готове до активного пригадування. Приховані слова не показані.';
   if(wordProgressView==='feedback')document.getElementById('wordProgressDescription').textContent='Збережені чернетки зауважень, включно з прихованими словами. Щоб надіслати зауваження, відкрий його й підтвердь створення заявки у GitHub.';
+  if(wordProgressView==='articles'){document.getElementById('wordProgressTitle').textContent='Іменники: помилки в артиклях — '+words.length;document.getElementById('wordProgressDescription').textContent='Переклад цих іменників було зіставлено правильно, але в артиклі сталася помилка. Першими — ті, які ще потребують повторення. Історія помилок залишається після правильної відповіді.';}
   if(!words.length){const item=document.createElement('li');item.textContent='У цьому списку поки немає слів.';list.appendChild(item);}
   words.forEach(w=>{
     const st=stats[key(w)]||{},item=document.createElement('li'),de=document.createElement('strong'),uk=document.createElement('span'),detail=document.createElement('small');
@@ -281,6 +293,7 @@ function renderWordProgress(){
     detail.textContent='Серія: '+(st.streak||0)+' / 3 · Помилок у зіставленні: '+(st.wrong||0)+' · У пригадуванні: '+(st.recallWrong||0)+(st.mastered?' · Готове до пригадування':'');
     item.appendChild(de);item.appendChild(uk);item.appendChild(detail);list.appendChild(item);
     if(wordProgressView==='feedback'){detail.textContent='Чернетка · '+(st.translationFeedback.reason||'Перевірити переклад');const button=document.createElement('button');button.type='button';button.textContent='Відкрити зауваження';button.onclick=()=>openTranslationReport(w,button);item.appendChild(button);}
+    if(wordProgressView==='articles')detail.textContent='Артикль: '+w.article+' · Правильно: '+(st.articleCorrect||0)+' · Помилок: '+(st.articleWrong||0)+' · '+(st.articleNeedsReview?'Потребує повторення':'Останній артикль визначено правильно');
   });
 }
 Object.entries(wordProgressButtons).forEach(([view,id])=>document.getElementById(id).onclick=()=>{wordProgressView=wordProgressView===view?null:view;renderWordProgress();if(wordProgressView)document.getElementById('wordProgressTitle').focus();});
@@ -326,23 +339,31 @@ function pick5(){
 }
 function markCycleSeen(w){const k=key(w);if(!(cycle.seen||[]).includes(k))cycle.seen.push(k)}
 function leftText(w){
-  return w.de;
+  return needsArticle(w)?nounPromptName(w):w.de;
+}
+function needsArticle(w){return document.getElementById('mode').value==='translation'&&w.type==='noun'&&['der','die','das'].includes(w.article);}
+function nounPromptName(w){
+  const bare=w.de.replace(/^(der|die|das)\s+/i,'');
+  const ambiguous=data.some(other=>other.type==='noun'&&other.article!==w.article&&other.de.replace(/^(der|die|das)\s+/i,'')===bare);
+  return bare+(ambiguous?(w.article==='der'?' (чол.)':w.article==='die'?' (жін.)':''):'');
 }
 function rightText(w){
   let mode=document.getElementById('mode').value;
   return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : w.uk;
 }
 function renderRound(round=null){
+  articleQuestion=null;closeArticleDialog();
   document.getElementById('rightColumnLabel').textContent=({nounPlural:'Множина',verbPast:'Präteritum · Perfekt'})[document.getElementById('mode').value]||'Українською';
   document.getElementById('roundDirection').textContent=document.getElementById('mode').value==='translation'?'DE ↔ UA':'DE ↔ DE';
   const epoch=++roundEpoch;
   currentRound=round?[...round]:pick5(); solved.clear(); selectedL=selectedR=null;
   document.getElementById('leftCol').innerHTML=''; document.getElementById('rightCol').innerHTML=''; const exBox=document.getElementById('matchExample');if(exBox){exBox.classList.add('hidden');exBox.innerHTML='';}
-  if(!currentRound.length){document.getElementById('msg').textContent='Для цього фільтра немає слів.'; updateStats(); return}
+  if(!currentRound.length){document.getElementById('msg').textContent='Для цього фільтра немає слів.';updateStats();resumePendingArticle();return}
   document.getElementById('msg').textContent='Знайди 5 пар';
   shuffle(currentRound).forEach(w=>addCard('leftCol','L',w,leftText(w)));
   shuffle(currentRound).forEach(w=>addCard('rightCol','R',w,rightText(w)));
   updateStats();
+  resumePendingArticle();
 }
 function leoLookup(w){
   let query=w.de.replace(/\(\s*sich\s*\)/g,' sich ').replace(/\([^)]*\)/g,' ').replace(/\+\s*(?:Akk|Dat|Gen|Nom)\.?/g,' ').replace(/\s+/g,' ').trim();
@@ -442,22 +463,59 @@ function addCard(col,side,w,text){
   document.getElementById(col).appendChild(e);
 }
 function select(side,e,w){
-  if(trainingLocked||e.classList.contains('done')) return;
+  if(trainingLocked||articleQuestion||e.classList.contains('done')) return;
   const col=side==='L'?'leftCol':'rightCol';
   document.querySelectorAll('#'+col+' .card').forEach(x=>x.classList.remove('selected'));
   e.classList.add('selected');
   if(side==='L') selectedL={e,w}; else selectedR={e,w};
   if(selectedL && selectedR) check();
 }
+function closeArticleDialog(){const dialog=document.getElementById('articleQuiz');if(dialog.close)dialog.close();else dialog.open=false;}
+function openArticleQuestion(w,pair=null){
+  articleQuestion={w,pair,answered:false};
+  document.getElementById('articleNoun').textContent=nounPromptName(w);document.getElementById('articleTranslation').textContent=w.uk;document.getElementById('articleResult').textContent='';document.getElementById('articleContinue').hidden=true;
+  for(const id of ['articleDer','articleDie','articleDas'])document.getElementById(id).disabled=false;
+  const dialog=document.getElementById('articleQuiz');if(dialog.showModal)dialog.showModal();else dialog.open=true;
+}
+function resumePendingArticle(){
+  if(trainingLocked)return false;if(articleQuestion)return true;
+  const w=data.find(w=>!hiddenWords.has(key(w))&&w.type==='noun'&&['der','die','das'].includes(w.article)&&stats[key(w)]?.pendingArticle);
+  if(w){openArticleQuestion(w);return true;}return false;
+}
+function finishMatchedPair(pair){
+  if(!pair||pair.epoch!==roundEpoch)return;
+  const {a,b,epoch}=pair;
+  a.e.classList.remove('articlePending');b.e.classList.remove('articlePending');a.e.textContent=a.w.de;
+  const error=pair.article&&s(a.w).articleNeedsReview;
+  if(error){a.e.classList.add('articleMistake');b.e.classList.add('articleMistake');}
+  setTimeout(()=>{if(epoch!==roundEpoch)return;solved.add(key(a.w));if(solved.size===currentRound.length){document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(epoch===roundEpoch&&!trainingLocked&&!document.getElementById('training').classList.contains('hidden'))renderRound()},650);}},180);
+}
+function answerArticle(article){
+  const question=articleQuestion;if(trainingLocked||!question||question.answered||!['der','die','das'].includes(article)||!stats[key(question.w)]?.pendingArticle)return;
+  const st=s(question.w),ok=article===question.w.article;question.answered=true;st.pendingArticle=false;markWorked(question.w);
+  if(ok){st.articleCorrect=(st.articleCorrect||0)+1;st.articleNeedsReview=false;st.streak++;if(st.streak>=3)st.mastered=true;}
+  else{st.articleWrong=(st.articleWrong||0)+1;st.articleNeedsReview=true;st.streak=0;st.mastered=false;}
+  for(const id of ['articleDer','articleDie','articleDas'])document.getElementById(id).disabled=true;
+  document.getElementById('articleResult').textContent=(ok?'Правильно: ':'Артикль не вгадано. Правильно: ')+question.w.de+(ok?' · успішне повторення зараховано.':' · переклад правильний; артикль додано до окремого списку.');
+  document.getElementById('articleContinue').hidden=false;save();updateStats();
+  if(ok)setTimeout(()=>{if(articleQuestion===question&&!trainingLocked)acknowledgeArticle();},650);
+}
+function acknowledgeArticle(){
+  if(!articleQuestion?.answered)return;
+  const question=articleQuestion;articleQuestion=null;closeArticleDialog();finishMatchedPair(question.pair);resumePendingArticle();
+}
+document.getElementById('articleDer').onclick=()=>answerArticle('der');document.getElementById('articleDie').onclick=()=>answerArticle('die');document.getElementById('articleDas').onclick=()=>answerArticle('das');document.getElementById('articleContinue').onclick=acknowledgeArticle;
+document.getElementById('articleQuiz').addEventListener('cancel',event=>{if(articleQuestion&&!articleQuestion.answered)event.preventDefault();else{event.preventDefault();acknowledgeArticle();}});
 function check(){
   const epoch=roundEpoch;
   const a=selectedL,b=selectedR; const ok=key(a.w)===key(b.w); const st=s(a.w); markWorked(a.w);
   if(ok){
     recentMatched=[a.w,...recentMatched.filter(w=>key(w)!==key(a.w))].slice(0,20);renderRecentMatches();
     a.e.classList.add('done');b.e.classList.add('done');
-    st.correct++; st.streak++; if(st.streak>=3) st.mastered=true; markCycleSeen(a.w);
+    st.correct++;markCycleSeen(a.w);
     a.e.classList.add('ok'); b.e.classList.add('ok');
-    setTimeout(()=>{if(epoch!==roundEpoch)return;a.e.classList.add('done');b.e.classList.add('done');solved.add(key(a.w)); if(solved.size===currentRound.length){document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(epoch===roundEpoch&&!trainingLocked&&!document.getElementById('training').classList.contains('hidden'))renderRound()},650)};},180);
+    if(needsArticle(a.w)){st.pendingArticle=true;a.e.classList.add('articlePending');b.e.classList.add('articlePending');openArticleQuestion(a.w,{a,b,epoch,article:true});}
+    else{st.streak++;if(st.streak>=3)st.mastered=true;finishMatchedPair({a,b,epoch});}
   }else{
     st.wrong++; st.streak=0; st.mastered=false;
     a.e.classList.add('bad'); b.e.classList.add('bad');
@@ -484,6 +542,7 @@ function updateStats(){
   });
   document.getElementById('matchingOnceCount').textContent=once;
   document.getElementById('matchingTwiceCount').textContent=twice;
+  document.getElementById('articleMistakesCount').textContent=data.filter(w=>!hiddenWords.has(key(w))&&w.type==='noun'&&(s(w).articleWrong||0)>0).length;
   const activeTotal=data.filter(w=>!hiddenWords.has(key(w))).length;
   document.getElementById('totalCount').textContent=activeTotal;
   document.getElementById('recallMasteredCount').textContent=mastered+' / '+activeTotal;
@@ -576,20 +635,20 @@ document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
 document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');showVerbWriteAnswer()};
 document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
 ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')showVerbWriteAnswer()});
-document.getElementById('startBtn').onclick=()=>{if(trainingLocked)return;document.getElementById('trainingSettings').open=false;roundEpoch++;const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
+document.getElementById('startBtn').onclick=()=>{if(trainingLocked||resumePendingArticle())return;document.getElementById('trainingSettings').open=false;roundEpoch++;const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
 
 let imported=null;
 function rawLegacy(){return Object.fromEntries([DATA_KEY,STATS_KEY,HIDDEN_KEY,CYCLE_KEY].map(k=>[k,localStorage.getItem(k)]))}
 function legacy(){return Progress.validate({schema:1,stats:JSON.parse(localStorage.getItem(STATS_KEY)||'{}'),hidden:JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'),cycle:JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}')})}
 Cloud.init({snapshot,legacy,rawLegacy,
  active:()=>['training','recallTraining','verbWriteTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
- lock(value){trainingLocked=value;document.getElementById('startBtn').disabled=value;if(value){roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}},
+ lock(value){trainingLocked=value;document.getElementById('startBtn').disabled=value;if(value){articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
  apply(value,options={}){
   const sections=['training','recallTraining','verbWriteTraining'];
   const active=options.resume&&sections.find(id=>!document.getElementById(id).classList.contains('hidden'));
-  const x=Progress.validate(value);stats=x.stats;hiddenWords=new Set(x.hidden);cycle=x.cycle;roundEpoch++;
+  const x=Progress.validate(value);articleQuestion=null;closeArticleDialog();stats=x.stats;hiddenWords=new Set(x.hidden);cycle=x.cycle;roundEpoch++;
   sections.forEach(id=>document.getElementById(id).classList.add('hidden'));updateStats();updateRecallStats();
-  if(active){document.getElementById(active).classList.remove('hidden');if(active==='training')renderRound();else if(active==='recallTraining')renderRecall();else renderVerbWrite();}
+  if(active){document.getElementById(active).classList.remove('hidden');if(active==='training')renderRound();else if(active==='recallTraining')renderRecall();else renderVerbWrite();}resumePendingArticle();
  },
  preview(value){imported=Progress.validate(value);const known=new Set(data.map(key));document.getElementById('importPreview').textContent=JSON.stringify({wordsWithProgress:Object.keys(imported.stats).length,hidden:imported.hidden.length,cycleSeen:imported.cycle.seen.length,unknownKeysPreserved:Object.keys(imported.stats).filter(k=>!known.has(k)).length},null,2);},
  importCandidate(){return imported||legacy();}

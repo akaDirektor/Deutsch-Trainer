@@ -29,7 +29,7 @@ test('switching filters and returning preserves the original cycle',()=>{const h
 test('persisted state resumes cycle and preserves every per-word field',()=>{const h=harness();h.run('cyclePool();markCycleSeen(data[0]);s(data[0]).verbWriteCorrect=9;s(data[0]).lastWorked="2026-10-20"');const state=h.run('Progress.clone(snapshot())');h.ctx.restored=state;h.run('adapter.apply(restored)');assert.equal(h.run('cyclePool().some(w=>key(w)===key(data[0]))'),false);assert.equal(h.run('s(data[0]).verbWriteCorrect'),9);});
 test('hidden words excluded from matching, recall and verb writing',()=>{const h=harness();h.run('data.forEach(w=>{s(w).mastered=true;hiddenWords.add(key(w))})');assert.equal(h.run('pool().length+recallPool().length+verbWritePool().length'),0);});
 test('a rapid second click on a solved pair cannot count twice',()=>{const h=harness();h.run('trainingLocked=false;renderRound();selectedL={w:currentRound[0],e:document.createElement("div")};selectedR={w:currentRound[0],e:document.createElement("div")};globalThis.card=selectedL.e;globalThis.word=selectedL.w;check();select("L",card,word)');assert.equal(h.run('s(word).correct'),1);assert.equal(h.run('selectedL'),null);});
-test('mastery after three successes; mistakes and recall counters retained',()=>{const h=harness();h.run('trainingLocked=false');for(let i=0;i<3;i++)h.run('selectedL={w:data[0],e:document.createElement("div")};selectedR={w:data[0],e:document.createElement("div")};check()');assert.equal(h.run('s(data[0]).mastered'),true);});
+test('mastery after three successes; mistakes and recall counters retained',()=>{const h=harness();h.run('trainingLocked=false');for(let i=0;i<3;i++)h.run('selectedL={w:data[0],e:document.createElement("div")};selectedR={w:data[0],e:document.createElement("div")};check();answerArticle(data[0].article);acknowledgeArticle()');assert.equal(h.run('s(data[0]).mastered'),true);});
 test('malformed import rejected without writing original storage',()=>{const h=harness();assert.throws(()=>h.run('Progress.validate({schema:1,stats:{x:{correct:-1}},hidden:[],cycle:{seen:[]}})'));assert.throws(()=>h.run('Progress.validate({})'));});
 test('vocabulary and all historical backups remain byte-for-byte unchanged',()=>{const crypto=require('node:crypto');const manifest=JSON.parse(fs.readFileSync('tests/corpus-hashes.json'));for(const [name,hash] of Object.entries(manifest))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(name)).digest('hex'),hash,name);});
 
@@ -113,7 +113,7 @@ test('an open example follows the next German selection with one click, until ex
  const h=harness();h.run('trainingLocked=false;renderRound(data.slice(0,3))');
  const cards=h.el('leftCol').children;
  cards[0].onclick();assert(h.el('matchExample').classList.contains('hidden'));cards[0].onclick();assert(!h.el('matchExample').classList.contains('hidden'));
- const before=h.run('JSON.stringify(snapshot())');cards[1].onclick();assert(h.el('matchExample').innerHTML.includes(cards[1].textContent));assert.equal(h.run('JSON.stringify(snapshot())'),before);assert.equal(h.run('selectedL.w.de'),cards[1].textContent);
+ const before=h.run('JSON.stringify(snapshot())');cards[1].onclick();assert(h.el('matchExample').innerHTML.includes(cards[1].textContent));assert.equal(h.run('JSON.stringify(snapshot())'),before);assert.equal(h.run('selectedL.e.textContent'),cards[1].textContent);
  const close=h.el('matchExample').children.filter(e=>e.className==='exampleClose').at(-1);assert(close);close.onclick();assert(h.el('matchExample').classList.contains('hidden'));assert.equal(h.run('followMatchExamples'),false);
  cards[2].onclick();assert(h.el('matchExample').classList.contains('hidden'));cards[2].onclick();assert(!h.el('matchExample').classList.contains('hidden'));
  h.run('renderRound(data.slice(3,5))');assert(h.el('matchExample').classList.contains('hidden'));h.el('leftCol').children.at(-1).onclick();assert(!h.el('matchExample').classList.contains('hidden'));assert.equal(h.run('followMatchExamples'),true);
@@ -147,4 +147,30 @@ test('today counter and chart share active vocabulary and daily history after ev
  h.ctx.restored=JSON.parse(original);h.run('adapter.apply(restored)');assertSame();assert.equal(h.el('todayWorked').textContent,'2 / 9');
  h.run('data.forEach(w=>hiddenWords.add(key(w)));updateStats()');assertSame();assert.equal(h.el('todayWorked').textContent,'0 / 0');assert.equal(h.run('activitySeries().at(-1).percent'),0);
  assert.equal(h.run('s(data[2]).lastWorked'),h.run('today()'));assert.equal(h.run('s(data[1]).workedDays[0]'),h.run('today()'));
+});
+
+test('noun translation requires an article before gaining mastery and preserves original keys',()=>{
+ const h=harness();h.run('trainingLocked=false;renderRound(data.slice(0,2));globalThis.word=currentRound[0];s(word).streak=2;selectedL={w:word,e:document.createElement("div")};selectedR={w:word,e:document.createElement("div")};check()');
+ assert.equal(h.run('leftText(word)'),h.run('word.de.replace(/^(der|die|das)\\s+/,"")'));
+ assert.equal(h.run('s(word).correct'),1);assert.equal(h.run('s(word).streak'),2);assert.equal(h.run('s(word).mastered'),false);assert.equal(h.run('s(word).pendingArticle'),true);assert.equal(h.el('articleQuiz').open,true);
+ h.run('answerArticle(word.article);answerArticle(word.article)');assert.equal(h.run('s(word).streak'),3);assert.equal(h.run('s(word).mastered'),true);assert.equal(h.run('s(word).articleCorrect'),1);assert.equal(h.run('s(word).pendingArticle'),false);
+ h.run('acknowledgeArticle()');assert.equal(h.el('articleQuiz').open,false);assert.equal(h.run('key(word)'),h.run('word.de.toLowerCase().trim()'));
+ h.run('document.getElementById("mode").value="nounPlural"');assert.equal(h.run('needsArticle(word)'),false);assert.equal(h.run('leftText(word)'),h.ctx.word.de);
+});
+test('wrong article has separate accounting, blocks success and prevents a noun repeating in its vocabulary cycle',()=>{
+ const h=harness();h.run('trainingLocked=false;globalThis.word=data.find(w=>w.type==="noun");s(word).streak=2;s(word).recallCorrect=7;selectedL={w:word,e:document.createElement("div")};selectedR={w:word,e:document.createElement("div")};check();answerArticle(word.article==="der"?"das":"der")');
+ assert.equal(h.run('s(word).correct'),1);assert.equal(h.run('s(word).wrong'),0);assert.equal(h.run('s(word).articleWrong'),1);assert.equal(h.run('s(word).articleNeedsReview'),true);assert.equal(h.run('s(word).streak'),0);assert.equal(h.run('s(word).mastered'),false);assert.equal(h.run('s(word).recallCorrect'),7);assert.equal(h.run('wordProgressWords("articles")[0].de'),h.ctx.word.de);assert.equal(h.run('cyclePool().some(w=>key(w)===key(word))'),false);
+ h.run('acknowledgeArticle();selectedL={w:word,e:document.createElement("div")};selectedR={w:word,e:document.createElement("div")};check();answerArticle(word.article)');assert.equal(h.run('s(word).articleNeedsReview'),false);assert.equal(h.run('s(word).articleWrong'),1);assert.equal(h.run('s(word).articleCorrect'),1);assert.equal(h.run('s(word).streak'),1);assert.equal(h.run('wordProgressWords("articles").length'),1);
+});
+test('pending article survives cloud snapshot restore; a stale question cannot count twice',()=>{
+ const h=harness();h.run('trainingLocked=false;globalThis.word=data[0];selectedL={w:word,e:document.createElement("div")};selectedR={w:word,e:document.createElement("div")};check();globalThis.saved=Progress.validate(snapshot());adapter.apply(saved)');assert.equal(h.run('articleQuestion.w.de'),h.ctx.word.de);assert.equal(h.run('s(word).correct'),1);
+ h.run('answerArticle(word.article);acknowledgeArticle();answerArticle(word.article)');assert.equal(h.run('s(word).articleCorrect'),1);assert.equal(h.run('s(word).streak'),1);
+ h.run('globalThis.finished=Progress.validate(snapshot());adapter.apply(finished)');assert.equal(h.run('articleQuestion'),null);
+ for(const bad of [{articleCorrect:-1},{articleWrong:0.5},{pendingArticle:'yes'},{articleNeedsReview:1}]){h.ctx.badArticle=bad;assert.throws(()=>h.run('Progress.validate({schema:1,stats:{word:badArticle},hidden:[],cycle:{seen:[]}})'));}
+});
+test('automatic next round waits for the final noun article, then continues without repeats',()=>{
+ const h=harness();h.run('trainingLocked=false;document.getElementById("training").classList.remove("hidden");globalThis.batch=data.filter(w=>w.type==="verb").slice(0,4).concat(data.find(w=>w.type==="noun"));renderRound(batch)');
+ for(let i=0;i<5;i++){h.ctx.index=i;h.run('selectedL={w:batch[index],e:document.createElement("div")};selectedR={w:batch[index],e:document.createElement("div")};check()');}
+ let cursor=0;while(cursor<h.timers.length)h.timers[cursor++]();assert.equal(h.run('currentRound[4].de'),h.run('batch[4].de'));assert.equal(h.run('solved.size'),4);assert.equal(h.run('articleQuestion.w.de'),h.run('batch[4].de'));
+ h.run('answerArticle(batch[4].article);acknowledgeArticle()');while(cursor<h.timers.length)h.timers[cursor++]();assert.equal(h.run('currentRound.some(w=>batch.some(old=>key(old)===key(w)))'),false);assert.equal(h.run('currentRound.length'),5);
 });
