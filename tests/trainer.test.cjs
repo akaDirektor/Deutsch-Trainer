@@ -185,13 +185,14 @@ test('article results stay visible until acknowledged and wrong articles retain 
  }
 });
 
-test('completed round remains reviewable after automatic advance without changing training state or progress',()=>{
- const h=harness();h.run('trainingLocked=false;document.getElementById("training").classList.remove("hidden");cyclePool();globalThis.batch=data.filter(w=>w.type!=="noun").slice(0,5);renderRound(batch);for(const w of batch){selectedL={w,e:document.createElement("div")};selectedR={w,e:document.createElement("div")};check()}');
+test('previous round toggles actual cards and restores the current round without changing progress',()=>{
+ const h=harness();h.run('trainingLocked=false;document.getElementById("training").classList.remove("hidden");cyclePool();globalThis.batch=data.filter(w=>w.type!=="noun").slice(0,5);renderRound(batch);globalThis.oldCards=[...document.getElementById("leftCol").children];for(const w of batch){selectedL={w,e:oldCards.find(e=>e.dataset.k===key(w))};selectedR={w,e:document.getElementById("rightCol").children.find(e=>e.dataset.k===key(w))};check()}');
  let cursor=0;while(cursor<h.timers.length)h.timers[cursor++]();
- assert.equal(h.run('previousRoundWords.length'),5);assert.equal(h.el('previousRound').hidden,false);assert.equal(h.run('currentRound.some(w=>batch.includes(w))'),false);
- const before=h.run('JSON.stringify({snapshot:snapshot(),round:currentRound.map(key),epoch:roundEpoch,follow:followMatchExamples,selectedL,selectedR})');
- h.el('previousRoundWords').children[4].onclick();assert(h.el('previousRoundExample').innerHTML.includes(h.ctx.batch[4].de));assert(h.el('previousRoundExample').children.some(e=>e.textContent==='LEO ↗'));
- assert.equal(h.run('JSON.stringify({snapshot:snapshot(),round:currentRound.map(key),epoch:roundEpoch,follow:followMatchExamples,selectedL,selectedR})'),before);
+ assert.equal(h.el('previousRound').hidden,false);assert.equal(h.run('currentRound.some(w=>batch.includes(w))'),false);
+ const before=h.run('JSON.stringify({snapshot:snapshot(),round:currentRound.map(key),epoch:roundEpoch,selectedL,selectedR})');
+ h.el('previousRound').onclick();assert.equal(h.run('viewingPreviousRound'),true);assert.equal(h.run('previousRoundState.columns[0].nodes[0]===oldCards[0]'),true);
+ h.ctx.oldCards[4].onclick();assert(h.el('matchExample').innerHTML.includes(h.ctx.batch.find(w=>w.de===h.ctx.oldCards[4].textContent).de));
+ h.el('previousRound').onclick();assert.equal(h.run('viewingPreviousRound'),false);assert.equal(h.run('JSON.stringify({snapshot:snapshot(),round:currentRound.map(key),epoch:roundEpoch,selectedL,selectedR})'),before);
 });
 
 test('article mistake ratio and accuracy use article attempts independently of translation accuracy',()=>{
