@@ -1,7 +1,7 @@
 # Daily activity chart
 
 The seven bars show unique vocabulary records worked on each local calendar day
-as a percentage of the current full corpus (including hidden words). Matching,
+as a percentage of the current training vocabulary (excluding hidden words). Matching,
 active recall and verb writing all call `markWorked`; correct and wrong attempts
 both count. Repeated encounters with one word on the same day count once.
 
@@ -22,9 +22,12 @@ are shown as zero. Words with future or older lastWorked values are not counted
 as today's activity. Dates use local noon/setDate for calendar arithmetic, so
 daylight-saving changes do not skip a calendar day.
 
-Historical percentages are relative to the current corpus size, allowing future
-vocabulary additions without a stored denominator migration. Hiding a word does
-not erase past work. The chart explicitly states this full-corpus definition.
+Historical percentages are relative to the current nonhidden vocabulary size,
+allowing future additions without a denominator migration. Hidden words are
+excluded from both numerator and denominator, just like the top counters. Their
+saved history is retained and contributes again if they become visible.
+`dailyCoverage` supplies both the chart and the top daily counter; rendering the
+chart refreshes both together even when recall/writing only calls markWorked.
 Select a bar to see its date and unique count. Missing data use a hatched bar
 and em dash. Screen-reader labels provide date, count and percentage; the
 selection is read-only and never saves progress.
