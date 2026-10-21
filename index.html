@@ -13,12 +13,12 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-article-review">
+<link rel="stylesheet" href="app.css?v=20261021-calm-layout">
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="brand"><img src="icons/deutsch-b2-180.png" width="44" height="44" alt=""><div><div class="brandLine"><h1>Deutsch Trainer</h1><span class="levelBadge">B2 Beruf</span></div><p class="brandSubtitle">Крок за кроком — до впевненої німецької</p></div></div>
+    <div class="brand"><img src="icons/deutsch-b2-180.png" width="44" height="44" alt=""><div><div class="brandLine"><h1>Deutsch Trainer</h1><span class="levelBadge">B2 Beruf</span></div><p class="brandSubtitle">Німецька для життя й роботи</p></div></div>
     <details id="accountTools" class="accountMenu"><summary aria-label="Налаштування облікового запису" title="Налаштування">⚙</summary><div class="accountPopover">
     <form id="loginForm" class="row"><input id="email" type="email" autocomplete="username" placeholder="Email" required><input id="password" type="password" autocomplete="current-password" placeholder="Пароль" required><button>Увійти</button></form>
     <div class="cloudSummary"><p id="syncStatus" role="status" aria-live="polite"></p><span id="accountIdentity" class="muted"></span></div>
@@ -30,26 +30,12 @@
   <p id="syncAlert" class="syncAlert" role="status" aria-live="polite" hidden></p>
 
   <div class="stats" aria-label="Твій прогрес">
-    <div class="stat statToday"><span class="statLabel">Сьогодні опрацьовано</span><b id="todayWorked">0</b><span class="statNote">Кожне слово — крок уперед</span></div>
-    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Поточна серія правильних зіставлень. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0 з 0</strong></button></div>
-    <div class="stat statAccuracy"><span class="statLabel">Точність</span><div class="accuracyRow"><span>Слова</span><b id="accuracy">0%</b></div><div class="accuracyRow" title="Частка правильних відповідей на артиклі за весь час"><span>Артиклі</span><b id="articleAccuracy">—</b></div><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div>
+    <div class="stat statToday"><span class="statLabel">Сьогодні</span><b id="todayWorked">0</b><span class="statNote">Кожне слово — крок уперед</span></div>
+    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Поточна серія правильних зіставлень. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div></div>
+
   </div>
   <div class="progress" aria-hidden="true"><div id="progressBar" style="width:0"></div></div>
-  <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Активно пригадано <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Мої зауваження</button></div></details>
-  <details class="dailyActivity" id="dailyActivity" open>
-    <summary><span>Прогрес за 7 днів</span><span class="dailySummary" id="dailySummary"></span></summary>
-    <div class="dailyBody">
-      <div class="dailyChart" id="dailyChart" role="group" aria-label="Частка бази, опрацьована за кожен з останніх семи днів"></div>
-      <p id="dailyDetail" class="dailyDetail" role="status" aria-live="polite"></p>
-      <p id="dailyHistoryNote" class="dailyNote"></p>
-      <p class="dailyNote">Одне слово рахується один раз на день в усіх режимах, навіть після помилки. Як і в лічильнику згори, приховані слова не враховуються. Історія роботи з ними зберігається.</p>
-    </div>
-  </details>
-  <section id="wordProgressPanel" class="wordProgressPanel" hidden aria-labelledby="wordProgressTitle">
-    <div class="row"><h2 id="wordProgressTitle" tabindex="-1"></h2><button type="button" id="closeWordProgress">Закрити список</button></div>
-    <p id="wordProgressDescription" class="muted"></p>
-    <ul id="wordProgressList" class="wordProgressList"></ul>
-  </section>
+
   <section class="wordSearch" id="wordSearch" aria-label="Пошук слова">
     <input id="wordSearchInput" type="search" aria-label="Пошук слова німецькою або українською" title="Пошук у всій базі, включно з прихованими словами" placeholder="Пошук слова · німецькою / українською" autocomplete="off">
     <p id="wordSearchStatus" class="muted" role="status" aria-live="polite" hidden></p>
@@ -105,7 +91,7 @@
     <details id="previousRound" class="previousRound" hidden><summary>Попередній раунд · переглянути</summary><div id="previousRoundWords" class="previousRoundWords"></div><div id="previousRoundExample" class="exampleBox hidden" aria-live="polite"></div></details>
     <div class="boardLabels" aria-hidden="true"><span id="leftColumnLabel">Німецькою</span><span id="rightColumnLabel">Українською</span></div>
     <div class="board"><div class="col" id="leftCol"></div><div class="col" id="rightCol"></div></div>
-    <p class="gestureHint">Німецьке: повторне натискання — приклад, утримання — приховати. Українське: утримання — зауваження до перекладу.</p>
+    <details class="gestureHelp"><summary>Підказки до карток</summary><p class="gestureHint">Німецьке: повторне натискання — приклад, утримання — приховати. Українське: утримання — зауваження до перекладу.</p></details>
     <div id="matchExample" class="answer exampleBox hidden" aria-live="polite"></div>
     <details id="recentMatches" class="recentMatches" hidden><summary>Останні вгадані слова</summary><div id="recentMatchWords" class="row"></div></details>
   </section>
@@ -147,6 +133,22 @@
     <div id="verbWriteJudge" class="row hidden"><button id="verbWriteCorrect" class="primary">✓ Правильно</button><button id="verbWriteWrong">✕ Неправильно</button></div>
   </div>
 
+  <section class="insights" aria-label="Статистика навчання"><div class="insightsHeading">Статистика</div>  <details class="progressDetails insightDetails"><summary><span>Точність і помилки</span><span class="insightHint">Переглянути</span></summary><div class="insightBody">    <div class="stat statAccuracy"><span class="statLabel">Точність</span><div class="accuracyRow"><span>Слова</span><b id="accuracy">0%</b></div><div class="accuracyRow" title="Частка правильних відповідей на артиклі за весь час"><span>Артиклі</span><b id="articleAccuracy">—</b></div><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div><div class="articleErrorLink"><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0 з 0</strong></button></div><div class="progressNumbers"><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Активно пригадано <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Мої зауваження</button></div></div></details>
+  <details class="dailyActivity" id="dailyActivity">
+    <summary><span>Прогрес за 7 днів</span><span class="dailySummary" id="dailySummary"></span></summary>
+    <div class="dailyBody">
+      <div class="dailyChart" id="dailyChart" role="group" aria-label="Частка бази, опрацьована за кожен з останніх семи днів"></div>
+      <p id="dailyDetail" class="dailyDetail" role="status" aria-live="polite"></p>
+      <p id="dailyHistoryNote" class="dailyNote"></p>
+      <details class="chartHelp"><summary>Як рахується прогрес</summary><p class="dailyNote">Одне слово рахується один раз на день в усіх режимах, навіть після помилки. Як і в лічильнику згори, приховані слова не враховуються. Історія роботи з ними зберігається.</p></details>
+    </div>
+  </details>
+  <section id="wordProgressPanel" class="wordProgressPanel" hidden aria-labelledby="wordProgressTitle">
+    <div class="row"><h2 id="wordProgressTitle" tabindex="-1"></h2><button type="button" id="closeWordProgress">Закрити список</button></div>
+    <p id="wordProgressDescription" class="muted"></p>
+    <ul id="wordProgressList" class="wordProgressList"></ul>
+  </section>
+  </section>
   <details class="learningHelp">
     <summary>Як працює засвоєння</summary>
     <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Для іменника в режимі перекладу успішне повторення — це правильний переклад і артикль. Помилки в артиклях мають окремий облік. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
