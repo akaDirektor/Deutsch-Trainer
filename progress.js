@@ -6,7 +6,8 @@
   if(x.hidden.some(k=>typeof k!=='string')||x.cycle.seen.some(k=>typeof k!=='string'))throw Error('Некоректні ключі слів');
   for(const st of Object.values(x.stats)){
    if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Некоректна статистика');
-   for(const k of ['correct','wrong','streak','recallCorrect','recallWrong','verbWriteCorrect','verbWriteWrong'])if(st[k]!=null&&(!Number.isSafeInteger(st[k])||st[k]<0))throw Error('Некоректний лічильник '+k);
+   for(const k of ['correct','wrong','streak','recallCorrect','recallWrong','verbWriteCorrect','verbWriteWrong','articleCorrect','articleWrong'])if(st[k]!=null&&(!Number.isSafeInteger(st[k])||st[k]<0))throw Error('Некоректний лічильник '+k);
+   for(const field of ['pendingArticle','articleNeedsReview'])if(st[field]!=null&&typeof st[field]!=='boolean')throw Error('Некоректний стан артикля');
    if(st.workedDays!=null&&(!Array.isArray(st.workedDays)||st.workedDays.length>366||new Set(st.workedDays).size!==st.workedDays.length||st.workedDays.some(day=>typeof day!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(day)||!Number.isFinite(Date.parse(day+'T12:00:00Z'))||new Date(day+'T12:00:00Z').toISOString().slice(0,10)!==day)))throw Error('Некоректна історія роботи зі словом');
    if(st.translationFeedback!=null){const f=st.translationFeedback;if(typeof f!=='object'||Array.isArray(f)||typeof f.translation!=='string'||f.translation.length>4000||typeof f.reason!=='string'||f.reason.length>600||typeof f.suggestion!=='string'||f.suggestion.length>200||f.status!=='draft'||typeof f.updatedAt!=='string'||f.updatedAt.length>40||!Number.isFinite(Date.parse(f.updatedAt)))throw Error('Некоректне зауваження до перекладу');}
   }

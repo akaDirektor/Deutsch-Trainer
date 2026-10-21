@@ -27,3 +27,8 @@ test('translation-feedback draft is written to cloud and read by another device 
  const first=setup();await first.login();await first.initialize();const state=empty();state.stats.word={correct:5,wrong:1,translationFeedback:{translation:'старий переклад',reason:'незрозуміло',suggestion:'уточнення',updatedAt:'2026-10-21T12:00:00.000Z',status:'draft'}};first.save(state);await first.settle();await first.sync();assert.equal(first.row.state.stats.word.translationFeedback.reason,'незрозуміло');
  const second=setup();second.row=JSON.parse(JSON.stringify(first.row));await second.login();await second.settle();assert.equal(second.applied.stats.word.translationFeedback.suggestion,'уточнення');assert.equal(second.applied.stats.word.correct,5);assert.equal(second.applied.stats.word.wrong,1);
 });
+
+test('pending article and separate article counters survive cross-device cloud restoration',async()=>{
+ const first=setup();await first.login();await first.initialize();const state=empty();state.stats.noun={correct:8,wrong:1,streak:2,mastered:false,articleCorrect:2,articleWrong:1,pendingArticle:true,articleNeedsReview:true};state.cycle.seen=['noun'];first.save(state);await first.settle();await first.sync();
+ const second=setup();second.row=JSON.parse(JSON.stringify(first.row));await second.login();await second.settle();assert.equal(second.applied.stats.noun.pendingArticle,true);assert.equal(second.applied.stats.noun.articleWrong,1);assert.equal(second.applied.stats.noun.correct,8);assert.deepEqual(second.applied.cycle.seen,['noun']);
+});
