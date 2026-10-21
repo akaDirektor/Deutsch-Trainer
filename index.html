@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-article-result">
+<link rel="stylesheet" href="app.css?v=20261021-previous-round">
 </head>
 <body>
 <div class="wrap">
@@ -101,6 +101,7 @@
 
   <section id="training" class="hidden" aria-label="Зіставлення слів">
     <div class="trainingHeader"><div><span class="eyebrow">Зіставлення</span><div class="msg" id="msg" role="status" aria-live="polite"></div></div><span id="roundDirection" class="roundBadge">DE ↔ UA</span></div>
+    <details id="previousRound" class="previousRound" hidden><summary>Попередній раунд · переглянути</summary><div id="previousRoundWords" class="previousRoundWords"></div><div id="previousRoundExample" class="exampleBox hidden" aria-live="polite"></div></details>
     <div class="boardLabels" aria-hidden="true"><span id="leftColumnLabel">Німецькою</span><span id="rightColumnLabel">Українською</span></div>
     <div class="board"><div class="col" id="leftCol"></div><div class="col" id="rightCol"></div></div>
     <p class="gestureHint">Німецьке: повторне натискання — приклад, утримання — приховати. Українське: утримання — зауваження до перекладу.</p>
@@ -207,6 +208,7 @@ let trainingLocked=true, roundEpoch=0;
 function cancelTraining(){roundEpoch++;articleQuestion=null;closeArticleDialog();['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
 let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
 let recentMatched=[];
+let previousRoundWords=[];
 let followMatchExamples=false;
 let articleQuestion=null;
 
@@ -411,7 +413,7 @@ function showMatchExample(w,boxId='matchExample'){
   box.appendChild(document.createElement('br'));box.appendChild(link);
   const report=document.createElement('button');report.type='button';report.className='reportTranslation';report.textContent='Уточнити переклад';report.onclick=()=>openTranslationReport(w,report);box.appendChild(report);
   const close=document.createElement('button');close.type='button';close.className='exampleClose';close.textContent='×';close.setAttribute('aria-label','Закрити приклад');close.title='Закрити приклад';
-  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else document.getElementById('wordSearchInput').focus();};
+  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else if(boxId==='previousRoundExample')document.getElementById('previousRound').focus();else document.getElementById('wordSearchInput').focus();};
   box.appendChild(close);
   box.classList.remove('hidden');
   if(boxId==='matchExample'&&wasHidden)box.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
@@ -483,6 +485,18 @@ function resumePendingArticle(){
   const w=data.find(w=>!hiddenWords.has(key(w))&&w.type==='noun'&&['der','die','das'].includes(w.article)&&stats[key(w)]?.pendingArticle);
   if(w){openArticleQuestion(w);return true;}return false;
 }
+function rememberCompletedRound(){
+  previousRoundWords=currentRound.map(w=>({w,right:rightText(w),articleError:document.getElementById('mode').value==='translation'&&w.type==='noun'&&!!s(w).articleNeedsReview}));
+  const panel=document.getElementById('previousRound'),list=document.getElementById('previousRoundWords');
+  panel.hidden=false;panel.open=false;list.innerHTML='';document.getElementById('previousRoundExample').classList.add('hidden');
+  previousRoundWords.forEach(item=>{
+    const button=document.createElement('button');button.type='button';
+    const german=document.createElement('strong');german.lang='de';german.textContent=(item.articleError?'✕ ':'✓ ')+item.w.de;
+    const translation=document.createElement('span');translation.textContent=item.right;button.appendChild(german);button.appendChild(translation);
+    if(item.articleError)button.classList.add('previousArticleError');
+    button.onclick=()=>showMatchExample(item.w,'previousRoundExample');list.appendChild(button);
+  });
+}
 function finishMatchedPair(pair){
   if(!pair||pair.epoch!==roundEpoch)return;
   const {a,b,epoch}=pair;
@@ -490,7 +504,7 @@ function finishMatchedPair(pair){
   const error=pair.article&&s(a.w).articleNeedsReview;
   if(error){a.e.classList.add('articleMistake');b.e.classList.add('articleMistake');}
   if(pair.article){const result=error?'✕ Артикль не вгадано — повторення не зараховано':'✓ Артикль правильний — повторення зараховано';a.e.setAttribute('aria-label',a.w.de+' · '+result);b.e.setAttribute('aria-label',b.w.uk+' · '+result);a.e.title=result;b.e.title=result;}
-  setTimeout(()=>{if(epoch!==roundEpoch)return;solved.add(key(a.w));if(solved.size===currentRound.length){document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(epoch===roundEpoch&&!trainingLocked&&!document.getElementById('training').classList.contains('hidden'))renderRound()},650);}},180);
+  setTimeout(()=>{if(epoch!==roundEpoch)return;solved.add(key(a.w));if(solved.size===currentRound.length){rememberCompletedRound();document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(epoch===roundEpoch&&!trainingLocked&&!document.getElementById('training').classList.contains('hidden'))renderRound()},650);}},180);
 }
 function answerArticle(article){
   const question=articleQuestion;if(trainingLocked||!question||question.answered||!['der','die','das'].includes(article)||!stats[key(question.w)]?.pendingArticle)return;

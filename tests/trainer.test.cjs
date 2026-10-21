@@ -184,3 +184,12 @@ test('article results stay visible until acknowledged and wrong articles retain 
   h.run('acknowledgeArticle()');assert.equal(h.run('left.textContent'),h.ctx.word.de);assert.equal(h.run('left.classList.contains("articleMistake")'),!correct);assert(h.run('left["aria-label"]').includes(correct?'✓':'✕'));
  }
 });
+
+test('completed round remains reviewable after automatic advance without changing training state or progress',()=>{
+ const h=harness();h.run('trainingLocked=false;document.getElementById("training").classList.remove("hidden");cyclePool();globalThis.batch=data.filter(w=>w.type!=="noun").slice(0,5);renderRound(batch);for(const w of batch){selectedL={w,e:document.createElement("div")};selectedR={w,e:document.createElement("div")};check()}');
+ let cursor=0;while(cursor<h.timers.length)h.timers[cursor++]();
+ assert.equal(h.run('previousRoundWords.length'),5);assert.equal(h.el('previousRound').hidden,false);assert.equal(h.run('currentRound.some(w=>batch.includes(w))'),false);
+ const before=h.run('JSON.stringify({snapshot:snapshot(),round:currentRound.map(key),epoch:roundEpoch,follow:followMatchExamples,selectedL,selectedR})');
+ h.el('previousRoundWords').children[4].onclick();assert(h.el('previousRoundExample').innerHTML.includes(h.ctx.batch[4].de));assert(h.el('previousRoundExample').children.some(e=>e.textContent==='LEO ↗'));
+ assert.equal(h.run('JSON.stringify({snapshot:snapshot(),round:currentRound.map(key),epoch:roundEpoch,follow:followMatchExamples,selectedL,selectedR})'),before);
+});
