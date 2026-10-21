@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-daily">
+<link rel="stylesheet" href="app.css?v=20261021-search">
 </head>
 <body>
 <div class="wrap">
@@ -49,14 +49,12 @@
     <p id="wordProgressDescription" class="muted"></p>
     <ul id="wordProgressList" class="wordProgressList"></ul>
   </section>
-  <details class="wordSearch" id="wordSearch">
-    <summary><span>⌕ Пошук слова</span><span class="summaryHint">DE / UA</span></summary>
-    <label for="wordSearchInput" class="muted">Німецькою або українською — у всій базі, включно з прихованими словами</label>
-    <input id="wordSearchInput" type="search" placeholder="Наприклад: sich halten або триматися" autocomplete="off">
-    <p id="wordSearchStatus" class="muted" role="status" aria-live="polite">Введи слово або частину слова.</p>
+  <section class="wordSearch" id="wordSearch" aria-label="Пошук слова">
+    <input id="wordSearchInput" type="search" aria-label="Пошук слова німецькою або українською" title="Пошук у всій базі, включно з прихованими словами" placeholder="Пошук слова · німецькою / українською" autocomplete="off">
+    <p id="wordSearchStatus" class="muted" role="status" aria-live="polite" hidden></p>
     <ul id="wordSearchResults" class="searchResults"></ul>
     <div id="wordSearchDetail" class="exampleBox hidden"></div>
-  </details>
+  </section>
 
   <div class="controls">
     <details id="trainingSettings"><summary class="settingsSummary"><span><span class="eyebrow">Тренування</span><strong id="trainingSelection">Усі слова · Переклад</strong></span><span class="settingsHint">Налаштувати</span></summary>
@@ -348,6 +346,7 @@ function findWords(query){
 function renderSearch(){
   const query=document.getElementById('wordSearchInput').value,words=findWords(query),list=document.getElementById('wordSearchResults');list.innerHTML='';
   document.getElementById('wordSearchDetail').classList.add('hidden');
+  document.getElementById('wordSearchStatus').hidden=!query.trim();
   document.getElementById('wordSearchStatus').textContent=!query.trim()?'Введи слово або частину слова.':words.length?'Знайдено: '+words.length:'Нічого не знайдено.';
   words.forEach(w=>{
     const item=document.createElement('li'),button=document.createElement('button'),de=document.createElement('span'),uk=document.createElement('small');button.type='button';
