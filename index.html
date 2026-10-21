@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-article-neutral">
+<link rel="stylesheet" href="app.css?v=20261021-example-forms">
 </head>
 <body>
 <div class="wrap">
@@ -406,6 +406,15 @@ function showMatchExample(w,boxId='matchExample'){
   const wasHidden=box.classList.contains('hidden');
   if(boxId==='matchExample')followMatchExamples=true;
   box.innerHTML='<div class="exampleHeading">'+escapeExample(w.de)+'</div><b>'+exampleLabel(w)+':</b><br>'+escapeExample(w.example||makeExample(w));
+  if(w.praeteritum||w.perfekt){
+    const forms=document.createElement('div');forms.className='exampleVerbForms';
+    for(const [label,value] of [['Präteritum',w.praeteritum],['Perfekt · Partizip II',w.perfekt]]){
+      if(!value)continue;
+      const line=document.createElement('div'),name=document.createElement('span'),form=document.createElement('strong');
+      name.textContent=label+': ';form.lang='de';form.textContent=value;line.appendChild(name);line.appendChild(form);forms.appendChild(line);
+    }
+    box.appendChild(forms);
+  }
   const link=document.createElement('a');
   link.className='dictionaryLink';link.textContent='LEO ↗';link.href=leoLookup(w);
   link.target='_blank';link.rel='noopener noreferrer';link.title='Перевірити «'+w.de+'» у німецько-російському словнику LEO (нова вкладка)';
