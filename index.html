@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261021-noun-article">
+<link rel="stylesheet" href="app.css?v=20261021-text-size">
 </head>
 <body>
 <div class="wrap">
@@ -26,6 +26,7 @@
     <pre id="importPreview" style="white-space:pre-wrap"></pre>
     </div></details>
   </div>
+  <div class="textSizeTools" role="group" aria-label="Розмір тексту"><span>Розмір тексту</span><button type="button" data-text-size="normal" aria-label="Звичайний текст" aria-pressed="true">A</button><button type="button" data-text-size="large" aria-label="Великий текст" aria-pressed="false">A+</button><button type="button" data-text-size="largest" aria-label="Дуже великий текст" aria-pressed="false">A++</button></div>
   <p id="syncAlert" class="syncAlert" role="status" aria-live="polite" hidden></p>
 
   <div class="stats" aria-label="Твій прогрес">
@@ -172,6 +173,7 @@
   </form>
 </dialog>
 
+<script src="appearance.js?v=20261021-text-size"></script>
 <script src="words-1.js"></script>
 <script src="words-2.js"></script>
 <script src="words-3.js"></script>
