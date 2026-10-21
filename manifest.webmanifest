@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "Deutsch Match — B2 Beruf",
+  "short_name": "Deutsch B2",
+  "lang": "uk",
+  "description": "Тренажер німецької лексики B2 з українськими перекладами",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#00a34c",
+  "icons": [
+    {"src": "icons/deutsch-b2-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/deutsch-b2-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}
