@@ -13,61 +13,12 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<style>
-:root{--bg:#f5f5f7;--card:#fff;--text:#111;--muted:#6b6b70;--line:#dedee3;--accent:#111;--sel:#e9efff;--ok:#dff5e6;--bad:#ffe3e3}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-.wrap{max-width:960px;margin:auto;padding:16px}
-.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
-h1{font-size:26px;margin:0 0 4px} .muted{color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
-.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px} .stat b{display:block;font-size:22px}
-.readinessSteps{display:flex;gap:6px 12px;flex-wrap:wrap;margin-top:6px;font-size:13px;color:var(--muted)}
-.controls{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:7px 0}
-button,select{font:inherit;border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff;color:#111}
-button.primary{background:#111;color:#fff;border-color:#111;font-weight:700}
-button.active{background:#111;color:#fff;border-color:#111}
-button:disabled{opacity:.45}
-.start{width:100%;font-size:18px;padding:14px}
-.board{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.col{display:flex;flex-direction:column;gap:9px}
-.card{min-height:58px;background:#fff;border:2px solid transparent;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.05)}
-.card.selected{border-color:#5777ff;background:var(--sel)} .exampleBox{margin:8px 0 12px;padding:12px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:15px;line-height:1.4} .card.ok{border-color:#55a96a;background:var(--ok)} .card.bad{border-color:#e06969;background:var(--bad)} .card.done{opacity:.55;pointer-events:none}.card.done.reviewable{pointer-events:auto}.card:focus-visible{outline:2px solid #5777ff;outline-offset:2px}
-.msg{min-height:28px;font-weight:700;margin:10px 0}
-.dictionaryLink{display:inline-flex;align-items:center;min-height:36px;margin-top:8px;padding:6px 10px;border:1px solid var(--line);border-radius:9px;color:#294eb8;text-decoration:none;font-size:14px;background:#fff}.dictionaryLink:focus-visible{outline:2px solid #5777ff;outline-offset:2px}
-.progress{height:9px;border-radius:99px;background:#e5e5ea;overflow:hidden} .progress div{height:100%;background:#111}
-.sectionTitle{font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
-.typecount{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 10px}
-.details{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
-.recall{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
-.recallWord{font-size:30px;font-weight:800;margin:14px 0}
-.recallInput{width:100%;font:inherit;font-size:18px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff}
-.recallAnswer{margin-top:10px;padding:12px;border-radius:12px;background:var(--bg)}
-.recallStats{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.hidden,[hidden]{display:none!important}
-.cloudSummary{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--muted)}
-.cloudSummary p{margin:0}
-.hero{position:relative;padding-right:42px}
-.accountMenu{position:absolute;right:0;top:0;font-size:14px}
-.accountMenu>summary{list-style:none;cursor:pointer;color:var(--muted);font-size:23px;padding:4px 8px;border-radius:8px}
-.accountMenu>summary::-webkit-details-marker{display:none}
-.accountPopover{position:absolute;right:0;top:40px;width:min(520px,calc(100vw - 32px));padding:14px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 28px #0002;z-index:20}
-.accountPopover .row input{max-width:100%}.accountPopover button{font-size:14px;padding:8px 10px}
-.syncAlert{margin:8px 0;font-size:14px;color:#8b4d00}
-.wordProgressPanel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
-.wordProgressList{max-height:50vh;overflow:auto;padding:0;list-style:none}
-.wordProgressList li{padding:10px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
-.wordProgressList strong,.wordProgressList small{display:block}.wordProgressList small{color:var(--muted);margin-top:4px}
-.readinessSteps button{font-size:14px;padding:6px 8px}
-.wordSearch{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.wordSearch summary{cursor:pointer;font-weight:600}.wordSearch input{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;margin-top:12px}.searchResults{max-height:35vh;overflow:auto;list-style:none;padding:0}.searchResults button{width:100%;text-align:left;margin:3px 0;overflow-wrap:anywhere}.searchResults small{display:block;color:var(--muted)}.recentMatches{margin:10px 0}.recentMatches summary{cursor:pointer}.recentMatches .row{max-height:160px;overflow:auto}
-@media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)} .board{grid-template-columns:1fr} .card{min-height:52px}}
-</style>
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div><h1>Deutsch Match — B2 Beruf</h1><div class="muted">Клікай відповідні пари. Нічого писати не треба.</div></div>
+    <div class="brand"><img src="icons/deutsch-b2-180.png" width="44" height="44" alt=""><div><div class="brandLine"><h1>Deutsch Trainer</h1><span class="levelBadge">B2 Beruf</span></div><p class="brandSubtitle">Крок за кроком — до впевненої німецької</p></div></div>
     <details id="accountTools" class="accountMenu"><summary aria-label="Налаштування облікового запису" title="Налаштування">⚙</summary><div class="accountPopover">
     <form id="loginForm" class="row"><input id="email" type="email" autocomplete="username" placeholder="Email" required><input id="password" type="password" autocomplete="current-password" placeholder="Пароль" required><button>Увійти</button></form>
     <div class="cloudSummary"><p id="syncStatus" role="status" aria-live="polite"></p><span id="accountIdentity" class="muted"></span></div>
@@ -77,21 +28,20 @@ button:disabled{opacity:.45}
   </div>
   <p id="syncAlert" class="syncAlert" role="status" aria-live="polite" hidden></p>
 
-  <div class="stats">
-    <div class="stat"><span class="muted">Усього слів</span><b id="totalCount">612</b></div>
-    <div class="stat"><span class="muted">Готові до активного пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Кількість слів із 1 або 2 правильними зіставленнями поспіль. Після третього слово готове до активного пригадування."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3: <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3: <strong id="matchingTwiceCount">0</strong></button></div></div>
-    <div class="stat"><span class="muted">Активно пригадано</span><b id="activeKnownCount">0</b></div>
-    <div class="stat"><span class="muted">Точність</span><b id="accuracy">0%</b><button type="button" id="showMistakes" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками</button></div>
-    <div class="stat"><span class="muted">Опрацьовано сьогодні</span><b id="todayWorked">0</b></div>
+  <div class="stats" aria-label="Твій прогрес">
+    <div class="stat statToday"><span class="statLabel">Сьогодні опрацьовано</span><b id="todayWorked">0</b><span class="statNote">Кожне слово — крок уперед</span></div>
+    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Поточна серія правильних зіставлень. Після третього слово готове до активного пригадування."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div></div>
+    <div class="stat statAccuracy"><span class="statLabel">Точність</span><b id="accuracy">0%</b><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div>
   </div>
+  <div class="progress" aria-hidden="true"><div id="progressBar" style="width:0"></div></div>
+  <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Активно пригадано <strong id="activeKnownCount">0</strong></span></div></details>
   <section id="wordProgressPanel" class="wordProgressPanel" hidden aria-labelledby="wordProgressTitle">
     <div class="row"><h2 id="wordProgressTitle" tabindex="-1"></h2><button type="button" id="closeWordProgress">Закрити список</button></div>
     <p id="wordProgressDescription" class="muted"></p>
     <ul id="wordProgressList" class="wordProgressList"></ul>
   </section>
-  <div class="progress"><div id="progressBar" style="width:0"></div></div>
   <details class="wordSearch" id="wordSearch">
-    <summary>Пошук слова</summary>
+    <summary><span>⌕ Пошук слова</span><span class="summaryHint">DE / UA</span></summary>
     <label for="wordSearchInput" class="muted">Німецькою або українською — у всій базі, включно з прихованими словами</label>
     <input id="wordSearchInput" type="search" placeholder="Наприклад: sich halten або триматися" autocomplete="off">
     <p id="wordSearchStatus" class="muted" role="status" aria-live="polite">Введи слово або частину слова.</p>
@@ -100,7 +50,9 @@ button:disabled{opacity:.45}
   </details>
 
   <div class="controls">
-    <div class="sectionTitle">1. Що тренуємо</div>
+    <details id="trainingSettings"><summary class="settingsSummary"><span><span class="eyebrow">Тренування</span><strong id="trainingSelection">Усі слова · Переклад</strong></span><span class="settingsHint">Налаштувати</span></summary>
+    <div class="settingsBody">
+    <div class="sectionTitle">Що тренуємо</div>
     <div class="row" id="typeButtons">
       <button class="active" data-type="all">Усі</button>
       <button data-type="noun">Іменники</button>
@@ -111,7 +63,7 @@ button:disabled{opacity:.45}
       <button data-type="preposition">Дієслова + Präposition</button>
     </div>
 
-    <div class="sectionTitle">2. Період</div>
+    <div class="sectionTitle">Період</div>
     <div class="row" id="dateButtons">
       <button class="active" data-date="all">Вся база</button>
       <button data-date="today">Сьогодні</button>
@@ -119,34 +71,34 @@ button:disabled{opacity:.45}
       <button data-date="30">30 днів</button>
     </div>
 
-    <div class="sectionTitle">3. Режим</div>
+    <div class="sectionTitle">Режим</div>
     <div class="row">
-      <select id="mode">
+      <select id="mode" aria-label="Режим тренування">
         <option value="translation">Німецьке ↔ український переклад</option>
         <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>
         <option value="verbPast">Дієслово ↔ Präteritum + Perfekt</option>
         <option value="verbWrite">✍️ Дієслова: переклад + Präteritum + Perfekt</option>
       </select>
-      <select id="focus">
+      <select id="focus" aria-label="Які слова тренувати">
         <option value="all">Усі слова</option>
         <option value="unmastered">Ще не засвоєні</option>
         <option value="weak">Слабкі / з помилками</option>
         <option value="recall">Активне пригадування (після 3 збігів)</option>
       </select>
     </div>
-    <button id="startBtn" class="primary start">▶ Почати тренування</button>
     <div class="legend" id="typeLegend"></div>
+    </div></details>
+    <button id="startBtn" class="primary start">Почати тренування <span aria-hidden="true">→</span></button>
   </div>
 
-  <div id="training" class="hidden">
-    <div class="msg" id="msg"></div>
-    <div id="matchExample" class="answer hidden" style="margin:0 0 12px 0"></div>
+  <section id="training" class="hidden" aria-label="Зіставлення слів">
+    <div class="trainingHeader"><div><span class="eyebrow">Зіставлення</span><div class="msg" id="msg" role="status" aria-live="polite"></div></div><span id="roundDirection" class="roundBadge">DE ↔ UA</span></div>
+    <div class="boardLabels" aria-hidden="true"><span id="leftColumnLabel">Німецькою</span><span id="rightColumnLabel">Українською</span></div>
+    <div class="board"><div class="col" id="leftCol"></div><div class="col" id="rightCol"></div></div>
+    <p class="gestureHint">Повторне натискання — приклад і LEO · Утримання — приховати слово</p>
+    <div id="matchExample" class="answer exampleBox hidden" aria-live="polite"></div>
     <details id="recentMatches" class="recentMatches" hidden><summary>Останні вгадані слова</summary><div id="recentMatchWords" class="row"></div></details>
-    <div class="board">
-      <div class="col" id="leftCol"></div>
-      <div class="col" id="rightCol"></div>
-    </div>
-  </div>
+  </section>
 
   <div id="recallTraining" class="recall hidden">
     <div class="sectionTitle">Активне пригадування</div>
@@ -184,10 +136,10 @@ button:disabled{opacity:.45}
     <div id="verbWriteJudge" class="row hidden"><button id="verbWriteCorrect" class="primary">✓ Правильно</button><button id="verbWriteWrong">✕ Неправильно</button></div>
   </div>
 
-  <div class="details">
-    <b>Як працює засвоєння</b>
+  <details class="learningHelp">
+    <summary>Як працює засвоєння</summary>
     <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
-  </div>
+  </details>
 </div>
 
 <script src="words-1.js"></script>
@@ -309,6 +261,8 @@ function rightText(w){
   return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : w.uk;
 }
 function renderRound(round=null){
+  document.getElementById('rightColumnLabel').textContent=({nounPlural:'Множина',verbPast:'Präteritum · Perfekt'})[document.getElementById('mode').value]||'Українською';
+  document.getElementById('roundDirection').textContent=document.getElementById('mode').value==='translation'?'DE ↔ UA':'DE ↔ DE';
   const epoch=++roundEpoch;
   currentRound=round?[...round]:pick5(); solved.clear(); selectedL=selectedR=null;
   document.getElementById('leftCol').innerHTML=''; document.getElementById('rightCol').innerHTML=''; const exBox=document.getElementById('matchExample');if(exBox){exBox.classList.add('hidden');exBox.innerHTML='';}
@@ -335,6 +289,7 @@ function showMatchExample(w,boxId='matchExample'){
   link.ariaLabel=link.title;
   box.appendChild(document.createElement('br'));box.appendChild(link);
   box.classList.remove('hidden');
+  if(boxId==='matchExample')box.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
 }
 function searchText(text){return text.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[’‘ʼ]/g,"'").trim();}
 function findWords(query){
@@ -358,6 +313,7 @@ function renderRecentMatches(){
 }
 function addCard(col,side,w,text){
   const e=document.createElement('div'); e.className='card'; e.textContent=text; e.dataset.k=key(w);
+  e.lang=side==='L'||document.getElementById('mode').value!=='translation'?'de':'uk';
   if(side==='L'){
     e.classList.add('reviewable');e.setAttribute('role','button');e.tabIndex=0;
     e.title='Натисни ще раз для прикладу · утримуй, щоб прибрати слово';
@@ -394,6 +350,11 @@ function check(){
   selectedL=selectedR=null; save(); updateStats();
 }
 function updateStats(){
+  const typeNames={all:'Усі слова',noun:'Іменники',verb:'Дієслова',adjective:'Прикметники',adverb:'Прислівники',phrase:'Вирази',preposition:'Дієслова + Präposition'};
+  const modeNames={translation:'Переклад',nounPlural:'Множина',verbPast:'Форми дієслів',verbWrite:'Письмові дієслова'};
+  const focusNames={all:'',unmastered:'Ще не засвоєні',weak:'З помилками',recall:'Пригадування'};
+  const dateNames={all:'',today:'Сьогодні','7':'7 днів','30':'30 днів'};
+  document.getElementById('trainingSelection').textContent=[typeNames[typeFilter],modeNames[document.getElementById('mode').value],focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
   renderWordProgress();
   renderRecentMatches();
   let correct=0,wrong=0,mastered=0,once=0,twice=0;
@@ -499,7 +460,7 @@ document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
 document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');showVerbWriteAnswer()};
 document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
 ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')showVerbWriteAnswer()});
-document.getElementById('startBtn').onclick=()=>{if(trainingLocked)return;roundEpoch++;const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
+document.getElementById('startBtn').onclick=()=>{if(trainingLocked)return;document.getElementById('trainingSettings').open=false;roundEpoch++;const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
 
 let imported=null;
 function rawLegacy(){return Object.fromEntries([DATA_KEY,STATS_KEY,HIDDEN_KEY,CYCLE_KEY].map(k=>[k,localStorage.getItem(k)]))}

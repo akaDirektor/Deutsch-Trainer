@@ -68,7 +68,7 @@ test('solved German cards and recent matches open examples without another answe
  left.onclick();assert(!h.el('matchExample').classList.contains('hidden'));assert.equal(h.run('selectedL'),null);
  left.onkeydown({key:'Enter',preventDefault(){}});assert.equal(h.run('JSON.stringify(snapshot())'),before);
  h.run('renderRound(data.slice(2,4))');h.el('recentMatchWords').children.at(-1).onclick();assert(!h.el('matchExample').classList.contains('hidden'));assert.equal(h.run('JSON.stringify(snapshot())'),before);
- assert(!html.includes('.card.done{opacity:.28;pointer-events:none}'));assert(html.includes('.card.done.reviewable{pointer-events:auto}'));
+ const css=fs.readFileSync('app.css','utf8');assert(css.includes('.card.done.reviewable{pointer-events:auto}'));
 });
 
 test('every word without an imported example has a unique authored sentence; vocabulary examples take permanent priority',()=>{
