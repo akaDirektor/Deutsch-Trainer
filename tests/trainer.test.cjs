@@ -4,7 +4,7 @@ function harness(){
  const elements=new Map(),timers=[],storage=new Map();
  function el(id){if(!elements.has(id))elements.set(id,{id,style:{},value:id==='mode'?'translation':id==='focus'?'all':'',innerHTML:'',textContent:'',dataset:{},classList:{items:new Set(['training','recallTraining','verbWriteTraining','articleReviewTraining','matchExample'].includes(id)?['hidden']:[]),add(...x){x.forEach(v=>this.items.add(v))},remove(...x){x.forEach(v=>this.items.delete(v))},contains(x){return this.items.has(x)},toggle(){}},children:[],listeners:{},appendChild(child){this.children.push(child)},addEventListener(type,fn){this.listeners[type]=fn},setAttribute(name,value){this[name]=value},focus(){},scrollIntoView(){}});return elements.get(id)}
  const ctx=vm.createContext({console,Date,Math,Set,JSON,Map,window:{},document:{getElementById:id=>{assert(!['prevBtn','stopBtn','nextBtn'].includes(id));return el(id)},querySelectorAll:()=>[],createElement:()=>el('card'+Math.random())},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},setTimeout:fn=>timers.push(fn),clearTimeout(){},confirm:()=>true,Cloud:{save(){},init(a){ctx.adapter=a}}});
- vm.runInContext(fs.readFileSync('examples.js','utf8'),ctx);vm.runInContext(fs.readFileSync('verb-forms.js','utf8'),ctx);vm.runInContext(fs.readFileSync('progress.js','utf8'),ctx);ctx.Progress=ctx.window.Progress;
+ vm.runInContext(fs.readFileSync('examples.js','utf8'),ctx);vm.runInContext(fs.readFileSync('synonyms.js','utf8'),ctx);vm.runInContext(fs.readFileSync('verb-forms.js','utf8'),ctx);vm.runInContext(fs.readFileSync('progress.js','utf8'),ctx);ctx.Progress=ctx.window.Progress;
  const files=[...html.matchAll(/src="(words[^\"]+)"/g)].map(m=>m[1]);for(const file of files)vm.runInContext(fs.readFileSync(file,'utf8'),ctx);
  vm.runInContext(html.match(/<script>\n([\s\S]*?)<\/script>/)[1],ctx);
  return {ctx,el,timers,run:s=>vm.runInContext(s,ctx)};
@@ -259,4 +259,21 @@ test('vocabulary diagnostics distinguish approved personal entries, orphan progr
  const before=h.run('JSON.stringify(snapshot())'),r=h.run('Progress.vocabularyReport(rawSeed,stats,hiddenWords,data)');
  assert.deepEqual(Array.from(r.personalOnly),['der testbegriff']);assert.deepEqual(Array.from(r.runtimeOnly),['der testbegriff']);assert.deepEqual(Array.from(r.hiddenAbsent),['old unknown key']);assert(r.progressOnly.includes('old unknown key'));assert.equal(r.hiddenPresent.length,2);assert.equal(r.active,h.run('seed.length')-1);assert.equal(h.el('totalCount').textContent,r.active);assert.equal(h.run('JSON.stringify(snapshot())'),before);
  const report=h.run('Progress.vocabularyReport(rawSeed,stats,hiddenWords,data.slice(1).concat([{de:"unexpected record"}]))');assert.equal(report.corpusMissing.length,1);assert.deepEqual(Array.from(report.unexplainedRuntime),['unexpected record']);
+});
+
+test('synonyms use exact reviewed card meanings across every vocabulary type and never change corpus or progress',()=>{
+ const h=harness(),before=h.run('JSON.stringify({data,state:snapshot()})'),registry=JSON.parse(fs.readFileSync('docs/synonyms-register.json'));
+ assert.equal(h.run('Object.keys(window.WORD_SYNONYMS).length'),50);assert.deepEqual(Array.from(h.run('[...new Set(Object.values(window.WORD_SYNONYMS).map(e=>e.type))].sort()')),['adjective','adverb','noun','phrase','preposition','verb']);
+ for(const r of registry){h.ctx.word=r.word;assert.equal(h.run('exampleSynonyms(data.find(w=>w.de===word)).source'),r.source);assert.match(r.source,/^https:\/\/de\.wiktionary\.org\/w\/index\.php\?title=.+&oldid=\d+$/);assert(r.terms.length>0&&r.terms.length<=2);}
+ assert.deepEqual(Array.from(h.run('exampleSynonyms(data.find(w=>w.de==="herstellen")).terms')),['anfertigen','produzieren']);assert.deepEqual(Array.from(h.run('exampleSynonyms(data.find(w=>w.de==="die Besprechung")).terms')),['das Meeting']);assert.deepEqual(Array.from(h.run('exampleSynonyms(data.find(w=>w.de==="sich beschweren über + Akk.")).terms')),['sich beklagen']);
+ assert.equal(h.run('exampleSynonyms({...data.find(w=>w.de==="überlegen"),uk:"бути кращим",type:"adjective"})'),null);assert.equal(h.run('exampleSynonyms({de:"herstellen",uk:"встановлювати контакт",type:"verb"})'),null);assert.equal(h.run('exampleSynonyms({de:"unknown",uk:"невідоме",type:"verb"})'),null);
+ assert.equal(h.run('JSON.stringify({data,state:snapshot()})'),before);
+});
+test('shared example renders contextual synonyms and a source beside stored sentence and verb forms without learning actions',()=>{
+ for(const boxId of ['matchExample','wordSearchDetail']){
+  const h=harness();h.ctx.boxId=boxId;const before=h.run('JSON.stringify(snapshot())');h.run('globalThis.word=data.find(w=>w.de==="herstellen");showMatchExample(word,boxId)');
+  const box=h.el(boxId),group=box.children.find(c=>c.className==='exampleSynonyms');assert(group);assert.equal(group.children[0].textContent,'Близькі за значенням');const terms=group.children.find(c=>c.className==='synonymTerms');assert.deepEqual(terms.children.map(c=>c.textContent),['anfertigen','produzieren']);for(const link of terms.children){assert.match(link.href,/^https:\/\/dict\.leo\.org\/russisch-deutsch\//);assert.equal(link.target,'_blank');assert.equal(link.rel,'noopener noreferrer');}
+  assert(group.children.some(c=>c.className==='synonymSource'&&c.href.includes('oldid=')));assert(box.children.some(c=>c.className==='exampleVerbForms'));assert.equal(h.run('JSON.stringify(snapshot())'),before);
+ }
+ const h=harness();h.run('showMatchExample(data.find(w=>w.de==="der Nebel"))');assert(!h.el('matchExample').children.some(c=>c.className==='exampleSynonyms'));
 });
