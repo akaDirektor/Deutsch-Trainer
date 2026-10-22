@@ -24,3 +24,7 @@ References:
 - https://en.pons.com/p/online-dictionary/developers/api
 - https://www.mediawiki.org/wiki/API:Parsing_wikitext
 - https://supabase.com/docs/guides/functions/secrets
+
+## Canonical corpus and count reconciliation (2026-10-22)
+
+GitHub is the canonical shared corpus. User-approved personal entries are explicitly counted pending additions in cloud state. The account menu’s «Склад словника» distinguishes corpus, personal-only, runtime, hidden and active counts. Promoting a personal entry to GitHub preserves its exact key and per-word metadata; the existing corpus-wins merge prevents duplication without removing cloud progress. `words-approved.js` currently contains the exact previously approved `der Nebel` entry. Read-only `scripts/audit-vocabulary.cjs` and `docs/vocabulary-count-audit-2026-10-22.md` document reproducible reconciliation.

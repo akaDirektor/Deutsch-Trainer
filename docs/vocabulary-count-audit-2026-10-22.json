@@ -1,0 +1,279 @@
+{
+  "baseCommit": "60699e5e4d41ead88f835ef17a8069c2d8d830ea",
+  "before": {
+    "corpusPhysical": 1121,
+    "corpusUnique": 1121,
+    "runtime": 1122,
+    "runtimeUnique": 1122,
+    "duplicates": 0,
+    "hidden": 11,
+    "hiddenPresent": 11,
+    "active": 1111,
+    "runtimeOnly": [
+      "der nebel"
+    ],
+    "corpusMissing": [],
+    "ui": 1111,
+    "chartTotal": 1111,
+    "progressExactlyPreserved": true
+  },
+  "after": {
+    "corpusPhysical": 1122,
+    "corpusUnique": 1122,
+    "runtime": 1122,
+    "runtimeUnique": 1122,
+    "duplicates": 0,
+    "hidden": 11,
+    "hiddenPresent": 11,
+    "active": 1111,
+    "runtimeOnly": [],
+    "corpusMissing": [],
+    "ui": 1111,
+    "chartTotal": 1111,
+    "progressExactlyPreserved": true
+  },
+  "sourceCountsBefore": [
+    {
+      "file": "words-1.js",
+      "count": 101
+    },
+    {
+      "file": "words-2.js",
+      "count": 100
+    },
+    {
+      "file": "words-3.js",
+      "count": 100
+    },
+    {
+      "file": "words-4.js",
+      "count": 100
+    },
+    {
+      "file": "words-base-5.js",
+      "count": 106
+    },
+    {
+      "file": "words-base-6.js",
+      "count": 106
+    },
+    {
+      "file": "words-6.js",
+      "count": 84
+    },
+    {
+      "file": "words-7.js",
+      "count": 86
+    },
+    {
+      "file": "words-8.js",
+      "count": 31
+    },
+    {
+      "file": "words-9.js",
+      "count": 24
+    },
+    {
+      "file": "words-10.js",
+      "count": 145
+    },
+    {
+      "file": "words-11.js",
+      "count": 138
+    }
+  ],
+  "sourceCountsAfter": [
+    {
+      "file": "words-1.js",
+      "records": 101
+    },
+    {
+      "file": "words-2.js",
+      "records": 100
+    },
+    {
+      "file": "words-3.js",
+      "records": 100
+    },
+    {
+      "file": "words-4.js",
+      "records": 100
+    },
+    {
+      "file": "words-base-5.js",
+      "records": 106
+    },
+    {
+      "file": "words-base-6.js",
+      "records": 106
+    },
+    {
+      "file": "words-6.js",
+      "records": 84
+    },
+    {
+      "file": "words-7.js",
+      "records": 86
+    },
+    {
+      "file": "words-8.js",
+      "records": 31
+    },
+    {
+      "file": "words-9.js",
+      "records": 24
+    },
+    {
+      "file": "words-10.js",
+      "records": 145
+    },
+    {
+      "file": "words-11.js",
+      "records": 138
+    },
+    {
+      "file": "words-approved.js",
+      "records": 1
+    }
+  ],
+  "words9OriginCommit": "4a6c1d98c371161911e052d78ba36f02d54e8d16",
+  "words9OriginalEqualsCurrent": true,
+  "words9Entries": [
+    "ziehen (etwas)",
+    "umziehen (nach Köln)",
+    "sich umziehen",
+    "anziehen (den Mantel)",
+    "schlafen",
+    "einschlafen",
+    "fahren",
+    "sich verfahren",
+    "treffen",
+    "begegnen",
+    "laufen",
+    "sich verlaufen",
+    "treten (auf/in etwas)",
+    "treten (jemandem)",
+    "eintreten",
+    "betreten",
+    "bleiben",
+    "stehen",
+    "aufstehen",
+    "einsteigen",
+    "umsteigen",
+    "besteigen (einen Berg)",
+    "gelingen",
+    "sein"
+  ],
+  "words11History": [
+    {
+      "sha": "b5995f3c297dc95af7c3d6807ec7ddf6adf933c5",
+      "message": "Add prepositional verbs and textbook examples",
+      "date": "2026-10-20T15:19:03Z",
+      "count": 88,
+      "removed": []
+    },
+    {
+      "sha": "a373fc281b8b1d7f3bddd6cb0e48f50369723133",
+      "message": "Add October 20 vocabulary batch without duplicates",
+      "date": "2026-10-20T15:53:49Z",
+      "count": 95,
+      "removed": []
+    },
+    {
+      "sha": "e8868cca9f6c61c88363e4db3bebc8acc1d58111",
+      "message": "Add verlangen to vocabulary",
+      "date": "2026-10-20T18:05:47Z",
+      "count": null,
+      "error": "Unexpected token '{'",
+      "removed": []
+    },
+    {
+      "sha": "d233dcb5707b16177994b6a120d8f5e033b52d6e",
+      "message": "Restore missing closing brace before upstream verlangen entry without changing word data",
+      "date": "2026-10-20T18:08:53Z",
+      "count": 96,
+      "removed": []
+    },
+    {
+      "sha": "4cdf25761917df5f2843c9f0882f5dea1e90f683",
+      "message": "Add äußern, Vermutung and Vorschrift",
+      "date": "2026-10-21T09:43:16Z",
+      "count": 99,
+      "removed": []
+    },
+    {
+      "sha": "4b69d3f69b2d4a0b04865d5c291a661f3809135c",
+      "message": "Add sich erkundigen, anschließen and umgekehrt",
+      "date": "2026-10-21T09:58:07Z",
+      "count": 102,
+      "removed": []
+    },
+    {
+      "sha": "5ec4df99b894c7f750a601e22bb11518d93969c6",
+      "message": "Add berechnen, erstatten, zuzahlen and erfreulich",
+      "date": "2026-10-21T10:13:54Z",
+      "count": 106,
+      "removed": []
+    },
+    {
+      "sha": "9f33c6fc8f205b2cdc9ce89579765d6414034dd5",
+      "message": "Add verbs from Streichen Sie es durch exercise",
+      "date": "2026-10-22T09:41:28Z",
+      "count": 129,
+      "removed": []
+    },
+    {
+      "sha": "b5d06431ddc49000b040a88f0221811d8a540556",
+      "message": "Add verbs from textbook exercise",
+      "date": "2026-10-22T09:51:31Z",
+      "count": 136,
+      "removed": []
+    },
+    {
+      "sha": "5ea82fff3d11c93b61d14b16ea7e3f93972165ff",
+      "message": "Add sich verzögern",
+      "date": "2026-10-22T09:58:04Z",
+      "count": 137,
+      "removed": []
+    },
+    {
+      "sha": "f53e235021fd1767b3517e4f358f5bf995210b25",
+      "message": "Add abweichen",
+      "date": "2026-10-22T10:06:27Z",
+      "count": 138,
+      "removed": []
+    }
+  ],
+  "backup": {
+    "archiveSha256": "9c4316cbf53533a168552385c9a38f27caf3e4da38ec0a54a19fbb27ab61f255",
+    "sourceSha256": {
+      "cloud.js": "cbbc42dff64ddda05dd13b5865d0deeb26b90952b2441f763cadf8d707769d99",
+      "examples.js": "4747deacb3a5171f3ca43720dd79e932f71489fa2bbee374116cc0ffaea0a6b6",
+      "index.html": "9ba4ba1f989b18ef78ea4496c21c0b2eccd89a02dbcb531a8abe8f45dbdb9d19",
+      "manifest.webmanifest": "881b952fcaaea99a8e01a6fa469167979398022e3bd3273d5a8d9d0267c30468",
+      "progress.js": "e7cb3f6a8f8f72e674a5c87ba964e71f6664967913f45d47fe7ff366d7fc5ab3",
+      "verb-forms.js": "ec75e5d386519a76496579b0d5e74a9c14bca03fa839148ffa13c4c6fbc662e8",
+      "words-1.js": "113efe892aa6e8197b8c26e5add3c97e36a84dd76b20ce6db91fb7becbb2b314",
+      "words-10.js": "c26802191dfb2d51e25576e6f067fdc7768d24c8ac449faaeb9139e309dea53a",
+      "words-11.js": "fd7ece219737537c9b012012b4c99df0b1ba9fc74951ed512510ec585cc8b988",
+      "words-2.js": "d5ecfc38d45ef52b29b6e380a5a867a3c656f7dd158c6bc5f85ad12c83179fa0",
+      "words-3.js": "4f3d8efbd095f64be8d07a4e3573de1aba6aaa1bb7b35753b2f7093cbb92e054",
+      "words-4.js": "310754e78784f413600650de8c53a2e07c8962f181711c4383b0ecaeda0bc5f7",
+      "words-6.js": "2e9d1ad72cc25874e8ac6b24c3dbab45681c64acfddf74239d44f49a84fd7f16",
+      "words-7.js": "402a17378dcdf11076a6949605bb1ebbb900e613a36f00fc5bccd1b5d50a5e66",
+      "words-8.js": "b3fc7a936682aa4f9ad7ce0d740babf5df9bcc97facbe085fe98b73280cb7714",
+      "words-9.js": "7489141df06004ec1eadcf1cb76e9ff91c7016abab29c5771c28704a39e18733",
+      "words-base-5.js": "3ec7979ac3f0fb15e207a54bc225ce8fac2abb6eb21f771962ac8e600c31ee91",
+      "words-base-6.js": "db63078a4166f966db016d4d4a879650d4fdc6667c9100157a3a152ad343ccef"
+    }
+  },
+  "progressWasReadOnly": true,
+  "legacyProgressOnlyKeys": 7,
+  "cloudUnchangedVerification": {
+    "revisionBefore": 640,
+    "revisionAfter": 640,
+    "stateHashEqual": true,
+    "hiddenHashEqual": true
+  },
+  "publishedSiteBeforeMatchesAll12SourceFiles": true
+}

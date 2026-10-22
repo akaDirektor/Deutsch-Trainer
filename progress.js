@@ -32,6 +32,21 @@
   }
   return result;
  }
+ function vocabularyReport(corpus,stats,hidden,runtime=vocabulary(corpus,stats)){
+  const key=w=>w.de.toLowerCase().trim(),corpusKeys=new Set(corpus.map(key)),runtimeKeys=new Set(runtime.map(key));
+  const hiddenKeys=new Set(hidden),personalKeys=new Set(Object.entries(stats).filter(([,st])=>st.customWord).map(([k])=>k));
+  return {
+   corpusRecords:corpus.length,corpusUnique:corpusKeys.size,corpusDuplicates:corpus.length-corpusKeys.size,
+   runtimeRecords:runtime.length,runtimeUnique:runtimeKeys.size,runtimeDuplicates:runtime.length-runtimeKeys.size,
+   personalOnly:[...personalKeys].filter(k=>!corpusKeys.has(k)),personalInCorpus:[...personalKeys].filter(k=>corpusKeys.has(k)),
+   hiddenPresent:[...hiddenKeys].filter(k=>runtimeKeys.has(k)),hiddenAbsent:[...hiddenKeys].filter(k=>!runtimeKeys.has(k)),
+   active:[...runtimeKeys].filter(k=>!hiddenKeys.has(k)).length,
+   corpusMissing:[...corpusKeys].filter(k=>!runtimeKeys.has(k)),
+   runtimeOnly:[...runtimeKeys].filter(k=>!corpusKeys.has(k)),
+   unexplainedRuntime:[...runtimeKeys].filter(k=>!corpusKeys.has(k)&&!personalKeys.has(k)),
+   progressOnly:[...Object.keys(stats)].filter(k=>!runtimeKeys.has(k))
+  };
+ }
  function validate(x){
   if(!x||x.schema!==1||!x.stats||typeof x.stats!=='object'||Array.isArray(x.stats)||!Array.isArray(x.hidden)||!x.cycle||!Array.isArray(x.cycle.seen))throw Error('Невідомий формат прогресу. Оригінал збережено.');
   if(x.hidden.some(k=>typeof k!=='string')||x.cycle.seen.some(k=>typeof k!=='string'))throw Error('Некоректні ключі слів');
@@ -54,5 +69,5 @@
   if(!p.length&&words.length){cycle.seen=[];cycle.number=(cycle.number||0)+1;p=words;}
   return p;
  }
- root.Progress={validate,unseen,clone,customWord,vocabulary};
+ root.Progress={validate,unseen,clone,customWord,vocabulary,vocabularyReport};
 })(typeof window==='undefined'?globalThis:window);
