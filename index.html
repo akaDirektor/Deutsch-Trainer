@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261022-vocabulary-count">
+<link rel="stylesheet" href="app.css?v=20261022-synonyms">
 </head>
 <body>
 <div class="wrap">
@@ -206,6 +206,7 @@
 <script src="words-11.js"></script>
 <script src="words-approved.js"></script>
 <script src="examples.js"></script>
+<script src="synonyms.js?v=20261022"></script>
 <script src="verb-forms.js?v=20261022-reflexive"></script>
 <script src="progress.js?v=20261022-vocabulary-count"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
@@ -425,6 +426,10 @@ function exampleVerbForms(w){
   const checked=window.VERB_FORMS?.[key(w)]||{};
   return {praeteritum:w.praeteritum||checked.praeteritum||'',perfekt:w.perfekt||checked.perfekt||'',perfektLabel:w.perfekt?'Perfekt · Partizip II':checked.perfektLabel||'Perfekt · Partizip II',source:(!w.praeteritum||!w.perfekt)?checked.source:null};
 }
+function exampleSynonyms(w){
+  const entry=window.WORD_SYNONYMS?.[key(w)];
+  return entry&&entry.word===w.de&&entry.translation===w.uk&&entry.type===w.type?entry:null;
+}
 function showMatchExample(w,boxId='matchExample'){
   const box=document.getElementById(boxId);
   if(!box)return;
@@ -441,6 +446,16 @@ function showMatchExample(w,boxId='matchExample'){
     }
     if(verbForms.source){const source=document.createElement('a');source.textContent='Форми: Wiktionary · CC BY-SA 4.0 ↗';source.href=verbForms.source;source.target='_blank';source.rel='noopener noreferrer';source.className='dictionaryLink';forms.appendChild(source);}
     box.appendChild(forms);
+  }
+  const synonymEntry=exampleSynonyms(w);
+  if(synonymEntry){
+    const group=document.createElement('div');group.className='exampleSynonyms';
+    const heading=document.createElement('strong');heading.textContent='Близькі за значенням';group.appendChild(heading);
+    if(synonymEntry.context){const context=document.createElement('div');context.className='synonymContext';context.textContent='Значення: '+synonymEntry.context;group.appendChild(context);}
+    const terms=document.createElement('div');terms.className='synonymTerms';terms.lang='de';
+    for(const term of synonymEntry.terms){const a=document.createElement('a');a.className='synonymTerm';a.textContent=term;a.href=leoLookup({de:term,type:/^(der|die|das) /.test(term)?'noun':'phrase'});a.target='_blank';a.rel='noopener noreferrer';a.title='Перевірити «'+term+'» у LEO';terms.appendChild(a);}
+    group.appendChild(terms);
+    const source=document.createElement('a');source.className='synonymSource';source.textContent='Wiktionary · CC BY-SA 4.0 ↗';source.href=synonymEntry.source;source.target='_blank';source.rel='noopener noreferrer';source.title='Словникове джерело. Близькі слова можуть мати інше керування й не завжди замінюють одне одного в реченні.';group.appendChild(source);box.appendChild(group);
   }
   for(const source of w.sources||[]){const a=document.createElement('a');a.textContent='Джерело: '+source.provider+(source.provider==='Wiktionary'?' · CC BY-SA 4.0':'')+' ↗';a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(document.createElement('br'));box.appendChild(a);}
   const link=document.createElement('a');
