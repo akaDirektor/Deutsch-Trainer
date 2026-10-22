@@ -75,6 +75,7 @@ window.Cloud=(()=>{
   }catch(e){status(e.message);}finally{busy=false;}
  }
  return {
+  lookupDictionary(q){if(!ready||blocked)throw Error('Увійди до готового хмарного профілю');return request('/functions/v1/dictionary-lookup',{q});},
   save(state){if(!ready||blocked)throw Error('Хмарний профіль не готовий');cache.state=Progress.validate(state);cache.pending=true;try{persist();}catch(e){blocked=true;lock();status('Не вдалося зберегти кеш. Експортуй прогрес перед закриттям сторінки.');throw e;}dirty=true;sync();},
   init(a){
    if(!navigator.locks){a.lock(true);status('Цей браузер не підтримує блокування вкладок. Відкрий актуальну версію Safari або Chrome.');return;}
