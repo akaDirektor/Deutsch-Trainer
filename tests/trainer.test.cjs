@@ -139,7 +139,7 @@ test('feedback refuses unauthenticated writes and malformed imported drafts',()=
 });
 
 test('today counter and chart share active vocabulary and daily history after every mode, hide and restore',()=>{
- const h=harness();h.run('data=data.slice(0,10);stats={};s(data[0]).lastWorked=today();s(data[1]).workedDays=[today()];s(data[1]).lastWorked="2026-01-01";s(data[2]).lastWorked=today();hiddenWords.add(key(data[2]));updateStats()');
+ const h=harness();h.run('seed.splice(10);data=seed;stats={};s(data[0]).lastWorked=today();s(data[1]).workedDays=[today()];s(data[1]).lastWorked="2026-01-01";s(data[2]).lastWorked=today();hiddenWords.add(key(data[2]));updateStats()');
  const assertSame=()=>{const coverage=h.run('activitySeries().at(-1)');assert.equal(h.el('todayWorked').textContent,coverage.count+' / '+coverage.total);assert.equal(h.el('totalCount').textContent,coverage.total);};
  assertSame();assert.equal(h.el('todayWorked').textContent,'2 / 9');const original=h.run('JSON.stringify(snapshot())');
  h.run('markWorked(data[3])');assert.equal(h.el('todayWorked').textContent,'3 / 9');assertSame();
@@ -210,4 +210,22 @@ test('article error practice excludes corrected and hidden nouns, preserves matc
 test('wrong article practice retains error and rotates through eligible nouns before repeating',()=>{
  const h=harness();h.run('trainingLocked=false;globalThis.nouns=data.filter(w=>w.type==="noun").slice(0,2);nouns.forEach(w=>{s(w).articleWrong=1;s(w).articleNeedsReview=true});renderArticleReview();globalThis.first=articleQuestion.w;answerArticle(first.article==="der"?"das":"der");acknowledgeArticle()');
  assert.equal(h.run('articleQuestion.w!==first'),true);assert.equal(h.run('s(first).articleNeedsReview'),true);assert.equal(h.run('s(first).articleWrong'),2);h.run('closeArticleReview()');assert.equal(h.run('articleQuestion'),null);assert.equal(h.run('nouns.some(w=>s(w).pendingArticle)'),false);
+});
+
+test('personal vocabulary is restored from cloud metadata without replacing corpus or existing statistics',()=>{
+ const h=harness(),before=h.run('JSON.stringify(seed)');
+ h.run('globalThis.word={de:"der Testbegriff",uk:"тестове поняття",type:"noun",plural:"die Testbegriffe",addedAt:"2026-10-22",approvedBy:"user"};globalThis.state=Progress.clone(snapshot());state.stats["der testbegriff"]={correct:4,wrong:1,streak:2,customWord:word};adapter.apply(state)');
+ assert.equal(h.run('data.length'),h.run('seed.length+1'));assert.equal(h.run('s(data.find(w=>w.de==="der Testbegriff")).correct'),4);assert.equal(h.run('JSON.stringify(seed)'),before);assert.equal(h.run('data.find(w=>w.de==="der Testbegriff").article'),'der');
+ const backup=h.run('Progress.clone(snapshot())');h.ctx.backup=backup;h.run('adapter.apply(backup)');assert.equal(h.run('data.length'),h.run('seed.length+1'));
+});
+test('personal vocabulary rejects malformed nouns and mismatched keys; matching corpus always wins collisions',()=>{
+ const h=harness();assert.throws(()=>h.run('Progress.customWord({de:"Testwort",uk:"слово",type:"noun",addedAt:"2026-10-22",approvedBy:"user"})'));
+ assert.throws(()=>h.run('Progress.validate({schema:1,stats:{wrong:{customWord:{de:"der Testbegriff",uk:"слово",type:"noun",addedAt:"2026-10-22",approvedBy:"user"}}},hidden:[],cycle:{seen:[]}})'));
+ h.run('globalThis.original=seed.find(w=>w.type==="noun");globalThis.state=Progress.clone(snapshot());state.stats[key(original)]={customWord:{...original,uk:"не замінювати",approvedBy:"user"}};adapter.apply(state)');assert.equal(h.run('data.find(w=>key(w)===key(original)).uk===original.uk'),true);
+});
+test('adding personal words preserves corpus, existing counters and cycle, rejects duplicates and is locked without auth',()=>{
+ const h=harness();h.ctx.candidate={de:'die Testergänzung',uk:'тестове доповнення',type:'noun',example:'Dies ist eine Testergänzung.',sources:[],translationOrigin:'user'};
+ assert.throws(()=>h.run('addPersonalWord(candidate)'));h.run('trainingLocked=false;cyclePool();markCycleSeen(data[0]);s(data[0]).correct=12;globalThis.oldSeed=JSON.stringify(seed);globalThis.oldCycle=JSON.stringify(cycle);addPersonalWord(candidate)');
+ assert.equal(h.run('data.length'),h.run('seed.length+1'));assert.equal(h.run('s(data[0]).correct'),12);assert.equal(h.run('JSON.stringify(seed)===oldSeed&&JSON.stringify(cycle)===oldCycle'),true);assert.equal(h.run('data.at(-1).example'),h.ctx.candidate.example);assert.equal(h.run('pool().some(w=>w.de===candidate.de)'),true);assert.throws(()=>h.run('addPersonalWord(candidate)'));assert.throws(()=>h.run('addPersonalWord({...candidate,de:seed[0].de})'));
+ const state=h.run('Progress.clone(snapshot())');h.ctx.restored=state;h.run('adapter.apply(restored)');assert.equal(h.run('data.length'),h.run('seed.length+1'));
 });
