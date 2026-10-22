@@ -4,7 +4,7 @@ function harness(){
  const elements=new Map(),timers=[],storage=new Map();
  function el(id){if(!elements.has(id))elements.set(id,{id,style:{},value:id==='mode'?'translation':id==='focus'?'all':'',innerHTML:'',textContent:'',dataset:{},classList:{items:new Set(['training','recallTraining','verbWriteTraining','articleReviewTraining','matchExample'].includes(id)?['hidden']:[]),add(...x){x.forEach(v=>this.items.add(v))},remove(...x){x.forEach(v=>this.items.delete(v))},contains(x){return this.items.has(x)},toggle(){}},children:[],listeners:{},appendChild(child){this.children.push(child)},addEventListener(type,fn){this.listeners[type]=fn},setAttribute(name,value){this[name]=value},focus(){},scrollIntoView(){}});return elements.get(id)}
  const ctx=vm.createContext({console,Date,Math,Set,JSON,Map,window:{},document:{getElementById:id=>{assert(!['prevBtn','stopBtn','nextBtn'].includes(id));return el(id)},querySelectorAll:()=>[],createElement:()=>el('card'+Math.random())},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},setTimeout:fn=>timers.push(fn),clearTimeout(){},confirm:()=>true,Cloud:{save(){},init(a){ctx.adapter=a}}});
- vm.runInContext(fs.readFileSync('examples.js','utf8'),ctx);vm.runInContext(fs.readFileSync('progress.js','utf8'),ctx);ctx.Progress=ctx.window.Progress;
+ vm.runInContext(fs.readFileSync('examples.js','utf8'),ctx);vm.runInContext(fs.readFileSync('verb-forms.js','utf8'),ctx);vm.runInContext(fs.readFileSync('progress.js','utf8'),ctx);ctx.Progress=ctx.window.Progress;
  const files=[...html.matchAll(/src="(words[^\"]+)"/g)].map(m=>m[1]);for(const file of files)vm.runInContext(fs.readFileSync(file,'utf8'),ctx);
  vm.runInContext(html.match(/<script>\n([\s\S]*?)<\/script>/)[1],ctx);
  return {ctx,el,timers,run:s=>vm.runInContext(s,ctx)};
@@ -228,4 +228,19 @@ test('adding personal words preserves corpus, existing counters and cycle, rejec
  assert.throws(()=>h.run('addPersonalWord(candidate)'));h.run('trainingLocked=false;cyclePool();markCycleSeen(data[0]);s(data[0]).correct=12;globalThis.oldSeed=JSON.stringify(seed);globalThis.oldCycle=JSON.stringify(cycle);addPersonalWord(candidate)');
  assert.equal(h.run('data.length'),h.run('seed.length+1'));assert.equal(h.run('s(data[0]).correct'),12);assert.equal(h.run('JSON.stringify(seed)===oldSeed&&JSON.stringify(cycle)===oldCycle'),true);assert.equal(h.run('data.at(-1).example'),h.ctx.candidate.example);assert.equal(h.run('pool().some(w=>w.de===candidate.de)'),true);assert.throws(()=>h.run('addPersonalWord(candidate)'));assert.throws(()=>h.run('addPersonalWord({...candidate,de:seed[0].de})'));
  const state=h.run('Progress.clone(snapshot())');h.ctx.restored=state;h.run('adapter.apply(restored)');assert.equal(h.run('data.length'),h.run('seed.length+1'));
+});
+
+test('every reflexive vocabulary record exposes past forms, including prepositions and phrases, without changing vocabulary or progress',()=>{
+ const h=harness(),before=h.run('JSON.stringify({data,snapshot:snapshot()})');
+ assert.equal(h.run("data.filter(w=>w.de.split(' ').includes('sich')).length"),140);
+ assert.equal(h.run("data.filter(w=>w.de.split(' ').includes('sich')&&(!exampleVerbForms(w).praeteritum||!exampleVerbForms(w).perfekt)).length"),0);
+ for(const [de,past,perfect] of [['sich halten in + Dat.','hielt sich','hat sich gehalten'],['sich auskennen mit + Dat.','kannte sich aus','hat sich ausgekannt'],['sich freuen auf (+ Akk.)','freute sich','hat sich gefreut'],['sich etw. leisten können','konnte sich etw. leisten','hat sich etw. leisten können'],['sich beraten lassen','ließ sich beraten','hat sich beraten lassen']]){
+  h.ctx.de=de;assert.equal(h.run('exampleVerbForms(data.find(w=>w.de===de)).praeteritum'),past);assert.equal(h.run('exampleVerbForms(data.find(w=>w.de===de)).perfekt'),perfect);
+ }
+ assert.equal(h.run('exampleVerbForms({de:"sich halten in + Dat.",praeteritum:"eigene Form",perfekt:"eigene Perfektform"}).perfekt'),'eigene Perfektform');
+ assert.equal(h.run('JSON.stringify({data,snapshot:snapshot()})'),before);
+});
+test('reflexive forms are rendered in the shared example with original sentence, sich and exact dictionary source',()=>{
+ const h=harness();h.run('globalThis.word=data.find(w=>w.de==="sich halten in + Dat.");showMatchExample(word)');
+ const forms=h.el('matchExample').children.find(c=>c.className==='exampleVerbForms');assert(forms);assert(forms.children.some(c=>c.children?.some(x=>x.textContent==='hielt sich')));assert(forms.children.some(c=>c.children?.some(x=>x.textContent==='hat sich gehalten')));assert(forms.children.some(c=>c.href?.startsWith('https://de.wiktionary.org/')));assert(h.el('matchExample').innerHTML.includes(h.ctx.word.example));
 });
