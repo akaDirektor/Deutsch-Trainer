@@ -1,0 +1,57 @@
+{
+  "records": 1122,
+  "sources": [
+    {
+      "file": "words-1.js",
+      "records": 101
+    },
+    {
+      "file": "words-2.js",
+      "records": 100
+    },
+    {
+      "file": "words-3.js",
+      "records": 100
+    },
+    {
+      "file": "words-4.js",
+      "records": 100
+    },
+    {
+      "file": "words-base-5.js",
+      "records": 106
+    },
+    {
+      "file": "words-base-6.js",
+      "records": 106
+    },
+    {
+      "file": "words-6.js",
+      "records": 84
+    },
+    {
+      "file": "words-7.js",
+      "records": 86
+    },
+    {
+      "file": "words-8.js",
+      "records": 31
+    },
+    {
+      "file": "words-9.js",
+      "records": 24
+    },
+    {
+      "file": "words-10.js",
+      "records": 145
+    },
+    {
+      "file": "words-11.js",
+      "records": 138
+    },
+    {
+      "file": "words-approved.js",
+      "records": 1
+    }
+  ]
+}

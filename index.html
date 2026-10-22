@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261022-uk-only">
+<link rel="stylesheet" href="app.css?v=20261022-vocabulary-count">
 </head>
 <body>
 <div class="wrap">
@@ -23,6 +23,7 @@
     <form id="loginForm" class="row"><input id="email" type="email" autocomplete="username" placeholder="Email" required><input id="password" type="password" autocomplete="current-password" placeholder="Пароль" required><button>Увійти</button></form>
     <div class="cloudSummary"><p id="syncStatus" role="status" aria-live="polite"></p><span id="accountIdentity" class="muted"></span></div>
     <div class="row"><button id="exportProgress">Експорт / резервна копія</button><input id="importFile" type="file" accept="application/json"><button id="importProgress" disabled>Імпорт у порожню хмару</button><button id="newProfile" disabled>Новий профіль</button><button id="logout">Вийти</button><button id="syncNow">Синхронізувати</button><button id="loadCloud" disabled>Завантажити хмарну версію</button></div>
+    <details class="vocabularyDiagnostics"><summary>Склад словника</summary><p id="vocabularySummary"></p><p class="muted">Особисті слова додаються лише після твого підтвердження. Перенесення такого слова в GitHub не змінює його статистику.</p></details>
     <pre id="importPreview" style="white-space:pre-wrap"></pre>
     </div></details>
   </div>
@@ -203,9 +204,10 @@
 <script src="words-9.js"></script>
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
+<script src="words-approved.js"></script>
 <script src="examples.js"></script>
 <script src="verb-forms.js?v=20261022-reflexive"></script>
-<script src="progress.js?v=20261022-uk-only"></script>
+<script src="progress.js?v=20261022-vocabulary-count"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261022-personal-words"></script>
 <script>
@@ -594,6 +596,15 @@ function check(){
   selectedL=selectedR=null; save(); updateStats();
 }
 function updateStats(){
+  const inventory=Progress.vocabularyReport(rawSeed,stats,hiddenWords,data);
+  document.getElementById('vocabularySummary').textContent=[
+    'У GitHub: '+inventory.corpusUnique,
+    'Особистих, ще не в GitHub: '+inventory.personalOnly.length,
+    'Разом завантажено: '+inventory.runtimeUnique,
+    'Приховано: '+inventory.hiddenPresent.length,
+    'Активних: '+inventory.active,
+    ...(inventory.corpusMissing.length||inventory.unexplainedRuntime.length?['Увага: джерела словника не збігаються. Збережи резервну копію.']:[])
+  ].join('\n');
   renderDailyChart();
   const typeNames={all:'Усі слова',noun:'Іменники',verb:'Дієслова',adjective:'Прикметники',adverb:'Прислівники',phrase:'Вирази',preposition:'Дієслова + Präposition'};
   const modeNames={translation:'Переклад',articleReview:'Артиклі з помилками',nounPlural:'Множина',verbPast:'Форми дієслів',verbWrite:'Письмові дієслова'};
