@@ -204,6 +204,7 @@
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
 <script src="examples.js"></script>
+<script src="verb-forms.js?v=20261022-reflexive"></script>
 <script src="progress.js?v=20261022-uk-only"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261022-personal-words"></script>
@@ -418,19 +419,25 @@ document.getElementById('translationReportForm').onsubmit=event=>{
   try{save();const link=document.getElementById('reportGitHub');link.href=translationIssueUrl(reportWord,feedback);link.hidden=false;status.textContent='Чернетку додано до прогресу. Тепер відкрий GitHub і підтвердь створення заявки — лише тоді її буде надіслано.';renderWordProgress();}
   catch(error){if(previous)s(reportWord).translationFeedback=previous;else delete s(reportWord).translationFeedback;status.textContent='Не вдалося зберегти зауваження: '+error.message;}
 };
+function exampleVerbForms(w){
+  const checked=window.VERB_FORMS?.[key(w)]||{};
+  return {praeteritum:w.praeteritum||checked.praeteritum||'',perfekt:w.perfekt||checked.perfekt||'',perfektLabel:w.perfekt?'Perfekt · Partizip II':checked.perfektLabel||'Perfekt · Partizip II',source:(!w.praeteritum||!w.perfekt)?checked.source:null};
+}
 function showMatchExample(w,boxId='matchExample'){
   const box=document.getElementById(boxId);
   if(!box)return;
   const wasHidden=box.classList.contains('hidden');
   if(boxId==='matchExample')followMatchExamples=true;
   box.innerHTML='<div class="exampleHeading">'+escapeExample(w.de)+'</div><b>'+exampleLabel(w)+':</b><br>'+escapeExample(w.example||makeExample(w));
-  if(w.praeteritum||w.perfekt){
+  const verbForms=exampleVerbForms(w);
+  if(verbForms.praeteritum||verbForms.perfekt){
     const forms=document.createElement('div');forms.className='exampleVerbForms';
-    for(const [label,value] of [['Präteritum',w.praeteritum],['Perfekt · Partizip II',w.perfekt]]){
+    for(const [label,value] of [['Präteritum',verbForms.praeteritum],[verbForms.perfektLabel,verbForms.perfekt]]){
       if(!value)continue;
       const line=document.createElement('div'),name=document.createElement('span'),form=document.createElement('strong');
       name.textContent=label+': ';form.lang='de';form.textContent=value;line.appendChild(name);line.appendChild(form);forms.appendChild(line);
     }
+    if(verbForms.source){const source=document.createElement('a');source.textContent='Форми: Wiktionary · CC BY-SA 4.0 ↗';source.href=verbForms.source;source.target='_blank';source.rel='noopener noreferrer';source.className='dictionaryLink';forms.appendChild(source);}
     box.appendChild(forms);
   }
   for(const source of w.sources||[]){const a=document.createElement('a');a.textContent='Джерело: '+source.provider+(source.provider==='Wiktionary'?' · CC BY-SA 4.0':'')+' ↗';a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(document.createElement('br'));box.appendChild(a);}
