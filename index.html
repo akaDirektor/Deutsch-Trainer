@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261022-personal-words">
+<link rel="stylesheet" href="app.css?v=20261022-uk-only">
 </head>
 <body>
 <div class="wrap">
@@ -157,7 +157,7 @@
       <label for="newWordTranslation">Український переклад · можна виправити</label><input id="newWordTranslation" required maxlength="500" autocomplete="off" lang="uk">
       <label for="newWordType">Частина мови</label><select id="newWordType"><option value="phrase">Вираз</option><option value="noun">Іменник</option><option value="verb">Дієслово</option><option value="adjective">Прикметник</option><option value="adverb">Прислівник</option><option value="preposition">Дієслово з прийменником</option></select>
       <details class="newWordGrammar"><summary>Форми та приклад · необов’язково</summary><label for="newWordPlural">Множина іменника</label><input id="newWordPlural" maxlength="200" lang="de"><label for="newWordPast">Präteritum</label><input id="newWordPast" maxlength="200" lang="de"><label for="newWordPerfect">Perfekt із haben / sein</label><input id="newWordPerfect" maxlength="200" lang="de"><label for="newWordExample">Приклад речення</label><textarea id="newWordExample" maxlength="3000" rows="3" lang="de"></textarea></details>
-      <p class="newWordNote">PONS — значення російською. Українські підказки — з Wiktionary, якщо доступні. Перевір потрібне значення перед додаванням.</p>
+      <p class="newWordNote">Українські підказки — з PONS, якщо цей напрямок доступний через API, або з Wiktionary. Джерело вказане біля перекладу.</p>
       <button id="newWordAdd" class="primary" type="submit">Додати до моїх слів</button>
     </form>
   </details>
@@ -204,7 +204,7 @@
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
 <script src="examples.js"></script>
-<script src="progress.js?v=20261022-personal-words"></script>
+<script src="progress.js?v=20261022-uk-only"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261022-personal-words"></script>
 <script>
@@ -722,12 +722,13 @@ wordField('newWordLookup').onclick=async()=>{
   const version=++newWordRequest;newWordLookupBusy=true;wordField('newWordLookup').disabled=true;wordField('newWordStatus').textContent='Шукаю у словниках…';
   try{
     const result=await Cloud.lookupDictionary(q);if(version!==newWordRequest||trainingLocked)return;
-    const box=wordField('newWordSuggestions');box.innerHTML='';box.hidden=false;newWordEvidence={sources:[],translation:''};
+    const box=wordField('newWordSuggestions');box.innerHTML='';box.hidden=false;newWordEvidence={sources:[],translation:'',origin:'user'};
     function link(label,url){const a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(a);}
-    if(result.pons.entries.length){const heading=document.createElement('strong');heading.textContent='PONS · німецька → російська';box.appendChild(heading);result.pons.entries.forEach(item=>{const p=document.createElement('p');p.textContent=item.source+' — '+item.target;box.appendChild(p);});newWordEvidence.sources.push({provider:'PONS',url:result.pons.url});link('PONS ↗',result.pons.url);}
-    if(result.ukrainian.length&&result.wiktionary){wordField('newWordTranslation').value=result.ukrainian.join('; ');newWordEvidence.translation=wordField('newWordTranslation').value;newWordEvidence.sources.push({provider:'Wiktionary',url:result.wiktionary.url});link('Український переклад: Wiktionary ↗',result.wiktionary.url);const license=document.createElement('small');license.textContent='Wiktionary · '+result.wiktionary.license;box.appendChild(license);}
+    if(result.pons.targetLanguage==='uk'&&result.pons.entries.length){const heading=document.createElement('strong');heading.textContent='PONS · німецька → українська';box.appendChild(heading);result.pons.entries.forEach(item=>{const p=document.createElement('p');p.textContent=item.source+' — '+item.target;box.appendChild(p);});newWordEvidence.sources.push({provider:'PONS',url:result.pons.url});link('PONS ↗',result.pons.url);}
+    if(result.ukrainian.length&&['PONS','Wiktionary'].includes(result.translationSource)){wordField('newWordTranslation').value=result.ukrainian.join('; ');newWordEvidence.translation=wordField('newWordTranslation').value;newWordEvidence.origin=result.translationSource;}
+    if(result.wiktionary){newWordEvidence.sources.push({provider:'Wiktionary',url:result.wiktionary.url});link((result.translationSource==='Wiktionary'?'Український переклад':'Граматика')+': Wiktionary ↗',result.wiktionary.url);const license=document.createElement('small');license.textContent='Wiktionary · '+result.wiktionary.license;box.appendChild(license);} 
     if(result.grammar){wordField('newWordType').value=result.grammar.type;if(result.grammar.type==='noun'&&result.grammar.article&&!/^(der|die|das)\s/i.test(q))wordField('newWordGerman').value=result.grammar.article+' '+q;}
-    const warnings={not_configured:'PONS ще не підключений.',not_authorized:'PONS не дозволив доступ до німецько-російського словника.',quota_reached:'Безкоштовний ліміт застосунку на цей місяць вичерпано.',provider_limit:'PONS повідомив про вичерпання квоти.',unavailable:'PONS тимчасово недоступний.'};
+    const warnings={not_configured:'PONS ще не підключений.',language_unavailable:'У поточному PONS API немає німецько-українського словника. Російський не використовується.',not_authorized:'PONS не дозволив доступ до німецько-українського словника.',quota_reached:'Безкоштовний ліміт застосунку на цей місяць вичерпано.',provider_limit:'PONS повідомив про вичерпання квоти.',unavailable:'PONS тимчасово недоступний.'};
     wordField('newWordStatus').textContent=(warnings[result.pons.status]||'')+(result.ukrainian.length?' Перевір запропонований український переклад.':' Українського перекладу не знайдено — впиши його самостійно.');
   }catch{if(version===newWordRequest)wordField('newWordStatus').textContent='Словниковий пошук недоступний. Можна вписати переклад вручну.';}
   finally{if(version===newWordRequest){newWordLookupBusy=false;wordField('newWordLookup').disabled=trainingLocked;}}
@@ -735,7 +736,7 @@ wordField('newWordLookup').onclick=async()=>{
 wordField('newWordForm').onsubmit=event=>{
   event.preventDefault();if(newWordLookupBusy)return;
   try{
-   const w=addPersonalWord({de:wordField('newWordGerman').value.trim().replace(/\s+/g,' '),uk:wordField('newWordTranslation').value,type:wordField('newWordType').value,plural:wordField('newWordPlural').value,praeteritum:wordField('newWordPast').value,perfekt:wordField('newWordPerfect').value,example:wordField('newWordExample').value,sources:newWordEvidence?.sources||[],translationOrigin:newWordEvidence?.translation===wordField('newWordTranslation').value?'Wiktionary':'user'});
+   const w=addPersonalWord({de:wordField('newWordGerman').value.trim().replace(/\s+/g,' '),uk:wordField('newWordTranslation').value,type:wordField('newWordType').value,plural:wordField('newWordPlural').value,praeteritum:wordField('newWordPast').value,perfekt:wordField('newWordPerfect').value,example:wordField('newWordExample').value,sources:newWordEvidence?.sources||[],translationOrigin:newWordEvidence?.translation===wordField('newWordTranslation').value?newWordEvidence.origin:'user'});
    ['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='phrase';newWordEvidence=null;wordField('newWordSuggestions').hidden=true;wordField('newWordStatus').textContent='Додано: '+w.de+'. Слово доступне в пошуку та тренуваннях; збережено для синхронізації.';
   }catch(error){wordField('newWordStatus').textContent=error.message;}
 };
