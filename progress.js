@@ -18,7 +18,7 @@
    if(!Array.isArray(value.sources)||value.sources.length>3||value.sources.some(s=>!s||!['PONS','Wiktionary'].includes(s.provider)||typeof s.url!=='string'||s.url.length>1200||!/^https:\/\/(?:en\.pons\.com|de\.wiktionary\.org)\//.test(s.url)))throw Error('Некоректне джерело слова');
    result.sources=clone(value.sources);
   }
-  if(value.translationOrigin!=null){if(!['user','Wiktionary'].includes(value.translationOrigin))throw Error('Некоректне походження перекладу');result.translationOrigin=value.translationOrigin;}
+  if(value.translationOrigin!=null){if(!['user','Wiktionary','PONS'].includes(value.translationOrigin))throw Error('Некоректне походження перекладу');result.translationOrigin=value.translationOrigin;}
 
   if(value.approvedBy!=='user')throw Error('Потрібне підтвердження користувача');result.approvedBy='user';
   return result;

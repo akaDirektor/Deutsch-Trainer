@@ -37,7 +37,7 @@ export function createHandler({env,fetch:request=fetch}){
   const reply=(value,status=200)=>new Response(JSON.stringify(value),{status,headers});
   if(origin&&origin!==allowed)return reply({error:'Origin not allowed'},403);
   if(req.method==='OPTIONS')return new Response(null,{status:204,headers});
-  if(req.method==='GET'&&new URL(req.url).pathname.endsWith('/health'))return reply({configured:Boolean(key('PONS_API_SECRET')),monthlyAppLimit:900});
+  if(req.method==='GET'&&new URL(req.url).pathname.endsWith('/health'))return reply({configured:Boolean(key('PONS_API_SECRET')),monthlyAppLimit:900,targetLanguage:'uk'});
   if(req.method!=='POST')return reply({error:'Method not allowed'},405);
   const authorization=req.headers.get('authorization');if(!authorization?.startsWith('Bearer '))return reply({error:'Увійди до профілю'},401);
   try{
@@ -51,19 +51,25 @@ export function createHandler({env,fetch:request=fetch}){
    // An optional open source supplies Ukrainian candidates, never a paid translator.
    const lemma=term.replace(/^(der|die|das)\s+/i,'');
    const wikiPromise=(async()=>{try{const u=new URL('https://de.wiktionary.org/w/api.php');u.search=new URLSearchParams({action:'parse',page:lemma,prop:'wikitext|revid',format:'json',redirects:'1'}).toString();const r=await request(u,{headers:{'User-Agent':'Deutsch-Trainer/1.0 (https://akadirektor.github.io/Deutsch-Trainer/)'},signal:AbortSignal.timeout(12000)});return r.ok?wikiEntry(await r.json()):null}catch{return null}})();
-   let entries=[],ponsStatus='not_configured',used=null;
+   let entries=[],ponsStatus='not_configured',used=null,dictionary=null;
    if(key('PONS_API_SECRET')){
-    const quota=await request(key('SUPABASE_URL')+'/rest/v1/rpc/reserve_pons_query',{method:'POST',headers:{...authHeaders(service()),'Content-Type':'application/json'},body:'{}',signal:AbortSignal.timeout(10000)});
-    if(!quota.ok)return reply({error:'Ліміт запитів не вдалося перевірити. PONS не викликався.'},503);
-    used=await quota.json();
-    if(typeof used!=='number'||used<0)ponsStatus='quota_reached';
-    else{
-     const u=new URL('https://api.pons.com/v1/dictionary');u.search=new URLSearchParams({q:term,l:'deru',in:'de',ref:'true'}).toString();
-     try{const r=await request(u,{headers:{'X-Secret':key('PONS_API_SECRET')},signal:AbortSignal.timeout(12000)});ponsStatus=r.status===200?'ok':r.status===204?'empty':r.status===403?'not_authorized':r.status===429?'provider_limit':'unavailable';if(r.status===200)entries=ponsEntries(await r.json())}catch{ponsStatus='unavailable'}
+    // Resolve the actual Ukrainian dictionary key; never fall back to Russian.
+    try{const catalog=await request('https://api.pons.com/v1/dictionaries?language=en',{headers:{'X-Secret':key('PONS_API_SECRET')},signal:AbortSignal.timeout(10000)});if(catalog.ok){const list=await catalog.json();dictionary=Array.isArray(list)?list.find(d=>Array.isArray(d.languages)&&d.languages.includes('de')&&d.languages.includes('uk')&&typeof d.key==='string'):null;ponsStatus=dictionary?'ready':'language_unavailable';}else ponsStatus='unavailable';}catch{ponsStatus='unavailable';}
+    if(dictionary){
+     const quota=await request(key('SUPABASE_URL')+'/rest/v1/rpc/reserve_pons_query',{method:'POST',headers:{...authHeaders(service()),'Content-Type':'application/json'},body:'{}',signal:AbortSignal.timeout(10000)});
+     if(!quota.ok)return reply({error:'Ліміт запитів не вдалося перевірити. PONS не викликався.'},503);
+     used=await quota.json();
+     if(typeof used!=='number'||used<0)ponsStatus='quota_reached';
+     else{
+      const u=new URL('https://api.pons.com/v1/dictionary');u.search=new URLSearchParams({q:term,l:dictionary.key,in:'de',ref:'true'}).toString();
+      try{const r=await request(u,{headers:{'X-Secret':key('PONS_API_SECRET')},signal:AbortSignal.timeout(12000)});ponsStatus=r.status===200?'ok':r.status===204?'empty':r.status===403?'not_authorized':r.status===429?'provider_limit':'unavailable';if(r.status===200)entries=ponsEntries(await r.json())}catch{ponsStatus='unavailable'}
+     }
     }
    }
    const wiki=await wikiPromise;
-   return reply({query:term,pons:{status:ponsStatus,entries,url:'https://en.pons.com/translate/german-russian/'+encodeURIComponent(term),used,limit:900},ukrainian:wiki?.translations||[],grammar:wiki?{type:wiki.type,article:wiki.article}:null,wiktionary:wiki?.title?{url:'https://de.wiktionary.org/w/index.php?title='+encodeURIComponent(wiki.title)+(wiki.revision?'&oldid='+wiki.revision:''),license:'CC BY-SA 4.0'}:null});
+   const ponsUkrainian=[...new Set(entries.map(entry=>entry.target))].slice(0,3);
+   const ukrainian=ponsUkrainian.length?ponsUkrainian:wiki?.translations||[];
+   return reply({query:term,pons:{status:ponsStatus,entries,targetLanguage:'uk',dictionary:dictionary?.key||null,url:'https://en.pons.com/translate/german-ukrainian/'+encodeURIComponent(term),used,limit:900},ukrainian,translationSource:ponsUkrainian.length?'PONS':ukrainian.length?'Wiktionary':null,grammar:wiki?{type:wiki.type,article:wiki.article}:null,wiktionary:wiki?.title?{url:'https://de.wiktionary.org/w/index.php?title='+encodeURIComponent(wiki.title)+(wiki.revision?'&oldid='+wiki.revision:''),license:'CC BY-SA 4.0'}:null});
   }catch{return reply({error:'Не вдалося виконати словниковий пошук. Спробуй ще раз.'},502)}
  };
 }
