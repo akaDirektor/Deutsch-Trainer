@@ -1,6 +1,6 @@
 /* Lesson membership only. No vocabulary entries or progress are copied or replaced.
-   Evidence: user-provided B1+ photos, pages 23/41/59/77/95/113/131.
-   Full reviewed mapping and exceptions: docs/b1plus-lesson-register.json. */
+   Evidence: seven B1+ photos and 24 B2 photos, with printed lesson numbers.
+   Mappings and exceptions: docs/b1plus-lesson-register.json and docs/b2-lesson-register.json. */
 (function(root){
  const books={
  "b1plus": {
@@ -694,9 +694,523 @@
  },
  "b2": {
   "label": "B2",
-  "pending": true,
-  "lessons": []
- }
+  "lessons": [
+    {
+      "id": "1",
+      "label": "Урок 1",
+      "photos": [
+        {
+          "file": "1.HEIC",
+          "page": 28
+        },
+        {
+          "file": "IMG_8537.HEIC",
+          "page": 29
+        }
+      ],
+      "keys": [
+        "ambulant",
+        "an der spitze von (+ dat.)",
+        "aufgrund von (+ dat.)",
+        "bisherig",
+        "das berufsleben",
+        "das beschwerdemanagement",
+        "das betriebsgelände",
+        "das controlling",
+        "das du",
+        "das geschäftsjahr",
+        "das gründungsdatum",
+        "das lager",
+        "das marketing",
+        "das mitspracherecht",
+        "das organigramm",
+        "das pausengespräch",
+        "das pflegezertifikat",
+        "das produktionsverfahren",
+        "das präsenzseminar",
+        "das sie",
+        "das sortiment",
+        "das unternehmen",
+        "das verkaufsgespräch",
+        "das zentrallager",
+        "das zweigwerk",
+        "der absolvent",
+        "der anschluss",
+        "der arbeitsberater",
+        "der bereich",
+        "der berufsweg",
+        "der betreuungsdienst",
+        "der bildungsgutschein",
+        "der entscheidungsspielraum",
+        "der erwerbstätige",
+        "der freiberufler",
+        "der hauptbereich",
+        "der klimawandel",
+        "der kompromiss",
+        "der lagerlogistiker",
+        "der lehrplan",
+        "der pflegedienst",
+        "der pressesprecher",
+        "der produktionshelfer",
+        "der rundgang",
+        "der standort",
+        "der umsatz",
+        "der vertrieb",
+        "die abfallvermeidung",
+        "die absolventin",
+        "die anrede",
+        "die arbeitsberaterin",
+        "die arbeitsteilung",
+        "die arbeitswelt",
+        "die bedeutung",
+        "die betriebsbesichtigung",
+        "die digitalisierung",
+        "die energieeinsparung",
+        "die erschließung",
+        "die erwerbstätige",
+        "die eröffnung",
+        "die fachkraft",
+        "die fertigstellung",
+        "die filiale",
+        "die finanzabteilung",
+        "die fläche",
+        "die forschung & entwicklung",
+        "die forschung und entwicklung",
+        "die freiberuflerin",
+        "die fördermöglichkeit",
+        "die geschäftsleitung",
+        "die globalisierung",
+        "die haushaltsführung",
+        "die haustechnik",
+        "die herausforderung",
+        "die herstellung",
+        "die hierarchie",
+        "die hierarchieebene",
+        "die hilfskraft",
+        "die kenntnis",
+        "die kompetenz",
+        "die lagerliste",
+        "die lagerlogistikerin",
+        "die marktuntersuchung",
+        "die mitarbeiterzahl",
+        "die neuorientierung",
+        "die pflegeeinrichtung",
+        "die pflegekraft",
+        "die pressesprecherin",
+        "die produktionsstätte",
+        "die qualitätssicherung",
+        "die rechtsabteilung",
+        "die sachkenntnis",
+        "die spitze",
+        "die technologie",
+        "die terminbestätigung",
+        "die unterbrechung",
+        "die unternehmensgeschichte",
+        "die verkaufsfläche",
+        "die verkaufsförderung",
+        "die verwaltung",
+        "die zuständigkeit",
+        "die öffentlichkeitsarbeit",
+        "distanzlos",
+        "eine flache hierarchie",
+        "einen kompromiss finden",
+        "eingehende post",
+        "erforderlich",
+        "erweitern",
+        "etw. anordnen",
+        "etw. einführen",
+        "etw. erweitern",
+        "etw. erwerben",
+        "etw. eröffnen",
+        "etw. leiten",
+        "etw. präsentieren",
+        "etw. vermitteln",
+        "etw. zuordnen zu (+ dat.)",
+        "etw. übernehmen",
+        "etw./jdn. respektieren",
+        "geeignet für (+ akk.)",
+        "im anschluss an (+ akk.)",
+        "interkulturelle kompetenz",
+        "jdm. das du anbieten",
+        "kenntnisse erwerben",
+        "modernisieren",
+        "nachhaltig",
+        "produkte einführen",
+        "sich anpassen an (+ akk.)",
+        "sich behaupten",
+        "sich duzen",
+        "sich einstellen auf (+ akk.)",
+        "sich einstellen auf + akk.",
+        "sich niederlassen",
+        "sich qualifizieren",
+        "sich siezen",
+        "untergeordnet",
+        "untergliedert",
+        "unterteilt",
+        "veralten",
+        "vertrauen auf (+ akk.)",
+        "zur verfügung stehen",
+        "ökologisch"
+      ]
+    },
+    {
+      "id": "2",
+      "label": "Урок 2",
+      "photos": [
+        {
+          "file": "IMG_8538.HEIC",
+          "page": null
+        },
+        {
+          "file": "IMG_8539.HEIC",
+          "page": 49
+        }
+      ],
+      "keys": [
+        "auffallen",
+        "betreiben",
+        "das handwerk",
+        "das wohlbefinden",
+        "der beschäftigte",
+        "der einzelhandel",
+        "der handel",
+        "die beschäftigte",
+        "die branche",
+        "die it-branche",
+        "die lagerlogistik",
+        "die pflicht",
+        "die schichtarbeit",
+        "die spedition",
+        "die zuverlässigkeit",
+        "eine anlage warten",
+        "erweitern",
+        "etw. bearbeiten",
+        "etw. erweitern",
+        "etw. zubereiten",
+        "gründen",
+        "hinweisen auf + akk.",
+        "jdn. einstellen",
+        "jdn./etw. betreuen",
+        "zubereiten",
+        "überwachen"
+      ]
+    },
+    {
+      "id": "3",
+      "label": "Урок 3",
+      "photos": [
+        {
+          "file": "IMG_8540.HEIC",
+          "page": 68
+        },
+        {
+          "file": "IMG_8541.HEIC",
+          "page": 69
+        }
+      ],
+      "keys": [
+        "beweisen",
+        "das berufsinformationszentrum (biz)",
+        "der ansprechpartner",
+        "der aushang",
+        "die anrede",
+        "die ansprechpartnerin",
+        "die bescheinigung",
+        "die daten",
+        "die kenntnis",
+        "die soft skills",
+        "die sozialen netzwerke",
+        "die teamfähigkeit",
+        "die voraussetzung",
+        "die webseite",
+        "die weiterbildung",
+        "die zuverlässigkeit",
+        "dokumentieren",
+        "einen termin bestätigen",
+        "entwickeln",
+        "erforderlich",
+        "erstatten",
+        "etw. dokumentieren",
+        "etw. entwickeln",
+        "fehlerfrei",
+        "hinweisen auf + akk.",
+        "innovativ",
+        "sorgfältig",
+        "verfügen über + akk.",
+        "verlangen",
+        "vielfältig",
+        "wert legen auf (+ akk.)",
+        "zur verfügung stehen"
+      ]
+    },
+    {
+      "id": "4",
+      "label": "Урок 4",
+      "photos": [
+        {
+          "file": "IMG_8542.HEIC",
+          "page": null
+        },
+        {
+          "file": "IMG_8543.HEIC",
+          "page": 89
+        }
+      ],
+      "keys": [
+        "beantragen",
+        "das bewerbungsverfahren",
+        "der betriebsrat",
+        "der feierabend",
+        "der freizeitausgleich",
+        "der tarif",
+        "die einarbeitung",
+        "die genehmigung",
+        "die pausenregelung",
+        "die personalabteilung",
+        "empfinden",
+        "etw. aufladen",
+        "etw./jdn. respektieren",
+        "inklusive",
+        "sich erinnern an + akk.",
+        "sich erkundigen nach + dat.",
+        "üblich"
+      ]
+    },
+    {
+      "id": "5",
+      "label": "Урок 5",
+      "photos": [
+        {
+          "file": "IMG_8569.HEIC",
+          "page": 116
+        },
+        {
+          "file": "IMG_8576.HEIC",
+          "page": 117
+        }
+      ],
+      "keys": [
+        "abraten von + dat.",
+        "besteigen (einen berg)",
+        "das ergebnisprotokoll",
+        "der arbeitsalltag",
+        "der eindruck",
+        "der einzelhandel",
+        "der kompromiss",
+        "der zeitdruck",
+        "die tagesordnung",
+        "die teamsitzung",
+        "die überstunde",
+        "etw. gestalten",
+        "etw. leiten",
+        "in der regel"
+      ]
+    },
+    {
+      "id": "6",
+      "label": "Урок 6",
+      "photos": [
+        {
+          "file": "IMG_8570.HEIC",
+          "page": 136
+        },
+        {
+          "file": "IMG_8571.HEIC",
+          "page": null
+        }
+      ],
+      "keys": [
+        "das display",
+        "der klimawandel",
+        "der kundenservice",
+        "die lieferzeit",
+        "eine anlage warten",
+        "erforderlich",
+        "etw. sperren",
+        "herunterladen",
+        "verzichten auf (+ akk.)",
+        "verzichten auf + akk.",
+        "zwingen"
+      ]
+    },
+    {
+      "id": "7",
+      "label": "Урок 7",
+      "photos": [
+        {
+          "file": "IMG_8572.HEIC",
+          "page": 156
+        },
+        {
+          "file": "IMG_8549.heic",
+          "page": 157
+        }
+      ],
+      "keys": [
+        "bedienen",
+        "betreiben",
+        "der mangel",
+        "desinfizieren",
+        "die fachkraft",
+        "die pflegekraft",
+        "die qualitätssicherung",
+        "die zuverlässigkeit",
+        "halten von + dat.",
+        "klingen",
+        "peinlich",
+        "schützen vor + dat.",
+        "sich bemühen um + akk.",
+        "sich zurückziehen von + dat.",
+        "verbergen"
+      ]
+    },
+    {
+      "id": "8",
+      "label": "Урок 8",
+      "photos": [
+        {
+          "file": "IMG_8574.HEIC",
+          "page": 176
+        },
+        {
+          "file": "IMG_8551.heic",
+          "page": 177
+        }
+      ],
+      "keys": [
+        "der ansprechpartner",
+        "der mangel",
+        "die abmahnung",
+        "die ansprechpartnerin",
+        "die globalisierung",
+        "die menge",
+        "die pflicht",
+        "erforderlich",
+        "erwünscht",
+        "etw. entgegennehmen",
+        "hinweisen auf + akk.",
+        "in der regel",
+        "nachteilig",
+        "sich erweisen als + nom.",
+        "sorgen für + akk.",
+        "verbinden mit + dat."
+      ]
+    },
+    {
+      "id": "9",
+      "label": "Урок 9",
+      "photos": [
+        {
+          "file": "IMG_8552.HEIC",
+          "page": 202
+        },
+        {
+          "file": "IMG_8553.HEIC",
+          "page": 203
+        }
+      ],
+      "keys": [
+        "das display",
+        "defekt",
+        "der ansprechpartner",
+        "der händler",
+        "der kundenservice",
+        "der lieferschein",
+        "der mangel",
+        "der nachweis",
+        "die ansprechpartnerin",
+        "die händlerin",
+        "etw. zerbrechen",
+        "etw. zerkratzen",
+        "etw. zerreißen",
+        "kosten übernehmen",
+        "sich verspäten",
+        "verfügbar",
+        "verlangen"
+      ]
+    },
+    {
+      "id": "10",
+      "label": "Урок 10",
+      "photos": [
+        {
+          "file": "IMG_8554.heic",
+          "page": null
+        },
+        {
+          "file": "IMG_8555.heic",
+          "page": 223
+        }
+      ],
+      "keys": [
+        "der businessplan",
+        "der umsatz",
+        "die anforderung",
+        "die digitalisierung",
+        "erweitern",
+        "etw. erweitern",
+        "geeignet für (+ akk.)",
+        "leistungsfähig",
+        "sich orientieren an + dat.",
+        "vielfältig"
+      ]
+    },
+    {
+      "id": "11",
+      "label": "Урок 11",
+      "photos": [
+        {
+          "file": "IMG_8556.heic",
+          "page": null
+        },
+        {
+          "file": "IMG_8557.heic",
+          "page": 243
+        }
+      ],
+      "keys": [
+        "bestehen aus + dat.",
+        "das arbeitsgericht",
+        "das arbeitsverhältnis",
+        "der berufsalltag",
+        "der mindesturlaub",
+        "die abmahnung",
+        "die geschäftsführung",
+        "die pflicht",
+        "führen zu + dat.",
+        "jdn. einstellen",
+        "sich wehren gegen + akk.",
+        "verlangen",
+        "verstoßen gegen + akk.",
+        "wahrscheinlich",
+        "zwingen"
+      ]
+    },
+    {
+      "id": "12",
+      "label": "Урок 12",
+      "photos": [
+        {
+          "file": "IMG_8558.heic",
+          "page": null
+        },
+        {
+          "file": "IMG_8559.heic",
+          "page": 263
+        }
+      ],
+      "keys": [
+        "anspruch haben auf (+ akk.)",
+        "beantragen",
+        "der anspruch",
+        "peinlich",
+        "rechnen mit + dat.",
+        "umgehen mit + dat.",
+        "üblich"
+      ]
+    }
+  ]
+}
 };
  const memberships=new Map();
  for(const [book,info] of Object.entries(books))for(const lesson of info.lessons)for(const key of lesson.keys){

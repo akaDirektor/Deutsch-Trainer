@@ -25,7 +25,7 @@ Two source occurrences are deliberately unresolved:
 - Lesson 4A: `die Beschleunigung` is absent. Existing `die Bescheinigung` means a certificate, so it is not a valid spelling-based substitute.
 - Lesson 4B: printed `das Recht haben` means having the right/entitlement. Existing `Recht haben` has Ukrainian `мати рацію`; it is not assigned to this source meaning.
 
-No new vocabulary entries or corrections are made for these exceptions. They remain in the review register. B2 is visible as pending and cannot be selected until its photos are supplied and reviewed. The 650 currently unassigned corpus keys remain available through the full database and «Без прив’язки до уроку»; absence from the B1+ photos is not evidence of B2 membership.
+No new vocabulary entries or corrections are made for these exceptions. They remain in the review register. B2 is now selectable using the separate 24-photo mapping below. Unassigned keys remain available through the full database and «Без прив’язки до уроку»; absence from B1+ is never treated as evidence of B2 membership.
 
 ## UI and shared progress
 
@@ -52,3 +52,33 @@ Baseline tests initially had three unrelated failures: the old corpus SHA, the o
 67 automated tests pass, including all previous corpus, cycle, article, search, synonym, cloud/offline and hidden-state checks. New tests cover all seven source pages, exact memberships, the two unresolved meanings, no inferred B2, every practice mode, inherited seen lists, no repeat within a complete lesson cycle, three encounters across cycles, article-dependent shared mastery, explicit mastered review, and exact snapshot restoration.
 
 Isolated Chrome checks use synthetic state and a cloud stub: native book/lesson controls, all seven options, disabled pending B2, default unmastered focus, legacy seen inheritance, correct noun article advancing shared mastery, disappearance from lesson 2/global matching, continued recall/search availability, unchanged state on filter changes, and 320/390/1280px at enlarged text. No user's browser session or cloud state is modified during testing.
+
+
+## B2 update — 2026-10-25
+
+All **24 supplied photographs** were visually inspected for the printed lesson number and candidate headwords, with local Apple Vision OCR as a lookup index. The mapping links **317 source headword occurrences to 274 distinct existing corpus keys** in lessons 1–12. This is a classification of the current database, not a complete transcription or import of the textbook's B2 vocabulary. Unlinked OCR readings are retained locally for later review; they are not presented as a verified count of absent words. No missing textbook vocabulary is silently added.
+
+| B2 lesson | Photos | Visible pages | Existing keys |
+|---|---|---|---:|
+| 1 | 1 / IMG_8537 | 28 / 29 | 142 |
+| 2 | IMG_8538 / IMG_8539 | — / 49 | 26 |
+| 3 | IMG_8540 / IMG_8541 | 68 / 69 | 32 |
+| 4 | IMG_8542 / IMG_8543 | — / 89 | 17 |
+| 5 | IMG_8569 / IMG_8576 | 116 / 117 | 14 |
+| 6 | IMG_8570 / IMG_8571 | 136 / — | 11 |
+| 7 | IMG_8572 / IMG_8549 | 156 / 157 | 15 |
+| 8 | IMG_8574 / IMG_8551 | 176 / 177 | 16 |
+| 9 | IMG_8552 / IMG_8553 | 202 / 203 | 17 |
+| 10 | IMG_8554 / IMG_8555 | — / 223 | 10 |
+| 11 | IMG_8556 / IMG_8557 | — / 243 | 15 |
+| 12 | IMG_8558 / IMG_8559 | — / 263 | 7 |
+
+A dash means the physical page number is not visible; the lesson number is visible. Filenames alone are not used to infer lesson order: IMG_8576 belongs to lesson 5, IMG_8572 to lesson 7, and IMG_8574 to lesson 8. The per-lesson totals overlap. Together with B1+, 644 existing unique keys have at least one book/lesson membership; the remaining 491 stay unassigned and fully accessible.
+
+`docs/b2-lesson-register.json` contains every assigned source occurrence, exact existing key, provenance and selected explicit review exceptions. Optional objects, separable-verb markers, harmless grammatical-label variants and clearly equivalent reordered labels are normalized only for membership lookup. Original labels/keys are retained. Similar spellings, synonyms and different constructions are not automatically matched.
+
+Important disambiguations: `etw. warten (z. B. eine Maschine)` in lessons 2 and 6 maps to existing `eine Anlage warten` (maintenance), never `warten` (waiting). `sich halten an` is not `sich halten in`; `die Selbstverständlichkeit` is not `die Selbstständigkeit`; `der Betriebsarzt` is not `der Betriebsrat`; equipment `etw. einstellen` is not hiring `jdn. einstellen`. A wrapped `zu einem Ergebnis kommen` is not assigned to bare `kommen`.
+
+Pre-change main: `9a735f1a32e5cfab14cd6acde1935dafd6a13316`. A complete repository ZIP and normalized corpus snapshot were saved locally before editing. All **1135 corpus records**, every literal example, B1+ metadata and cloud/progress implementation remain unchanged. No production cloud rows or browser storage are edited. B2 uses the already-tested shared lesson logic; it adds no separate vocabulary or progress store.
+
+**70 tests pass.** Isolated Chrome verification covers every B2 lesson, all 1135 runtime records, synthetic hidden filtering, a correct noun article advancing shared mastery, exclusion of that mastered word in another B2 lesson/B1+/the general pool, continued active recall availability, unchanged snapshots when switching filters, exact corpus preservation, and layouts at 320/390/1280px with enlarged text. These checks use a cloud stub and synthetic state, not the user's account. The existing B1+ and whole-corpus cycle tests also pass.
