@@ -33,3 +33,14 @@ test('health advertises only open Ukrainian providers and does not require or ex
 test('open lookup retains CORS and rejects control characters and unsupported methods',async()=>{
  const f=await fixture(),r=await f.handler(f.req({}, {origin:'https://akadirektor.github.io'}));assert.equal(r.headers.get('Access-Control-Allow-Origin'),'https://akadirektor.github.io');assert.equal((await f.handler(f.req({q:'a\nb'}))).status,400);assert.equal((await f.handler(new Request('https://test.supabase.co/lookup',{method:'DELETE'}))).status,405);
 });
+
+test('sentence translation preserves the entire exact German sentence and bypasses word dictionaries',async()=>{
+ const f=await fixture(),q='Die Kollegin hat die Unterlagen\nsorgfältig geprüft.';
+ for(let i=0;i<2;i++){const r=await f.handler(f.req({q,kind:'sentence'})),body=await r.json();assert.equal(r.status,200);assert.equal(body.query,q);assert.equal(body.translation,'самовпевненість');assert.equal(body.translationSource,'MyMemory');assert.equal(body.automatic,true);}
+ const calls=f.calls.filter(c=>c.url.includes('api.mymemory'));assert.equal(calls.length,1);assert.equal(new URL(calls[0].url).searchParams.get('q'),q);assert.equal(new URL(calls[0].url).searchParams.get('langpair'),'de|uk');assert(!f.calls.some(c=>/wiktionary|pons/.test(c.url)));
+});
+test('sentence mode keeps authentication, input limits and honest failure handling',async()=>{
+ const f=await fixture({member:false});assert.equal((await f.handler(f.req({q:'Das ist ein Satz.',kind:'sentence'}))).status,403);assert(!f.calls.some(c=>c.url.includes('mymemory')));
+ const good=await fixture();assert.equal((await good.handler(good.req({q:'word',kind:'unsupported'}))).status,400);const long=await(await good.handler(good.req({q:'Ü'.repeat(260),kind:'sentence'}))).json();assert.equal(long.status,'too_long');assert.equal(long.translation,null);assert(!good.calls.some(c=>c.url.includes('mymemory')));
+ const failed=await fixture({quotaFinished:true}),body=await(await failed.handler(failed.req({q:'Dies ist ein Satz.',kind:'sentence'}))).json();assert.equal(body.translation,null);assert.equal(body.translationSource,null);
+});
