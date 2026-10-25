@@ -410,3 +410,8 @@ test('remote apply and filter changes invalidate context questions; new counters
  for(const field of ['contextCorrect','contextWrong','contextStreak']){h.ctx.invalid={schema:1,stats:{legacy:{[field]:-1}},hidden:['old-hidden'],cycle:{seen:['old-seen']}};assert.throws(()=>h.run('Progress.validate(invalid)'));}
  h.ctx.good={schema:1,stats:{legacy:{correct:8,contextCorrect:2,contextWrong:1,contextStreak:2,unknownMetadata:{keep:true}}},hidden:['old-hidden'],cycle:{seen:['old-seen']}};assert.equal(JSON.stringify(h.run('Progress.validate(good)')),JSON.stringify(h.ctx.good));
 });
+
+
+test('hiding a current context target immediately replaces it and blocks the old answer without recording work',()=>{
+ const h=harness();h.run('trainingLocked=false;data.slice(0,2).forEach(w=>s(w).mastered=true);document.getElementById("mode").value="context";renderContext();globalThis.oldQuestion=contextQuestion');const old=h.run('key(oldQuestion.w)');h.run('hideWord(oldQuestion.w);answerContext(oldQuestion.answer,oldQuestion)');assert.equal(h.run('hiddenWords.has(key(oldQuestion.w))'),true);assert.notEqual(h.run('key(contextQuestion.w)'),old);assert.equal(h.run('s(oldQuestion.w).contextCorrect'),undefined);assert.equal(h.run('s(oldQuestion.w).lastWorked'),undefined);
+});
