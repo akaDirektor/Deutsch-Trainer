@@ -1,0 +1,5187 @@
+{
+ "book": "B1+",
+ "source": "User-provided textbook photographs; manually transcribed and visually reviewed on 2026-10-25. No images published.",
+ "sourceOccurrences": 498,
+ "matchedOccurrences": 496,
+ "uniqueCorpusKeys": 485,
+ "chapters": [
+  {
+   "number": 1,
+   "page": 23,
+   "photo": "IMG_8561.HEIC",
+   "sections": [
+    {
+     "id": "A",
+     "title": "Schule, Ausbildung, Weiterbildung"
+    },
+    {
+     "id": "B",
+     "title": "Lebenswege"
+    },
+    {
+     "id": "C",
+     "title": "Fit für den Arbeitsmarkt"
+    },
+    {
+     "id": "D",
+     "title": "Bald am Ziel!?"
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "page": 41,
+   "photo": "IMG_8562.HEIC",
+   "sections": [
+    {
+     "id": "A",
+     "title": "Wie finde ich Arbeit?"
+    },
+    {
+     "id": "B",
+     "title": "Arbeitsvermittlung in Deutschland"
+    },
+    {
+     "id": "C",
+     "title": "Stellenanzeigen verstehen"
+    },
+    {
+     "id": "D",
+     "title": "Informationsbogen bei Zeitarbeit"
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "page": 59,
+   "photo": "IMG_8563.HEIC",
+   "sections": [
+    {
+     "id": "A",
+     "title": "Der erste Arbeitstag"
+    },
+    {
+     "id": "B",
+     "title": "Sich in der Freizeit weiterbilden"
+    },
+    {
+     "id": "C",
+     "title": "Eine Teambesprechung"
+    },
+    {
+     "id": "D",
+     "title": "Ein neuer Kollege kommt"
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "page": 77,
+   "photo": "IMG_8564.HEIC",
+   "sections": [
+    {
+     "id": "A",
+     "title": "Verabredungen und Termine"
+    },
+    {
+     "id": "B",
+     "title": "Von Freizeit und Arbeitszeit"
+    },
+    {
+     "id": "C",
+     "title": "Die Deadline"
+    },
+    {
+     "id": "D",
+     "title": "Pünktlichkeit"
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "page": 95,
+   "photo": "IMG_8565.HEIC",
+   "sections": [
+    {
+     "id": "A",
+     "title": "Was und wie wir einkaufen"
+    },
+    {
+     "id": "B",
+     "title": "Vom Produkt zum Kunden"
+    },
+    {
+     "id": "C",
+     "title": "Berufe und Branchen"
+    },
+    {
+     "id": "D",
+     "title": "Lokal liefern lassen"
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "page": 113,
+   "photo": "IMG_8566.HEIC",
+   "sections": [
+    {
+     "id": "A",
+     "title": "Bestellungen und Einkäufe"
+    },
+    {
+     "id": "B",
+     "title": "Ein Angebot und ein Auftrag"
+    },
+    {
+     "id": "C",
+     "title": "Beschwerden und Reklamationen"
+    },
+    {
+     "id": "D",
+     "title": "Beschwerdemanagement"
+    }
+   ]
+  },
+  {
+   "number": 7,
+   "page": 131,
+   "photo": "IMG_8568.HEIC",
+   "sections": [
+    {
+     "id": "A",
+     "title": "Der technische Wandel"
+    },
+    {
+     "id": "B",
+     "title": "Möglichkeiten des Internets"
+    },
+    {
+     "id": "C",
+     "title": "Veränderungen im Berufsleben"
+    },
+    {
+     "id": "D",
+     "title": "Industrielle Revolutionen"
+    }
+   ]
+  }
+ ],
+ "entries": [
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Abteilung",
+   "status": "exact",
+   "keys": [
+    "die abteilung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "der Arbeitgeber",
+   "status": "exact",
+   "keys": [
+    "der arbeitgeber"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Arbeitgeberin",
+   "status": "exact",
+   "keys": [
+    "die arbeitgeberin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "das Asylverfahren",
+   "status": "exact",
+   "keys": [
+    "das asylverfahren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Ausbildung",
+   "status": "exact",
+   "keys": [
+    "die ausbildung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "auffallen",
+   "status": "exact",
+   "keys": [
+    "auffallen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "(eine Prüfung) bestehen",
+   "status": "exact",
+   "keys": [
+    "(eine prüfung) bestehen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "das Berufsinformationszentrum (BIZ)",
+   "status": "exact",
+   "keys": [
+    "das berufsinformationszentrum (biz)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "der Betrieb",
+   "status": "exact",
+   "keys": [
+    "der betrieb"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "sich bewerben",
+   "status": "exact",
+   "keys": [
+    "sich bewerben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "jdn. einstellen",
+   "status": "exact",
+   "keys": [
+    "jdn. einstellen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "das E-Learning",
+   "status": "exact",
+   "keys": [
+    "das e-learning"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "der E-Learning-Kurs",
+   "status": "exact",
+   "keys": [
+    "der e-learning-kurs"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "der Facharbeiter",
+   "status": "exact",
+   "keys": [
+    "der facharbeiter"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Facharbeiterin",
+   "status": "exact",
+   "keys": [
+    "die facharbeiterin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "der Gabelstapler",
+   "status": "exact",
+   "keys": [
+    "der gabelstapler"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Geschäftsführung",
+   "status": "exact",
+   "keys": [
+    "die geschäftsführung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "sich informieren",
+   "status": "exact",
+   "keys": [
+    "sich informieren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "das Lager",
+   "status": "exact",
+   "keys": [
+    "das lager"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Lagerlogistik",
+   "status": "exact",
+   "keys": [
+    "die lagerlogistik"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "der Mitarbeiter",
+   "status": "exact",
+   "keys": [
+    "der mitarbeiter"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Mitarbeiterin",
+   "status": "exact",
+   "keys": [
+    "die mitarbeiterin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "jdm. etw. raten",
+   "status": "exact",
+   "keys": [
+    "jdm. etw. raten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "der Schulabschluss",
+   "status": "exact",
+   "keys": [
+    "der schulabschluss"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "steigen",
+   "status": "exact",
+   "keys": [
+    "steigen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "teilnehmen an (+ Dat.)",
+   "status": "exact",
+   "keys": [
+    "teilnehmen an (+ dat.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "der Umsatz",
+   "status": "exact",
+   "keys": [
+    "der umsatz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Umschulung",
+   "status": "exact",
+   "keys": [
+    "die umschulung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "wahrscheinlich",
+   "status": "exact",
+   "keys": [
+    "wahrscheinlich"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "A",
+   "printed": "die Weiterbildung",
+   "status": "exact",
+   "keys": [
+    "die weiterbildung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "der Antrag",
+   "status": "exact",
+   "keys": [
+    "der antrag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "einen Antrag stellen",
+   "status": "exact",
+   "keys": [
+    "einen antrag stellen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "die Aufenthaltsgenehmigung",
+   "status": "exact",
+   "keys": [
+    "die aufenthaltsgenehmigung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "aufwachsen",
+   "status": "exact",
+   "keys": [
+    "aufwachsen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "der Berater",
+   "status": "exact",
+   "keys": [
+    "der berater"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "die Beraterin",
+   "status": "exact",
+   "keys": [
+    "die beraterin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "jdn. beschäftigen",
+   "status": "exact",
+   "keys": [
+    "jdn. beschäftigen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "der Businessplan",
+   "status": "exact",
+   "keys": [
+    "der businessplan"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "das Einkommen",
+   "status": "exact",
+   "keys": [
+    "das einkommen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "die Entscheidung",
+   "status": "exact",
+   "keys": [
+    "die entscheidung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "eine Entscheidung treffen",
+   "status": "exact",
+   "keys": [
+    "eine entscheidung treffen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "die Existenzgründung",
+   "status": "exact",
+   "keys": [
+    "die existenzgründung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "die Fortbildung",
+   "status": "exact",
+   "keys": [
+    "die fortbildung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "eine Fortbildung machen",
+   "status": "exact",
+   "keys": [
+    "eine fortbildung machen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "(ein Unternehmen) gründen",
+   "status": "exact",
+   "keys": [
+    "(ein unternehmen) gründen",
+    "gründen"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "einen Kredit bewilligen",
+   "status": "exact",
+   "keys": [
+    "einen kredit bewilligen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "der Küchenhelfer",
+   "status": "exact",
+   "keys": [
+    "der küchenhelfer"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "die Küchenhelferin",
+   "status": "exact",
+   "keys": [
+    "die küchenhelferin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "sich selbstständig machen",
+   "status": "exact",
+   "keys": [
+    "sich selbstständig machen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "die Selbstständigkeit",
+   "status": "exact",
+   "keys": [
+    "die selbstständigkeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "überlegen",
+   "status": "exact",
+   "keys": [
+    "überlegen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "B",
+   "printed": "Verantwortung tragen für (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "verantwortung tragen für (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "C",
+   "printed": "etw. anerkennen lassen",
+   "status": "exact",
+   "keys": [
+    "etw. anerkennen lassen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "C",
+   "printed": "der Berufsabschluss",
+   "status": "exact",
+   "keys": [
+    "der berufsabschluss"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "C",
+   "printed": "die Berufsausbildung",
+   "status": "exact",
+   "keys": [
+    "die berufsausbildung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "C",
+   "printed": "etw. beschließen",
+   "status": "exact",
+   "keys": [
+    "etw. beschließen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "C",
+   "printed": "das Zeugnis",
+   "status": "exact",
+   "keys": [
+    "das zeugnis"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "die Anerkennung",
+   "status": "exact",
+   "keys": [
+    "die anerkennung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "das Anerkennungsverfahren",
+   "status": "exact",
+   "keys": [
+    "das anerkennungsverfahren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "die Arbeitserlaubnis",
+   "status": "exact",
+   "keys": [
+    "die arbeitserlaubnis"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "die Fachkraft",
+   "status": "exact",
+   "keys": [
+    "die fachkraft"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "die Kompetenz",
+   "status": "exact",
+   "keys": [
+    "die kompetenz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "Kosten übernehmen",
+   "status": "exact",
+   "keys": [
+    "kosten übernehmen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "der Nachweis",
+   "status": "exact",
+   "keys": [
+    "der nachweis"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "das Praktikum",
+   "status": "exact",
+   "keys": [
+    "das praktikum"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "die Qualifikation",
+   "status": "exact",
+   "keys": [
+    "die qualifikation"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "reglementiert",
+   "status": "exact",
+   "keys": [
+    "reglementiert"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "die Unterlage",
+   "status": "exact",
+   "keys": [
+    "die unterlage"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 1,
+   "section": "D",
+   "printed": "etw. vergleichen mit (+ Dat.)",
+   "status": "exact",
+   "keys": [
+    "etw. vergleichen mit (+ dat.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "der Ansprechpartner",
+   "status": "exact",
+   "keys": [
+    "der ansprechpartner"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Ansprechpartnerin",
+   "status": "exact",
+   "keys": [
+    "die ansprechpartnerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "der Aushang",
+   "status": "exact",
+   "keys": [
+    "der aushang"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "das Bewerbungsschreiben",
+   "status": "exact",
+   "keys": [
+    "das bewerbungsschreiben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "das Bewerbungsverfahren",
+   "status": "exact",
+   "keys": [
+    "das bewerbungsverfahren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "der Eindruck",
+   "status": "exact",
+   "keys": [
+    "der eindruck"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Elektrofirma",
+   "status": "exact",
+   "keys": [
+    "die elektrofirma"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "erwarten",
+   "status": "exact",
+   "keys": [
+    "erwarten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "das Fachpersonal",
+   "status": "exact",
+   "keys": [
+    "das fachpersonal"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "fehlerfrei",
+   "status": "exact",
+   "keys": [
+    "fehlerfrei"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Initiativbewerbung",
+   "status": "exact",
+   "keys": [
+    "die initiativbewerbung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Installateurfirma",
+   "status": "exact",
+   "keys": [
+    "die installateurfirma"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Konkurrenz",
+   "status": "exact",
+   "keys": [
+    "die konkurrenz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "der Leiharbeiter",
+   "status": "exact",
+   "keys": [
+    "der leiharbeiter"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Leiharbeiterin",
+   "status": "exact",
+   "keys": [
+    "die leiharbeiterin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "das Leitbild",
+   "status": "exact",
+   "keys": [
+    "das leitbild"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "der Stand der Dinge",
+   "status": "exact",
+   "keys": [
+    "der stand der dinge"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "einen Termin bestätigen",
+   "status": "exact",
+   "keys": [
+    "einen termin bestätigen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Unterlage",
+   "status": "exact",
+   "keys": [
+    "die unterlage"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Wartezeit",
+   "status": "exact",
+   "keys": [
+    "die wartezeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "die Zeitarbeitsfirma",
+   "status": "exact",
+   "keys": [
+    "die zeitarbeitsfirma"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "A",
+   "printed": "zukünftig",
+   "status": "exact",
+   "keys": [
+    "zukünftig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Arbeitskraft",
+   "status": "exact",
+   "keys": [
+    "die arbeitskraft"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "das Arbeitsverhältnis",
+   "status": "exact",
+   "keys": [
+    "das arbeitsverhältnis"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "ausleihen",
+   "status": "exact",
+   "keys": [
+    "ausleihen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Berufsberatung",
+   "status": "exact",
+   "keys": [
+    "die berufsberatung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Berufserfahrung",
+   "status": "exact",
+   "keys": [
+    "die berufserfahrung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "beschäftigen",
+   "status": "exact",
+   "keys": [
+    "beschäftigen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Beschäftigung",
+   "status": "exact",
+   "keys": [
+    "die beschäftigung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "der Betrieb",
+   "status": "exact",
+   "keys": [
+    "der betrieb"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Genehmigung",
+   "status": "exact",
+   "keys": [
+    "die genehmigung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Leiharbeit",
+   "status": "exact",
+   "keys": [
+    "die leiharbeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "der Leiharbeiter",
+   "status": "exact",
+   "keys": [
+    "der leiharbeiter"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Leiharbeiterin",
+   "status": "exact",
+   "keys": [
+    "die leiharbeiterin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "staatlich",
+   "status": "exact",
+   "keys": [
+    "staatlich"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Tätigkeit",
+   "status": "exact",
+   "keys": [
+    "die tätigkeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "einen Termin vereinbaren",
+   "status": "exact",
+   "keys": [
+    "einen termin vereinbaren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "verleihen",
+   "status": "exact",
+   "keys": [
+    "verleihen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Vermittlung",
+   "status": "exact",
+   "keys": [
+    "die vermittlung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "B",
+   "printed": "die Vermittlungsgebühr",
+   "status": "exact",
+   "keys": [
+    "die vermittlungsgebühr"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Agraringenieur",
+   "status": "exact",
+   "keys": [
+    "der agraringenieur"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Agraringenieurin",
+   "status": "exact",
+   "keys": [
+    "die agraringenieurin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Arbeitseinsatz",
+   "status": "exact",
+   "keys": [
+    "der arbeitseinsatz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Bereich",
+   "status": "exact",
+   "keys": [
+    "der bereich"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Bereitschaft",
+   "status": "exact",
+   "keys": [
+    "die bereitschaft"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Einsatzort",
+   "status": "exact",
+   "keys": [
+    "der einsatzort"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "examiniert",
+   "status": "exact",
+   "keys": [
+    "examiniert"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "das Familienunternehmen",
+   "status": "exact",
+   "keys": [
+    "das familienunternehmen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Informatiker",
+   "status": "exact",
+   "keys": [
+    "der informatiker"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Informatikerin",
+   "status": "exact",
+   "keys": [
+    "die informatikerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Ingenieur",
+   "status": "exact",
+   "keys": [
+    "der ingenieur"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Ingenieurin",
+   "status": "exact",
+   "keys": [
+    "die ingenieurin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "innovativ",
+   "status": "exact",
+   "keys": [
+    "innovativ"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Karrierechance",
+   "status": "exact",
+   "keys": [
+    "die karrierechance"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Kommunikationsfähigkeit",
+   "status": "exact",
+   "keys": [
+    "die kommunikationsfähigkeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Kundenservice",
+   "status": "exact",
+   "keys": [
+    "der kundenservice"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Pflegekraft",
+   "status": "exact",
+   "keys": [
+    "die pflegekraft"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Pflegeservice",
+   "status": "exact",
+   "keys": [
+    "der pflegeservice"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Sicherheitsmitarbeiter",
+   "status": "exact",
+   "keys": [
+    "der sicherheitsmitarbeiter"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Sicherheitsmitarbeiterin",
+   "status": "exact",
+   "keys": [
+    "die sicherheitsmitarbeiterin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Teamgeist",
+   "status": "exact",
+   "keys": [
+    "der teamgeist"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Verantwortung",
+   "status": "exact",
+   "keys": [
+    "die verantwortung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "der Verkäufer",
+   "status": "exact",
+   "keys": [
+    "der verkäufer"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Verkäuferin",
+   "status": "exact",
+   "keys": [
+    "die verkäuferin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Verstärkung",
+   "status": "exact",
+   "keys": [
+    "die verstärkung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Zukunftsperspektive",
+   "status": "exact",
+   "keys": [
+    "die zukunftsperspektive"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "die Zusammenarbeit",
+   "status": "exact",
+   "keys": [
+    "die zusammenarbeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "C",
+   "printed": "zuständig",
+   "status": "exact",
+   "keys": [
+    "zuständig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "das Bauvorhaben",
+   "status": "exact",
+   "keys": [
+    "das bauvorhaben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "die Berufsausbildung",
+   "status": "exact",
+   "keys": [
+    "die berufsausbildung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "der Einsatz",
+   "status": "exact",
+   "keys": [
+    "der einsatz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "das Einverständnis",
+   "status": "exact",
+   "keys": [
+    "das einverständnis"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "der Fachinformatiker",
+   "status": "exact",
+   "keys": [
+    "der fachinformatiker"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "die Fachinformatikerin",
+   "status": "exact",
+   "keys": [
+    "die fachinformatikerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "die Krankheitsvertretung",
+   "status": "exact",
+   "keys": [
+    "die krankheitsvertretung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "der Realschulabschluss",
+   "status": "exact",
+   "keys": [
+    "der realschulabschluss"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "die Urlaubsvertretung",
+   "status": "exact",
+   "keys": [
+    "die urlaubsvertretung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 2,
+   "section": "D",
+   "printed": "der Zeitraum",
+   "status": "exact",
+   "keys": [
+    "der zeitraum"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "der Empfang",
+   "status": "exact",
+   "keys": [
+    "der empfang"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Personalabteilung",
+   "status": "exact",
+   "keys": [
+    "die personalabteilung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Kantine",
+   "status": "exact",
+   "keys": [
+    "die kantine"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "das Lager",
+   "status": "exact",
+   "keys": [
+    "das lager"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Produktion",
+   "status": "exact",
+   "keys": [
+    "die produktion"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Forschung",
+   "status": "exact",
+   "keys": [
+    "die forschung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Entwicklung",
+   "status": "exact",
+   "keys": [
+    "die entwicklung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "der Betriebsrat",
+   "status": "exact",
+   "keys": [
+    "der betriebsrat"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Betriebsrätin",
+   "status": "exact",
+   "keys": [
+    "die betriebsrätin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Geschäftsführung",
+   "status": "exact",
+   "keys": [
+    "die geschäftsführung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Finanzbuchhaltung",
+   "status": "exact",
+   "keys": [
+    "die finanzbuchhaltung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Einarbeitung",
+   "status": "exact",
+   "keys": [
+    "die einarbeitung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "der Ansprechpartner",
+   "status": "exact",
+   "keys": [
+    "der ansprechpartner"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Ansprechpartnerin",
+   "status": "exact",
+   "keys": [
+    "die ansprechpartnerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "die Pausenregelung",
+   "status": "exact",
+   "keys": [
+    "die pausenregelung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "A",
+   "printed": "der Rundgang",
+   "status": "exact",
+   "keys": [
+    "der rundgang"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "sich weiterbilden",
+   "status": "exact",
+   "keys": [
+    "sich weiterbilden"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "sich ärgern über (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "sich ärgern über (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "der Berufsalltag",
+   "status": "exact",
+   "keys": [
+    "der berufsalltag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "die Erfahrung",
+   "status": "exact",
+   "keys": [
+    "die erfahrung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "Erfahrung haben mit (+ Dat.)",
+   "status": "exact",
+   "keys": [
+    "erfahrung haben mit (+ dat.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "sich freuen auf (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "sich freuen auf (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "sich freuen über (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "sich freuen über (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "gehören zu (+ Dat.)",
+   "status": "exact",
+   "keys": [
+    "gehören zu (+ dat.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "es geht um (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "es geht um (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "ein Gespräch führen",
+   "status": "exact",
+   "keys": [
+    "ein gespräch führen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "sich interessieren für (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "sich interessieren für (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "investieren in (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "investieren in (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "stattfinden",
+   "status": "exact",
+   "keys": [
+    "stattfinden"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "etw. vermitteln",
+   "status": "exact",
+   "keys": [
+    "etw. vermitteln"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "die Voraussetzung",
+   "status": "exact",
+   "keys": [
+    "die voraussetzung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "B",
+   "printed": "die Webseite",
+   "status": "exact",
+   "keys": [
+    "die webseite"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "das Ergebnisprotokoll",
+   "status": "exact",
+   "keys": [
+    "das ergebnisprotokoll"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "die Besprechung",
+   "status": "exact",
+   "keys": [
+    "die besprechung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "die Teamsitzung",
+   "status": "exact",
+   "keys": [
+    "die teamsitzung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "etw. zusammenfassen",
+   "status": "exact",
+   "keys": [
+    "etw. zusammenfassen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "der Beschluss",
+   "status": "exact",
+   "keys": [
+    "der beschluss"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "die Entscheidung",
+   "status": "exact",
+   "keys": [
+    "die entscheidung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "die Vereinbarung",
+   "status": "exact",
+   "keys": [
+    "die vereinbarung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "die Tagesordnung",
+   "status": "exact",
+   "keys": [
+    "die tagesordnung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "das Stichwort",
+   "status": "exact",
+   "keys": [
+    "das stichwort"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "etw. dokumentieren",
+   "status": "exact",
+   "keys": [
+    "etw. dokumentieren",
+    "dokumentieren"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "etw. protokollieren",
+   "status": "exact",
+   "keys": [
+    "etw. protokollieren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "die Regel",
+   "status": "exact",
+   "keys": [
+    "die regel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "in der Regel",
+   "status": "exact",
+   "keys": [
+    "in der regel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "der Teilnehmer",
+   "status": "exact",
+   "keys": [
+    "der teilnehmer"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "die Teilnehmerin",
+   "status": "exact",
+   "keys": [
+    "die teilnehmerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "etw. vorschlagen",
+   "status": "exact",
+   "keys": [
+    "etw. vorschlagen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "der Zweifel",
+   "status": "exact",
+   "keys": [
+    "der zweifel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "C",
+   "printed": "etw. schaffen",
+   "status": "exact",
+   "keys": [
+    "etw. schaffen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "sich etw. merken",
+   "status": "exact",
+   "keys": [
+    "sich etw. merken"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "die Pünktlichkeit",
+   "status": "exact",
+   "keys": [
+    "die pünktlichkeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "die Begrüßung",
+   "status": "exact",
+   "keys": [
+    "die begrüßung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "der Feierabend",
+   "status": "exact",
+   "keys": [
+    "der feierabend"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "aufregend",
+   "status": "exact",
+   "keys": [
+    "aufregend"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "der Erfolg",
+   "status": "exact",
+   "keys": [
+    "der erfolg"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "nützlich",
+   "status": "exact",
+   "keys": [
+    "nützlich"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "der Berufsverkehr",
+   "status": "exact",
+   "keys": [
+    "der berufsverkehr"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "üblich",
+   "status": "exact",
+   "keys": [
+    "üblich"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "lächeln",
+   "status": "exact",
+   "keys": [
+    "lächeln"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "erwünscht",
+   "status": "exact",
+   "keys": [
+    "erwünscht"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "beliebt",
+   "status": "exact",
+   "keys": [
+    "beliebt"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "im Allgemeinen",
+   "status": "exact",
+   "keys": [
+    "im allgemeinen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "der Vorgesetzte",
+   "status": "exact",
+   "keys": [
+    "der vorgesetzte"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "die Vorgesetzte",
+   "status": "exact",
+   "keys": [
+    "die vorgesetzte"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 3,
+   "section": "D",
+   "printed": "sich verabschieden (von + Dat.)",
+   "status": "exact",
+   "keys": [
+    "sich verabschieden (von + dat.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "sich etw. anschauen",
+   "status": "exact",
+   "keys": [
+    "sich etw. anschauen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "der Arbeitsalltag",
+   "status": "exact",
+   "keys": [
+    "der arbeitsalltag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Arbeitsdichte",
+   "status": "exact",
+   "keys": [
+    "die arbeitsdichte"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "das Arbeitsleben",
+   "status": "exact",
+   "keys": [
+    "das arbeitsleben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Arbeitswelt",
+   "status": "exact",
+   "keys": [
+    "die arbeitswelt"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "sich auswirken",
+   "status": "exact",
+   "keys": [
+    "sich auswirken"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Baustelle",
+   "status": "exact",
+   "keys": [
+    "die baustelle"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "sich beeilen",
+   "status": "exact",
+   "keys": [
+    "sich beeilen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Berufssparte",
+   "status": "exact",
+   "keys": [
+    "die berufssparte"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "der Beschäftigte",
+   "status": "exact",
+   "keys": [
+    "der beschäftigte"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Beschäftigte",
+   "status": "exact",
+   "keys": [
+    "die beschäftigte"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Beschleunigung",
+   "status": "needs-review",
+   "keys": []
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "etw. bewältigen",
+   "status": "exact",
+   "keys": [
+    "etw. bewältigen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Herausforderung",
+   "status": "exact",
+   "keys": [
+    "die herausforderung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "der Maurer",
+   "status": "exact",
+   "keys": [
+    "der maurer"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Maurerin",
+   "status": "exact",
+   "keys": [
+    "die maurerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Strecke",
+   "status": "exact",
+   "keys": [
+    "die strecke"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "auf der Strecke bleiben",
+   "status": "exact",
+   "keys": [
+    "auf der strecke bleiben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "einen Termin absagen",
+   "status": "exact",
+   "keys": [
+    "einen termin absagen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "das Treffen",
+   "status": "exact",
+   "keys": [
+    "das treffen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "sich verspäten",
+   "status": "exact",
+   "keys": [
+    "sich verspäten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "das Wohlbefinden",
+   "status": "exact",
+   "keys": [
+    "das wohlbefinden"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "der Zeitdruck",
+   "status": "exact",
+   "keys": [
+    "der zeitdruck"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Abteilungskonferenz",
+   "status": "exact",
+   "keys": [
+    "die abteilungskonferenz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "sich absprechen",
+   "status": "exact",
+   "keys": [
+    "sich absprechen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "der Anspruch",
+   "status": "exact",
+   "keys": [
+    "der anspruch"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "Anspruch haben auf (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "anspruch haben auf (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "der Arbeitsweg",
+   "status": "exact",
+   "keys": [
+    "der arbeitsweg"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Arbeitszeit",
+   "status": "exact",
+   "keys": [
+    "die arbeitszeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "das Arbeitszeitgesetz",
+   "status": "exact",
+   "keys": [
+    "das arbeitszeitgesetz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Betriebsruhe",
+   "status": "exact",
+   "keys": [
+    "die betriebsruhe"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "das EDV-System",
+   "status": "exact",
+   "keys": [
+    "das edv-system"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "einweisen in (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "einweisen in (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "der Ersatzruhetag",
+   "status": "exact",
+   "keys": [
+    "der ersatzruhetag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "etw. vorschreiben",
+   "status": "exact",
+   "keys": [
+    "etw. vorschreiben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "der Fall",
+   "status": "exact",
+   "keys": [
+    "der fall"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "auf keinen Fall",
+   "status": "exact",
+   "keys": [
+    "auf keinen fall"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "der Freizeitausgleich",
+   "status": "exact",
+   "keys": [
+    "der freizeitausgleich"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "der Mindesturlaub",
+   "status": "exact",
+   "keys": [
+    "der mindesturlaub"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Pflicht",
+   "status": "exact",
+   "keys": [
+    "die pflicht"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "das Recht",
+   "status": "exact",
+   "keys": [
+    "das recht"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "das Recht haben",
+   "status": "needs-review",
+   "keys": []
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die (gesetzliche) Regel",
+   "status": "exact",
+   "keys": [
+    "die (gesetzliche) regel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Schichtarbeit",
+   "status": "exact",
+   "keys": [
+    "die schichtarbeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Teilzeitarbeit",
+   "status": "exact",
+   "keys": [
+    "die teilzeitarbeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Überstunde",
+   "status": "exact",
+   "keys": [
+    "die überstunde"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "der Urlaubstag",
+   "status": "exact",
+   "keys": [
+    "der urlaubstag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Urlaubszeit",
+   "status": "exact",
+   "keys": [
+    "die urlaubszeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Vollzeitarbeit",
+   "status": "exact",
+   "keys": [
+    "die vollzeitarbeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "die Wochenendarbeit",
+   "status": "exact",
+   "keys": [
+    "die wochenendarbeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "die Deadline",
+   "status": "exact",
+   "keys": [
+    "die deadline"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "das Drehbuch",
+   "status": "exact",
+   "keys": [
+    "das drehbuch"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "der Entwurf",
+   "status": "exact",
+   "keys": [
+    "der entwurf"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "die Kampagne",
+   "status": "exact",
+   "keys": [
+    "die kampagne"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "die Kosmetikserie",
+   "status": "exact",
+   "keys": [
+    "die kosmetikserie"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "das Printmedium",
+   "status": "exact",
+   "keys": [
+    "das printmedium"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "relevant",
+   "status": "exact",
+   "keys": [
+    "relevant"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "der Senior Manager",
+   "status": "exact",
+   "keys": [
+    "der senior manager"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "die Senior Managerin",
+   "status": "exact",
+   "keys": [
+    "die senior managerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "der Werbefilm",
+   "status": "exact",
+   "keys": [
+    "der werbefilm"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "C",
+   "printed": "die Werbekampagne",
+   "status": "exact",
+   "keys": [
+    "die werbekampagne"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "die Abmahnung",
+   "status": "exact",
+   "keys": [
+    "die abmahnung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "das Arbeitsgericht",
+   "status": "exact",
+   "keys": [
+    "das arbeitsgericht"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "der Betriebsrat",
+   "status": "exact",
+   "keys": [
+    "der betriebsrat"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "die Betriebsfeier",
+   "status": "exact",
+   "keys": [
+    "die betriebsfeier"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "dokumentieren",
+   "status": "exact",
+   "keys": [
+    "dokumentieren",
+    "etw. dokumentieren"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "der Heizungstechniker",
+   "status": "exact",
+   "keys": [
+    "der heizungstechniker"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "die Heizungstechnikerin",
+   "status": "exact",
+   "keys": [
+    "die heizungstechnikerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "die Hilfe",
+   "status": "exact",
+   "keys": [
+    "die hilfe"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "um Hilfe bitten",
+   "status": "exact",
+   "keys": [
+    "um hilfe bitten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "das Zuspätkommen",
+   "status": "exact",
+   "keys": [
+    "das zuspätkommen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "das Verständnis",
+   "status": "exact",
+   "keys": [
+    "das verständnis"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "D",
+   "printed": "verärgert sein über (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "verärgert sein über (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "abhängig sein von (+ Dat.)",
+   "status": "exact",
+   "keys": [
+    "abhängig sein von (+ dat.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "die Beratung",
+   "status": "exact",
+   "keys": [
+    "die beratung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "Geld ausgeben für (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "geld ausgeben für (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "die Lieferzeit",
+   "status": "exact",
+   "keys": [
+    "die lieferzeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "die Öffnungszeit",
+   "status": "exact",
+   "keys": [
+    "die öffnungszeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "der Online-Einkauf",
+   "status": "exact",
+   "keys": [
+    "der online-einkauf"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "die Qualität",
+   "status": "exact",
+   "keys": [
+    "die qualität"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "vorsichtig",
+   "status": "exact",
+   "keys": [
+    "vorsichtig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "A",
+   "printed": "die Ware",
+   "status": "exact",
+   "keys": [
+    "die ware"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Absatz",
+   "status": "exact",
+   "keys": [
+    "der absatz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die (technische) Anlage",
+   "status": "exact",
+   "keys": [
+    "die (technische) anlage"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "eine Anlage warten",
+   "status": "exact",
+   "keys": [
+    "eine anlage warten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "jdn./etw. beobachten",
+   "status": "exact",
+   "keys": [
+    "jdn./etw. beobachten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Einzelhandel",
+   "status": "exact",
+   "keys": [
+    "der einzelhandel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Endkunde",
+   "status": "exact",
+   "keys": [
+    "der endkunde"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Endkundin",
+   "status": "exact",
+   "keys": [
+    "die endkundin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "etw. entwickeln",
+   "status": "exact",
+   "keys": [
+    "etw. entwickeln",
+    "entwickeln"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Forschung und Entwicklung",
+   "status": "exact",
+   "keys": [
+    "die forschung und entwicklung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Großhandel",
+   "status": "exact",
+   "keys": [
+    "der großhandel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Handel",
+   "status": "exact",
+   "keys": [
+    "der handel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "herstellen",
+   "status": "exact",
+   "keys": [
+    "herstellen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Herstellung",
+   "status": "exact",
+   "keys": [
+    "die herstellung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "etw. liefern",
+   "status": "exact",
+   "keys": [
+    "etw. liefern"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Lieferschein",
+   "status": "exact",
+   "keys": [
+    "der lieferschein"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "Lieferscheine ausstellen",
+   "status": "exact",
+   "keys": [
+    "lieferscheine ausstellen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Lieferung",
+   "status": "exact",
+   "keys": [
+    "die lieferung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Markt (im kaufmänn. Sinn)",
+   "status": "reviewed-label",
+   "reason": "The photo qualifier specifies the commercial sense; corpus der Markt is ринок.",
+   "keys": [
+    "der markt"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "das Maß",
+   "status": "exact",
+   "keys": [
+    "das maß"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Menge",
+   "status": "exact",
+   "keys": [
+    "die menge"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "etw. montieren",
+   "status": "exact",
+   "keys": [
+    "etw. montieren",
+    "montieren"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Produktion",
+   "status": "exact",
+   "keys": [
+    "die produktion"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Rechnung",
+   "status": "exact",
+   "keys": [
+    "die rechnung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Spedition",
+   "status": "exact",
+   "keys": [
+    "die spedition"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Transport",
+   "status": "exact",
+   "keys": [
+    "der transport"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "die Verpackung",
+   "status": "exact",
+   "keys": [
+    "die verpackung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Versand",
+   "status": "exact",
+   "keys": [
+    "der versand"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Vertrieb",
+   "status": "exact",
+   "keys": [
+    "der vertrieb"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "B",
+   "printed": "der Zwischenhändler",
+   "status": "exact",
+   "keys": [
+    "der zwischenhändler"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "etw. analysieren",
+   "status": "exact",
+   "keys": [
+    "etw. analysieren",
+    "analysieren"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "etw. bearbeiten",
+   "status": "exact",
+   "keys": [
+    "etw. bearbeiten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "jdn./etw. befördern",
+   "status": "exact",
+   "keys": [
+    "jdn./etw. befördern"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "jdn./etw. betreuen",
+   "status": "exact",
+   "keys": [
+    "jdn./etw. betreuen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "die Branche",
+   "status": "exact",
+   "keys": [
+    "die branche"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "etw. entwickeln",
+   "status": "exact",
+   "keys": [
+    "etw. entwickeln",
+    "entwickeln"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "die Gastronomie",
+   "status": "exact",
+   "keys": [
+    "die gastronomie"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "etw. gestalten",
+   "status": "exact",
+   "keys": [
+    "etw. gestalten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "das Handwerk",
+   "status": "exact",
+   "keys": [
+    "das handwerk"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "die IT-Branche",
+   "status": "exact",
+   "keys": [
+    "die it-branche"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "etw. konstruieren",
+   "status": "exact",
+   "keys": [
+    "etw. konstruieren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "etw. kontrollieren",
+   "status": "exact",
+   "keys": [
+    "etw. kontrollieren",
+    "kontrollieren"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "Kunden bedienen",
+   "status": "exact",
+   "keys": [
+    "kunden bedienen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "der Kundenberater",
+   "status": "exact",
+   "keys": [
+    "der kundenberater"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "die Kundenberaterin",
+   "status": "exact",
+   "keys": [
+    "die kundenberaterin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "das Labor",
+   "status": "exact",
+   "keys": [
+    "das labor"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "der Lagerist",
+   "status": "exact",
+   "keys": [
+    "der lagerist"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "die Lageristin",
+   "status": "exact",
+   "keys": [
+    "die lageristin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "der Tierpfleger",
+   "status": "exact",
+   "keys": [
+    "der tierpfleger"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "die Tierpflegerin",
+   "status": "exact",
+   "keys": [
+    "die tierpflegerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "Transport und Logistik",
+   "status": "exact",
+   "keys": [
+    "transport und logistik"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "der Vertriebsweg",
+   "status": "exact",
+   "keys": [
+    "der vertriebsweg"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "Waren bestellen",
+   "status": "exact",
+   "keys": [
+    "waren bestellen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "Wissenschaft und Forschung",
+   "status": "exact",
+   "keys": [
+    "wissenschaft und forschung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "etw. zubereiten",
+   "status": "exact",
+   "keys": [
+    "etw. zubereiten",
+    "zubereiten"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "C",
+   "printed": "etw. zustellen",
+   "status": "exact",
+   "keys": [
+    "etw. zustellen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "D",
+   "printed": "die Bequemlichkeit",
+   "status": "exact",
+   "keys": [
+    "die bequemlichkeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "D",
+   "printed": "der CO₂-Ausstoß",
+   "status": "exact",
+   "keys": [
+    "der co₂-ausstoß"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "D",
+   "printed": "der Händler",
+   "status": "exact",
+   "keys": [
+    "der händler"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "D",
+   "printed": "die Händlerin",
+   "status": "exact",
+   "keys": [
+    "die händlerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "D",
+   "printed": "die Lagerhalle",
+   "status": "exact",
+   "keys": [
+    "die lagerhalle"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "D",
+   "printed": "die Online-Plattform",
+   "status": "exact",
+   "keys": [
+    "die online-plattform"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 5,
+   "section": "D",
+   "printed": "der Sonderwunsch",
+   "status": "exact",
+   "keys": [
+    "der sonderwunsch"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. aktivieren",
+   "status": "exact",
+   "keys": [
+    "etw. aktivieren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "der Anbieter",
+   "status": "exact",
+   "keys": [
+    "der anbieter"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "die Anbieterin",
+   "status": "exact",
+   "keys": [
+    "die anbieterin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. aufladen",
+   "status": "exact",
+   "keys": [
+    "etw. aufladen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "sich beraten lassen",
+   "status": "exact",
+   "keys": [
+    "sich beraten lassen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "sich beschweren",
+   "status": "exact",
+   "keys": [
+    "sich beschweren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "die Bestellung",
+   "status": "exact",
+   "keys": [
+    "die bestellung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "das Datenvolumen",
+   "status": "exact",
+   "keys": [
+    "das datenvolumen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. eingeben",
+   "status": "exact",
+   "keys": [
+    "etw. eingeben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. einlegen",
+   "status": "exact",
+   "keys": [
+    "etw. einlegen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "einmalig",
+   "status": "exact",
+   "keys": [
+    "einmalig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "der Einsteiger",
+   "status": "exact",
+   "keys": [
+    "der einsteiger"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "die Einsteigerin",
+   "status": "exact",
+   "keys": [
+    "die einsteigerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. entgegennehmen",
+   "status": "exact",
+   "keys": [
+    "etw. entgegennehmen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "das Festnetz",
+   "status": "exact",
+   "keys": [
+    "das festnetz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. freischalten",
+   "status": "exact",
+   "keys": [
+    "etw. freischalten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "die Grundgebühr",
+   "status": "exact",
+   "keys": [
+    "die grundgebühr"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "gültig",
+   "status": "exact",
+   "keys": [
+    "gültig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "günstig",
+   "status": "exact",
+   "keys": [
+    "günstig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "das Guthaben",
+   "status": "exact",
+   "keys": [
+    "das guthaben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "der Handwerker",
+   "status": "exact",
+   "keys": [
+    "der handwerker"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "die Handwerkerin",
+   "status": "exact",
+   "keys": [
+    "die handwerkerin"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "inklusive",
+   "status": "exact",
+   "keys": [
+    "inklusive"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "die Kontrolle",
+   "status": "exact",
+   "keys": [
+    "die kontrolle"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "der Lieferservice",
+   "status": "exact",
+   "keys": [
+    "der lieferservice"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "das Netz",
+   "status": "exact",
+   "keys": [
+    "das netz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "optimal",
+   "status": "exact",
+   "keys": [
+    "optimal"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "profitieren von (+ Dat.)",
+   "status": "exact",
+   "keys": [
+    "profitieren von (+ dat.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. sperren",
+   "status": "exact",
+   "keys": [
+    "etw. sperren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "der Tarif",
+   "status": "exact",
+   "keys": [
+    "der tarif"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. verschicken",
+   "status": "exact",
+   "keys": [
+    "etw. verschicken"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "der Vertrag",
+   "status": "exact",
+   "keys": [
+    "der vertrag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "die Vertragslaufzeit",
+   "status": "exact",
+   "keys": [
+    "die vertragslaufzeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "A",
+   "printed": "etw. zustellen",
+   "status": "exact",
+   "keys": [
+    "etw. zustellen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "das Angebot",
+   "status": "exact",
+   "keys": [
+    "das angebot"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "der Auftrag",
+   "status": "exact",
+   "keys": [
+    "der auftrag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "der Ausdruck",
+   "status": "exact",
+   "keys": [
+    "der ausdruck"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "sich binden an (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "sich binden an (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "brutto",
+   "status": "exact",
+   "keys": [
+    "brutto"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "einverstanden",
+   "status": "exact",
+   "keys": [
+    "einverstanden"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "etw. empfehlen",
+   "status": "exact",
+   "keys": [
+    "etw. empfehlen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "die Erledigung",
+   "status": "exact",
+   "keys": [
+    "die erledigung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "etw. erteilen",
+   "status": "exact",
+   "keys": [
+    "etw. erteilen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "der Grund",
+   "status": "exact",
+   "keys": [
+    "der grund"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "die Mehrwertsteuer",
+   "status": "exact",
+   "keys": [
+    "die mehrwertsteuer"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "netto",
+   "status": "exact",
+   "keys": [
+    "netto"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "sorgfältig",
+   "status": "exact",
+   "keys": [
+    "sorgfältig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "die Summe",
+   "status": "exact",
+   "keys": [
+    "die summe"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "die Unterschrift",
+   "status": "exact",
+   "keys": [
+    "die unterschrift"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "zahlbar",
+   "status": "exact",
+   "keys": [
+    "zahlbar"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "B",
+   "printed": "zuverlässig",
+   "status": "exact",
+   "keys": [
+    "zuverlässig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "der Ärger",
+   "status": "exact",
+   "keys": [
+    "der ärger"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "der Artikel",
+   "status": "exact",
+   "keys": [
+    "der artikel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "beschädigt",
+   "status": "exact",
+   "keys": [
+    "beschädigt"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "die Beschwerde",
+   "status": "exact",
+   "keys": [
+    "die beschwerde"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "defekt",
+   "status": "exact",
+   "keys": [
+    "defekt"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "dreckig",
+   "status": "exact",
+   "keys": [
+    "dreckig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "der Fleck",
+   "status": "exact",
+   "keys": [
+    "der fleck"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "der Mangel",
+   "status": "exact",
+   "keys": [
+    "der mangel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "peinlich",
+   "status": "exact",
+   "keys": [
+    "peinlich"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "die Reklamation",
+   "status": "exact",
+   "keys": [
+    "die reklamation"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "unvollständig",
+   "status": "exact",
+   "keys": [
+    "unvollständig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "der Vorschlag",
+   "status": "exact",
+   "keys": [
+    "der vorschlag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "etw. zerbrechen",
+   "status": "exact",
+   "keys": [
+    "etw. zerbrechen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "etw. zerkratzen",
+   "status": "exact",
+   "keys": [
+    "etw. zerkratzen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "C",
+   "printed": "etw. zerreißen",
+   "status": "exact",
+   "keys": [
+    "etw. zerreißen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "jdn. ausreden lassen",
+   "status": "exact",
+   "keys": [
+    "jdn. ausreden lassen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "die Bedeutung",
+   "status": "exact",
+   "keys": [
+    "die bedeutung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "die Erwartung",
+   "status": "exact",
+   "keys": [
+    "die erwartung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "etw. klären",
+   "status": "exact",
+   "keys": [
+    "etw. klären"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "konkurrenzfähig",
+   "status": "exact",
+   "keys": [
+    "konkurrenzfähig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "sich etw. leisten können",
+   "status": "exact",
+   "keys": [
+    "sich etw. leisten können"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "einen Preisnachlass gewähren",
+   "status": "exact",
+   "keys": [
+    "einen preisnachlass gewähren"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "treu bleiben",
+   "status": "exact",
+   "keys": [
+    "treu bleiben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "unzufrieden",
+   "status": "exact",
+   "keys": [
+    "unzufrieden"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "vereinbart",
+   "status": "exact",
+   "keys": [
+    "vereinbart"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 6,
+   "section": "D",
+   "printed": "sich etw. vorstellen",
+   "status": "exact",
+   "keys": [
+    "sich etw. vorstellen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "der Alltag",
+   "status": "exact",
+   "keys": [
+    "der alltag"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "der Anschluss",
+   "status": "exact",
+   "keys": [
+    "der anschluss"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "die Anwendungsmöglichkeit",
+   "status": "exact",
+   "keys": [
+    "die anwendungsmöglichkeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "das Display",
+   "status": "exact",
+   "keys": [
+    "das display"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "einsatzbereit",
+   "status": "exact",
+   "keys": [
+    "einsatzbereit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "das Festnetz",
+   "status": "exact",
+   "keys": [
+    "das festnetz"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "das Gerät",
+   "status": "exact",
+   "keys": [
+    "das gerät"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "herunterladen",
+   "status": "exact",
+   "keys": [
+    "herunterladen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "etw. installieren",
+   "status": "exact",
+   "keys": [
+    "etw. installieren",
+    "installieren"
+   ],
+   "variantReason": "Reviewed same verb sense; optional etw. / ein Unternehmen object label. Existing records and separate counters remain unchanged."
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "das Kommunikationsmittel",
+   "status": "exact",
+   "keys": [
+    "das kommunikationsmittel"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "leistungsfähig",
+   "status": "exact",
+   "keys": [
+    "leistungsfähig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "der Mobilfunk",
+   "status": "exact",
+   "keys": [
+    "der mobilfunk"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "multifunktional",
+   "status": "exact",
+   "keys": [
+    "multifunktional"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "das Navi",
+   "status": "exact",
+   "keys": [
+    "das navi"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "das Navigationsgerät",
+   "status": "exact",
+   "keys": [
+    "das navigationsgerät"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "problemlos",
+   "status": "exact",
+   "keys": [
+    "problemlos"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "das Risiko",
+   "status": "exact",
+   "keys": [
+    "das risiko"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "sinken",
+   "status": "exact",
+   "keys": [
+    "sinken"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "die Tastatur",
+   "status": "exact",
+   "keys": [
+    "die tastatur"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "verfügbar",
+   "status": "exact",
+   "keys": [
+    "verfügbar"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "etw. weiterentwickeln",
+   "status": "exact",
+   "keys": [
+    "etw. weiterentwickeln"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "die Zukunft",
+   "status": "exact",
+   "keys": [
+    "die zukunft"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "A",
+   "printed": "in Zukunft",
+   "status": "exact",
+   "keys": [
+    "in zukunft"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "B",
+   "printed": "die Arbeit erleichtern",
+   "status": "exact",
+   "keys": [
+    "die arbeit erleichtern"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "B",
+   "printed": "die Daten",
+   "status": "exact",
+   "keys": [
+    "die daten"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "B",
+   "printed": "Daten missbrauchen",
+   "status": "exact",
+   "keys": [
+    "daten missbrauchen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "B",
+   "printed": "nachteilig",
+   "status": "exact",
+   "keys": [
+    "nachteilig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "B",
+   "printed": "papierlos",
+   "status": "exact",
+   "keys": [
+    "papierlos"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "B",
+   "printed": "die sozialen Netzwerke",
+   "status": "exact",
+   "keys": [
+    "die sozialen netzwerke"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "B",
+   "printed": "speichern",
+   "status": "exact",
+   "keys": [
+    "speichern"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "B",
+   "printed": "verzichten auf (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "verzichten auf (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Anforderung",
+   "status": "exact",
+   "keys": [
+    "die anforderung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "der Ausbildungsberuf",
+   "status": "exact",
+   "keys": [
+    "der ausbildungsberuf"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "beeinflussen",
+   "status": "exact",
+   "keys": [
+    "beeinflussen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Berufsaussicht",
+   "status": "exact",
+   "keys": [
+    "die berufsaussicht"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Digitalisierung",
+   "status": "exact",
+   "keys": [
+    "die digitalisierung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Eigenschaft",
+   "status": "exact",
+   "keys": [
+    "die eigenschaft"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "der Erfolg",
+   "status": "exact",
+   "keys": [
+    "der erfolg"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "Erfolg haben",
+   "status": "exact",
+   "keys": [
+    "erfolg haben"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "fächerübergreifend",
+   "status": "exact",
+   "keys": [
+    "fächerübergreifend"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Gesprächs- und Verhandlungsführung",
+   "status": "exact",
+   "keys": [
+    "die gesprächs- und verhandlungsführung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "interkulturell",
+   "status": "exact",
+   "keys": [
+    "interkulturell"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die IT-Systemkauffrau",
+   "status": "exact",
+   "keys": [
+    "die it-systemkauffrau"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "der IT-Systemkaufmann",
+   "status": "exact",
+   "keys": [
+    "der it-systemkaufmann"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Soft Skills",
+   "status": "exact",
+   "keys": [
+    "die soft skills"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "teamfähig",
+   "status": "exact",
+   "keys": [
+    "teamfähig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Teamfähigkeit",
+   "status": "exact",
+   "keys": [
+    "die teamfähigkeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Umfrage",
+   "status": "exact",
+   "keys": [
+    "die umfrage"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "wahrscheinlich",
+   "status": "exact",
+   "keys": [
+    "wahrscheinlich"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "Wert legen auf (+ Akk.)",
+   "status": "exact",
+   "keys": [
+    "wert legen auf (+ akk.)"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "das Wissensmanagement",
+   "status": "exact",
+   "keys": [
+    "das wissensmanagement"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "zuverlässig",
+   "status": "exact",
+   "keys": [
+    "zuverlässig"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "C",
+   "printed": "die Zuverlässigkeit",
+   "status": "exact",
+   "keys": [
+    "die zuverlässigkeit"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "der Arbeitsablauf",
+   "status": "exact",
+   "keys": [
+    "der arbeitsablauf"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "die Automatisierung",
+   "status": "exact",
+   "keys": [
+    "die automatisierung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "etw. einführen",
+   "status": "exact",
+   "keys": [
+    "etw. einführen"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "die Einführung",
+   "status": "exact",
+   "keys": [
+    "die einführung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "etw. fernsteuern",
+   "status": "exact",
+   "keys": [
+    "etw. fernsteuern"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "das Fließband",
+   "status": "exact",
+   "keys": [
+    "das fließband"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "die Informationstechnologie",
+   "status": "exact",
+   "keys": [
+    "die informationstechnologie"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "das Internet der Dinge",
+   "status": "exact",
+   "keys": [
+    "das internet der dinge"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "der Sprachassistent",
+   "status": "exact",
+   "keys": [
+    "der sprachassistent"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "die Vernetzung",
+   "status": "exact",
+   "keys": [
+    "die vernetzung"
+   ]
+  },
+  {
+   "book": "b1plus",
+   "lesson": 7,
+   "section": "D",
+   "printed": "vielfältig",
+   "status": "exact",
+   "keys": [
+    "vielfältig"
+   ]
+  }
+ ],
+ "unmatched": [
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "A",
+   "printed": "die Beschleunigung",
+   "status": "needs-review",
+   "keys": []
+  },
+  {
+   "book": "b1plus",
+   "lesson": 4,
+   "section": "B",
+   "printed": "das Recht haben",
+   "status": "needs-review",
+   "keys": []
+  }
+ ]
+}

@@ -2474,3 +2474,20 @@ for(const [word,sentence] of Object.entries({"warten": "Die Kundin wartet am Emp
 
 // Authored example for the promoted personal entry; no imported example exists.
 window.WORD_EXAMPLES["der nebel"]=["Wegen des dichten Nebels kam der Lieferwagen erst am Nachmittag an."];
+
+// Individual authored examples for the 13 words already added upstream on 2026-10-25.
+Object.assign(window.WORD_EXAMPLES,{
+ "erweitern":["Ab Januar erweitert die Firma ihr Angebot um einen Reparaturservice."],
+ "desinfizieren":["Vor jeder Behandlung desinfiziert die Ärztin ihre Hände."],
+ "sägen":["Der Tischler sägt das Brett auf die passende Länge."],
+ "kontrollieren":["Bitte kontrollieren Sie die Liefermenge, bevor Sie den Empfang unterschreiben."],
+ "impfen":["Die Betriebsärztin impft die Beschäftigten auf Wunsch gegen Grippe."],
+ "betanken":["Der Fahrer betankt den Lieferwagen noch vor der ersten Fahrt."],
+ "transportieren":["Spezielle Fahrzeuge transportieren die gekühlten Lebensmittel direkt zu den Filialen."],
+ "suchen":["Für die neue Abteilung suchen wir eine erfahrene Buchhalterin."],
+ "betreiben":["Die Familie betreibt seit zwanzig Jahren ein kleines Hotel am See."],
+ "informieren":["Die Personalabteilung informiert alle Beschäftigten über die neue Pausenregelung."],
+ "anbieten":["Unsere Werkstatt bietet während der Reparatur ein kostenloses Ersatzrad an."],
+ "mitbringen":["Bringen Sie zum Vorstellungsgespräch bitte Ihre Zeugnisse mit."],
+ "gründen":["Nach ihrer Meisterprüfung gründete sie einen eigenen Handwerksbetrieb."]
+});
