@@ -332,7 +332,7 @@ test('default unmastered view inherits the entire legacy seen list rather than r
 
 test('all 24 B2 photos map to 12 lessons using existing keys, preserving B1 memberships and source provenance',()=>{
  const h=harness(),r=JSON.parse(fs.readFileSync('docs/b2-lesson-register.json')),b1=JSON.parse(fs.readFileSync('docs/b1plus-lesson-register.json'));
- assert.equal(r.sourcePhotosReviewed,24);assert.equal(r.uniqueCorpusKeys,271);assert.equal(r.matchedHeadwordOccurrences,313);assert.equal(h.run('data.length'),1135);
+ assert.equal(r.sourcePhotosReviewed,24);assert.equal(r.uniqueCorpusKeys,274);assert.equal(r.matchedHeadwordOccurrences,317);assert.equal(h.run('data.length'),1135);
  const corpus=new Set(h.run('data.map(key)'));for(const row of r.entries)for(const k of row.keys){assert(corpus.has(k),k);assert(h.run(`Lessons.matches({de:${JSON.stringify(k)}},"b2",${JSON.stringify(String(row.lesson))})`));}
  assert.equal(new Set(r.photos.map(p=>p.photo)).size,24);
  for(let n=1;n<=12;n++){const l=h.ctx.Lessons.books.b2.lessons[n-1];assert.equal(l.id,String(n));assert(l.keys.length>0);assert.equal(l.photos.length,2);assert.equal(l.keys.length,new Set(l.keys).size);assert.equal(r.photos.filter(p=>p.lesson===n).length,2);}

@@ -56,12 +56,12 @@ Isolated Chrome checks use synthetic state and a cloud stub: native book/lesson 
 
 ## B2 update — 2026-10-25
 
-All **24 supplied photographs** were visually inspected for the printed lesson number and candidate headwords, with local Apple Vision OCR as a lookup index. The mapping links **313 source headword occurrences to 271 distinct existing corpus keys** in lessons 1–12. This is a classification of the current database, not a complete transcription or import of the textbook's B2 vocabulary. Unlinked OCR readings are retained locally for later review; they are not presented as a verified count of absent words. No missing textbook vocabulary is silently added.
+All **24 supplied photographs** were visually inspected for the printed lesson number and candidate headwords, with local Apple Vision OCR as a lookup index. The mapping links **317 source headword occurrences to 274 distinct existing corpus keys** in lessons 1–12. This is a classification of the current database, not a complete transcription or import of the textbook's B2 vocabulary. Unlinked OCR readings are retained locally for later review; they are not presented as a verified count of absent words. No missing textbook vocabulary is silently added.
 
 | B2 lesson | Photos | Visible pages | Existing keys |
 |---|---|---|---:|
-| 1 | 1 / IMG_8537 | 28 / 29 | 139 |
-| 2 | IMG_8538 / IMG_8539 | — / 49 | 23 |
+| 1 | 1 / IMG_8537 | 28 / 29 | 142 |
+| 2 | IMG_8538 / IMG_8539 | — / 49 | 26 |
 | 3 | IMG_8540 / IMG_8541 | 68 / 69 | 32 |
 | 4 | IMG_8542 / IMG_8543 | — / 89 | 17 |
 | 5 | IMG_8569 / IMG_8576 | 116 / 117 | 14 |
@@ -73,7 +73,7 @@ All **24 supplied photographs** were visually inspected for the printed lesson n
 | 11 | IMG_8556 / IMG_8557 | — / 243 | 15 |
 | 12 | IMG_8558 / IMG_8559 | — / 263 | 7 |
 
-A dash means the physical page number is not visible; the lesson number is visible. Filenames alone are not used to infer lesson order: IMG_8576 belongs to lesson 5, IMG_8572 to lesson 7, and IMG_8574 to lesson 8. The per-lesson totals overlap. Together with B1+, 643 existing unique keys have at least one book/lesson membership; the remaining 492 stay unassigned and fully accessible.
+A dash means the physical page number is not visible; the lesson number is visible. Filenames alone are not used to infer lesson order: IMG_8576 belongs to lesson 5, IMG_8572 to lesson 7, and IMG_8574 to lesson 8. The per-lesson totals overlap. Together with B1+, 644 existing unique keys have at least one book/lesson membership; the remaining 491 stay unassigned and fully accessible.
 
 `docs/b2-lesson-register.json` contains every assigned source occurrence, exact existing key, provenance and selected explicit review exceptions. Optional objects, separable-verb markers, harmless grammatical-label variants and clearly equivalent reordered labels are normalized only for membership lookup. Original labels/keys are retained. Similar spellings, synonyms and different constructions are not automatically matched.
 

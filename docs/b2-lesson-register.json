@@ -4,8 +4,8 @@
   "corpusRecordsBefore": 1135,
   "corpusRecordsAfter": 1135,
   "sourcePhotosReviewed": 24,
-  "uniqueCorpusKeys": 271,
-  "matchedHeadwordOccurrences": 313,
+  "uniqueCorpusKeys": 274,
+  "matchedHeadwordOccurrences": 317,
   "scope": "Assign existing corpus only. All 24 photos visually inspected; OCR used as an index and mapped candidates reviewed. This is not a transcription/import of the full printed B2 vocabulary. Unlinked OCR readings are kept locally and are not counted as verified absent headwords. No corpus or progress changes.",
   "photos": [
     {
@@ -132,11 +132,11 @@
   "chapters": [
     {
       "number": 1,
-      "existingKeys": 139
+      "existingKeys": 142
     },
     {
       "number": 2,
-      "existingKeys": 23
+      "existingKeys": 26
     },
     {
       "number": 3,
@@ -987,6 +987,29 @@
     {
       "lesson": 1,
       "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "etw. erweitern",
+      "keys": [
+        "etw. erweitern",
+        "erweitern"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Fertigstellung",
+      "keys": [
+        "die fertigstellung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
       "photo": "IMG_8537.HEIC",
       "page": 29,
       "printed": "die Filiale",
@@ -1831,6 +1854,29 @@
         "eine anlage warten"
       ],
       "evidence": "Printed machine-maintenance sense (z. B. eine Maschine), not warten = чекати."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "etw. zu}bereiten",
+      "keys": [
+        "etw. zubereiten",
+        "zubereiten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "die Zuverlässigkeit",
+      "keys": [
+        "die zuverlässigkeit"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
     },
     {
       "lesson": 2,
