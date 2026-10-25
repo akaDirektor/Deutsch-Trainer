@@ -349,7 +349,7 @@ function renderWordProgress(){
 }
 Object.entries(wordProgressButtons).forEach(([view,id])=>document.getElementById(id).onclick=()=>{wordProgressView=wordProgressView===view?null:view;renderWordProgress();if(wordProgressView)document.getElementById('wordProgressTitle').focus();});
 document.getElementById('closeWordProgress').onclick=()=>{const id=wordProgressButtons[wordProgressView];wordProgressView=null;renderWordProgress();if(id)document.getElementById(id).focus();};
-function hideWord(w){if(trainingLocked||!w)return false;if(confirm('Прибрати «'+w.de+'» з тренувань?')){hiddenWords.add(key(w));save();updateStats();return true}return false}
+function hideWord(w){if(trainingLocked||!w)return false;if(confirm('Прибрати «'+w.de+'» з тренувань?')){hiddenWords.add(key(w));save();updateStats();if(contextQuestion&&key(contextQuestion.w)===key(w))renderContext();return true}return false}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(today()+'T12:00:00')-new Date((w.addedAt||today())+'T12:00:00'))/86400000)}
 function selectedBook(){return document.getElementById('bookFilter').value||'all'}
@@ -790,6 +790,7 @@ function renderContext(){
 }
 function answerContext(answer,q=contextQuestion){
   if(trainingLocked||!q||q!==contextQuestion||q.answered||document.getElementById('mode').value!=='context'||!q.options.includes(answer))return;
+  if(!contextPool().some(w=>key(w)===key(q.w))){renderContext();return;}
   q.answered=true;const correct=answer===q.answer,st=s(q.w);st.contextCorrect=(st.contextCorrect||0)+(correct?1:0);st.contextWrong=(st.contextWrong||0)+(correct?0:1);st.contextStreak=correct?(st.contextStreak||0)+1:0;
   markWorked(q.w);markCycleSeen(q.w);save();updateStats();
   for(const button of document.getElementById('contextOptions').children){button.disabled=true;if(button.dataset.answer===q.answer)button.classList.add('correct');else if(button.dataset.answer===answer)button.classList.add('wrong')}

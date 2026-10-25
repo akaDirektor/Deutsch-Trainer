@@ -22,11 +22,11 @@ Per-word `contextCorrect`, `contextWrong` and `contextStreak` are independent no
 
 Context scopes use the existing cycle structure with a separate `context|type|date|ready` base and the existing canonical book/multi-lesson suffix. They cannot consume or reset matching-cycle progress. Each answered target, whether correct or wrong, is seen once until the entire eligible context cycle completes. A complete cycle then restarts; multiple authored examples rotate when available. The original single imported sentence is never rotated away. Scope seen lists and counters resume from the existing cloud state.
 
-Answers are guarded against duplicate clicks, stale question callbacks, filter/mode changes, logout and remote snapshot application. The context panel participates in cloud active-training detection and safe remote resume. Filter changes invalidate the current question. Invalid counters are rejected on import rather than silently reset.
+Answers are guarded against duplicate clicks, stale question callbacks, filter/mode changes, local hiding, logout and remote snapshot application. The context panel participates in cloud active-training detection and safe remote resume. Filter changes invalidate the current question. Invalid counters are rejected on import rather than silently reset.
 
 ## Validation and preservation
 
-**85 tests pass**, including:
+**86 tests pass**, including:
 
 - Full 1135-record/five-option coverage and literal reconstruction of every gap; imported-example priority.
 - Mastery readiness, hidden words, multiple lessons and mode filters; no repeated target before a complete context cycle.
