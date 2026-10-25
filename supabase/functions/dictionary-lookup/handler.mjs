@@ -24,8 +24,22 @@ export function wikiEntry(data){
  const genus=/\|Genus\s*=\s*([mfn])\s*(?:\n|\|)/.exec(german)?.[1];
  return {translations:[...new Set(translations)].slice(0,3),type,article:({m:'der',f:'die',n:'das'})[genus]||'',title:page?.title||'',revision:page?.revid||null};
 }
+// Anonymous free endpoint only; no API key, billing, email or private user data.
+export function automaticTranslation(data){
+ if(Number(data?.responseStatus)!==200||data?.quotaFinished)return '';
+ const text=plain(data?.responseData?.translatedText||'');
+ return text.length<=500&&/[А-Яа-яІіЇїЄєҐґ]/.test(text)?text:'';
+}
 export function createHandler({env,fetch:request=fetch}){
  const allowed='https://akadirektor.github.io';
+ const cached=new Map(),pending=new Map();
+ async function automatic(term){
+  if(new TextEncoder().encode(term).length>500)return {text:'',status:'too_long'};
+  const old=cached.get(term);if(old&&old.expires>Date.now())return old.value;
+  if(pending.has(term))return pending.get(term);
+  const work=(async()=>{try{const u=new URL('https://api.mymemory.translated.net/get');u.search=new URLSearchParams({q:term,langpair:'de|uk',mt:'1'}).toString();const r=await request(u,{signal:AbortSignal.timeout(10000)});const body=r.ok?await r.json():null;const text=automaticTranslation(body);return {text,status:text?'ok':body?.quotaFinished||Number(body?.responseStatus)===429?'quota_reached':'unavailable'};}catch{return {text:'',status:'unavailable'}}})();
+  pending.set(term,work);try{const value=await work;if(cached.size>=128)cached.delete(cached.keys().next().value);cached.set(term,{value,expires:Date.now()+(value.text?1800000:60000)});return value;}finally{pending.delete(term)}
+ }
  const key=name=>env(name)||'';
  const jsonKeys=name=>{try{return JSON.parse(key(name)).default||''}catch{return ''}};
  const anonymous=()=>jsonKeys('SUPABASE_PUBLISHABLE_KEYS')||key('SUPABASE_ANON_KEY');
@@ -68,8 +82,11 @@ export function createHandler({env,fetch:request=fetch}){
    }
    const wiki=await wikiPromise;
    const ponsUkrainian=[...new Set(entries.map(entry=>entry.target))].slice(0,3);
-   const ukrainian=ponsUkrainian.length?ponsUkrainian:wiki?.translations||[];
-   return reply({query:term,pons:{status:ponsStatus,entries,targetLanguage:'uk',dictionary:dictionary?.key||null,url:'https://en.pons.com/translate/german-ukrainian/'+encodeURIComponent(term),used,limit:900},ukrainian,translationSource:ponsUkrainian.length?'PONS':ukrainian.length?'Wiktionary':null,grammar:wiki?{type:wiki.type,article:wiki.article}:null,wiktionary:wiki?.title?{url:'https://de.wiktionary.org/w/index.php?title='+encodeURIComponent(wiki.title)+(wiki.revision?'&oldid='+wiki.revision:''),license:'CC BY-SA 4.0'}:null});
+   let ukrainian=ponsUkrainian.length?ponsUkrainian:wiki?.translations||[];
+   let translationSource=ponsUkrainian.length?'PONS':ukrainian.length?'Wiktionary':null;
+   let machine={text:'',status:'not_needed'};
+   if(!ukrainian.length){machine=await automatic(lemma);if(machine.text){ukrainian=[machine.text];translationSource='MyMemory';}}
+   return reply({query:term,pons:{status:ponsStatus,entries,targetLanguage:'uk',dictionary:dictionary?.key||null,url:'https://en.pons.com/translate/german-ukrainian/'+encodeURIComponent(term),used,limit:900},ukrainian,translationSource,automatic:{status:machine.status,provider:'MyMemory',url:'https://mymemory.translated.net/',isDictionary:false},grammar:wiki?{type:wiki.type,article:wiki.article}:null,wiktionary:wiki?.title?{url:'https://de.wiktionary.org/w/index.php?title='+encodeURIComponent(wiki.title)+(wiki.revision?'&oldid='+wiki.revision:''),license:'CC BY-SA 4.0'}:null});
   }catch{return reply({error:'Не вдалося виконати словниковий пошук. Спробуй ще раз.'},502)}
  };
 }

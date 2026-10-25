@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261025-lessons">
+<link rel="stylesheet" href="app.css?v=20261025-simple-add">
 </head>
 <body>
 <div class="wrap">
@@ -155,18 +155,21 @@
     <div id="verbWriteJudge" class="row hidden"><button id="verbWriteCorrect" class="primary">✓ Правильно</button><button id="verbWriteWrong">✕ Неправильно</button></div>
   </div>
 
-  <details class="personalWords"><summary>＋ Додати слово</summary>
+  <section class="personalWords" aria-labelledby="newWordHeading">
+    <h2 id="newWordHeading">＋ Додати слово</h2>
     <form id="newWordForm">
-      <label for="newWordGerman">Німецьке слово або вираз</label><div class="newWordLookupRow"><input id="newWordGerman" required maxlength="200" placeholder="Наприклад: die Zuversicht" autocomplete="off" lang="de"><button type="button" id="newWordLookup">Знайти значення</button></div>
-      <p id="newWordStatus" class="muted" role="status" aria-live="polite"></p>
-      <div id="newWordSuggestions" class="newWordSuggestions" hidden></div>
+      <label for="newWordGerman">Німецьке слово або вираз</label><input id="newWordGerman" required maxlength="150" placeholder="Наприклад: die Zuversicht" autocomplete="off" lang="de" aria-describedby="newWordStatus">
+      <p id="newWordStatus" class="muted" role="status" aria-live="polite">Введи слово — переклад з’явиться автоматично.</p>
+      <a id="newWordLeo" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>Перевірити в LEO ↗</a>
       <label for="newWordTranslation">Український переклад · можна виправити</label><input id="newWordTranslation" required maxlength="500" autocomplete="off" lang="uk">
-      <label for="newWordType">Частина мови</label><select id="newWordType"><option value="phrase">Вираз</option><option value="noun">Іменник</option><option value="verb">Дієслово</option><option value="adjective">Прикметник</option><option value="adverb">Прислівник</option><option value="preposition">Дієслово з прийменником</option></select>
-      <details class="newWordGrammar"><summary>Форми та приклад · необов’язково</summary><label for="newWordPlural">Множина іменника</label><input id="newWordPlural" maxlength="200" lang="de"><label for="newWordPast">Präteritum</label><input id="newWordPast" maxlength="200" lang="de"><label for="newWordPerfect">Perfekt із haben / sein</label><input id="newWordPerfect" maxlength="200" lang="de"><label for="newWordExample">Приклад речення</label><textarea id="newWordExample" maxlength="3000" rows="3" lang="de"></textarea></details>
-      <p class="newWordNote">Українські підказки — з PONS, якщо цей напрямок доступний через API, або з Wiktionary. Джерело вказане біля перекладу.</p>
-      <button id="newWordAdd" class="primary" type="submit">Додати до моїх слів</button>
+      <div id="newWordSuggestions" class="newWordSuggestions" hidden></div>
+      <details class="newWordGrammar"><summary>Форми та приклад · необов’язково</summary>
+        <label for="newWordType">Частина мови</label><select id="newWordType"><option value="phrase">Вираз / не визначено</option><option value="noun">Іменник</option><option value="verb">Дієслово</option><option value="adjective">Прикметник</option><option value="adverb">Прислівник</option><option value="preposition">Дієслово з прийменником</option></select>
+        <label for="newWordPlural">Множина іменника</label><input id="newWordPlural" maxlength="200" lang="de"><label for="newWordPast">Präteritum</label><input id="newWordPast" maxlength="200" lang="de"><label for="newWordPerfect">Perfekt із haben / sein</label><input id="newWordPerfect" maxlength="200" lang="de"><label for="newWordExample">Приклад речення</label><textarea id="newWordExample" maxlength="3000" rows="3" lang="de"></textarea>
+      </details>
+      <button id="newWordAdd" class="primary" type="submit">Додати</button>
     </form>
-  </details>
+  </section>
   <details class="learningHelp">
     <summary>Як працює засвоєння</summary>
     <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Для іменника в режимі перекладу успішне повторення — це правильний переклад і артикль. Помилки в артиклях мають окремий облік. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
@@ -795,40 +798,72 @@ document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);doc
 ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')showVerbWriteAnswer()});
 document.getElementById('startBtn').onclick=()=>{if(trainingLocked||resumePendingArticle())return;document.getElementById('trainingSettings').open=false;roundEpoch++;const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining','articleReviewTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='articleReview'){articleReviewSeen.clear();document.getElementById('articleReviewTraining').classList.remove('hidden');renderArticleReview();}else if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
 
-let newWordRequest=0,newWordLookupBusy=false,newWordEvidence=null;
+let newWordRequest=0,newWordLookupBusy=false,newWordEvidence=null,newWordTimer=null,newWordTranslationEdit=0,newWordTypeEdited=false;
+const newWordCache=new Map();
 const wordField=id=>document.getElementById(id);
-function addPersonalWord(candidate){
+function addPersonalWord(candidate,suggestion=null){
   if(trainingLocked)throw Error('Спочатку увійди до готового хмарного профілю');
   const w=Progress.customWord({...candidate,addedAt:today(),approvedBy:'user'}),k=key(w);
   if(data.some(other=>key(other).replace(/\s+/g,' ')===k.replace(/\s+/g,' ')))throw Error('Це слово вже є у словнику. Знайди його через пошук.');
-  const oldStats=stats;stats={...stats,[k]:{correct:0,wrong:0,streak:0,mastered:false,...(Object.prototype.hasOwnProperty.call(stats,k)?stats[k]:{}),customWord:w}};
+  const oldStats=stats;stats={...stats,[k]:{correct:0,wrong:0,streak:0,mastered:false,...(Object.prototype.hasOwnProperty.call(stats,k)?stats[k]:{}),customWord:w,...(suggestion?{translationSuggestion:Progress.clone(suggestion)}:{})}};
   try{save()}catch(error){stats=oldStats;throw error}
   data=Progress.vocabulary(seed,stats);updateStats();updateRecallStats();return w;
 }
-wordField('newWordGerman').oninput=()=>{if(newWordEvidence?.translation&&wordField('newWordTranslation').value===newWordEvidence.translation)wordField('newWordTranslation').value='';newWordRequest++;newWordLookupBusy=false;newWordEvidence=null;wordField('newWordSuggestions').hidden=true;wordField('newWordLookup').disabled=trainingLocked;wordField('newWordStatus').textContent='';};
-wordField('newWordLookup').onclick=async()=>{
-  if(trainingLocked||newWordLookupBusy)return;
-  const q=wordField('newWordGerman').value.trim();if(!q){wordField('newWordStatus').textContent='Введи слово німецькою.';return;}
-  if(data.some(w=>key(w)===q.toLowerCase())){wordField('newWordStatus').textContent='Це слово вже є у словнику — скористайся пошуком.';return;}
-  const version=++newWordRequest;newWordLookupBusy=true;wordField('newWordLookup').disabled=true;wordField('newWordStatus').textContent='Шукаю у словниках…';
-  try{
-    const result=await Cloud.lookupDictionary(q);if(version!==newWordRequest||trainingLocked)return;
-    const box=wordField('newWordSuggestions');box.innerHTML='';box.hidden=false;newWordEvidence={sources:[],translation:'',origin:'user'};
-    function link(label,url){const a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(a);}
-    if(result.pons.targetLanguage==='uk'&&result.pons.entries.length){const heading=document.createElement('strong');heading.textContent='PONS · німецька → українська';box.appendChild(heading);result.pons.entries.forEach(item=>{const p=document.createElement('p');p.textContent=item.source+' — '+item.target;box.appendChild(p);});newWordEvidence.sources.push({provider:'PONS',url:result.pons.url});link('PONS ↗',result.pons.url);}
-    if(result.ukrainian.length&&['PONS','Wiktionary'].includes(result.translationSource)){wordField('newWordTranslation').value=result.ukrainian.join('; ');newWordEvidence.translation=wordField('newWordTranslation').value;newWordEvidence.origin=result.translationSource;}
-    if(result.wiktionary){newWordEvidence.sources.push({provider:'Wiktionary',url:result.wiktionary.url});link((result.translationSource==='Wiktionary'?'Український переклад':'Граматика')+': Wiktionary ↗',result.wiktionary.url);const license=document.createElement('small');license.textContent='Wiktionary · '+result.wiktionary.license;box.appendChild(license);} 
-    if(result.grammar){wordField('newWordType').value=result.grammar.type;if(result.grammar.type==='noun'&&result.grammar.article&&!/^(der|die|das)\s/i.test(q))wordField('newWordGerman').value=result.grammar.article+' '+q;}
-    const warnings={not_configured:'PONS ще не підключений.',language_unavailable:'У поточному PONS API немає німецько-українського словника. Російський не використовується.',not_authorized:'PONS не дозволив доступ до німецько-українського словника.',quota_reached:'Безкоштовний ліміт застосунку на цей місяць вичерпано.',provider_limit:'PONS повідомив про вичерпання квоти.',unavailable:'PONS тимчасово недоступний.'};
-    wordField('newWordStatus').textContent=(warnings[result.pons.status]||'')+(result.ukrainian.length?' Перевір запропонований український переклад.':' Українського перекладу не знайдено — впиши його самостійно.');
-  }catch{if(version===newWordRequest)wordField('newWordStatus').textContent='Словниковий пошук недоступний. Можна вписати переклад вручну.';}
-  finally{if(version===newWordRequest){newWordLookupBusy=false;wordField('newWordLookup').disabled=trainingLocked;}}
+function renderNewWordLeo(){
+  const q=wordField('newWordGerman').value.trim(),link=wordField('newWordLeo');link.hidden=!q;
+  if(q)link.href=leoLookup({de:q,type:/^(der|die|das)\s/i.test(q)?'noun':wordField('newWordType').value});
+}
+function resetNewWordLookup(){
+  clearTimeout(newWordTimer);newWordRequest++;newWordLookupBusy=false;newWordEvidence=null;wordField('newWordSuggestions').hidden=true;
+}
+wordField('newWordGerman').oninput=()=>{
+  resetNewWordLookup();wordField('newWordTranslation').value='';newWordTranslationEdit++;newWordTypeEdited=false;
+  wordField('newWordType').value=/^(der|die|das)\s/i.test(wordField('newWordGerman').value.trim())?'noun':'phrase';
+  ['newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');renderNewWordLeo();
+  wordField('newWordStatus').textContent=trainingLocked?'Увійди, щоб додавати слова.':'Введи слово — переклад з’явиться автоматично.';
+  if(!trainingLocked&&wordField('newWordGerman').value.trim().length>=2)newWordTimer=setTimeout(lookupNewWord,900);
 };
-wordField('newWordForm').onsubmit=event=>{
-  event.preventDefault();if(newWordLookupBusy)return;
+wordField('newWordTranslation').oninput=()=>{newWordTranslationEdit++};
+wordField('newWordType').onchange=()=>{newWordTypeEdited=true};
+wordField('newWordGerman').onkeydown=event=>{if(event.key==='Enter'){event.preventDefault();clearTimeout(newWordTimer);lookupNewWord()}};
+async function lookupNewWord(){
+  if(trainingLocked||newWordLookupBusy)return;
+  const q=wordField('newWordGerman').value.trim();if(!q)return;
+  if(data.some(w=>key(w)===q.toLowerCase())){wordField('newWordStatus').textContent='Це слово вже є у словнику — знайди його через пошук.';return;}
+  const version=++newWordRequest,edit=newWordTranslationEdit;newWordLookupBusy=true;wordField('newWordStatus').textContent='Шукаю український переклад…';
   try{
-   const w=addPersonalWord({de:wordField('newWordGerman').value.trim().replace(/\s+/g,' '),uk:wordField('newWordTranslation').value,type:wordField('newWordType').value,plural:wordField('newWordPlural').value,praeteritum:wordField('newWordPast').value,perfekt:wordField('newWordPerfect').value,example:wordField('newWordExample').value,sources:newWordEvidence?.sources||[],translationOrigin:newWordEvidence?.translation===wordField('newWordTranslation').value?newWordEvidence.origin:'user'});
-   ['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='phrase';newWordEvidence=null;wordField('newWordSuggestions').hidden=true;wordField('newWordStatus').textContent='Додано: '+w.de+'. Слово доступне в пошуку та тренуваннях; збережено для синхронізації.';
+    const result=newWordCache.get(q)||await Cloud.lookupDictionary(q);if(version!==newWordRequest||trainingLocked)return;
+    if(newWordCache.size>=100)newWordCache.delete(newWordCache.keys().next().value);newWordCache.set(q,result);
+    const box=wordField('newWordSuggestions');box.innerHTML='';box.hidden=false;newWordEvidence={sources:[],translation:'',origin:'user',suggestion:null};
+    const translation=Array.isArray(result.ukrainian)?result.ukrainian.slice(0,3).join('; '):'';
+    const provider=result.translationSource,automatic=provider==='MyMemory';
+    if(translation&&['PONS','Wiktionary','MyMemory'].includes(provider)){
+      if(edit===newWordTranslationEdit)wordField('newWordTranslation').value=translation;
+      newWordEvidence.translation=translation;newWordEvidence.origin=automatic?'user':provider;
+      if(automatic)newWordEvidence.suggestion={provider:'MyMemory',kind:'automatic',query:q,translation,sourceUrl:'https://mymemory.translated.net/',confirmedBy:'user'};
+    }
+    function source(label,url){const a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(a);}
+    if(provider==='PONS'&&result.pons?.url){newWordEvidence.sources.push({provider:'PONS',url:result.pons.url});source('Переклад: PONS ↗',result.pons.url);}
+    if(result.wiktionary){newWordEvidence.sources.push({provider:'Wiktionary',url:result.wiktionary.url});source((provider==='Wiktionary'?'Переклад':'Граматика')+': Wiktionary · CC BY-SA 4.0 ↗',result.wiktionary.url);}
+    if(automatic)source('Автоматичний переклад · MyMemory ↗','https://mymemory.translated.net/');
+    if(result.grammar&&!newWordTypeEdited){
+      const grammar=result.grammar,article=/^(der|die|das)\s/i.test(q);
+      // Missing grammar must not erase an article explicitly supplied by the user.
+      if(grammar.type&&grammar.type!=='phrase')wordField('newWordType').value=grammar.type;
+      if(grammar.type==='noun'&&/^(der|die|das)$/.test(grammar.article)&&!article)wordField('newWordGerman').value=grammar.article+' '+q;
+      // A missing dictionary article is not guessed; the word can still be saved as a phrase.
+      if(wordField('newWordType').value==='noun'&&!/^(der|die|das)\s/i.test(wordField('newWordGerman').value))wordField('newWordType').value='phrase';
+    }
+    renderNewWordLeo();
+    wordField('newWordStatus').textContent=translation?'Перевір переклад у LEO, за потреби виправ і натисни «Додати».':'Переклад не знайдено. Перевір у LEO та впиши українською.';
+  }catch{if(version===newWordRequest)wordField('newWordStatus').textContent='Зараз переклад недоступний. Можна перевірити в LEO й вписати українською.';}
+  finally{if(version===newWordRequest)newWordLookupBusy=false;}
+}
+wordField('newWordForm').onsubmit=event=>{
+  event.preventDefault();
+  try{
+   const w=addPersonalWord({de:wordField('newWordGerman').value.trim().replace(/\s+/g,' '),uk:wordField('newWordTranslation').value,type:wordField('newWordType').value,plural:wordField('newWordPlural').value,praeteritum:wordField('newWordPast').value,perfekt:wordField('newWordPerfect').value,example:wordField('newWordExample').value,sources:newWordEvidence?.sources||[],translationOrigin:newWordEvidence?.translation===wordField('newWordTranslation').value?newWordEvidence.origin:'user'},newWordEvidence?.suggestion);
+   resetNewWordLookup();['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='phrase';renderNewWordLeo();wordField('newWordStatus').textContent='✓ Додано: '+w.de+'. Зберігається у твоєму хмарному профілі.';wordField('newWordGerman').focus();
   }catch(error){wordField('newWordStatus').textContent=error.message;}
 };
 let imported=null;
@@ -836,7 +871,7 @@ function rawLegacy(){return Object.fromEntries([DATA_KEY,STATS_KEY,HIDDEN_KEY,CY
 function legacy(){return Progress.validate({schema:1,stats:JSON.parse(localStorage.getItem(STATS_KEY)||'{}'),hidden:JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'),cycle:JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}')})}
 Cloud.init({snapshot,legacy,rawLegacy,
  active:()=>['training','recallTraining','verbWriteTraining','articleReviewTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
- lock(value){trainingLocked=value;document.getElementById('startBtn').disabled=value;document.getElementById('newWordLookup').disabled=value;document.getElementById('newWordAdd').disabled=value;if(value){articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
+ lock(value){trainingLocked=value;document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();document.getElementById('newWordAdd').disabled=value;if(value){articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
  apply(value,options={}){
   const sections=['training','recallTraining','verbWriteTraining','articleReviewTraining'];
   const active=options.resume&&sections.find(id=>!document.getElementById(id).classList.contains('hidden'));
