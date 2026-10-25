@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261025-simple-add">
+<link rel="stylesheet" href="app.css?v=20261025-multi-lessons">
 </head>
 <body>
 <div class="wrap">
@@ -63,7 +63,7 @@
   <div class="controls">
     <div class="lessonFilters" aria-label="Вибір книжки та уроку">
       <label for="bookFilter">Книжка<select id="bookFilter" aria-label="Книжка"></select></label>
-      <label for="lessonFilter">Урок<select id="lessonFilter" aria-label="Урок"></select></label>
+      <fieldset class="lessonPicker" id="lessonPicker"><legend>Уроки · можна кілька</legend><input id="lessonFilter" type="hidden" value="all"><div id="lessonChoices" class="lessonChoices" aria-label="Уроки для спільного тренування"></div></fieldset>
     </div>
     <p id="lessonStatus" class="lessonStatus"></p>
     <details id="trainingSettings"><summary class="settingsSummary"><span><span class="eyebrow">Тренування</span><strong id="trainingSelection">Усі слова · Переклад</strong></span><span class="settingsHint">Налаштувати</span></summary>
@@ -336,12 +336,34 @@ function hideWord(w){if(trainingLocked||!w)return false;if(confirm('Прибра
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(today()+'T12:00:00')-new Date((w.addedAt||today())+'T12:00:00'))/86400000)}
 function selectedBook(){return document.getElementById('bookFilter').value||'all'}
-function selectedLesson(){return document.getElementById('lessonFilter').value||'all'}
-function lessonMatches(w){return LessonCatalog.matches(w,selectedBook(),selectedLesson())}
+const lessonsByBook=new Map();
+function selectedLessons(){
+  const options=LessonCatalog.books[selectedBook()]?.lessons||[],raw=document.getElementById('lessonFilter').value||'all';
+  if(raw==='all')return [];
+  return [...new Set(raw.split(',').filter(id=>options.some(l=>l.id===id)))].sort((a,b)=>Number(a)-Number(b));
+}
+function selectedLesson(){const ids=selectedLessons(),total=LessonCatalog.books[selectedBook()]?.lessons.length||0;return !ids.length||ids.length===total?'all':ids.join(',')}
+function lessonMatches(w){const ids=selectedLesson();return ids==='all'?LessonCatalog.matches(w,selectedBook(),'all'):ids.split(',').some(id=>LessonCatalog.matches(w,selectedBook(),id))}
+function renderLessonChoices(){
+  const box=document.getElementById('lessonChoices'),options=LessonCatalog.books[selectedBook()]?.lessons||[],selection=selectedLesson();box.innerHTML='';
+  document.getElementById('lessonPicker').hidden=!options.length;
+  for(const item of [{id:'all',label:'Усі уроки'},...options]){
+    const button=document.createElement('button');button.type='button';button.dataset.lesson=item.id;button.textContent=item.id==='all'?item.label:item.id;button.setAttribute('aria-label',item.id==='all'?'Усі уроки':'Урок '+item.id);
+    const pressed=item.id==='all'?selection==='all':selection!=='all'&&selection.split(',').includes(item.id);
+    button.className='lessonChoice'+(pressed?' selected':'');button.setAttribute('aria-pressed',String(pressed));
+    button.onclick=()=>toggleLesson(item.id);box.appendChild(button);
+  }
+}
+function toggleLesson(id){
+  const field=document.getElementById('lessonFilter'),old=selectedLesson(),ids=new Set(old==='all'?[]:old.split(','));
+  if(id==='all')ids.clear();else if(ids.has(id))ids.delete(id);else ids.add(id);
+  field.value=ids.size?[...ids].sort((a,b)=>Number(a)-Number(b)).join(','):'all';field.onchange();Array.from(document.getElementById('lessonChoices').children).find(b=>b.dataset.lesson===id)?.focus();
+}
+
 function lessonSelectionLabel(){
   const book=selectedBook();if(book==='all')return '';
   if(book==='unassigned')return 'Без прив’язки до уроку';
-  return LessonCatalog.books[book].label+(selectedLesson()==='all'?' · Усі уроки':' · Урок '+selectedLesson());
+  const choice=selectedLesson();return LessonCatalog.books[book].label+(choice==='all'?' · Усі уроки':choice.includes(',')?' · Уроки '+choice.split(',').join(', '):' · Урок '+choice);
 }
 function renderLessonStatus(){
   const book=selectedBook(),status=document.getElementById('lessonStatus');
@@ -350,15 +372,14 @@ function renderLessonStatus(){
   status.textContent=lessonSelectionLabel()+': '+words.length+' слів · ще не засвоєно '+remaining+'. Прогрес спільний.'+(book==='b2'?' Розподілено лише наявні слова бази.':'');
 }
 function renderLessonControls(){
-  const book=document.getElementById('bookFilter'),lesson=document.getElementById('lessonFilter'),value=book.value||'all',old=lesson.value||'all';
+  const book=document.getElementById('bookFilter'),lesson=document.getElementById('lessonFilter'),value=book.value||'all',old=lessonsByBook.get(value)||'all';
   book.innerHTML='<option value="all">Вся база</option>'+Object.entries(LessonCatalog.books).map(([id,b])=>'<option value="'+id+'"'+(b.pending?' disabled':'')+'>'+b.label+(b.pending?' — очікуємо фото':'')+'</option>').join('')+'<option value="unassigned">Без прив’язки до уроку</option>';book.value=value;
   const options=LessonCatalog.books[value]?.lessons||[];
-  lesson.innerHTML='<option value="all">Усі уроки</option>'+options.map(l=>'<option value="'+l.id+'">'+l.label+'</option>').join('');
-  lesson.value=options.some(l=>l.id===old)?old:'all';lesson.disabled=!options.length;
+  lesson.value=old;lesson.disabled=!options.length;lesson.value=selectedLesson();renderLessonChoices();
   renderLessonStatus();
 }
-document.getElementById('bookFilter').onchange=()=>{cancelTraining();document.getElementById('lessonFilter').value='all';renderLessonControls();updateStats()};
-document.getElementById('lessonFilter').onchange=()=>{cancelTraining();updateStats()};
+document.getElementById('bookFilter').onchange=()=>{cancelTraining();renderLessonControls();updateStats()};
+document.getElementById('lessonFilter').onchange=()=>{cancelTraining();document.getElementById('lessonFilter').value=selectedLesson();lessonsByBook.set(selectedBook(),selectedLesson());renderLessonChoices();updateStats()};
 function eligible(w){return eligibleForFocus(w,document.getElementById('focus').value)}
 function eligibleForFocus(w,focus){
   if(!lessonMatches(w))return false;
