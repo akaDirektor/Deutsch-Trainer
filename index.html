@@ -159,7 +159,7 @@
     <h2 id="newWordHeading">＋ Додати слово</h2>
     <form id="newWordForm">
       <label for="newWordGerman">Німецьке слово або вираз</label><input id="newWordGerman" required maxlength="150" placeholder="Наприклад: die Zuversicht" autocomplete="off" lang="de" aria-describedby="newWordStatus">
-      <p id="newWordStatus" class="muted" role="status" aria-live="polite">Введи слово — переклад з’явиться автоматично.</p>
+      <p id="newWordStatus" class="muted" role="status" aria-live="polite">Введи слово — український переклад підставиться автоматично.</p>
       <a id="newWordLeo" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>Перевірити в LEO ↗</a>
       <label for="newWordTranslation">Український переклад · можна виправити</label><input id="newWordTranslation" required maxlength="500" autocomplete="off" lang="uk">
       <div id="newWordSuggestions" class="newWordSuggestions" hidden></div>
@@ -820,7 +820,7 @@ wordField('newWordGerman').oninput=()=>{
   resetNewWordLookup();wordField('newWordTranslation').value='';newWordTranslationEdit++;newWordTypeEdited=false;
   wordField('newWordType').value=/^(der|die|das)\s/i.test(wordField('newWordGerman').value.trim())?'noun':'phrase';
   ['newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');renderNewWordLeo();
-  wordField('newWordStatus').textContent=trainingLocked?'Увійди, щоб додавати слова.':'Введи слово — переклад з’явиться автоматично.';
+  wordField('newWordStatus').textContent=trainingLocked?'Увійди, щоб додавати слова.':'Введи слово — український переклад підставиться автоматично.';
   if(!trainingLocked&&wordField('newWordGerman').value.trim().length>=2)newWordTimer=setTimeout(lookupNewWord,900);
 };
 wordField('newWordTranslation').oninput=()=>{newWordTranslationEdit++};
@@ -837,15 +837,16 @@ async function lookupNewWord(){
     const box=wordField('newWordSuggestions');box.innerHTML='';box.hidden=false;newWordEvidence={sources:[],translation:'',origin:'user',suggestion:null};
     const translation=Array.isArray(result.ukrainian)?result.ukrainian.slice(0,3).join('; '):'';
     const provider=result.translationSource,automatic=provider==='MyMemory';
-    if(translation&&['PONS','Wiktionary','MyMemory'].includes(provider)){
+    const automaticUrl='https://mymemory.translated.net/en/German/Ukrainian/'+encodeURIComponent(q.replace(/^(der|die|das)\s+/i,''));
+    if(translation&&['Wiktionary','MyMemory'].includes(provider)){
       if(edit===newWordTranslationEdit)wordField('newWordTranslation').value=translation;
       newWordEvidence.translation=translation;newWordEvidence.origin=automatic?'user':provider;
-      if(automatic)newWordEvidence.suggestion={provider:'MyMemory',kind:'automatic',query:q,translation,sourceUrl:'https://mymemory.translated.net/',confirmedBy:'user'};
+      if(automatic)newWordEvidence.suggestion={provider:'MyMemory',kind:'automatic',query:q,translation,sourceUrl:automaticUrl,confirmedBy:'user'};
     }
     function source(label,url){const a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(a);}
-    if(provider==='PONS'&&result.pons?.url){newWordEvidence.sources.push({provider:'PONS',url:result.pons.url});source('Переклад: PONS ↗',result.pons.url);}
     if(result.wiktionary){newWordEvidence.sources.push({provider:'Wiktionary',url:result.wiktionary.url});source((provider==='Wiktionary'?'Переклад':'Граматика')+': Wiktionary · CC BY-SA 4.0 ↗',result.wiktionary.url);}
-    if(automatic)source('Автоматичний переклад · MyMemory ↗','https://mymemory.translated.net/');
+    if(automatic)source('Український переклад: MyMemory ↗',automaticUrl);
+    if(automatic){const note=document.createElement('small');note.textContent='Автоматичний переклад — звір у LEO.';box.appendChild(note);}
     if(result.grammar&&!newWordTypeEdited){
       const grammar=result.grammar,article=/^(der|die|das)\s/i.test(q);
       // Missing grammar must not erase an article explicitly supplied by the user.
