@@ -43,13 +43,14 @@ export function createHandler({env,fetch:request=fetch}){
   if(req.method!=='POST')return reply({error:'Method not allowed'},405);
   const authorization=req.headers.get('authorization');if(!authorization?.startsWith('Bearer '))return reply({error:'Увійди до профілю'},401);
   try{
-   const body=await req.text();if(body.length>1000)return reply({error:'Завеликий запит'},400);
-   const q=JSON.parse(body).q;if(typeof q!=='string'||!q.trim()||q.length>150||/[\u0000-\u001f]/.test(q))return reply({error:'Введи слово німецькою'},400);
+   const body=await req.text();if(body.length>6000)return reply({error:'Завеликий запит'},400);
+   const input=JSON.parse(body),q=input.q,kind=input.kind||'word';if(!['word','sentence'].includes(kind)||typeof q!=='string'||!q.trim()||q.length>(kind==='sentence'?1200:150)||(kind==='sentence'?/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/:/[\u0000-\u001f]/).test(q))return reply({error:'Введи слово німецькою'},400);
    const term=q.trim();
    const user=await request(key('SUPABASE_URL')+'/auth/v1/user',{headers:{apikey:anonymous(),Authorization:authorization},signal:AbortSignal.timeout(10000)});
    if(!user.ok)return reply({error:'Потрібен чинний вхід'},401);
    const membership=await request(key('SUPABASE_URL')+'/rest/v1/trainer_progress?select=user_id&limit=1',{headers:{apikey:anonymous(),Authorization:authorization},signal:AbortSignal.timeout(10000)});
    if(!membership.ok||!(await membership.json()).length)return reply({error:'Спочатку підготуй хмарний профіль'},403);
+   if(kind==='sentence'){const translated=await automatic(term);return reply({query:term,translation:translated.text||null,translationSource:translated.text?'MyMemory':null,automatic:true,status:translated.status});}
    // An optional open source supplies Ukrainian candidates, never a paid translator.
    const lemma=term.replace(/^(der|die|das)\s+/i,'');
    const wikiPromise=(async()=>{try{const u=new URL('https://de.wiktionary.org/w/api.php');u.search=new URLSearchParams({action:'parse',page:lemma,prop:'wikitext|revid',format:'json',redirects:'1'}).toString();const r=await request(u,{headers:{'User-Agent':'Deutsch-Trainer/1.0 (https://akadirektor.github.io/Deutsch-Trainer/)'},signal:AbortSignal.timeout(12000)});return r.ok?wikiEntry(await r.json()):null}catch{return null}})();

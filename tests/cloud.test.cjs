@@ -40,3 +40,7 @@ test('personal vocabulary and its provenance survive an offline write and load o
 test('context results survive cross-device synchronization without modifying existing mastery, recall or hidden keys',async()=>{
  const first=setup();await first.login();await first.initialize();const state=empty();state.hidden=['kept-hidden'];state.stats.word={correct:3,wrong:1,streak:3,mastered:true,recallCorrect:2,contextCorrect:4,contextWrong:1,contextStreak:2};first.save(state);await first.settle();await first.sync();const second=setup();second.row=JSON.parse(JSON.stringify(first.row));await second.login();await second.settle();assert.deepEqual(second.applied.stats.word,state.stats.word);assert.deepEqual(second.applied.hidden,state.hidden);
 });
+
+test('sentence lookup sends only the selected sentence through authenticated read-only function without changing progress',async()=>{
+ const h=setup();assert.throws(()=>h.ctx.window.Cloud.translateSentence('Ein Satz.'),/Увійди/);await h.login();await h.initialize();const before=JSON.stringify(h.row);let call;h.ctx.fetch=async(url,options)=>{call={url,options};return {ok:true,json:async()=>({query:'Ein vollständiger Satz.',translation:'Повне речення.'})}};await h.ctx.window.Cloud.translateSentence('Ein vollständiger Satz.');assert(call.url.endsWith('/functions/v1/dictionary-lookup'));assert.deepEqual(JSON.parse(call.options.body),{q:'Ein vollständiger Satz.',kind:'sentence'});assert.equal(call.options.headers.Authorization,'Bearer access');assert.equal(JSON.stringify(h.row),before);
+});
