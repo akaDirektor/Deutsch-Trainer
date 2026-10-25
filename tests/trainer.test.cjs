@@ -4,7 +4,7 @@ function harness(){
  const elements=new Map(),timers=[],storage=new Map();
  function el(id){if(!elements.has(id))elements.set(id,{id,style:{},value:id==='mode'?'translation':id==='focus'?'all':'',innerHTML:'',textContent:'',dataset:{},classList:{items:new Set(['training','recallTraining','verbWriteTraining','articleReviewTraining','matchExample'].includes(id)?['hidden']:[]),add(...x){x.forEach(v=>this.items.add(v))},remove(...x){x.forEach(v=>this.items.delete(v))},contains(x){return this.items.has(x)},toggle(){}},children:[],listeners:{},appendChild(child){this.children.push(child)},addEventListener(type,fn){this.listeners[type]=fn},setAttribute(name,value){this[name]=value},focus(){},scrollIntoView(){}});return elements.get(id)}
  const ctx=vm.createContext({console,Date,Math,Set,JSON,Map,window:{},document:{getElementById:id=>{assert(!['prevBtn','stopBtn','nextBtn'].includes(id));return el(id)},querySelectorAll:()=>[],createElement:()=>el('card'+Math.random())},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},setTimeout:fn=>timers.push(fn),clearTimeout(){},confirm:()=>true,Cloud:{save(){},init(a){ctx.adapter=a}}});
- vm.runInContext(fs.readFileSync('examples.js','utf8'),ctx);vm.runInContext(fs.readFileSync('synonyms.js','utf8'),ctx);vm.runInContext(fs.readFileSync('verb-forms.js','utf8'),ctx);vm.runInContext(fs.readFileSync('progress.js','utf8'),ctx);ctx.Progress=ctx.window.Progress;
+ vm.runInContext(fs.readFileSync('lessons.js','utf8'),ctx);ctx.Lessons=ctx.window.Lessons;vm.runInContext(fs.readFileSync('examples.js','utf8'),ctx);vm.runInContext(fs.readFileSync('synonyms.js','utf8'),ctx);vm.runInContext(fs.readFileSync('verb-forms.js','utf8'),ctx);vm.runInContext(fs.readFileSync('progress.js','utf8'),ctx);ctx.Progress=ctx.window.Progress;
  const files=[...html.matchAll(/src="(words[^\"]+)"/g)].map(m=>m[1]);for(const file of files)vm.runInContext(fs.readFileSync(file,'utf8'),ctx);
  vm.runInContext(html.match(/<script>\n([\s\S]*?)<\/script>/)[1],ctx);
  return {ctx,el,timers,run:s=>vm.runInContext(s,ctx)};
@@ -276,4 +276,55 @@ test('shared example renders contextual synonyms and a source beside stored sent
   assert(group.children.some(c=>c.className==='synonymSource'&&c.href.includes('oldid=')));assert(box.children.some(c=>c.className==='exampleVerbForms'));assert.equal(h.run('JSON.stringify(snapshot())'),before);
  }
  const h=harness();h.run('showMatchExample(data.find(w=>w.de==="der Nebel"))');assert(!h.el('matchExample').children.some(c=>c.className==='exampleSynonyms'));
+});
+
+function chooseLesson(h,book,lesson='all'){
+ h.el('bookFilter').value=book;h.el('bookFilter').onchange();h.el('lessonFilter').value=lesson;h.el('lessonFilter').onchange();
+}
+test('all seven supplied B1+ pages map to existing keys only, with reviewed exceptions and shared memberships',()=>{
+ const h=harness(),r=JSON.parse(fs.readFileSync('docs/b1plus-lesson-register.json')),before=h.run('JSON.stringify({data,state:snapshot()})');
+ assert.equal(r.sourceOccurrences,498);assert.equal(r.matchedOccurrences,496);assert.equal(r.uniqueCorpusKeys,485);assert.equal(r.unmatched.length,2);assert.deepEqual(r.chapters.map(c=>c.number),[1,2,3,4,5,6,7]);
+ assert.equal(h.run('Lessons.books.b2.pending'),true);assert.equal(h.run('Lessons.books.b2.lessons.length'),0);
+ const corpus=new Set(h.run('data.map(key)'));for(const row of r.entries)for(const key of row.keys)assert(corpus.has(key),key);
+ assert.deepEqual(Array.from(h.run('Lessons.memberships(data.find(w=>w.de==="der Betrieb")).map(p=>p.lesson)')),['1','2']);
+ for(const lesson of h.ctx.Lessons.books.b1plus.lessons)assert.equal(lesson.keys.length,new Set(lesson.keys).size);
+ assert.equal(h.run('Lessons.matches({de:"Recht haben"},"b1plus","4")'),false);assert.equal(h.run('Lessons.matches({de:"die Bescheinigung"},"b1plus","4")'),false);
+ assert.equal(h.run('JSON.stringify({data,state:snapshot()})'),before);
+});
+test('book/lesson controls filter all practice modes, preserve global counters, and never classify unassigned words as B2',()=>{
+ const h=harness(),before=h.run('JSON.stringify(snapshot())'),total=h.el('totalCount').textContent;chooseLesson(h,'b1plus','5');
+ assert.equal(h.run('pool().length'),75);assert.equal(h.el('totalCount').textContent,total);assert.equal(h.run('JSON.stringify(snapshot())'),before);assert(h.el('lessonStatus').textContent.includes('75 слів'));
+ h.run('data.forEach(w=>{s(w).mastered=true;if(w.type==="noun"){s(w).articleWrong=1;s(w).articleNeedsReview=true}})');
+ for(const fn of ['pool','recallPool','articleReviewPool'])assert.equal(h.run(fn+'().every(w=>Lessons.matches(w,"b1plus","5"))'),true);
+ h.run('document.getElementById("mode").value="verbWrite"');assert.equal(h.run('verbWritePool().every(w=>Lessons.matches(w,"b1plus","5")&&w.type==="verb")'),true);
+ chooseLesson(h,'unassigned');assert.equal(h.run('pool().every(w=>!Lessons.memberships(w).length)'),true);chooseLesson(h,'b2');assert.equal(h.run('pool().length'),0);chooseLesson(h,'all');assert.equal(h.el('lessonFilter').disabled,true);assert.equal(h.run('selectedLesson()'),'all');
+});
+test('lesson cycles never repeat a successful key before all eligible lesson words and keep global-cycle exclusions',()=>{
+ const h=harness();h.run('trainingLocked=false;cyclePool();globalThis.shared=data.find(w=>w.de==="der Betrieb");markCycleSeen(shared)');chooseLesson(h,'b1plus','1');
+ assert.equal(h.run('cyclePool().some(w=>key(w)===key(shared))'),false);const eligible=Array.from(h.run('pool().map(key)')),seen=new Set([h.run('key(shared)')]);
+ for(let i=0;i<Math.ceil((eligible.length-1)/5);i++){
+  const keys=Array.from(h.run('pick5().map(key)'));for(const k of keys){assert(!seen.has(k));seen.add(k);}h.ctx.keys=keys;h.run('keys.forEach(k=>markCycleSeen(data.find(w=>key(w)===k)))');
+ }
+ assert.equal(seen.size,eligible.length);assert.equal(h.run('pick5().length'),5);assert.equal(h.run('cycle.number'),1);
+ chooseLesson(h,'all');assert.equal(h.run('cyclePool().some(w=>key(w)===key(shared))'),false);assert.equal(h.run('cycle.seen.filter(k=>Lessons.matches({de:k},"b1plus","1")).length'),eligible.length);
+});
+test('three successful encounters in a lesson share mastery with all books, while learned words remain searchable and explicitly reviewable',()=>{
+ const h=harness();h.run('trainingLocked=false;document.getElementById("focus").value="unmastered";typeFilter="verb"');chooseLesson(h,'b1plus','1');
+ const count=h.run('pool().length');assert(count>1);const seenCycles=[];
+ for(let cycle=0;cycle<3;cycle++){
+  const seen=new Set();for(let i=0;i<Math.ceil(count/5);i++){
+   const keys=Array.from(h.run('pick5().map(key)'));for(const k of keys){assert(!seen.has(k));seen.add(k);h.ctx.k=k;h.run('globalThis.word=data.find(w=>key(w)===k);selectedL={w:word,e:document.createElement("div")};selectedR={w:word,e:document.createElement("div")};check()');}
+  }assert.equal(seen.size,count);seenCycles.push(seen);
+ }
+ assert.equal(h.run('pool().length'),0);assert.equal(h.run('s(word).streak'),3);assert.equal(h.run('s(word).mastered'),true);assert.match(h.run('emptyMatchingMessage()'),/пригадування/);
+ chooseLesson(h,'all');assert.equal(h.run('pool().some(w=>key(w)===key(word))'),false);assert.equal(h.run('recallPool().some(w=>key(w)===key(word))'),true);assert.equal(h.run('findWords(word.de).some(w=>key(w)===key(word))'),true);h.run('document.getElementById("focus").value="all"');assert.equal(h.run('pool().some(w=>key(w)===key(word))'),true);
+});
+test('shared noun mastery, article results and hidden state survive lesson switching and cloud-compatible snapshot restoration',()=>{
+ const h=harness();h.run('trainingLocked=false;document.getElementById("focus").value="unmastered";globalThis.word=data.find(w=>w.de==="der Betrieb");s(word).streak=2;s(word).correct=8;s(word).retainedMetadata={custom:true};hiddenWords.add(key(data.find(w=>w.de==="der Nebel")))');chooseLesson(h,'b1plus','1');h.run('cyclePool();selectedL={w:word,e:document.createElement("div")};selectedR={w:word,e:document.createElement("div")};check();answerArticle(word.article);acknowledgeArticle()');
+ assert.equal(h.run('s(word).mastered'),true);assert.equal(h.run('s(word).articleCorrect'),1);const before=h.run('JSON.stringify(snapshot())'),data=h.run('JSON.stringify(data)');chooseLesson(h,'b1plus','2');assert.equal(h.run('pool().some(w=>key(w)===key(word))'),false);chooseLesson(h,'all');assert.equal(h.run('pool().some(w=>key(w)===key(word))'),false);assert.equal(h.run('JSON.stringify(snapshot())'),before);
+ h.ctx.restored=h.run('Progress.clone(snapshot())');h.run('adapter.apply(restored)');assert.equal(h.run('JSON.stringify(snapshot())'),before);assert.equal(h.run('JSON.stringify(data)'),data);assert.equal(h.run('s(word).correct'),9);assert.equal(h.run('s(word).retainedMetadata.custom'),true);
+});
+test('default unmastered view inherits the entire legacy seen list rather than restarting the general cycle',()=>{
+ const h=harness();h.run('trainingLocked=false;cycle={seen:data.slice(0,323).map(key),number:2};document.getElementById("focus").value="unmastered"');assert.equal(h.run('cyclePool().length'),h.run('data.length')-323);assert.equal(h.run('cycle.seen.length'),323);assert.equal(h.run('cycle.number'),2);assert.equal(h.run('cycle.scopes["translation|all|all|all"].seen.length'),323);
+ chooseLesson(h,'b1plus','1');h.run('cyclePool()');assert.equal(h.run('cycle.scopes["translation|all|all|unmastered"].seen.length'),323);chooseLesson(h,'all');assert.equal(h.run('cyclePool().length'),h.run('data.length')-323);
 });
