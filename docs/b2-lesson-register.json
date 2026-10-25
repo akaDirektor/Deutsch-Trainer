@@ -1,0 +1,3676 @@
+{
+  "book": "B2",
+  "baselineCommit": "9a735f1a32e5cfab14cd6acde1935dafd6a13316",
+  "corpusRecordsBefore": 1135,
+  "corpusRecordsAfter": 1135,
+  "sourcePhotosReviewed": 24,
+  "uniqueCorpusKeys": 271,
+  "matchedHeadwordOccurrences": 313,
+  "scope": "Assign existing corpus only. All 24 photos visually inspected; OCR used as an index and mapped candidates reviewed. This is not a transcription/import of the full printed B2 vocabulary. Unlinked OCR readings are kept locally and are not counted as verified absent headwords. No corpus or progress changes.",
+  "photos": [
+    {
+      "photo": "1.HEIC",
+      "lesson": 1,
+      "page": 28
+    },
+    {
+      "photo": "IMG_8537.HEIC",
+      "lesson": 1,
+      "page": 29
+    },
+    {
+      "photo": "IMG_8538.HEIC",
+      "lesson": 2,
+      "page": null
+    },
+    {
+      "photo": "IMG_8539.HEIC",
+      "lesson": 2,
+      "page": 49
+    },
+    {
+      "photo": "IMG_8540.HEIC",
+      "lesson": 3,
+      "page": 68
+    },
+    {
+      "photo": "IMG_8541.HEIC",
+      "lesson": 3,
+      "page": 69
+    },
+    {
+      "photo": "IMG_8542.HEIC",
+      "lesson": 4,
+      "page": null
+    },
+    {
+      "photo": "IMG_8543.HEIC",
+      "lesson": 4,
+      "page": 89
+    },
+    {
+      "photo": "IMG_8569.HEIC",
+      "lesson": 5,
+      "page": 116
+    },
+    {
+      "photo": "IMG_8576.HEIC",
+      "lesson": 5,
+      "page": 117
+    },
+    {
+      "photo": "IMG_8570.HEIC",
+      "lesson": 6,
+      "page": 136
+    },
+    {
+      "photo": "IMG_8571.HEIC",
+      "lesson": 6,
+      "page": null
+    },
+    {
+      "photo": "IMG_8572.HEIC",
+      "lesson": 7,
+      "page": 156
+    },
+    {
+      "photo": "IMG_8549.heic",
+      "lesson": 7,
+      "page": 157
+    },
+    {
+      "photo": "IMG_8574.HEIC",
+      "lesson": 8,
+      "page": 176
+    },
+    {
+      "photo": "IMG_8551.heic",
+      "lesson": 8,
+      "page": 177
+    },
+    {
+      "photo": "IMG_8552.HEIC",
+      "lesson": 9,
+      "page": 202
+    },
+    {
+      "photo": "IMG_8553.HEIC",
+      "lesson": 9,
+      "page": 203
+    },
+    {
+      "photo": "IMG_8554.heic",
+      "lesson": 10,
+      "page": null
+    },
+    {
+      "photo": "IMG_8555.heic",
+      "lesson": 10,
+      "page": 223
+    },
+    {
+      "photo": "IMG_8556.heic",
+      "lesson": 11,
+      "page": null
+    },
+    {
+      "photo": "IMG_8557.heic",
+      "lesson": 11,
+      "page": 243
+    },
+    {
+      "photo": "IMG_8558.heic",
+      "lesson": 12,
+      "page": null
+    },
+    {
+      "photo": "IMG_8559.heic",
+      "lesson": 12,
+      "page": 263
+    }
+  ],
+  "chapters": [
+    {
+      "number": 1,
+      "existingKeys": 139
+    },
+    {
+      "number": 2,
+      "existingKeys": 23
+    },
+    {
+      "number": 3,
+      "existingKeys": 32
+    },
+    {
+      "number": 4,
+      "existingKeys": 17
+    },
+    {
+      "number": 5,
+      "existingKeys": 14
+    },
+    {
+      "number": 6,
+      "existingKeys": 11
+    },
+    {
+      "number": 7,
+      "existingKeys": 15
+    },
+    {
+      "number": 8,
+      "existingKeys": 16
+    },
+    {
+      "number": 9,
+      "existingKeys": 17
+    },
+    {
+      "number": 10,
+      "existingKeys": 10
+    },
+    {
+      "number": 11,
+      "existingKeys": 15
+    },
+    {
+      "number": 12,
+      "existingKeys": 7
+    }
+  ],
+  "entries": [
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Absolvent",
+      "keys": [
+        "der absolvent"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Absolventin",
+      "keys": [
+        "die absolventin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "sich anpassen an (+ Akk.)",
+      "keys": [
+        "sich anpassen an (+ akk.)"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Arbeitsberater",
+      "keys": [
+        "der arbeitsberater"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Arbeitsberaterin",
+      "keys": [
+        "die arbeitsberaterin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Arbeitsteilung",
+      "keys": [
+        "die arbeitsteilung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Arbeitswelt",
+      "keys": [
+        "die arbeitswelt"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "aufgrund von (+ Dat.)",
+      "keys": [
+        "aufgrund von (+ dat.)"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Bedeutung",
+      "keys": [
+        "die bedeutung"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "sich behaupten",
+      "keys": [
+        "sich behaupten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Berufsweg",
+      "keys": [
+        "der berufsweg"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Digitalisierung",
+      "keys": [
+        "die digitalisierung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "sich ein} stellen auf (+Akk.)",
+      "keys": [
+        "sich einstellen auf (+ akk.)",
+        "sich einstellen auf + akk."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "erforderlich",
+      "keys": [
+        "erforderlich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "etw. erwerben",
+      "keys": [
+        "etw. erwerben"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Erwerbstätige",
+      "keys": [
+        "der erwerbstätige"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Erwerbstätige",
+      "keys": [
+        "die erwerbstätige"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Freiberufler",
+      "keys": [
+        "der freiberufler"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Freiberuflerin",
+      "keys": [
+        "die freiberuflerin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Globalisierung",
+      "keys": [
+        "die globalisierung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Herausforderung",
+      "keys": [
+        "die herausforderung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "interkulturelle Kompetenz",
+      "keys": [
+        "interkulturelle kompetenz"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Klimawandel",
+      "keys": [
+        "der klimawandel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Kompetenz",
+      "keys": [
+        "die kompetenz"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "modernisieren",
+      "keys": [
+        "modernisieren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Neuorientierung",
+      "keys": [
+        "die neuorientierung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "sich nieder}lassen",
+      "keys": [
+        "sich niederlassen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "ökologisch",
+      "keys": [
+        "ökologisch"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "das Pausengespräch",
+      "keys": [
+        "das pausengespräch"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Technologie",
+      "keys": [
+        "die technologie"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Unterbrechung",
+      "keys": [
+        "die unterbrechung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "das Unternehmen",
+      "keys": [
+        "das unternehmen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "veralten",
+      "keys": [
+        "veralten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "A",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "vertrauen auf (+ Akk.)",
+      "keys": [
+        "vertrauen auf (+ akk.)"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "ambulant",
+      "keys": [
+        "ambulant"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "das Berufsleben",
+      "keys": [
+        "das berufsleben"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "das Beschwerdemanagement",
+      "keys": [
+        "das beschwerdemanagement"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Betreuungsdienst",
+      "keys": [
+        "der betreuungsdienst"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Bildungsgutschein",
+      "keys": [
+        "der bildungsgutschein"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "bisherig",
+      "keys": [
+        "bisherig"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "eingehende Post",
+      "keys": [
+        "eingehende post"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Fachkraft",
+      "keys": [
+        "die fachkraft"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Fördermöglichkeit",
+      "keys": [
+        "die fördermöglichkeit"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "geeignet für (+ Akk.)",
+      "keys": [
+        "geeignet für (+ akk.)"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Haushaltsführung",
+      "keys": [
+        "die haushaltsführung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Hilfskraft",
+      "keys": [
+        "die hilfskraft"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Kenntnis",
+      "keys": [
+        "die kenntnis"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "Kenntnisse erwerben",
+      "keys": [
+        "kenntnisse erwerben"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Lagerliste",
+      "keys": [
+        "die lagerliste"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Lagerlogistiker",
+      "keys": [
+        "der lagerlogistiker"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Lagerlogistikerin",
+      "keys": [
+        "die lagerlogistikerin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Lehrplan",
+      "keys": [
+        "der lehrplan"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Pflegedienst",
+      "keys": [
+        "der pflegedienst"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Pflegeeinrichtung",
+      "keys": [
+        "die pflegeeinrichtung"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Pflegekraft",
+      "keys": [
+        "die pflegekraft"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "das Pflegezertifikat",
+      "keys": [
+        "das pflegezertifikat"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "das Präsenzseminar",
+      "keys": [
+        "das präsenzseminar"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Produktionshelfer",
+      "keys": [
+        "der produktionshelfer"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "sich qualifizieren",
+      "keys": [
+        "sich qualifizieren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Sachkenntnis",
+      "keys": [
+        "die sachkenntnis"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "etw. vermitteln",
+      "keys": [
+        "etw. vermitteln"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "B",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "zur Verfügung stehen",
+      "keys": [
+        "zur verfügung stehen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Abfallvermeidung",
+      "keys": [
+        "die abfallvermeidung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Anschluss",
+      "keys": [
+        "der anschluss"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Bereich",
+      "keys": [
+        "der bereich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Betriebsbesichtigung",
+      "keys": [
+        "die betriebsbesichtigung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "das Betriebsgelände",
+      "keys": [
+        "das betriebsgelände"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "etw. ein}führen",
+      "keys": [
+        "etw. einführen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Energieeinsparung",
+      "keys": [
+        "die energieeinsparung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "der Entscheidungsspielraum",
+      "keys": [
+        "der entscheidungsspielraum"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "etw. eröffnen",
+      "keys": [
+        "etw. eröffnen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Eröffnung",
+      "keys": [
+        "die eröffnung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "1.HEIC",
+      "page": 28,
+      "printed": "die Erschließung",
+      "keys": [
+        "die erschließung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Filiale",
+      "keys": [
+        "die filiale"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "eine flache Hierarchie",
+      "keys": [
+        "eine flache hierarchie"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Geschäftsjahr",
+      "keys": [
+        "das geschäftsjahr"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Gründungsdatum",
+      "keys": [
+        "das gründungsdatum"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Hierarchie",
+      "keys": [
+        "die hierarchie"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "im Anschluss an (+ Akk.)",
+      "keys": [
+        "im anschluss an (+ akk.)"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Mitspracherecht",
+      "keys": [
+        "das mitspracherecht"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "nachhaltig",
+      "keys": [
+        "nachhaltig"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "etw. präsentieren",
+      "keys": [
+        "etw. präsentieren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "der Pressesprecher",
+      "keys": [
+        "der pressesprecher"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Pressesprecherin",
+      "keys": [
+        "die pressesprecherin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "Produkte einführen",
+      "keys": [
+        "produkte einführen"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Produktionsstätte",
+      "keys": [
+        "die produktionsstätte"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "der Rundgang",
+      "keys": [
+        "der rundgang"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Sortiment",
+      "keys": [
+        "das sortiment"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "der Standort",
+      "keys": [
+        "der standort"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Terminbestätigung",
+      "keys": [
+        "die terminbestätigung"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "etw. übernehmen",
+      "keys": [
+        "etw. übernehmen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "der Umsatz",
+      "keys": [
+        "der umsatz"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Unternehmensgeschichte",
+      "keys": [
+        "die unternehmensgeschichte"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Verkaufsfläche",
+      "keys": [
+        "die verkaufsfläche"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Verkaufsgespräch",
+      "keys": [
+        "das verkaufsgespräch"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Zentrallager",
+      "keys": [
+        "das zentrallager"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "C",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Zweigwerk",
+      "keys": [
+        "das zweigwerk"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "etw. an} ordnen",
+      "keys": [
+        "etw. anordnen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Controlling",
+      "keys": [
+        "das controlling"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Finanzabteilung",
+      "keys": [
+        "die finanzabteilung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Fläche",
+      "keys": [
+        "die fläche"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Forschung & Entwicklung",
+      "keys": [
+        "die forschung & entwicklung",
+        "die forschung und entwicklung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Geschäftsleitung",
+      "keys": [
+        "die geschäftsleitung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "der Hauptbereich",
+      "keys": [
+        "der hauptbereich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Haustechnik",
+      "keys": [
+        "die haustechnik"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Herstellung",
+      "keys": [
+        "die herstellung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Hierarchieebene",
+      "keys": [
+        "die hierarchieebene"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Lager",
+      "keys": [
+        "das lager"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "etw. leiten",
+      "keys": [
+        "etw. leiten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Marketing",
+      "keys": [
+        "das marketing"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Marktuntersuchung",
+      "keys": [
+        "die marktuntersuchung"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Mitarbeiterzahl",
+      "keys": [
+        "die mitarbeiterzahl"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Öffentlichkeitsarbeit",
+      "keys": [
+        "die öffentlichkeitsarbeit"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Organigramm",
+      "keys": [
+        "das organigramm"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Produktionsverfahren",
+      "keys": [
+        "das produktionsverfahren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Qualitätssicherung",
+      "keys": [
+        "die qualitätssicherung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Rechtsabteilung",
+      "keys": [
+        "die rechtsabteilung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Spitze",
+      "keys": [
+        "die spitze"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "an der Spitze von (+ Dat.)",
+      "keys": [
+        "an der spitze von (+ dat.)"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "untergeordnet",
+      "keys": [
+        "untergeordnet"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "untergliedert",
+      "keys": [
+        "untergliedert"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "unterteilt",
+      "keys": [
+        "unterteilt"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Verkaufsförderung",
+      "keys": [
+        "die verkaufsförderung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "der Vertrieb",
+      "keys": [
+        "der vertrieb"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Verwaltung",
+      "keys": [
+        "die verwaltung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "etw. zuordnen zu (+ Dat.)",
+      "keys": [
+        "etw. zuordnen zu (+ dat.)"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 1,
+      "section": "D",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Zuständigkeit",
+      "keys": [
+        "die zuständigkeit"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "die Anrede",
+      "keys": [
+        "die anrede"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "distanzlos",
+      "keys": [
+        "distanzlos"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Du",
+      "keys": [
+        "das du"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "sich duzen",
+      "keys": [
+        "sich duzen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "der Kompromiss",
+      "keys": [
+        "der kompromiss"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "einen Kompromiss finden",
+      "keys": [
+        "einen kompromiss finden"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "etw./jdn. respektieren",
+      "keys": [
+        "etw./jdn. respektieren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "das Sie",
+      "keys": [
+        "das sie"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "sich siezen",
+      "keys": [
+        "sich siezen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 1,
+      "section": "E",
+      "photo": "IMG_8537.HEIC",
+      "page": 29,
+      "printed": "jdm. das Du an}bieten",
+      "keys": [
+        "jdm. das du anbieten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "auf }fallen",
+      "keys": [
+        "auffallen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "etw. bearbeiten",
+      "keys": [
+        "etw. bearbeiten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "der Beschäftigte",
+      "keys": [
+        "der beschäftigte"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "die Beschäftigte",
+      "keys": [
+        "die beschäftigte"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "etw./jdn. betreuen",
+      "keys": [
+        "jdn./etw. betreuen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "die Branche",
+      "keys": [
+        "die branche"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "der Handel",
+      "keys": [
+        "der handel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "das Handwerk",
+      "keys": [
+        "das handwerk"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "die IT-Branche",
+      "keys": [
+        "die it-branche"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "die Lagerlogistik",
+      "keys": [
+        "die lagerlogistik"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "die Schichtarbeit",
+      "keys": [
+        "die schichtarbeit"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "etw. überwachen",
+      "keys": [
+        "überwachen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "A",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "etw. warten",
+      "keys": [
+        "eine anlage warten"
+      ],
+      "evidence": "Printed machine-maintenance sense (z. B. eine Maschine), not warten = чекати."
+    },
+    {
+      "lesson": 2,
+      "section": "B",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "etw. betreiben",
+      "keys": [
+        "betreiben"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "B",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "jdn. ein} stellen",
+      "keys": [
+        "jdn. einstellen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "B",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "der Einzelhandel",
+      "keys": [
+        "der einzelhandel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "B",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "etw. erweitern",
+      "keys": [
+        "etw. erweitern",
+        "erweitern"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "B",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "etw. gründen",
+      "keys": [
+        "gründen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "B",
+      "photo": "IMG_8538.HEIC",
+      "page": null,
+      "printed": "die Spedition",
+      "keys": [
+        "die spedition"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "C",
+      "photo": "IMG_8539.HEIC",
+      "page": 49,
+      "printed": "hin}weisen auf (+ Akk.)",
+      "keys": [
+        "hinweisen auf + akk."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 2,
+      "section": "C",
+      "photo": "IMG_8539.HEIC",
+      "page": 49,
+      "printed": "die Pflicht",
+      "keys": [
+        "die pflicht"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 2,
+      "section": "E",
+      "photo": "IMG_8539.HEIC",
+      "page": 49,
+      "printed": "das Wohlbefinden",
+      "keys": [
+        "das wohlbefinden"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "der Aushang",
+      "keys": [
+        "der aushang"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "das BIZ (Berufsinformationszentrum)",
+      "keys": [
+        "das berufsinformationszentrum (biz)"
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "etw. entwickeln",
+      "keys": [
+        "etw. entwickeln",
+        "entwickeln"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "innovativ",
+      "keys": [
+        "innovativ"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "sorgfältig",
+      "keys": [
+        "sorgfältig"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "soziale Netzwerke",
+      "keys": [
+        "die sozialen netzwerke"
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "etw. verlangen",
+      "keys": [
+        "verlangen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "die Voraussetzung",
+      "keys": [
+        "die voraussetzung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "die Webseite",
+      "keys": [
+        "die webseite"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "A",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "zur Verfügung stehen",
+      "keys": [
+        "zur verfügung stehen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "B",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "die Daten",
+      "keys": [
+        "die daten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "B",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "etw. dokumentieren",
+      "keys": [
+        "etw. dokumentieren",
+        "dokumentieren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "B",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "fehlerfrei",
+      "keys": [
+        "fehlerfrei"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "B",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "jdn. hin}weisen auf (+Akk.)",
+      "keys": [
+        "hinweisen auf + akk."
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 3,
+      "section": "B",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "die Kenntnis",
+      "keys": [
+        "die kenntnis"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "B",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "verfügen über (+ Akk.)",
+      "keys": [
+        "verfügen über + akk."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "B",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "die Weiterbildung",
+      "keys": [
+        "die weiterbildung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "C",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "die Anrede",
+      "keys": [
+        "die anrede"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "C",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "der Ansprechpartner",
+      "keys": [
+        "der ansprechpartner"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "C",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "die Ansprechpartnerin",
+      "keys": [
+        "die ansprechpartnerin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "C",
+      "photo": "IMG_8540.HEIC",
+      "page": 68,
+      "printed": "etw. beweisen",
+      "keys": [
+        "beweisen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "C",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "die Soft Skills",
+      "keys": [
+        "die soft skills"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "C",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "vielfältig",
+      "keys": [
+        "vielfältig"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "C",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "Wert legen auf (+ Akk.)",
+      "keys": [
+        "wert legen auf (+ akk.)"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "D",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "erforderlich",
+      "keys": [
+        "erforderlich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "D",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "etw. erstatten",
+      "keys": [
+        "erstatten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "D",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "die Teamfähigkeit",
+      "keys": [
+        "die teamfähigkeit"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 3,
+      "section": "D",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "einen Termin bestätigen",
+      "keys": [
+        "einen termin bestätigen"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 3,
+      "section": "D",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "die Zuverlässigkeit",
+      "keys": [
+        "die zuverlässigkeit"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 3,
+      "section": "E",
+      "photo": "IMG_8541.HEIC",
+      "page": 69,
+      "printed": "die Bescheinigung",
+      "keys": [
+        "die bescheinigung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "A",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "der Freizeitausgleich",
+      "keys": [
+        "der freizeitausgleich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "A",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "inklusive",
+      "keys": [
+        "inklusive"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "A",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "der Tarif",
+      "keys": [
+        "der tarif"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "B",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "das Bewerbungsverfahren",
+      "keys": [
+        "das bewerbungsverfahren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "B",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "die Einarbeitung",
+      "keys": [
+        "die einarbeitung"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 4,
+      "section": "B",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "sich erkundigen nach (+ Dat.)",
+      "keys": [
+        "sich erkundigen nach + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "B",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "der Feierabend",
+      "keys": [
+        "der feierabend"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "C",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "der Betriebsrat",
+      "keys": [
+        "der betriebsrat"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "C",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "sich erinnern an (+ Akk.)",
+      "keys": [
+        "sich erinnern an + akk."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "C",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "die Pausenregelung",
+      "keys": [
+        "die pausenregelung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "C",
+      "photo": "IMG_8542.HEIC",
+      "page": null,
+      "printed": "die Personalabteilung",
+      "keys": [
+        "die personalabteilung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "D",
+      "photo": "IMG_8543.HEIC",
+      "page": 89,
+      "printed": "etw. auf }laden",
+      "keys": [
+        "etw. aufladen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "D",
+      "photo": "IMG_8543.HEIC",
+      "page": 89,
+      "printed": "etw. beantragen",
+      "keys": [
+        "beantragen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "D",
+      "photo": "IMG_8543.HEIC",
+      "page": 89,
+      "printed": "die Genehmigung",
+      "keys": [
+        "die genehmigung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "D",
+      "photo": "IMG_8543.HEIC",
+      "page": 89,
+      "printed": "üblich",
+      "keys": [
+        "üblich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "E",
+      "photo": "IMG_8543.HEIC",
+      "page": 89,
+      "printed": "etw. empfinden",
+      "keys": [
+        "empfinden"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 4,
+      "section": "E",
+      "photo": "IMG_8543.HEIC",
+      "page": 89,
+      "printed": "etw./jdn. respektieren",
+      "keys": [
+        "etw./jdn. respektieren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "A",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "etw. gestalten",
+      "keys": [
+        "etw. gestalten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "A",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "leiten",
+      "keys": [
+        "etw. leiten"
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 5,
+      "section": "A",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "die Tagesordnung",
+      "keys": [
+        "die tagesordnung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "A",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "die Teamsitzung",
+      "keys": [
+        "die teamsitzung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "B",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "ab}raten von (+ Dat.)",
+      "keys": [
+        "abraten von + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "B",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "der Einzelhandel",
+      "keys": [
+        "der einzelhandel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "B",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "das Ergebnisprotokoll",
+      "keys": [
+        "das ergebnisprotokoll"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "C",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "der Arbeitsalltag",
+      "keys": [
+        "der arbeitsalltag"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "C",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "der Eindruck",
+      "keys": [
+        "der eindruck"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "C",
+      "photo": "IMG_8569.HEIC",
+      "page": 116,
+      "printed": "der Kompromiss",
+      "keys": [
+        "der kompromiss"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "C",
+      "photo": "IMG_8576.HEIC",
+      "page": 117,
+      "printed": "die Überstunde",
+      "keys": [
+        "die überstunde"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "C",
+      "photo": "IMG_8576.HEIC",
+      "page": 117,
+      "printed": "der Zeitdruck",
+      "keys": [
+        "der zeitdruck"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 5,
+      "section": "D",
+      "photo": "IMG_8576.HEIC",
+      "page": 117,
+      "printed": "einen Berg besteigen",
+      "keys": [
+        "besteigen (einen berg)"
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 5,
+      "section": "D",
+      "photo": "IMG_8576.HEIC",
+      "page": 117,
+      "printed": "in der Regel",
+      "keys": [
+        "in der regel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "A",
+      "photo": "IMG_8570.HEIC",
+      "page": 136,
+      "printed": "der Kundenservice",
+      "keys": [
+        "der kundenservice"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "B",
+      "photo": "IMG_8570.HEIC",
+      "page": 136,
+      "printed": "erforderlich",
+      "keys": [
+        "erforderlich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "B",
+      "photo": "IMG_8570.HEIC",
+      "page": 136,
+      "printed": "die Lieferzeit",
+      "keys": [
+        "die lieferzeit"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "C",
+      "photo": "IMG_8570.HEIC",
+      "page": 136,
+      "printed": "das Display",
+      "keys": [
+        "das display"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "C",
+      "photo": "IMG_8570.HEIC",
+      "page": 136,
+      "printed": "etw. herunter}laden",
+      "keys": [
+        "herunterladen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "C",
+      "photo": "IMG_8571.HEIC",
+      "page": null,
+      "printed": "etw. warten",
+      "keys": [
+        "eine anlage warten"
+      ],
+      "evidence": "Printed machine-maintenance sense (z. B. eine Maschine), not warten = чекати."
+    },
+    {
+      "lesson": 6,
+      "section": "E",
+      "photo": "IMG_8571.HEIC",
+      "page": null,
+      "printed": "der Klimawandel",
+      "keys": [
+        "der klimawandel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "E",
+      "photo": "IMG_8571.HEIC",
+      "page": null,
+      "printed": "etw. sperren",
+      "keys": [
+        "etw. sperren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "E",
+      "photo": "IMG_8571.HEIC",
+      "page": null,
+      "printed": "verzichten auf (+ Akk.)",
+      "keys": [
+        "verzichten auf (+ akk.)",
+        "verzichten auf + akk."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 6,
+      "section": "E",
+      "photo": "IMG_8571.HEIC",
+      "page": null,
+      "printed": "jdn. zwingen",
+      "keys": [
+        "zwingen"
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 7,
+      "section": "A",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "etw./jdn. bedienen",
+      "keys": [
+        "bedienen"
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 7,
+      "section": "A",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "etw. betreiben",
+      "keys": [
+        "betreiben"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "A",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "der Mangel",
+      "keys": [
+        "der mangel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "A",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "die Qualitätssicherung",
+      "keys": [
+        "die qualitätssicherung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "A",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "die Zuverlässigkeit",
+      "keys": [
+        "die zuverlässigkeit"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "B",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "etw. desinfizieren",
+      "keys": [
+        "desinfizieren"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "B",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "die Pflegekraft",
+      "keys": [
+        "die pflegekraft"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "B",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "die Qualitätssicherung",
+      "keys": [
+        "die qualitätssicherung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "B",
+      "photo": "IMG_8572.HEIC",
+      "page": 156,
+      "printed": "etw./jdn. schützen vor (+ Dat.)",
+      "keys": [
+        "schützen vor + dat."
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 7,
+      "section": "D",
+      "photo": "IMG_8549.heic",
+      "page": 157,
+      "printed": "die Fachkraft",
+      "keys": [
+        "die fachkraft"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "D",
+      "photo": "IMG_8549.heic",
+      "page": 157,
+      "printed": "peinlich",
+      "keys": [
+        "peinlich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "D",
+      "photo": "IMG_8549.heic",
+      "page": 157,
+      "printed": "etw. verbergen",
+      "keys": [
+        "verbergen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "E",
+      "photo": "IMG_8549.heic",
+      "page": 157,
+      "printed": "sich bemühen um (+Akk.)",
+      "keys": [
+        "sich bemühen um + akk."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "E",
+      "photo": "IMG_8549.heic",
+      "page": 157,
+      "printed": "halten von (+ Dat.)",
+      "keys": [
+        "halten von + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "E",
+      "photo": "IMG_8549.heic",
+      "page": 157,
+      "printed": "klingen",
+      "keys": [
+        "klingen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 7,
+      "section": "E",
+      "photo": "IMG_8549.heic",
+      "page": 157,
+      "printed": "sich zurückziehen von (+ Dat.)",
+      "keys": [
+        "sich zurückziehen von + dat."
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 8,
+      "section": "A",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "erforderlich",
+      "keys": [
+        "erforderlich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "A",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "die Globalisierung",
+      "keys": [
+        "die globalisierung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "A",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "die Menge",
+      "keys": [
+        "die menge"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "A",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "sorgen für (+ Akk.)",
+      "keys": [
+        "sorgen für + akk."
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 8,
+      "section": "B",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "der Ansprechpartner",
+      "keys": [
+        "der ansprechpartner"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "B",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "die Ansprechpartnerin",
+      "keys": [
+        "die ansprechpartnerin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "B",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "etw. entgegen}nehmen",
+      "keys": [
+        "etw. entgegennehmen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "B",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "jdn. hin}weisen auf (+ Akk.)",
+      "keys": [
+        "hinweisen auf + akk."
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 8,
+      "section": "B",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "verbinden mit (+ Dat.)",
+      "keys": [
+        "verbinden mit + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "C",
+      "photo": "IMG_8574.HEIC",
+      "page": 176,
+      "printed": "sich erweisen als",
+      "keys": [
+        "sich erweisen als + nom."
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 8,
+      "section": "C",
+      "photo": "IMG_8551.heic",
+      "page": 177,
+      "printed": "nachteilig",
+      "keys": [
+        "nachteilig"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "D",
+      "photo": "IMG_8551.heic",
+      "page": 177,
+      "printed": "der Mangel",
+      "keys": [
+        "der mangel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "D",
+      "photo": "IMG_8551.heic",
+      "page": 177,
+      "printed": "die Pflicht",
+      "keys": [
+        "die pflicht"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "D",
+      "photo": "IMG_8551.heic",
+      "page": 177,
+      "printed": "in der Regel",
+      "keys": [
+        "in der regel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "E",
+      "photo": "IMG_8551.heic",
+      "page": 177,
+      "printed": "die Abmahnung",
+      "keys": [
+        "die abmahnung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 8,
+      "section": "E",
+      "photo": "IMG_8551.heic",
+      "page": 177,
+      "printed": "erwünscht",
+      "keys": [
+        "erwünscht"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 9,
+      "section": "A",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "das Display",
+      "keys": [
+        "das display"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "A",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "der Mangel",
+      "keys": [
+        "der mangel"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "A",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "sich verspäten",
+      "keys": [
+        "sich verspäten"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "A",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "etw. zerbrechen",
+      "keys": [
+        "etw. zerbrechen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "A",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "etw. zerkratzen",
+      "keys": [
+        "etw. zerkratzen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "A",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "etw. zerreißen",
+      "keys": [
+        "etw. zerreißen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "B",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "der Lieferschein",
+      "keys": [
+        "der lieferschein"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "B",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "verfügbar",
+      "keys": [
+        "verfügbar"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "C",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "defekt",
+      "keys": [
+        "defekt"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "C",
+      "photo": "IMG_8552.HEIC",
+      "page": 202,
+      "printed": "der Händler",
+      "keys": [
+        "der händler"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "C",
+      "photo": "IMG_8553.HEIC",
+      "page": 203,
+      "printed": "die Händlerin",
+      "keys": [
+        "die händlerin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "C",
+      "photo": "IMG_8553.HEIC",
+      "page": 203,
+      "printed": "Kosten übernehmen",
+      "keys": [
+        "kosten übernehmen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "C",
+      "photo": "IMG_8553.HEIC",
+      "page": 203,
+      "printed": "der Kundenservice",
+      "keys": [
+        "der kundenservice"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "C",
+      "photo": "IMG_8553.HEIC",
+      "page": 203,
+      "printed": "der Nachweis",
+      "keys": [
+        "der nachweis"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "D",
+      "photo": "IMG_8553.HEIC",
+      "page": 203,
+      "printed": "der Ansprechpartner",
+      "keys": [
+        "der ansprechpartner"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "D",
+      "photo": "IMG_8553.HEIC",
+      "page": 203,
+      "printed": "die Ansprechpartnerin",
+      "keys": [
+        "die ansprechpartnerin"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 9,
+      "section": "E",
+      "photo": "IMG_8553.HEIC",
+      "page": 203,
+      "printed": "etw. verlangen",
+      "keys": [
+        "verlangen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "A",
+      "photo": "IMG_8554.heic",
+      "page": null,
+      "printed": "leistungsfähig",
+      "keys": [
+        "leistungsfähig"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "A",
+      "photo": "IMG_8554.heic",
+      "page": null,
+      "printed": "der Umsatz",
+      "keys": [
+        "der umsatz"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "B",
+      "photo": "IMG_8554.heic",
+      "page": null,
+      "printed": "etw. erweitern",
+      "keys": [
+        "etw. erweitern",
+        "erweitern"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 10,
+      "section": "B",
+      "photo": "IMG_8554.heic",
+      "page": null,
+      "printed": "sich orientieren an (+ Dat.)",
+      "keys": [
+        "sich orientieren an + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "C",
+      "photo": "IMG_8554.heic",
+      "page": null,
+      "printed": "die Anforderung",
+      "keys": [
+        "die anforderung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "C",
+      "photo": "IMG_8554.heic",
+      "page": null,
+      "printed": "die Digitalisierung",
+      "keys": [
+        "die digitalisierung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "D",
+      "photo": "IMG_8555.heic",
+      "page": 223,
+      "printed": "der Businessplan",
+      "keys": [
+        "der businessplan"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "D",
+      "photo": "IMG_8555.heic",
+      "page": 223,
+      "printed": "der Umsatz",
+      "keys": [
+        "der umsatz"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "D",
+      "photo": "IMG_8555.heic",
+      "page": 223,
+      "printed": "vielfältig",
+      "keys": [
+        "vielfältig"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 10,
+      "section": "E",
+      "photo": "IMG_8555.heic",
+      "page": 223,
+      "printed": "geeignet sein für (+ Akk.)",
+      "keys": [
+        "geeignet für (+ akk.)"
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 11,
+      "section": "A",
+      "photo": "IMG_8556.heic",
+      "page": null,
+      "printed": "der Berufsalltag",
+      "keys": [
+        "der berufsalltag"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "B",
+      "photo": "IMG_8556.heic",
+      "page": null,
+      "printed": "die Abmahnung",
+      "keys": [
+        "die abmahnung"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "B",
+      "photo": "IMG_8556.heic",
+      "page": null,
+      "printed": "bestehen aus (+ Dat.)",
+      "keys": [
+        "bestehen aus + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "B",
+      "photo": "IMG_8556.heic",
+      "page": null,
+      "printed": "die Geschäftsführung",
+      "keys": [
+        "die geschäftsführung"
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 11,
+      "section": "C",
+      "photo": "IMG_8556.heic",
+      "page": null,
+      "printed": "das Arbeitsgericht",
+      "keys": [
+        "das arbeitsgericht"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "C",
+      "photo": "IMG_8556.heic",
+      "page": null,
+      "printed": "das Arbeitsverhältnis",
+      "keys": [
+        "das arbeitsverhältnis"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "C",
+      "photo": "IMG_8556.heic",
+      "page": null,
+      "printed": "führen zu (+ Dat.)",
+      "keys": [
+        "führen zu + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "C",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "wahrscheinlich",
+      "keys": [
+        "wahrscheinlich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "C",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "sich wehren gegen (+ Akk.)",
+      "keys": [
+        "sich wehren gegen + akk."
+      ],
+      "evidence": "Photo reading corrected after visual inspection; corpus label unchanged."
+    },
+    {
+      "lesson": 11,
+      "section": "C",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "jdn. zwingen (sich gezwungen sehen)",
+      "keys": [
+        "zwingen"
+      ],
+      "evidence": "Reviewed equivalent label / optional object or explicit grammatical annotation; same meaning and construction."
+    },
+    {
+      "lesson": 11,
+      "section": "D",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "das Arbeitsverhältnis",
+      "keys": [
+        "das arbeitsverhältnis"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "D",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "jdn. ein} stellen",
+      "keys": [
+        "jdn. einstellen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "D",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "der Mindesturlaub",
+      "keys": [
+        "der mindesturlaub"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "D",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "etw. verlangen",
+      "keys": [
+        "verlangen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "D",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "verstoßen gegen (+ Akk. )",
+      "keys": [
+        "verstoßen gegen + akk."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 11,
+      "section": "E",
+      "photo": "IMG_8557.heic",
+      "page": 243,
+      "printed": "die Pflicht",
+      "keys": [
+        "die pflicht"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 12,
+      "section": "A",
+      "photo": "IMG_8558.heic",
+      "page": null,
+      "printed": "der Anspruch",
+      "keys": [
+        "der anspruch"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 12,
+      "section": "A",
+      "photo": "IMG_8558.heic",
+      "page": null,
+      "printed": "etw. beantragen",
+      "keys": [
+        "beantragen"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 12,
+      "section": "D",
+      "photo": "IMG_8559.heic",
+      "page": 263,
+      "printed": "der Anspruch",
+      "keys": [
+        "der anspruch"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 12,
+      "section": "D",
+      "photo": "IMG_8559.heic",
+      "page": 263,
+      "printed": "Anspruch haben auf (+ Akk.)",
+      "keys": [
+        "anspruch haben auf (+ akk.)"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 12,
+      "section": "D",
+      "photo": "IMG_8559.heic",
+      "page": 263,
+      "printed": "rechnen mit (+ Dat.)",
+      "keys": [
+        "rechnen mit + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 12,
+      "section": "E",
+      "photo": "IMG_8559.heic",
+      "page": 263,
+      "printed": "peinlich",
+      "keys": [
+        "peinlich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 12,
+      "section": "E",
+      "photo": "IMG_8559.heic",
+      "page": 263,
+      "printed": "üblich",
+      "keys": [
+        "üblich"
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    },
+    {
+      "lesson": 12,
+      "section": "E",
+      "photo": "IMG_8559.heic",
+      "page": 263,
+      "printed": "um}gehen mit (+ Dat.)",
+      "keys": [
+        "umgehen mit + dat."
+      ],
+      "evidence": "Same headword; only separator/case notation and optional etw. normalized."
+    }
+  ],
+  "reviewExceptions": [
+    {
+      "lesson": 2,
+      "printed": "etw. warten (z. B. eine Maschine)",
+      "reason": "Maintenance, not waiting; assigned to existing eine Anlage warten."
+    },
+    {
+      "lesson": 6,
+      "printed": "etw. warten (z. B. eine Maschine)",
+      "reason": "Maintenance, not waiting; assigned to existing eine Anlage warten."
+    },
+    {
+      "lesson": 5,
+      "printed": "sich halten an (+ Akk.)",
+      "reason": "Existing sich halten in + Dat. is a different construction; not assigned."
+    },
+    {
+      "lesson": 5,
+      "printed": "zu einem Ergebnis kommen",
+      "reason": "No partial assignment to kommen."
+    },
+    {
+      "lesson": 6,
+      "printed": "die Selbstverständlichkeit",
+      "reason": "Not die Selbstständigkeit; not assigned."
+    },
+    {
+      "lesson": 9,
+      "printed": "der Betriebsarzt / die Betriebsärztin",
+      "reason": "Not der Betriebsrat / die Betriebsrätin; not assigned."
+    },
+    {
+      "lesson": 7,
+      "printed": "etw. einstellen",
+      "reason": "Equipment adjustment, not jdn. einstellen = employ; not assigned."
+    },
+    {
+      "lesson": 3,
+      "printed": "vollständig",
+      "reason": "Not unvollständig; not assigned."
+    }
+  ]
+}

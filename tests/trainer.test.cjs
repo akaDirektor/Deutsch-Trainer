@@ -284,7 +284,7 @@ function chooseLesson(h,book,lesson='all'){
 test('all seven supplied B1+ pages map to existing keys only, with reviewed exceptions and shared memberships',()=>{
  const h=harness(),r=JSON.parse(fs.readFileSync('docs/b1plus-lesson-register.json')),before=h.run('JSON.stringify({data,state:snapshot()})');
  assert.equal(r.sourceOccurrences,498);assert.equal(r.matchedOccurrences,496);assert.equal(r.uniqueCorpusKeys,485);assert.equal(r.unmatched.length,2);assert.deepEqual(r.chapters.map(c=>c.number),[1,2,3,4,5,6,7]);
- assert.equal(h.run('Lessons.books.b2.pending'),true);assert.equal(h.run('Lessons.books.b2.lessons.length'),0);
+ assert.equal(h.run('Lessons.books.b2.lessons.length'),12);
  const corpus=new Set(h.run('data.map(key)'));for(const row of r.entries)for(const key of row.keys)assert(corpus.has(key),key);
  assert.deepEqual(Array.from(h.run('Lessons.memberships(data.find(w=>w.de==="der Betrieb")).map(p=>p.lesson)')),['1','2']);
  for(const lesson of h.ctx.Lessons.books.b1plus.lessons)assert.equal(lesson.keys.length,new Set(lesson.keys).size);
@@ -297,7 +297,7 @@ test('book/lesson controls filter all practice modes, preserve global counters, 
  h.run('data.forEach(w=>{s(w).mastered=true;if(w.type==="noun"){s(w).articleWrong=1;s(w).articleNeedsReview=true}})');
  for(const fn of ['pool','recallPool','articleReviewPool'])assert.equal(h.run(fn+'().every(w=>Lessons.matches(w,"b1plus","5"))'),true);
  h.run('document.getElementById("mode").value="verbWrite"');assert.equal(h.run('verbWritePool().every(w=>Lessons.matches(w,"b1plus","5")&&w.type==="verb")'),true);
- chooseLesson(h,'unassigned');assert.equal(h.run('pool().every(w=>!Lessons.memberships(w).length)'),true);chooseLesson(h,'b2');assert.equal(h.run('pool().length'),0);chooseLesson(h,'all');assert.equal(h.el('lessonFilter').disabled,true);assert.equal(h.run('selectedLesson()'),'all');
+ chooseLesson(h,'unassigned');assert.equal(h.run('pool().every(w=>!Lessons.memberships(w).length)'),true);chooseLesson(h,'b2');assert(h.run('pool().length')>0);assert.equal(h.run('pool().every(w=>Lessons.memberships(w).some(p=>p.book==="b2"))'),true);chooseLesson(h,'all');assert.equal(h.el('lessonFilter').disabled,true);assert.equal(h.run('selectedLesson()'),'all');
 });
 test('lesson cycles never repeat a successful key before all eligible lesson words and keep global-cycle exclusions',()=>{
  const h=harness();h.run('trainingLocked=false;cyclePool();globalThis.shared=data.find(w=>w.de==="der Betrieb");markCycleSeen(shared)');chooseLesson(h,'b1plus','1');
@@ -327,4 +327,27 @@ test('shared noun mastery, article results and hidden state survive lesson switc
 test('default unmastered view inherits the entire legacy seen list rather than restarting the general cycle',()=>{
  const h=harness();h.run('trainingLocked=false;cycle={seen:data.slice(0,323).map(key),number:2};document.getElementById("focus").value="unmastered"');assert.equal(h.run('cyclePool().length'),h.run('data.length')-323);assert.equal(h.run('cycle.seen.length'),323);assert.equal(h.run('cycle.number'),2);assert.equal(h.run('cycle.scopes["translation|all|all|all"].seen.length'),323);
  chooseLesson(h,'b1plus','1');h.run('cyclePool()');assert.equal(h.run('cycle.scopes["translation|all|all|unmastered"].seen.length'),323);chooseLesson(h,'all');assert.equal(h.run('cyclePool().length'),h.run('data.length')-323);
+});
+
+
+test('all 24 B2 photos map to 12 lessons using existing keys, preserving B1 memberships and source provenance',()=>{
+ const h=harness(),r=JSON.parse(fs.readFileSync('docs/b2-lesson-register.json')),b1=JSON.parse(fs.readFileSync('docs/b1plus-lesson-register.json'));
+ assert.equal(r.sourcePhotosReviewed,24);assert.equal(r.uniqueCorpusKeys,271);assert.equal(r.matchedHeadwordOccurrences,313);assert.equal(h.run('data.length'),1135);
+ const corpus=new Set(h.run('data.map(key)'));for(const row of r.entries)for(const k of row.keys){assert(corpus.has(k),k);assert(h.run(`Lessons.matches({de:${JSON.stringify(k)}},"b2",${JSON.stringify(String(row.lesson))})`));}
+ assert.equal(new Set(r.photos.map(p=>p.photo)).size,24);
+ for(let n=1;n<=12;n++){const l=h.ctx.Lessons.books.b2.lessons[n-1];assert.equal(l.id,String(n));assert(l.keys.length>0);assert.equal(l.photos.length,2);assert.equal(l.keys.length,new Set(l.keys).size);assert.equal(r.photos.filter(p=>p.lesson===n).length,2);}
+ for(const [photo,lesson] of [['IMG_8576.HEIC',5],['IMG_8572.HEIC',7],['IMG_8574.HEIC',8]])assert.equal(r.photos.find(p=>p.photo===photo).lesson,lesson);
+ for(const l of h.ctx.Lessons.books.b1plus.lessons){const expected=new Set(b1.entries.filter(r=>String(r.lesson)===l.id).flatMap(r=>r.keys));assert(expected.size>0);assert.deepEqual([...l.keys].sort(),[...expected].sort());}
+});
+test('B2 assignment preserves meaning, reflexivity and complete phrases instead of fuzzy spelling matches',()=>{
+ const h=harness();for(const n of ['2','6']){assert.equal(h.run(`Lessons.matches({de:"warten"},"b2","${n}")`),false);assert.equal(h.run(`Lessons.matches({de:"eine Anlage warten"},"b2","${n}")`),true);}
+ for(const [de,n] of [['kommen','5'],['sich halten in + Dat.','5'],['die Selbstständigkeit','6'],['der Betriebsrat','9'],['die Betriebsrätin','9'],['unvollständig','3'],['jdn. einstellen','7']])assert.equal(h.run(`Lessons.matches({de:${JSON.stringify(de)}},"b2",${JSON.stringify(n)})`),false,de);
+});
+test('B2 filters preserve hidden state and share mastery, article results, recall and global-cycle exclusions',()=>{
+ const h=harness();h.run('trainingLocked=false;document.getElementById("focus").value="unmastered";globalThis.word=data.find(w=>w.de==="die Kenntnis");s(word).streak=2;s(word).correct=8;s(word).retainedMetadata={custom:true};hiddenWords.add("die anrede");cyclePool()');
+ const before=h.run('JSON.stringify(snapshot())');chooseLesson(h,'b2','1');assert.equal(h.run('JSON.stringify(snapshot())'),before);assert.equal(h.run('pool().some(w=>key(w)==="die anrede")'),false);
+ h.run('cyclePool();selectedL={w:word,e:document.createElement("div")};selectedR={w:word,e:document.createElement("div")};check();answerArticle(word.article);acknowledgeArticle()');assert.equal(h.run('s(word).mastered'),true);assert.equal(h.run('s(word).articleCorrect'),1);
+ const mastered=h.run('JSON.stringify(snapshot())');chooseLesson(h,'b2','3');assert.equal(h.run('pool().some(w=>key(w)===key(word))'),false);chooseLesson(h,'all');assert.equal(h.run('pool().some(w=>key(w)===key(word))'),false);assert(h.run('recallPool().some(w=>key(w)===key(word))'));assert.equal(h.run('JSON.stringify(snapshot())'),mastered);assert.equal(h.run('s(word).retainedMetadata.custom'),true);
+ h.run('document.getElementById("focus").value="all"');assert(h.run('pool().some(w=>key(w)===key(word))'));assert.equal(h.run('cyclePool().some(w=>key(w)===key(word))'),true); // explicit review is a separate focus scope
+ h.run('document.getElementById("focus").value="unmastered"');assert.equal(h.run('cycle.seen.includes(key(word))'),false);h.run('cyclePool()');assert.equal(h.run('cycle.seen.includes(key(word))'),true);
 });

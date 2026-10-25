@@ -210,7 +210,7 @@
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
 <script src="words-approved.js"></script>
-<script src="lessons.js?v=20261025"></script>
+<script src="lessons.js?v=20261025-b2"></script>
 <script src="examples.js"></script>
 <script src="synonyms.js?v=20261022"></script>
 <script src="verb-forms.js?v=20261022-reflexive"></script>
@@ -344,7 +344,7 @@ function renderLessonStatus(){
   const book=selectedBook(),status=document.getElementById('lessonStatus');
   if(book==='all'){status.textContent=window.Lessons?'Прогрес спільний для уроків і всієї бази.':'Розподіл за уроками тимчасово недоступний. Доступна вся база.';return;}
   const words=data.filter(w=>lessonMatches(w)&&!hiddenWords.has(key(w))),remaining=words.filter(w=>!stats[key(w)]?.mastered).length;
-  status.textContent=lessonSelectionLabel()+': '+words.length+' слів · ще не засвоєно '+remaining+'. Прогрес спільний.';
+  status.textContent=lessonSelectionLabel()+': '+words.length+' слів · ще не засвоєно '+remaining+'. Прогрес спільний.'+(book==='b2'?' Розподілено лише наявні слова бази.':'');
 }
 function renderLessonControls(){
   const book=document.getElementById('bookFilter'),lesson=document.getElementById('lessonFilter'),value=book.value||'all',old=lesson.value||'all';
