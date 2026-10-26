@@ -1,9 +1,9 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const modulePromise=import('../supabase/functions/dictionary-lookup/handler.mjs');
 const wiki={parse:{title:'Zuversicht',revid:123,wikitext:{'*':'== Zuversicht ({{Sprache|Deutsch}}) ==\n{{Wortart|Substantiv|Deutsch}}\n|Genus=f\n*{{uk}}: {{Üt|uk|впевненість}}, {{Üt|uk|надія}}\n== Other ({{Sprache|Englisch}}) ==\n{{Üt|uk|зайве}}'}}};
-async function fixture({member=true,wikiData=wiki,machineStatus=200,quotaFinished=false,providerError=false}={}){
+async function fixture({member=true,wikiData=wiki,machineStatus=200,quotaFinished=false,providerError=false,pages=null,searchTitles=[]}={}){
  const {createHandler}=await modulePromise,calls=[],env={PONS_API_SECRET:'legacy-unused-secret',SUPABASE_URL:'https://test.supabase.co',SUPABASE_ANON_KEY:'public'};
- const handler=createHandler({env:k=>env[k],fetch:async(url,opts={})=>{const s=String(url);calls.push({url:s,options:opts});if(s.includes('/auth/v1/user'))return Response.json({id:'user'});if(s.includes('/trainer_progress?'))return Response.json(member?[{user_id:'user'}]:[]);if(s.includes('wiktionary'))return Response.json(wikiData);if(s.includes('api.mymemory.translated.net')){if(providerError)throw Error('offline');return Response.json({responseStatus:machineStatus,quotaFinished,responseData:{translatedText:'самовпевненість'}})}throw Error('Unexpected endpoint: '+s)}});
+ const handler=createHandler({env:k=>env[k],fetch:async(url,opts={})=>{const s=String(url);calls.push({url:s,options:opts});if(s.includes('/auth/v1/user'))return Response.json({id:'user'});if(s.includes('/trainer_progress?'))return Response.json(member?[{user_id:'user'}]:[]);if(s.includes('wiktionary')){const u=new URL(s);if(u.searchParams.get('action')==='query')return Response.json({query:{search:searchTitles.map(title=>({title}))}});return Response.json(pages?pages[u.searchParams.get('page')]||{}:wikiData);}if(s.includes('api.mymemory.translated.net')){if(providerError)throw Error('offline');return Response.json({responseStatus:machineStatus,quotaFinished,responseData:{translatedText:'самовпевненість'}})}throw Error('Unexpected endpoint: '+s)}});
  return {handler,calls,req:(body={q:'Zuversicht'},headers={})=>new Request('https://test.supabase.co/functions/v1/dictionary-lookup',{method:'POST',headers:{authorization:'Bearer user-session','Content-Type':'application/json',...headers},body:JSON.stringify(body)})};
 }
 test('open lookup supplies dictionary Ukrainian with exact provenance and never calls PONS or quota RPC',async()=>{
@@ -43,4 +43,19 @@ test('sentence mode keeps authentication, input limits and honest failure handli
  const f=await fixture({member:false});assert.equal((await f.handler(f.req({q:'Das ist ein Satz.',kind:'sentence'}))).status,403);assert(!f.calls.some(c=>c.url.includes('mymemory')));
  const good=await fixture();assert.equal((await good.handler(good.req({q:'word',kind:'unsupported'}))).status,400);const long=await(await good.handler(good.req({q:'Ü'.repeat(260),kind:'sentence'}))).json();assert.equal(long.status,'too_long');assert.equal(long.translation,null);assert(!good.calls.some(c=>c.url.includes('mymemory')));
  const failed=await fixture({quotaFinished:true}),body=await(await failed.handler(failed.req({q:'Dies ist ein Satz.',kind:'sentence'}))).json();assert.equal(body.translation,null);assert.equal(body.translationSource,null);
+});
+
+const nounPage={parse:{title:'Vergünstigung',revid:789,wikitext:{'*':'== Vergünstigung ({{Sprache|Deutsch}}) ==\n=== {{Wortart|Substantiv|Deutsch}}, {{f}} ===\n|Genus=f\n|Nominativ Singular=Vergünstigung\n* {{Ü|uk|пільга}}'}}};
+test('lowercase nouns and wrong supplied articles resolve to dictionary-confirmed canonical spelling and article',async()=>{
+ const f=await fixture({pages:{Vergünstigung:nounPage}});for(const q of ['vergünstigung','der vergünstigung','Vergünstigung']){const body=await(await f.handler(f.req({q}))).json();assert.equal(body.wordCheck.verified,true);assert.equal(body.wordCheck.canonical,'die Vergünstigung');assert.equal(body.grammar.type,'noun');assert.equal(body.grammar.article,'die');assert.deepEqual(body.ukrainian,['пільга']);}
+});
+test('a typo produces only parsed German dictionary corrections, never an invented article or a silent corrected entry',async()=>{
+ const f=await fixture({pages:{Vergünstigung:nounPage},searchTitles:['Vergünstigung','Verkündigung','Vergünstigungen']});const body=await(await f.handler(f.req({q:'vergünsigung'}))).json();assert.equal(body.wordCheck.verified,false);assert.equal(body.wordCheck.status,'suggested');assert.equal(body.grammar,null);assert.deepEqual(body.wordCheck.suggestions.map(s=>s.de),['die Vergünstigung']);assert(body.wordCheck.suggestions[0].source.includes('oldid=789'));assert.deepEqual(body.ukrainian,[]);assert(!f.calls.some(c=>c.url.includes('api.mymemory')));
+});
+test('ambiguous noun genders are not guessed, and lowercase verbs are not converted into capitalized nouns',async()=>{
+ const band={parse:{title:'Band',wikitext:{'*':'== Band ({{Sprache|Deutsch}}) ==\n{{Wortart|Substantiv|Deutsch}}\n|Genus 1=m\n|Genus 2=n\n'}}},verb={parse:{title:'essen',wikitext:{'*':'== essen ({{Sprache|Deutsch}}) ==\n{{Wortart|Verb|Deutsch}}'}}};const f=await fixture({pages:{Band:band,essen:verb}});const noun=await(await f.handler(f.req({q:'Band'}))).json();assert.equal(noun.grammar.article,'');assert.deepEqual(noun.grammar.articles,['der','das']);const known=await(await f.handler(f.req({q:'das Band'}))).json();assert.equal(known.grammar.article,'das');const v=await(await f.handler(f.req({q:'essen'}))).json();assert.equal(v.wordCheck.canonical,'essen');assert.equal(v.grammar.type,'verb');
+});
+
+test('automatic noun translation keeps the confirmed article so a capitalized noun is not translated as its lowercase verb',async()=>{
+ const page={parse:{title:'Essen',wikitext:{'*':'== Essen ({{Sprache|Deutsch}}) ==\n{{Wortart|Substantiv|Deutsch}}\n|Genus=n\n'}}},f=await fixture({pages:{Essen:page}});await f.handler(f.req({q:'das essen'}));assert.equal(new URL(f.calls.find(c=>c.url.includes('api.mymemory')).url).searchParams.get('q'),'das Essen');
 });
