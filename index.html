@@ -537,16 +537,24 @@ document.getElementById('translationReportForm').onsubmit=event=>{
 };
 function exampleVerbForms(w){
   const checked=window.VERB_FORMS?.[key(w)]||{};
-  return {praeteritum:w.praeteritum||checked.praeteritum||'',perfekt:w.perfekt||checked.perfekt||'',perfektLabel:w.perfekt?'Perfekt · Partizip II':checked.perfektLabel||'Perfekt · Partizip II',source:(!w.praeteritum||!w.perfekt)?checked.source:null};
+  return {praeteritum:w.praeteritum||checked.praeteritum||'',perfekt:w.perfekt||checked.perfekt||w.partizipII||'',perfektLabel:w.partizipII&&!w.perfekt&&!checked.perfekt?'Partizip II':w.perfekt?'Perfekt · Partizip II':checked.perfektLabel||'Perfekt · Partizip II',source:(!w.praeteritum||!w.perfekt)?checked.source:null};
 }
 function exampleSynonyms(w){
   const entry=window.WORD_SYNONYMS?.[key(w)];
   return entry&&entry.word===w.de&&entry.translation===w.uk&&entry.type===w.type?entry:null;
 }
-function showMatchExample(w,boxId='matchExample'){
+const wordDetailCache=new Map(),wordDetailPending=new Map();
+async function lookupWordDetails(q){
+  if(wordDetailCache.has(q))return wordDetailCache.get(q);
+  if(wordDetailPending.has(q))return wordDetailPending.get(q);
+  const work=Promise.resolve().then(()=>Cloud.lookupDictionary(q));wordDetailPending.set(q,work);
+  try{const result=await work;if(wordDetailCache.size>=100)wordDetailCache.delete(wordDetailCache.keys().next().value);wordDetailCache.set(q,result);return result;}finally{wordDetailPending.delete(q)}
+}
+function showMatchExample(w,boxId='matchExample',enriched=false){
   const box=document.getElementById(boxId);
   if(!box)return;
   const wasHidden=box.classList.contains('hidden');
+  const request={};box.wordDetailRequest=request;
   if(boxId==='matchExample')followMatchExamples=true;
   box.innerHTML='<div class="exampleHeading">'+escapeExample(w.de)+'</div><b>'+exampleLabel(w)+':</b><br>'+escapeExample(w.example||makeExample(w));
   const verbForms=exampleVerbForms(w);
@@ -581,6 +589,20 @@ function showMatchExample(w,boxId='matchExample'){
   close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else document.getElementById('wordSearchInput').focus();};
   box.appendChild(close);
   box.classList.remove('hidden');
+  // Missing personal-word details are read-only enrichment; saved examples win.
+  const hasExample=!!(w.example||window.WORD_EXAMPLES?.[key(w)]?.length),isVerb=['verb','preposition'].includes(w.type);
+  if(!enriched&&!trainingLocked&&(!hasExample||(isVerb&&(!verbForms.praeteritum||!verbForms.perfekt)))){
+    const status=document.createElement('div');status.className='muted';status.textContent='Шукаю приклад і форми у словнику…';box.appendChild(status);
+    lookupWordDetails(w.de).then(result=>{
+      if(box.wordDetailRequest!==request||box.classList.contains('hidden')||trainingLocked)return;
+      const grammar=result.grammar,verified=result.wordCheck?.verified&&result.wordCheck?.typeConfirmed;
+      if(!verified){status.textContent='Додаткові приклад і форми не підтверджені. Перевір у LEO.';return;}
+      const details={...w};
+      if(!hasExample&&result.example){details.example=result.example;details.dictionaryExample=true;details.sources=[...(w.sources||[]),...(result.wiktionary?[{provider:'Wiktionary',url:result.wiktionary.url}]:[])];}
+      if(['verb','preposition'].includes(grammar?.type)){details.praeteritum=verbForms.praeteritum||grammar.praeteritum||'';details.perfekt=verbForms.perfekt||grammar.perfekt||'';details.partizipII=grammar.partizipII||'';if(result.wiktionary&&!details.sources?.some(s=>s.url===result.wiktionary.url))details.sources=[...(details.sources||[]),{provider:'Wiktionary',url:result.wiktionary.url}];}
+      showMatchExample(details,boxId,true);
+    }).catch(()=>{if(box.wordDetailRequest===request&&!box.classList.contains('hidden'))status.textContent='Словник зараз недоступний. Збережені дані та LEO залишаються доступними.';});
+  }
   if(boxId==='matchExample'&&wasHidden)box.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
 }
 function searchText(text){return text.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[’‘ʼ]/g,"'").trim();}
@@ -590,7 +612,7 @@ function findWords(query){
 }
 function renderSearch(){
   const query=document.getElementById('wordSearchInput').value,words=findWords(query),list=document.getElementById('wordSearchResults');list.innerHTML='';
-  document.getElementById('wordSearchDetail').classList.add('hidden');
+  document.getElementById('wordSearchDetail').classList.add('hidden');document.getElementById('wordSearchDetail').wordDetailRequest=null;
   document.getElementById('wordSearchStatus').hidden=!query.trim();
   document.getElementById('wordSearchStatus').textContent=!query.trim()?'Введи слово або частину слова.':words.length?'Знайдено: '+words.length:'Нічого не знайдено.';
   const add=document.getElementById('wordSearchAdd'),q=query.trim();add.hidden=!q||q.length>150||words.length>0;add.textContent=/[А-Яа-яІіЇїЄєҐґ]/.test(q)?'＋ Додати нове слово':'＋ Додати «'+q+'»';
@@ -866,7 +888,7 @@ function renderRecall(){
 }
 const previousExample=new Map();
 function escapeExample(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function exampleLabel(w){return w.example?'Збережений приклад':window.WORD_EXAMPLES?.[key(w)]?.length?'Авторський приклад (ШІ)':'Приклад';}
+function exampleLabel(w){return w.dictionaryExample?'Приклад: Wiktionary':w.example?'Збережений приклад':window.WORD_EXAMPLES?.[key(w)]?.length?'Авторський приклад (ШІ)':'Приклад';}
 function makeExample(w){
   // Never rotate, replace or edit a sentence supplied with the vocabulary.
   if(w.example)return w.example;
@@ -1002,13 +1024,14 @@ async function lookupNewWord(options={}){
     newWordEvidence.suggestions=check?.suggestions||[];
     if(confirmed&&grammar){
       wordField('newWordType').value=grammar.type;
+      for(const [id,value] of [['newWordPlural',grammar.plural],['newWordPast',grammar.praeteritum],['newWordPerfect',grammar.perfekt],['newWordExample',result.example]])if(value&&!wordField(id).value.trim())wordField(id).value=value;
       if(grammar.type==='noun'){
         if(/^(der|die|das)$/.test(grammar.article)){wordField('newWordGerman').value=check?.canonical||grammar.article+' '+q.replace(/^(der|die|das)\s+/i,'');newWordEvidence.verified=true;}
       }else{wordField('newWordGerman').value=check?.canonical||q;newWordEvidence.verified=true;}
     }
     newWordEvidence.checkedGerman=wordField('newWordGerman').value.trim();
     const spelling=wordField('newWordSpelling');spelling.innerHTML='';spelling.hidden=false;
-    if(newWordEvidence.verified){spelling.textContent='За словником: '+newWordEvidence.checkedGerman;}
+    if(newWordEvidence.verified){spelling.textContent='За словником: '+newWordEvidence.checkedGerman+' · '+({noun:'іменник',verb:'дієслово',preposition:'дієслово з прийменником',adjective:'прикметник',adverb:'прислівник',phrase:'вираз'}[grammar.type]||'');}
     else if(newWordEvidence.suggestions.length){
       const label=document.createElement('p');label.textContent='Можливо, ти мав на увазі:';spelling.appendChild(label);
       for(const suggestion of newWordEvidence.suggestions){const button=document.createElement('button');button.type='button';button.textContent='Виправити: '+suggestion.de;button.onclick=()=>acceptNewWordCorrection(suggestion);spelling.appendChild(button);}

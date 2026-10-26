@@ -59,3 +59,40 @@ test('ambiguous noun genders are not guessed, and lowercase verbs are not conver
 test('automatic noun translation keeps the confirmed article so a capitalized noun is not translated as its lowercase verb',async()=>{
  const page={parse:{title:'Essen',wikitext:{'*':'== Essen ({{Sprache|Deutsch}}) ==\n{{Wortart|Substantiv|Deutsch}}\n|Genus=n\n'}}},f=await fixture({pages:{Essen:page}});await f.handler(f.req({q:'das essen'}));assert.equal(new URL(f.calls.find(c=>c.url.includes('api.mymemory')).url).searchParams.get('q'),'das Essen');
 });
+
+const verbPage={parse:{title:'erinnern',revid:321,wikitext:{'*':`== erinnern ({{Sprache|Deutsch}}) ==
+=== {{Wortart|Verb|Deutsch}} ===
+{{Deutsch Verb Übersicht
+|Präteritum_ich=erinnerte
+|Partizip II=erinnert
+|Hilfsverb=haben
+}}
+{{Bedeutungen}}
+:[1] {{K|refl.|ft=mit Präpositionalobjekt}} im Gedächtnis behalten
+:[2] {{K|trans.}} jemanden etwas nicht vergessen lassen
+{{Beispiele}}
+:[1] Ich ''erinnere'' mich an dich.
+:[2] Bitte ''erinnern'' Sie ihn morgen noch einmal!
+{{Ü-Tabelle|1|G=reflexiv|Ü-Liste=
+* {{Ü|uk|пам’ятати}}
+}}
+{{Ü-Tabelle|2|G=transitiv|Ü-Liste=
+* {{Ü|uk|нагадувати}}
+}}
+`}}};
+test('reflexive lookup retains its identity and returns dictionary forms, reflexive example and only reflexive translations',async()=>{
+ const f=await fixture({pages:{erinnern:verbPage}}),q='sich erinnern an + Akk.',body=await(await f.handler(f.req({q}))).json();
+ assert.equal(body.wordCheck.canonical,q);assert.equal(body.grammar.type,'preposition');assert.equal(body.grammar.praeteritum,'erinnerte sich');assert.equal(body.grammar.perfekt,'hat sich erinnert');assert.equal(body.grammar.partizipII,'erinnert');assert.equal(body.example,'Ich erinnere mich an dich.');assert.deepEqual(body.ukrainian,['пам’ятати']);assert(body.wiktionary.url.endsWith('&oldid=321'));
+ const ordinary=await(await f.handler(f.req({q:'erinnern'}))).json();assert.equal(ordinary.grammar.type,'verb');assert.equal(ordinary.grammar.praeteritum,'erinnerte');assert.equal(ordinary.grammar.perfekt,'hat erinnert');
+});
+test('dictionary morphology never invents a missing past form or auxiliary, and examples reject unresolved markup and quotations',async()=>{
+ const {wikiEntry}=await modulePromise;const x=wikiEntry({parse:{title:'prüfen',wikitext:{'*':`== prüfen ({{Sprache|Deutsch}}) ==
+{{Wortart|Verb|Deutsch}}
+|Partizip II=geprüft
+{{Beispiele}}
+:[1] „Quoted text stays out.“<ref>External source</ref>
+:[1] {{unresolved|template}}
+:[1] Wir [[prüfen]] die Unterlagen sorgfältig.
+{{Referenzen}}
+`}}});assert.equal(x.praeteritum,'');assert.equal(x.perfekt,'');assert.equal(x.partizipII,'geprüft');assert.equal(x.example,'Wir prüfen die Unterlagen sorgfältig.');
+});

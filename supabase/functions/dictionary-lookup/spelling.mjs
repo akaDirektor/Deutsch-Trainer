@@ -4,7 +4,7 @@ export function createLexicalLookup(request,parseEntry){
  const cache=new Map(),pending=new Map();
  const userAgent={'User-Agent':'Deutsch-Trainer/1.0 (https://akadirektor.github.io/Deutsch-Trainer/)'};
  async function api(params){const u=new URL('https://de.wiktionary.org/w/api.php');u.search=new URLSearchParams({...params,format:'json'}).toString();const r=await request(u,{headers:userAgent,signal:AbortSignal.timeout(8000)});if(!r.ok)throw Error('Dictionary unavailable');return r.json()}
- async function page(title){const entry=parseEntry(await api({action:'parse',page:title,prop:'wikitext|revid',redirects:'1'}));return entry.german?entry:null}
+ async function page(title,options={}){const entry=parseEntry(await api({action:'parse',page:title,prop:'wikitext|revid',redirects:'1'}),options);return entry.german?entry:null}
  function checked(entry,provided){const article=entry.articles.length===1?entry.articles[0]:entry.articles.includes(provided)?provided:'';return {...entry,article,de:entry.type==='noun'&&article?article+' '+entry.title:entry.title,source:'https://de.wiktionary.org/w/index.php?title='+encodeURIComponent(entry.title)+(entry.revision?'&oldid='+entry.revision:'')};}
  return async term=>{
   const old=cache.get(term);if(old&&old.expires>Date.now())return old.value;if(pending.has(term))return pending.get(term);
@@ -12,6 +12,10 @@ export function createLexicalLookup(request,parseEntry){
    const provided=/^(der|die|das)\s+/i.exec(term)?.[1].toLowerCase()||'',lemma=term.replace(/^(der|die|das)\s+/i,'').normalize('NFC'),capital=lemma[0]?.toLocaleUpperCase('de')+lemma.slice(1);
    const titles=[...new Set(provided?[capital,lemma]:[lemma,capital])];let fallback=null;
    for(const title of titles){const entry=await page(title);if(entry){fallback=entry;if(entry.typeConfirmed)return {entry:checked(entry,provided),suggestions:[],status:'verified'}}}
+   // Reflexive constructions live on the base lemma in Wiktionary, but retain
+   // their own user-visible word identity, translation senses and LEO query.
+   const reflexive=/^\(?sich\)?\s+([\p{L}-]+)(?:\s+(?:an|auf|aus|bei|für|gegen|in|mit|nach|über|um|unter|von|vor|zu)(?:\s+\(?\+?\s*(?:Akk\.?|Dat\.?)\)?)?)?$/u.exec(lemma);
+   if(reflexive){const entry=await page(reflexive[1],{reflexive:true});if(entry?.type==='verb'&&entry.reflexive){return {entry:{...checked(entry,provided),de:lemma,type:lemma.replace(/^\(?sich\)?\s+/,'').includes(' ')?'preposition':'verb'},suggestions:[],status:'verified'}}}
    if(fallback)return {entry:checked(fallback,provided),suggestions:[],status:'verified'};
    const suggestions=[];
    if(/^[\p{L}-]{3,80}$/u.test(lemma)){
