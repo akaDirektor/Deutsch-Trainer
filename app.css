@@ -60,3 +60,5 @@
 .contextHint{margin:0 0 16px;color:var(--muted);font-size:calc(13px * var(--text-scale,1))}.contextHint p{margin:8px 0;color:var(--text)}
 
 .searchAddWord{max-width:100%;margin:2px 0 12px;white-space:normal;overflow-wrap:anywhere;min-height:44px}
+
+.newWordLessonFields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}.personalWords .newWordLessonFields select{display:block;min-height:48px;margin-top:6px;font-size:calc(14px * var(--text-scale,1));padding:10px 12px}@media(max-width:480px){.newWordLessonFields{grid-template-columns:1fr;gap:0}}

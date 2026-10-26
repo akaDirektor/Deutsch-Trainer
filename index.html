@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261026-search-add">
+<link rel="stylesheet" href="app.css?v=20261026-word-lessons">
 </head>
 <body>
 <div class="wrap">
@@ -179,6 +179,10 @@
       <a id="newWordLeo" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>Перевірити в LEO ↗</a>
       <label for="newWordTranslation">Український переклад · можна виправити</label><input id="newWordTranslation" required maxlength="500" autocomplete="off" lang="uk">
       <div id="newWordSuggestions" class="newWordSuggestions" hidden></div>
+      <div class="newWordLessonFields" role="group" aria-label="З якого уроку слово">
+        <label for="newWordBook">Книжка<select id="newWordBook"><option value="">Без прив’язки до уроку</option></select></label>
+        <label for="newWordLesson">Урок<select id="newWordLesson" disabled><option value="">Спочатку обери книжку</option></select></label>
+      </div>
       <details class="newWordGrammar"><summary>Форми та приклад · необов’язково</summary>
         <label for="newWordType">Частина мови</label><select id="newWordType"><option value="phrase">Вираз / не визначено</option><option value="noun">Іменник</option><option value="verb">Дієслово</option><option value="adjective">Прикметник</option><option value="adverb">Прислівник</option><option value="preposition">Дієслово з прийменником</option></select>
         <label for="newWordPlural">Множина іменника</label><input id="newWordPlural" maxlength="200" lang="de"><label for="newWordPast">Präteritum</label><input id="newWordPast" maxlength="200" lang="de"><label for="newWordPerfect">Perfekt із haben / sein</label><input id="newWordPerfect" maxlength="200" lang="de"><label for="newWordExample">Приклад речення</label><textarea id="newWordExample" maxlength="3000" rows="3" lang="de"></textarea>
@@ -235,7 +239,7 @@
 <script src="verb-forms.js?v=20261022-reflexive"></script>
 <script src="context-spans.js?v=20261025"></script>
 <script src="context.js?v=20261025"></script>
-<script src="progress.js?v=20261025-context"></script>
+<script src="progress.js?v=20261026-word-lessons"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261025-sentence-hint"></script>
 <script>
@@ -361,7 +365,15 @@ function selectedLessons(){
   return [...new Set(raw.split(',').filter(id=>options.some(l=>l.id===id)))].sort((a,b)=>Number(a)-Number(b));
 }
 function selectedLesson(){const ids=selectedLessons(),total=LessonCatalog.books[selectedBook()]?.lessons.length||0;return !ids.length||ids.length===total?'all':ids.join(',')}
-function lessonMatches(w){const ids=selectedLesson();return ids==='all'?LessonCatalog.matches(w,selectedBook(),'all'):ids.split(',').some(id=>LessonCatalog.matches(w,selectedBook(),id))}
+function wordLessonMemberships(w){
+  const combined=[...(LessonCatalog.memberships?.(w)||[]),...(stats[key(w)]?.lessonMemberships||[])],seen=new Set();
+  return combined.filter(p=>{const id=p.book+':'+p.lesson;if(seen.has(id))return false;seen.add(id);return true});
+}
+function lessonMatches(w){
+  const book=selectedBook();if(book==='all')return true;
+  const places=wordLessonMemberships(w);if(book==='unassigned')return !places.length;
+  const choice=selectedLesson();return places.some(p=>p.book===book&&(choice==='all'||choice.split(',').includes(p.lesson)));
+}
 function renderLessonChoices(){
   const box=document.getElementById('lessonChoices'),options=LessonCatalog.books[selectedBook()]?.lessons||[],selection=selectedLesson();box.innerHTML='';
   document.getElementById('lessonPicker').hidden=!options.length;
@@ -915,11 +927,31 @@ document.getElementById('startBtn').onclick=()=>{if(trainingLocked||resumePendin
 let newWordRequest=0,newWordLookupBusy=false,newWordEvidence=null,newWordTimer=null,newWordTranslationEdit=0,newWordTypeEdited=false;
 const newWordCache=new Map();
 const wordField=id=>document.getElementById(id);
-function addPersonalWord(candidate,suggestion=null){
+let newWordLessonSuggested=false;
+function renderNewWordLessonControls(){
+  const book=wordField('newWordBook'),lesson=wordField('newWordLesson'),chosen=book.value||'',old=lesson.value||'';
+  book.innerHTML='<option value="">Без прив’язки до уроку</option>'+Object.entries(LessonCatalog.books).filter(([,b])=>!b.pending).map(([id,b])=>'<option value="'+id+'">'+b.label+'</option>').join('');
+  book.value=LessonCatalog.books[chosen]&&!LessonCatalog.books[chosen].pending?chosen:'';
+  const options=LessonCatalog.books[book.value]?.lessons||[];lesson.innerHTML='<option value="">'+(options.length?'Обери урок':'Спочатку обери книжку')+'</option>'+options.map(l=>'<option value="'+l.id+'">'+l.label+'</option>').join('');
+  lesson.value=options.some(l=>l.id===old)?old:'';lesson.disabled=!options.length;lesson.required=!!book.value;
+}
+function suggestNewWordLesson(){
+  if(newWordLessonSuggested)return;newWordLessonSuggested=true;
+  const book=selectedBook(),lesson=selectedLesson();if(wordField('newWordBook').value||!LessonCatalog.books[book])return;
+  wordField('newWordBook').value=book;renderNewWordLessonControls();if(lesson!=='all'&&!lesson.includes(','))wordField('newWordLesson').value=lesson;
+}
+function newWordLessonMemberships(){
+  const book=wordField('newWordBook').value,lesson=wordField('newWordLesson').value;
+  if(!book)return [];if(!LessonCatalog.books[book]?.lessons.some(l=>l.id===lesson))throw Error('Обери урок або залиш слово без прив’язки до книжки.');
+  return Progress.lessonMemberships([{book,lesson}]);
+}
+wordField('newWordBook').onchange=()=>{newWordLessonSuggested=true;wordField('newWordLesson').value='';renderNewWordLessonControls()};
+function addPersonalWord(candidate,suggestion=null,memberships=[]){
   if(trainingLocked)throw Error('Спочатку увійди до готового хмарного профілю');
   const w=Progress.customWord({...candidate,addedAt:today(),approvedBy:'user'}),k=key(w);
   if(data.some(other=>key(other).replace(/\s+/g,' ')===k.replace(/\s+/g,' ')))throw Error('Це слово вже є у словнику. Знайди його через пошук.');
-  const oldStats=stats;stats={...stats,[k]:{correct:0,wrong:0,streak:0,mastered:false,...(Object.prototype.hasOwnProperty.call(stats,k)?stats[k]:{}),customWord:w,...(suggestion?{translationSuggestion:Progress.clone(suggestion)}:{})}};
+  const associations=Progress.lessonMemberships([...(stats[k]?.lessonMemberships||[]),...Progress.lessonMemberships(memberships)]);
+  const oldStats=stats;stats={...stats,[k]:{correct:0,wrong:0,streak:0,mastered:false,...(Object.prototype.hasOwnProperty.call(stats,k)?stats[k]:{}),customWord:w,...(associations.length?{lessonMemberships:associations}:{}),...(suggestion?{translationSuggestion:Progress.clone(suggestion)}:{})}};
   try{save()}catch(error){stats=oldStats;throw error}
   data=Progress.vocabulary(seed,stats);updateStats();updateRecallStats();return w;
 }
@@ -931,6 +963,7 @@ function resetNewWordLookup(){
   clearTimeout(newWordTimer);newWordRequest++;newWordLookupBusy=false;newWordEvidence=null;wordField('newWordSuggestions').hidden=true;
 }
 wordField('newWordGerman').oninput=()=>{
+  if(wordField('newWordGerman').value.trim())suggestNewWordLesson();
   resetNewWordLookup();wordField('newWordTranslation').value='';newWordTranslationEdit++;newWordTypeEdited=false;
   wordField('newWordType').value=/^(der|die|das)\s/i.test(wordField('newWordGerman').value.trim())?'noun':'phrase';
   ['newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');renderNewWordLeo();
@@ -977,8 +1010,9 @@ async function lookupNewWord(){
 wordField('newWordForm').onsubmit=event=>{
   event.preventDefault();
   try{
-   const w=addPersonalWord({de:wordField('newWordGerman').value.trim().replace(/\s+/g,' '),uk:wordField('newWordTranslation').value,type:wordField('newWordType').value,plural:wordField('newWordPlural').value,praeteritum:wordField('newWordPast').value,perfekt:wordField('newWordPerfect').value,example:wordField('newWordExample').value,sources:newWordEvidence?.sources||[],translationOrigin:newWordEvidence?.translation===wordField('newWordTranslation').value?newWordEvidence.origin:'user'},newWordEvidence?.suggestion);
-   resetNewWordLookup();['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='phrase';renderNewWordLeo();wordField('newWordStatus').textContent='✓ Додано: '+w.de+'. Зберігається у твоєму хмарному профілі.';renderSearch();wordField('newWordGerman').focus();
+   const associations=newWordLessonMemberships();
+   const w=addPersonalWord({de:wordField('newWordGerman').value.trim().replace(/\s+/g,' '),uk:wordField('newWordTranslation').value,type:wordField('newWordType').value,plural:wordField('newWordPlural').value,praeteritum:wordField('newWordPast').value,perfekt:wordField('newWordPerfect').value,example:wordField('newWordExample').value,sources:newWordEvidence?.sources||[],translationOrigin:newWordEvidence?.translation===wordField('newWordTranslation').value?newWordEvidence.origin:'user'},newWordEvidence?.suggestion,associations);
+   newWordLessonSuggested=false;resetNewWordLookup();['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='phrase';renderNewWordLeo();wordField('newWordStatus').textContent='✓ Додано: '+w.de+(associations.length?' · '+LessonCatalog.books[associations[0].book].label+' · Урок '+associations[0].lesson:'')+'. Зберігається у твоєму хмарному профілі.';renderSearch();wordField('newWordGerman').focus();
   }catch(error){wordField('newWordStatus').textContent=error.message;}
 };
 let imported=null;
@@ -997,6 +1031,6 @@ Cloud.init({snapshot,legacy,rawLegacy,
  preview(value){imported=Progress.validate(value);const known=new Set(data.map(key));document.getElementById('importPreview').textContent=JSON.stringify({wordsWithProgress:Object.keys(imported.stats).length,hidden:imported.hidden.length,cycleSeen:imported.cycle.seen.length,unknownKeysPreserved:Object.keys(imported.stats).filter(k=>!known.has(k)).length},null,2);},
  importCandidate(){return imported||legacy();}
 });
-renderLessonControls();updateStats();updateRecallStats();
+renderLessonControls();renderNewWordLessonControls();updateStats();updateRecallStats();
 </script>
 </body></html>
