@@ -1,3 +1,4 @@
+import {createLexicalLookup} from './spelling.mjs';
 // No provider secret or raw provider HTML is ever returned to the browser.
 export function plain(value=''){
  return String(value).replace(/<[^>]*>/g,'').replace(/&(#x[\da-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/gi,(_,e)=>{
@@ -11,8 +12,11 @@ export function wikiEntry(data){
  const german=sections.join('\n');
  const translations=[...german.matchAll(/\{\{Ü(?:t|xx)?\|uk\|([^|{}\n]+)(?:\|[^{}]*)?\}\}/g)].map(m=>m[1].replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g,(_,a,b)=>b||a).replace(/[\u0300\u0301]/g,'').trim()).filter(s=>/[А-Яа-яІіЇїЄєҐґ]/.test(s)&&s.length<200);
  const type=german.includes('{{Wortart|Substantiv|Deutsch}}')?'noun':german.includes('{{Wortart|Verb|Deutsch}}')?'verb':german.includes('{{Wortart|Adjektiv|Deutsch}}')?'adjective':german.includes('{{Wortart|Adverb|Deutsch}}')?'adverb':'phrase';
- const genus=/\|Genus\s*=\s*([mfn])\s*(?:\n|\|)/.exec(german)?.[1];
- return {translations:[...new Set(translations)].slice(0,3),type,article:({m:'der',f:'die',n:'das'})[genus]||'',title:page?.title||'',revision:page?.revid||null};
+ const genders=[...german.matchAll(/\|Genus(?:\s*\d+)?\s*=\s*([mfn])\s*(?=\n|\|)/g)].map(m=>m[1]);
+ const headingGender=/^===.*\{\{Wortart\|Substantiv\|Deutsch\}\}.*\{\{([mfn])\}\}/m.exec(german)?.[1];if(!genders.length&&headingGender)genders.push(headingGender);
+ const articles=[...new Set(genders.map(g=>({m:'der',f:'die',n:'das'})[g]))];
+ const typeConfirmed=/\{\{Wortart\|(Substantiv|Verb|Adjektiv|Adverb|Redewendung|Wendung|Sprichwort|Präposition|Konjunktion|Interjektion)\|Deutsch\}\}/.test(german);
+ return {translations:[...new Set(translations)].slice(0,3),type,typeConfirmed,german:!!german.trim(),articles,article:articles.length===1?articles[0]:'',title:page?.title||'',revision:page?.revid||null};
 }
 // Anonymous free endpoint only; no API key, billing, email or private user data.
 export function automaticTranslation(data){
@@ -22,6 +26,7 @@ export function automaticTranslation(data){
 }
 export function createHandler({env,fetch:request=fetch}){
  const allowed='https://akadirektor.github.io';
+ const lexical=createLexicalLookup(request,wikiEntry);
  const cached=new Map(),pending=new Map();
  async function automatic(term){
   if(new TextEncoder().encode(term).length>500)return {text:'',status:'too_long'};
@@ -53,16 +58,15 @@ export function createHandler({env,fetch:request=fetch}){
    if(kind==='sentence'){const translated=await automatic(term);return reply({query:term,translation:translated.text||null,translationSource:translated.text?'MyMemory':null,automatic:true,status:translated.status});}
    // An optional open source supplies Ukrainian candidates, never a paid translator.
    const lemma=term.replace(/^(der|die|das)\s+/i,'');
-   const wikiPromise=(async()=>{try{const u=new URL('https://de.wiktionary.org/w/api.php');u.search=new URLSearchParams({action:'parse',page:lemma,prop:'wikitext|revid',format:'json',redirects:'1'}).toString();const r=await request(u,{headers:{'User-Agent':'Deutsch-Trainer/1.0 (https://akadirektor.github.io/Deutsch-Trainer/)'},signal:AbortSignal.timeout(12000)});return r.ok?wikiEntry(await r.json()):null}catch{return null}})();
-   const wiki=await wikiPromise;
+   const spelling=await lexical(term),wiki=spelling.entry;
    let ukrainian=wiki?.translations||[];
    let translationSource=ukrainian.length?'Wiktionary':null;
    let machine={text:'',status:'not_needed'};
-   if(!ukrainian.length){machine=await automatic(lemma);if(machine.text){ukrainian=[machine.text];translationSource='MyMemory';}}
+   if(!ukrainian.length&&!spelling.suggestions.length){machine=await automatic(wiki?.de||lemma);if(machine.text){ukrainian=[machine.text];translationSource='MyMemory';}}
    const wiktionary=wiki?.title?{url:'https://de.wiktionary.org/w/index.php?title='+encodeURIComponent(wiki.title)+(wiki.revision?'&oldid='+wiki.revision:''),license:'CC BY-SA 4.0'}:null;
    const automaticUrl='https://mymemory.translated.net/en/German/Ukrainian/'+encodeURIComponent(lemma);
    // Empty legacy object keeps older clients compatible; no PONS calls or links.
-   return reply({query:term,pons:{status:'not_used',entries:[],targetLanguage:'uk'},ukrainian,translationSource,translationUrl:translationSource==='Wiktionary'?wiktionary?.url:translationSource==='MyMemory'?automaticUrl:null,automatic:{status:machine.status,provider:'MyMemory',url:automaticUrl,isDictionary:false},grammar:wiki?{type:wiki.type,article:wiki.article}:null,wiktionary});
+   return reply({query:term,pons:{status:'not_used',entries:[],targetLanguage:'uk'},ukrainian,translationSource,translationUrl:translationSource==='Wiktionary'?wiktionary?.url:translationSource==='MyMemory'?automaticUrl:null,automatic:{status:machine.status,provider:'MyMemory',url:automaticUrl,isDictionary:false},wordCheck:{status:spelling.status,verified:!!wiki,canonical:wiki?.de||null,typeConfirmed:!!wiki?.typeConfirmed,suggestions:spelling.suggestions.map(e=>({de:e.de,type:e.type,article:e.article,articles:e.articles,source:e.source}))},grammar:wiki?{type:wiki.type,article:wiki.article,articles:wiki.articles}:null,wiktionary});
   }catch{return reply({error:'Не вдалося виконати словниковий пошук. Спробуй ще раз.'},502)}
  };
 }
