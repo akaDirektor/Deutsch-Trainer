@@ -23,6 +23,15 @@
   if(value.approvedBy!=='user')throw Error('Потрібне підтвердження користувача');result.approvedBy='user';
   return result;
  }
+ function lessonMemberships(value=[]){
+  if(!Array.isArray(value)||value.length>38)throw Error('Некоректна прив’язка до уроку');
+  const limits={b1plus:7,b2:12},result=[],seen=new Set();
+  for(const item of value){
+   if(!item||typeof item!=='object'||!Object.prototype.hasOwnProperty.call(limits,item.book)||typeof item.lesson!=='string'||!/^\d{1,2}$/.test(item.lesson)||String(Number(item.lesson))!==item.lesson||Number(item.lesson)<1||Number(item.lesson)>limits[item.book])throw Error('Некоректна прив’язка до уроку');
+   const id=item.book+':'+item.lesson;if(!seen.has(id)){seen.add(id);result.push({book:item.book,lesson:item.lesson});}
+  }
+  return result;
+ }
  function vocabulary(seed,stats){
   const result=[...seed],keys=new Set(seed.map(w=>w.de.toLowerCase().trim()));
   for(const [storedKey,st] of Object.entries(stats))if(st.customWord){
@@ -52,6 +61,7 @@
   if(x.hidden.some(k=>typeof k!=='string')||x.cycle.seen.some(k=>typeof k!=='string'))throw Error('Некоректні ключі слів');
   for(const [storedKey,st] of Object.entries(x.stats)){
    if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Некоректна статистика');
+   if(st.lessonMemberships!=null)lessonMemberships(st.lessonMemberships);
    if(st.customWord&&customWord(st.customWord).de.toLowerCase().trim()!==storedKey)throw Error('Ключ власного слова не збігається зі статистикою');
    for(const k of ['correct','wrong','streak','recallCorrect','recallWrong','verbWriteCorrect','verbWriteWrong','articleCorrect','articleWrong','contextCorrect','contextWrong','contextStreak'])if(st[k]!=null&&(!Number.isSafeInteger(st[k])||st[k]<0))throw Error('Некоректний лічильник '+k);
    for(const field of ['pendingArticle','articleNeedsReview'])if(st[field]!=null&&typeof st[field]!=='boolean')throw Error('Некоректний стан артикля');
@@ -69,5 +79,5 @@
   if(!p.length&&words.length){cycle.seen=[];cycle.number=(cycle.number||0)+1;p=words;}
   return p;
  }
- root.Progress={validate,unseen,clone,customWord,vocabulary,vocabularyReport};
+ root.Progress={validate,unseen,clone,customWord,lessonMemberships,vocabulary,vocabularyReport};
 })(typeof window==='undefined'?globalThis:window);
