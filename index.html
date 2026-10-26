@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261025-context">
+<link rel="stylesheet" href="app.css?v=20261026-search-add">
 </head>
 <body>
 <div class="wrap">
@@ -56,6 +56,7 @@
     <input id="wordSearchInput" type="search" aria-label="Пошук слова німецькою або українською" title="Пошук у всій базі, включно з прихованими словами" placeholder="Пошук слова · німецькою / українською" autocomplete="off">
     </div>
     <p id="wordSearchStatus" class="muted" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="wordSearchAdd" class="searchAddWord primary" hidden>＋ Додати слово</button>
     <ul id="wordSearchResults" class="searchResults"></ul>
     <div id="wordSearchDetail" class="exampleBox hidden"></div>
   </section>
@@ -578,6 +579,7 @@ function renderSearch(){
   document.getElementById('wordSearchDetail').classList.add('hidden');
   document.getElementById('wordSearchStatus').hidden=!query.trim();
   document.getElementById('wordSearchStatus').textContent=!query.trim()?'Введи слово або частину слова.':words.length?'Знайдено: '+words.length:'Нічого не знайдено.';
+  const add=document.getElementById('wordSearchAdd'),q=query.trim();add.hidden=!q||q.length>150||words.length>0;add.textContent=/[А-Яа-яІіЇїЄєҐґ]/.test(q)?'＋ Додати нове слово':'＋ Додати «'+q+'»';
   words.forEach(w=>{
     const item=document.createElement('li'),button=document.createElement('button'),de=document.createElement('span'),uk=document.createElement('small');button.type='button';
     de.textContent=w.de+(hiddenWords.has(key(w))?' · приховане':'');uk.textContent=w.uk;button.appendChild(de);button.appendChild(uk);
@@ -585,6 +587,15 @@ function renderSearch(){
   });
 }
 document.getElementById('wordSearchInput').oninput=renderSearch;
+document.getElementById('wordSearchAdd').onclick=()=>{
+  const query=document.getElementById('wordSearchInput').value.trim();if(!query||query.length>150)return;
+  if(findWords(query).length){renderSearch();return;}
+  const german=!/[А-Яа-яІіЇїЄєҐґ]/.test(query);
+  wordField('newWordGerman').value=german?query:'';wordField('newWordGerman').oninput();clearTimeout(newWordTimer);
+  wordField('newWordForm').scrollIntoView({behavior:'smooth',block:'center'});wordField('newWordGerman').focus();
+  if(german&&!trainingLocked)return lookupNewWord();
+  if(!german)wordField('newWordStatus').textContent='Введи німецьке слово — український переклад підставиться автоматично.';
+};
 function renderRecentMatches(){
   const words=recentMatched.filter(w=>!hiddenWords.has(key(w))),list=document.getElementById('recentMatchWords');list.innerHTML='';document.getElementById('recentMatches').hidden=!words.length;
   words.forEach(w=>{const button=document.createElement('button');button.type='button';button.textContent=w.de;button.onclick=()=>showMatchExample(w);list.appendChild(button);});
@@ -967,7 +978,7 @@ wordField('newWordForm').onsubmit=event=>{
   event.preventDefault();
   try{
    const w=addPersonalWord({de:wordField('newWordGerman').value.trim().replace(/\s+/g,' '),uk:wordField('newWordTranslation').value,type:wordField('newWordType').value,plural:wordField('newWordPlural').value,praeteritum:wordField('newWordPast').value,perfekt:wordField('newWordPerfect').value,example:wordField('newWordExample').value,sources:newWordEvidence?.sources||[],translationOrigin:newWordEvidence?.translation===wordField('newWordTranslation').value?newWordEvidence.origin:'user'},newWordEvidence?.suggestion);
-   resetNewWordLookup();['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='phrase';renderNewWordLeo();wordField('newWordStatus').textContent='✓ Додано: '+w.de+'. Зберігається у твоєму хмарному профілі.';wordField('newWordGerman').focus();
+   resetNewWordLookup();['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='phrase';renderNewWordLeo();wordField('newWordStatus').textContent='✓ Додано: '+w.de+'. Зберігається у твоєму хмарному профілі.';renderSearch();wordField('newWordGerman').focus();
   }catch(error){wordField('newWordStatus').textContent=error.message;}
 };
 let imported=null;
