@@ -469,3 +469,23 @@ test('a spelling correction must be selected and rechecked; user draft examples,
 test('unverified machine suggestions never silently save a noun as a phrase; explicit manual type still requires a noun article',async()=>{
  const h=harness();h.run('trainingLocked=false');h.ctx.Cloud.lookupDictionary=async()=>({ukrainian:['тестове слово'],translationSource:'MyMemory',grammar:null,wordCheck:{verified:false,suggestions:[]}});h.el('newWordGerman').value='unbekannteswortxyz';h.el('newWordGerman').oninput();await h.run('lookupNewWord()');const before=h.run('JSON.stringify(snapshot())');h.el('newWordForm').onsubmit({preventDefault(){}});assert.equal(h.run('JSON.stringify(snapshot())'),before);assert.equal(h.el('newWordTypeField').hidden,false);h.el('newWordType').value='noun';h.el('newWordType').onchange();h.el('newWordForm').onsubmit({preventDefault(){}});assert(h.el('newWordStatus').textContent.includes('артикль'));assert.equal(h.run('JSON.stringify(snapshot())'),before);
 });
+
+test('search shows exactly the same saved example and checked reflexive forms as exercises without changing any progress',()=>{
+ const h=harness();h.run(`globalThis.w=data.find(w=>w.de.startsWith('sich ')&&(exampleVerbForms(w).praeteritum||exampleVerbForms(w).perfekt));showMatchExample(w);`);
+ const before=h.run('JSON.stringify(snapshot())'),expected=h.el('matchExample').children.find(e=>e.className==='exampleVerbForms');assert(expected);
+ h.el('wordSearchInput').value=h.ctx.w.de;h.el('wordSearchInput').oninput();h.el('wordSearchResults').children[0].children[0].onclick();
+ const box=h.el('wordSearchDetail'),actual=box.children.find(e=>e.className==='exampleVerbForms');assert(actual);assert.equal(actual.children[0].children[1].textContent,expected.children[0].children[1].textContent);assert(box.children.some(e=>e.textContent==='LEO ↗'));assert.equal(h.run('JSON.stringify(snapshot())'),before);
+});
+test('new verified verbs automatically fill type, dictionary example and past forms and preserve manual edits',async()=>{
+ const h=harness();h.run('trainingLocked=false');h.ctx.Cloud.lookupDictionary=async()=>({wordCheck:{verified:true,typeConfirmed:true,canonical:'sich erinnern'},grammar:{type:'verb',praeteritum:'erinnerte sich',perfekt:'hat sich erinnert'},example:'Ich erinnere mich an dich.',wiktionary:{url:'https://de.wiktionary.org/wiki/erinnern'},ukrainian:['пам’ятати'],translationSource:'Wiktionary'});
+ h.el('newWordGerman').value='sich erinnern';h.el('newWordGerman').oninput();h.el('newWordExample').value='Mein Beispiel bleibt unverändert.';await h.run('lookupNewWord()');
+ assert.equal(h.el('newWordType').value,'verb');assert.equal(h.el('newWordTypeField').hidden,true);assert.equal(h.el('newWordPast').value,'erinnerte sich');assert.equal(h.el('newWordPerfect').value,'hat sich erinnert');assert.equal(h.el('newWordExample').value,'Mein Beispiel bleibt unverändert.');
+ h.el('newWordForm').onsubmit({preventDefault(){}});assert.equal(h.run('stats["sich erinnern"].customWord.perfekt'),'hat sich erinnert');
+});
+test('missing personal-word search details enrich read-only and stale replies cannot replace another word or saved example',async()=>{
+ const h=harness();h.run('trainingLocked=false');let reply;h.ctx.Cloud.lookupDictionary=()=>new Promise(r=>reply=r);
+ const before=h.run('JSON.stringify(snapshot())');h.run('showMatchExample({de:"sich erinnern",uk:"пам’ятати",type:"verb"},"wordSearchDetail")');await new Promise(r=>setImmediate(r));
+ reply({wordCheck:{verified:true,typeConfirmed:true},grammar:{type:'verb',praeteritum:'erinnerte sich',perfekt:'hat sich erinnert'},example:'Ich erinnere mich an dich.'});await new Promise(r=>setImmediate(r));
+ const box=h.el('wordSearchDetail');assert(box.innerHTML.includes('Ich erinnere mich an dich.'));assert(box.children.some(e=>e.className==='exampleVerbForms'));assert.equal(h.run('JSON.stringify(snapshot())'),before);
+ h.run('showMatchExample({de:"neues Verb",uk:"тест",type:"verb"},"wordSearchDetail")');await new Promise(r=>setImmediate(r));h.run('showMatchExample(data.find(w=>w.example),"wordSearchDetail")');const current=box.innerHTML;reply({wordCheck:{verified:true,typeConfirmed:true},grammar:{type:'verb'},example:'A stale response.'});await new Promise(r=>setImmediate(r));assert.equal(box.innerHTML,current);assert.equal(h.run('JSON.stringify(snapshot())'),before);
+});
