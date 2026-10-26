@@ -26,3 +26,11 @@ Pre-change repository commit: `c8909cf963777926179cbd50fcf0596b7b0de4f5`. A full
 
 
 Update: removed PONS from active new-word lookup and replaced its tests with open-provider priority, no-PONS/no-quota calls, exact Ukrainian word source links, authentication, reflexivity, caching, failures and CORS checks. Existing stored PONS provenance is historical user data and is not changed. Baseline before this update: `d853c973530caf31a1081d141fb9a9f36fa82771`; full repository and Edge Function v4 backups retained locally. Corpus, examples, lessons, learning counters, hidden state and cloud storage implementation remain unchanged.
+
+## Add directly from an empty search (2026-10-26)
+
+A nonempty search with no matches now offers «＋ Додати “query”». Clicking transfers the exact German query into the existing add form, scrolls/focuses it and immediately runs the existing Ukrainian lookup, cancelling its delayed timer to avoid a second request. It never saves implicitly; the user still reviews/edits and confirms Add. After saving, the original search refreshes and its add suggestion disappears.
+
+Search still includes hidden words, so matching hidden entries do not produce a duplicate-add suggestion. Empty/overlong queries do not offer this action. A Cyrillic query opens the form asking for the German equivalent rather than wrongly submitting Ukrainian as German. The click rechecks the current query/results to guard stale controls; a locked profile cannot trigger lookup or save.
+
+94 regression tests pass, including exact query transfer, no progress write on opening, explicit-save refresh, hidden/empty/Ukrainian/stale/locked cases and all prior regressions. Isolated Chrome verifies the real flow, one provider call, state preservation and enlarged responsive layouts. Vocabulary/examples/lesson membership and cloud/backend code are unchanged. Baseline `9408bf89efb57e4974433aa5debcf1a1385725a1`; pre-edit repository ZIP retained locally.
