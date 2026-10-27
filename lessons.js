@@ -892,7 +892,24 @@
         "jdn. einstellen",
         "jdn./etw. betreuen",
         "zubereiten",
-        "überwachen"
+        "überwachen",
+        "schützen",
+        "tragen",
+        "befolgen",
+        "bedienen",
+        "vermeiden",
+        "die sicherheitsvorschriften",
+        "das feuer",
+        "der gasaustritt",
+        "der unfall",
+        "ähnliches",
+        "der abfall",
+        "das gerät",
+        "behindern",
+        "eine gefahr darstellen",
+        "freihalten",
+        "der flucht- und rettungsweg",
+        "die persönliche schutzausrüstung"
       ]
     },
     {
