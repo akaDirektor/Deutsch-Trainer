@@ -332,7 +332,7 @@ test('default unmastered view inherits the entire legacy seen list rather than r
 
 test('all 24 B2 photos map to 12 lessons using existing keys, preserving B1 memberships and source provenance',()=>{
  const h=harness(),r=JSON.parse(fs.readFileSync('docs/b2-lesson-register.json')),b1=JSON.parse(fs.readFileSync('docs/b1plus-lesson-register.json'));
- assert.equal(r.sourcePhotosReviewed,24);assert.equal(r.uniqueCorpusKeys,274);assert.equal(r.matchedHeadwordOccurrences,317);assert.equal(h.run('data.length'),1135);
+ assert.equal(r.sourcePhotosReviewed,24);assert.equal(r.uniqueCorpusKeys,274);assert.equal(r.matchedHeadwordOccurrences,317);assert.equal(h.run('data.length'),JSON.parse(fs.readFileSync('tests/vocabulary-counts.json')).records);
  const corpus=new Set(h.run('data.map(key)'));for(const row of r.entries)for(const k of row.keys){assert(corpus.has(k),k);assert(h.run(`Lessons.matches({de:${JSON.stringify(k)}},"b2",${JSON.stringify(String(row.lesson))})`));}
  assert.equal(new Set(r.photos.map(p=>p.photo)).size,24);
  for(let n=1;n<=12;n++){const l=h.ctx.Lessons.books.b2.lessons[n-1];assert.equal(l.id,String(n));assert(l.keys.length>0);assert.equal(l.photos.length,2);assert.equal(l.keys.length,new Set(l.keys).size);assert.equal(r.photos.filter(p=>p.lesson===n).length,2);}
@@ -386,7 +386,7 @@ test('lesson toggles remember each book during the session without touching prog
 });
 
 test('every canonical word has a literal context gap and five distinct options without changing any stored example',()=>{
- const h=harness(),before=h.run('JSON.stringify(data)');h.run('data.forEach(w=>s(w).mastered=true)');assert.equal(h.run('contextPool().length'),1135);
+ const h=harness(),before=h.run('JSON.stringify(data)');h.run('data.forEach(w=>s(w).mastered=true)');assert.equal(h.run('contextPool().length'),h.run('data.length'));
  const cards=h.run('contextInventory().cards');for(const card of cards){assert.equal(card.before+card.answer+card.after,card.sentence);assert.equal(card.sentence.slice(card.start,card.start+card.answer.length),card.answer);assert(card.answer.length>=2);if(card.word.example){assert.equal(card.source,'stored');assert.equal(card.sentence,card.word.example);}}
  assert.equal(h.run('JSON.stringify(data)'),before);assert.equal(h.run('window.ContextPractice.cards({de:"laufen",type:"verb",uk:"бігти",example:"Die Katze schläft hier."},["Wir laufen nach Hause."]).length'),0);
 });
@@ -499,4 +499,10 @@ test('translation choices toggle independently, track manual changes and save on
 });
 test('a new draft clears translation choices, and choices never create answers or overwrite a manual draft during a delayed lookup',async()=>{
  const h=harness();h.run('trainingLocked=false');let reply;h.ctx.Cloud.lookupDictionary=()=>new Promise(r=>reply=r);h.el('newWordGerman').value='der Ausschuss';h.el('newWordGerman').oninput();const pending=h.run('lookupNewWord()');h.el('newWordTranslation').value='мій переклад';h.el('newWordTranslation').oninput();reply({ukrainian:['комітет','комісія'],translationSource:'Wiktionary',grammar:{type:'noun',article:'der'},wordCheck:{verified:true,typeConfirmed:true,canonical:'der Ausschuss'}});await pending;assert.equal(h.el('newWordTranslation').value,'мій переклад');const before=h.run('JSON.stringify(snapshot())');h.el('newWordGerman').value='anderes';h.el('newWordGerman').oninput();assert(h.el('newWordChoices').hidden);h.run('toggleNewWordChoice("комітет")');assert.equal(h.el('newWordTranslation').value,'');assert.equal(h.run('JSON.stringify(snapshot())'),before);
+});
+
+
+test('confirmed noun spelling and article are prominently shown before Add, and a wrong supplied article is explained',async()=>{
+ const h=harness();h.run('trainingLocked=false');h.ctx.Cloud.lookupDictionary=async()=>({ukrainian:['пільга'],translationSource:'Wiktionary',grammar:{type:'noun',article:'die'},wordCheck:{verified:true,typeConfirmed:true,canonical:'die Vergünstigung',suggestions:[]}});
+ h.el('newWordGerman').value='der vergünstigung';h.el('newWordGerman').oninput();const before=h.run('JSON.stringify(snapshot())');await h.run('lookupNewWord()');const box=h.el('newWordSpelling');assert.equal(box.hidden,false);assert(box.children.some(e=>e.className==='verifiedWord'&&e.textContent==='die Vergünstigung'));assert(box.children.some(e=>e.textContent==='Артикль виправлено: der → die'));assert.equal(h.el('newWordGerman').value,'die Vergünstigung');assert.equal(h.run('JSON.stringify(snapshot())'),before);
 });
