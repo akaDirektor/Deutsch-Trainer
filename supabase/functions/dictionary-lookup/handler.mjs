@@ -11,6 +11,7 @@ export function wikiEntry(data,options={}){
  const page=data?.parse,text=page?.wikitext?.['*']||'';
  const sections=text.split(/(?=^==[^=].*==\s*$)/m).filter(x=>/^==[^=].*\{\{Sprache\|Deutsch\}\}.*==/m.test(x));
  const german=sections.join('\n');
+ const baseForms=[...german.matchAll(/\{\{Grundformverweis(?: Konj| Dekl)?\|([^|}\n]+)/g)].map(m=>m[1].trim()).filter(t=>/^[\p{L}-]{2,80}$/u.test(t)).slice(0,3);
  const meanings=german.split('{{Bedeutungen}}')[1]?.split(/\n\{\{/)[0]||'';
  const reflexiveIds=[...meanings.matchAll(/^:\[([^\]]+)\].*(?:\brefl\.|\breflexiv\b)/gm)].flatMap(m=>m[1].split(/[, ]+/));
  const translationText=options.reflexive?german.split(/(?=\{\{Ü-Tabelle\|)/).filter(t=>reflexiveIds.includes(/^\{\{Ü-Tabelle\|([^|}]+)/.exec(t)?.[1])).join('\n'):german;
@@ -37,7 +38,7 @@ export function wikiEntry(data,options={}){
  const headingGender=/^===.*\{\{Wortart\|Substantiv\|Deutsch\}\}.*\{\{([mfn])\}\}/m.exec(german)?.[1];if(!genders.length&&headingGender)genders.push(headingGender);
  const articles=[...new Set(genders.map(g=>({m:'der',f:'die',n:'das'})[g]))];
  const typeConfirmed=/\{\{Wortart\|(Substantiv|Verb|Adjektiv|Adverb|Redewendung|Wendung|Sprichwort|Präposition|Konjunktion|Interjektion)\|Deutsch\}\}/.test(german);
- return {alternativeTerms:alternativeTerms.slice(0,4),reflexive:reflexiveIds.length>0,praeteritum,partizipII,perfekt,example,plural,translations:[...new Set(translations)].slice(0,3),type,typeConfirmed,german:!!german.trim(),articles,article:articles.length===1?articles[0]:'',title:page?.title||'',revision:page?.revid||null};
+ return {baseForms,alternativeTerms:alternativeTerms.slice(0,4),reflexive:reflexiveIds.length>0,praeteritum,partizipII,perfekt,example,plural,translations:[...new Set(translations)].slice(0,3),type,typeConfirmed,german:!!german.trim(),articles,article:articles.length===1?articles[0]:'',title:page?.title||'',revision:page?.revid||null};
 }
 // Anonymous free endpoint only; no API key, billing, email or private user data.
 export function automaticTranslation(data){
@@ -94,7 +95,7 @@ export function createHandler({env,fetch:request=fetch}){
    }
    const automaticUrl='https://mymemory.translated.net/en/German/Ukrainian/'+encodeURIComponent(lemma);
    // Empty legacy object keeps older clients compatible; no PONS calls or links.
-   return reply({query:term,translationChoices,pons:{status:'not_used',entries:[],targetLanguage:'uk'},ukrainian,translationSource,translationUrl:translationSource==='LEO'?reviewed[0]?.sourceUrl:translationSource==='Wiktionary'?wiktionary?.url:translationSource==='MyMemory'?automaticUrl:null,automatic:{status:machine.status,provider:'MyMemory',url:automaticUrl,isDictionary:false},wordCheck:{status:spelling.status,verified:!!wiki,canonical:wiki?.de||null,typeConfirmed:!!wiki?.typeConfirmed,suggestions:spelling.suggestions.map(e=>({de:e.de,type:e.type,article:e.article,articles:e.articles,source:e.source}))},grammar:wiki?{type:wiki.type,article:wiki.article,articles:wiki.articles,praeteritum:wiki.praeteritum,partizipII:wiki.partizipII,perfekt:wiki.perfekt,plural:wiki.plural}:null,example:wiki?.example||null,wiktionary});
+   return reply({query:term,translationChoices,pons:{status:'not_used',entries:[],targetLanguage:'uk'},ukrainian,translationSource,translationUrl:translationSource==='LEO'?reviewed[0]?.sourceUrl:translationSource==='Wiktionary'?wiktionary?.url:translationSource==='MyMemory'?automaticUrl:null,automatic:{status:machine.status,provider:'MyMemory',url:automaticUrl,isDictionary:false},wordCheck:{status:spelling.status,reason:spelling.reason||null,verified:!!wiki,canonical:wiki?.de||null,typeConfirmed:!!wiki?.typeConfirmed,suggestions:spelling.suggestions.map(e=>({de:e.de,type:e.type,article:e.article,articles:e.articles,source:e.source}))},grammar:wiki?{type:wiki.type,article:wiki.article,articles:wiki.articles,praeteritum:wiki.praeteritum,partizipII:wiki.partizipII,perfekt:wiki.perfekt,plural:wiki.plural}:null,example:wiki?.example||null,wiktionary});
   }catch{return reply({error:'Не вдалося виконати словниковий пошук. Спробуй ще раз.'},502)}
  };
 }

@@ -1052,7 +1052,7 @@ async function lookupNewWord(options={}){
     if(automatic)source('Український переклад: MyMemory ↗',automaticUrl);
     if(automatic){const note=document.createElement('small');note.textContent='Автоматичний переклад — звір у LEO.';box.appendChild(note);}
     const check=result.wordCheck,grammar=result.grammar,confirmed=check?check.verified&&check.typeConfirmed:!!(result.wiktionary&&grammar?.type);
-    newWordEvidence.suggestions=check?.suggestions||[];
+    newWordEvidence.suggestions=check?.suggestions||[];newWordEvidence.suggestionReason=check?.reason||'';
     if(confirmed&&grammar){
       wordField('newWordType').value=grammar.type;
       for(const [id,value] of [['newWordPlural',grammar.plural],['newWordPast',grammar.praeteritum],['newWordPerfect',grammar.perfekt],['newWordExample',result.example]])if(value&&!wordField(id).value.trim())wordField(id).value=value;
@@ -1069,8 +1069,8 @@ async function lookupNewWord(options={}){
       if(grammar.type==='noun'&&provided&&provided!==grammar.article){const note=document.createElement('p');note.textContent='Артикль виправлено: '+provided+' → '+grammar.article;spelling.appendChild(note);}
     }
     else if(newWordEvidence.suggestions.length){
-      const label=document.createElement('p');label.textContent='Можлива помилка в написанні. Обери правильний варіант:';spelling.appendChild(label);
-      for(const suggestion of newWordEvidence.suggestions){const button=document.createElement('button');button.type='button';button.textContent='Виправити: '+suggestion.de;button.onclick=()=>acceptNewWordCorrection(suggestion);spelling.appendChild(button);}
+      const label=document.createElement('p');label.textContent=newWordEvidence.suggestionReason==='inflected'?'Знайдено форму слова. Обери слово для додавання:':'Можлива помилка або неповне слово. Обери правильний варіант:';spelling.appendChild(label);
+      for(const suggestion of newWordEvidence.suggestions){const button=document.createElement('button');button.type='button';button.textContent=(newWordEvidence.suggestionReason==='inflected'?'Обрати: ':'Виправити: ')+suggestion.de;button.onclick=()=>acceptNewWordCorrection(suggestion);spelling.appendChild(button);}
     }else spelling.textContent=grammar?.type==='noun'?'Іменник підтверджено, але артикль потребує перевірки в LEO.':'Не вдалося підтвердити написання та частину мови. Перевір у LEO й обери частину мови нижче.';
     wordField('newWordTypeField').hidden=newWordEvidence.verified;
 
