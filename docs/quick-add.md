@@ -92,3 +92,7 @@ The shared word detail card (matching/recent matches/search) now offers **Дод
 Additions are stored only in the existing per-word cloud state as optional `stats[wordKey].additionalTranslations`. They are not written into the canonical corpus or `customWord.uk`, do not create word records, and retain original examples, lesson tags, identities and all learning/hidden/cycle state. The existing offline cache and versioned synchronization transport them to other devices. Validation bounds the array to ten 200-character strings. Older clients retain the optional metadata even when they do not display it.
 
 Visible card text updates in place, preserving the current round, selected cards, article-result markings and the example being read. Stored previous-round nodes are refreshed too. Input is rendered as text/escaped in answer panels. Locked/stale requests fail safely and save errors restore the previous local state. Signing out closes the editor to avoid a stale draft crossing accounts.
+
+## Updated translation-feedback submission
+
+The old manual GitHub issue link has been replaced with one-click, durable submission and automatic background issue delivery. Existing drafts are retained until explicitly sent. See [translation-feedback.md](translation-feedback.md) for the queue, offline retries, identity restrictions, deployment and operational limits. Submission does not automatically rewrite the vocabulary.

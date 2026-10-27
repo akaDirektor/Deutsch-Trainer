@@ -1,0 +1,30 @@
+name: Translation feedback
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/translation-feedback.yml'
+      - 'scripts/dispatch-feedback.mjs'
+      - 'supabase/functions/feedback-dispatch/**'
+permissions:
+  contents: read
+  issues: write
+  id-token: write
+concurrency:
+  group: translation-feedback
+  cancel-in-progress: false
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/dispatch-feedback.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
