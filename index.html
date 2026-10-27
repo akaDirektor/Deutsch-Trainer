@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261027-own-translations">
+<link rel="stylesheet" href="app.css?v=20261027-visible-search">
 </head>
 <body>
 <div class="wrap">
@@ -52,8 +52,9 @@
     <ul id="wordProgressList" class="wordProgressList"></ul>
   </section>
   <section class="wordSearch" id="wordSearch" aria-label="Пошук слова">
+    <div class="wordSearchHeading"><label for="wordSearchInput">Пошук слова</label><span aria-hidden="true">DE / UA</span></div>
     <div class="searchField"><svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-    <input id="wordSearchInput" type="search" aria-label="Пошук слова німецькою або українською" title="Пошук у всій базі, включно з прихованими словами" placeholder="Пошук слова · німецькою / українською" autocomplete="off">
+    <input id="wordSearchInput" type="search" aria-label="Пошук слова німецькою або українською" title="Пошук у всій базі, включно з прихованими словами" placeholder="Введи слово" autocomplete="off">
     </div>
     <p id="wordSearchStatus" class="muted" role="status" aria-live="polite" hidden></p>
     <button type="button" id="wordSearchAdd" class="searchAddWord primary" hidden>＋ Додати слово</button>

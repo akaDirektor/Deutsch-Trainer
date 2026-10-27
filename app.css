@@ -77,3 +77,6 @@
 .exampleMeaning{margin:10px 0;font-weight:600;overflow-wrap:anywhere;color:var(--accent)}.addOwnTranslation{margin:8px 0 0 8px;font-size:calc(13px * var(--text-scale,1));min-height:44px}#extraTranslationWord{display:block;font-size:calc(20px * var(--text-scale,1));overflow-wrap:anywhere}
 
 .personalTranslationNote{display:block;color:var(--muted);margin:-6px 0 10px;font-size:calc(12px * var(--text-scale,1))}
+
+/* Keep search in its original position, with a distinct, readable visual anchor. */
+#wordSearch{padding:14px;border:2px solid #77a48d;background:#e8f3ec;border-radius:16px;margin:18px 0;box-shadow:0 3px 12px #193a250d}.wordSearchHeading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;margin-bottom:10px}.wordSearchHeading label{font-size:calc(18px * var(--text-scale,1));font-weight:750;color:#174d36;cursor:text}.wordSearchHeading span{font-size:calc(12px * var(--text-scale,1));font-weight:600;color:#436451}#wordSearch .searchField input{min-height:56px;padding:13px 14px 13px 54px;border:2px solid #507e65;border-radius:12px;font-size:calc(18px * var(--text-scale,1));background:#fff}#wordSearch .searchField input::placeholder{font:inherit;color:#526b5d;opacity:1}#wordSearch .searchIcon{left:16px;width:26px;height:26px;color:#176748}#wordSearch:focus-within{border-color:#176748;box-shadow:0 0 0 3px #17674818}
