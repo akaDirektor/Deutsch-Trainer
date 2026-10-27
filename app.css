@@ -64,3 +64,6 @@
 .newWordLessonFields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}.personalWords .newWordLessonFields select{display:block;min-height:48px;margin-top:6px;font-size:calc(14px * var(--text-scale,1));padding:10px 12px}@media(max-width:480px){.newWordLessonFields{grid-template-columns:1fr;gap:0}}
 
 #newWordSpelling{margin:8px 0}#newWordSpelling button{display:block;margin:6px 0;max-width:100%;white-space:normal;overflow-wrap:anywhere}#newWordTypeField .muted{font-size:calc(12px * var(--text-scale,1));margin:6px 0}
+
+/* Translation sense choices remain separate from the editable final translation. */
+.newWordChoices{margin:14px 0}.newWordChoices p{margin:0 0 8px;font-size:calc(14px * var(--text-scale,1));color:var(--muted)}.translationChoices{display:flex;flex-wrap:wrap;gap:8px}.translationChoices button{min-height:44px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:white;color:var(--text);font:inherit;text-align:left;overflow-wrap:anywhere;max-width:100%}.translationChoices button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}.translationChoices button:focus-visible{outline:3px solid #478dcc;outline-offset:2px}

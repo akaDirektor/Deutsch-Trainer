@@ -1,9 +1,9 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const modulePromise=import('../supabase/functions/dictionary-lookup/handler.mjs');
 const wiki={parse:{title:'Zuversicht',revid:123,wikitext:{'*':'== Zuversicht ({{Sprache|Deutsch}}) ==\n{{Wortart|Substantiv|Deutsch}}\n|Genus=f\n*{{uk}}: {{Üt|uk|впевненість}}, {{Üt|uk|надія}}\n== Other ({{Sprache|Englisch}}) ==\n{{Üt|uk|зайве}}'}}};
-async function fixture({member=true,wikiData=wiki,machineStatus=200,quotaFinished=false,providerError=false,pages=null,searchTitles=[]}={}){
+async function fixture({member=true,wikiData=wiki,machineStatus=200,quotaFinished=false,providerError=false,pages=null,searchTitles=[],machineTranslations=null}={}){
  const {createHandler}=await modulePromise,calls=[],env={PONS_API_SECRET:'legacy-unused-secret',SUPABASE_URL:'https://test.supabase.co',SUPABASE_ANON_KEY:'public'};
- const handler=createHandler({env:k=>env[k],fetch:async(url,opts={})=>{const s=String(url);calls.push({url:s,options:opts});if(s.includes('/auth/v1/user'))return Response.json({id:'user'});if(s.includes('/trainer_progress?'))return Response.json(member?[{user_id:'user'}]:[]);if(s.includes('wiktionary')){const u=new URL(s);if(u.searchParams.get('action')==='query')return Response.json({query:{search:searchTitles.map(title=>({title}))}});return Response.json(pages?pages[u.searchParams.get('page')]||{}:wikiData);}if(s.includes('api.mymemory.translated.net')){if(providerError)throw Error('offline');return Response.json({responseStatus:machineStatus,quotaFinished,responseData:{translatedText:'самовпевненість'}})}throw Error('Unexpected endpoint: '+s)}});
+ const handler=createHandler({env:k=>env[k],fetch:async(url,opts={})=>{const s=String(url);calls.push({url:s,options:opts});if(s.includes('/auth/v1/user'))return Response.json({id:'user'});if(s.includes('/trainer_progress?'))return Response.json(member?[{user_id:'user'}]:[]);if(s.includes('wiktionary')){const u=new URL(s);if(u.searchParams.get('action')==='query')return Response.json({query:{search:searchTitles.map(title=>({title}))}});return Response.json(pages?pages[u.searchParams.get('page')]||{}:wikiData);}if(s.includes('api.mymemory.translated.net')){if(providerError)throw Error('offline');return Response.json({responseStatus:machineStatus,quotaFinished,responseData:{translatedText:machineTranslations?.[new URL(s).searchParams.get('q')]||'самовпевненість'}})}throw Error('Unexpected endpoint: '+s)}});
  return {handler,calls,req:(body={q:'Zuversicht'},headers={})=>new Request('https://test.supabase.co/functions/v1/dictionary-lookup',{method:'POST',headers:{authorization:'Bearer user-session','Content-Type':'application/json',...headers},body:JSON.stringify(body)})};
 }
 test('open lookup supplies dictionary Ukrainian with exact provenance and never calls PONS or quota RPC',async()=>{
@@ -95,4 +95,30 @@ test('dictionary morphology never invents a missing past form or auxiliary, and 
 :[1] Wir [[prüfen]] die Unterlagen sorgfältig.
 {{Referenzen}}
 `}}});assert.equal(x.praeteritum,'');assert.equal(x.perfekt,'');assert.equal(x.partizipII,'geprüft');assert.equal(x.example,'Wir prüfen die Unterlagen sorgfältig.');
+});
+
+
+test('optional translation choices cover distinct attested senses, translate to Ukrainian, cache by language and never fetch LEO',async()=>{
+ const page={parse:{title:'Ausschusstest',revid:456,wikitext:{'*':`== Ausschusstest ({{Sprache|Deutsch}}) ==
+{{Wortart|Substantiv|Deutsch}}
+|Genus=m
+{{Ü-Tabelle|1|G=Gremium|Ü-Liste=
+* {{Ü|en|committee}}, {{Ü|en|panel}}
+}}
+{{Ü-Tabelle|2|G=Fehlproduktion|Ü-Liste=
+* {{Ü|en|scrap}}, {{Ü|en|reject}}
+}}
+`}}};const f=await fixture({pages:{Ausschusstest:page},machineTranslations:{committee:'комітет',panel:'комісія',scrap:'брак',reject:'брак'}});
+ let body=await(await f.handler(f.req({q:'der Ausschusstest'}))).json();assert.equal(f.calls.filter(c=>c.url.includes('langpair=en')).length,0);
+ body=await(await f.handler(f.req({q:'der Ausschusstest',alternatives:true}))).json();assert.deepEqual(body.translationChoices.map(c=>c.text),['самовпевненість','комітет','брак','комісія']);
+ const chosen=body.translationChoices.find(c=>c.text==='брак');assert.equal(chosen.dictionaryTerm,'scrap');assert.equal(chosen.via,'MyMemory');assert.equal(chosen.automatic,true);assert(chosen.sourceUrl.endsWith('&oldid=456'));assert(!f.calls.some(c=>c.url.includes('leo.org')));
+ const before=f.calls.filter(c=>c.url.includes('mymemory')).length;await f.handler(f.req({q:'der Ausschusstest',alternatives:true}));assert.equal(f.calls.filter(c=>c.url.includes('mymemory')).length,before);assert.equal((await f.handler(f.req({q:'word',alternatives:'true'}))).status,400);
+});
+
+
+test('manually reviewed Ausschuss meanings are offered without scraping LEO or claiming a Ukrainian LEO dictionary',async()=>{
+ const f=await fixture({wikiData:nounPage});const body=await(await f.handler(f.req({q:'der Ausschuss',alternatives:true}))).json();
+ // The fixture redirects to a different noun, so it must not reuse Ausschuss data.
+ assert.notEqual(body.translationSource,'LEO');
+ const page={parse:{title:'Ausschuss',wikitext:{'*':'== Ausschuss ({{Sprache|Deutsch}}) ==\n{{Wortart|Substantiv|Deutsch}}\n|Genus=m\n'}}},real=await fixture({pages:{Ausschuss:page}}),result=await(await real.handler(real.req({q:'der Ausschuss',alternatives:true}))).json();assert.deepEqual(result.ukrainian,['комітет','комісія','виробничий брак']);assert(result.translationChoices.every(c=>c.editorialTranslation&&c.provider==='LEO'));assert(!real.calls.some(c=>c.url.includes('leo.org')));
 });
