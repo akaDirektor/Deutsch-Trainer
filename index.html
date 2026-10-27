@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261026-checked-words">
+<link rel="stylesheet" href="app.css?v=20261027-translation-choices">
 </head>
 <body>
 <div class="wrap">
@@ -179,6 +179,7 @@
       <div id="newWordSpelling" class="newWordSuggestions" hidden></div>
       <a id="newWordLeo" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>Перевірити в LEO ↗</a>
       <label for="newWordTranslation">Український переклад · можна виправити</label><input id="newWordTranslation" required maxlength="500" autocomplete="off" lang="uk">
+      <div id="newWordChoices" class="newWordChoices" hidden role="group" aria-label="Обери значення для перекладу"></div>
       <div id="newWordSuggestions" class="newWordSuggestions" hidden></div>
       <div id="newWordTypeField" hidden><label for="newWordType">Частина мови · обери після перевірки в LEO</label><select id="newWordType"><option value="">Не визначено — обери</option><option value="phrase">Вираз</option><option value="noun">Іменник</option><option value="verb">Дієслово</option><option value="adjective">Прикметник</option><option value="adverb">Прислівник</option><option value="preposition">Дієслово з прийменником</option></select><p class="muted">Для іменника потрібен артикль der, die або das у полі слова.</p></div>
       <div class="newWordLessonFields" role="group" aria-label="З якого уроку слово">
@@ -243,7 +244,7 @@
 <script src="context.js?v=20261025"></script>
 <script src="progress.js?v=20261026-word-lessons"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
-<script src="cloud.js?v=20261025-sentence-hint"></script>
+<script src="cloud.js?v=20261027-translation-choices"></script>
 <script>
 const rawSeed=window.WORDS || [];
 const LessonCatalog=window.Lessons||{books:{},matches:(w,book)=>book==='all',memberships:()=>[]};
@@ -950,6 +951,7 @@ document.getElementById('startBtn').onclick=()=>{if(trainingLocked||resumePendin
 
 let newWordRequest=0,newWordLookupBusy=false,newWordEvidence=null,newWordTimer=null,newWordTranslationEdit=0,newWordTypeEdited=false,newWordVerificationFinished=false;
 const newWordCache=new Map();
+let newWordChoices=[];
 const wordField=id=>document.getElementById(id);
 let newWordLessonSuggested=false;
 function renderNewWordLessonControls(){
@@ -984,8 +986,30 @@ function renderNewWordLeo(){
   if(q)link.href=leoLookup({de:q,type:/^(der|die|das)\s/i.test(q)?'noun':wordField('newWordType').value});
 }
 function updateNewWordAddState(){wordField('newWordAdd').disabled=trainingLocked||newWordLookupBusy||!wordField('newWordType').value||!!(newWordEvidence?.suggestions?.length&&!newWordTypeEdited);}
+function renderNewWordChoices(values=[],provider=''){
+  const box=wordField('newWordChoices');box.innerHTML='';
+  newWordChoices=[...new Set(values.filter(v=>typeof v==='string').map(v=>v.trim()).filter(v=>v&&v.length<=200))].slice(0,12);
+  box.hidden=!newWordChoices.length;if(box.hidden)return;
+  const heading=document.createElement('p');heading.textContent='Обери потрібні значення · можна декілька';box.appendChild(heading);
+  const group=document.createElement('div');group.className='translationChoices';box.appendChild(group);
+  for(const value of newWordChoices){const button=document.createElement('button');button.type='button';button.textContent=value;button.lang='uk';button.dataset.value=value;button.setAttribute('aria-pressed','false');button.onclick=()=>toggleNewWordChoice(value);group.appendChild(button);}
+  syncNewWordChoices();
+}
+function syncNewWordChoices(){
+  const selected=wordField('newWordTranslation').value.split(/\s*;\s*/).map(v=>v.trim()).filter(Boolean);
+  for(const button of Array.from(wordField('newWordChoices').children).find(e=>e.className==='translationChoices')?.children||[])button.setAttribute('aria-pressed',String(selected.includes(button.dataset.value)));
+}
+function toggleNewWordChoice(value){
+  if(trainingLocked||!newWordChoices.includes(value))return;
+  const field=wordField('newWordTranslation'),selected=field.value.split(/\s*;\s*/).map(v=>v.trim()).filter(Boolean);
+  const next=selected.includes(value)?selected.filter(v=>v!==value):[...selected,value],text=next.join('; ');
+  if(text.length>500){wordField('newWordStatus').textContent='Забагато тексту: обери менше значень або скороти переклад.';return;}
+  field.value=text;newWordTranslationEdit++;
+  if(newWordEvidence){const choices=(newWordEvidence.choices||[]).filter(c=>next.includes(c.text));newWordEvidence.translation=text;newWordEvidence.origin=choices.length===next.length&&choices.length&&choices.every(c=>!c.automatic&&c.provider==='Wiktionary')?'Wiktionary':'user';if(choices.some(c=>c.automatic))newWordEvidence.suggestion={provider:'MyMemory',kind:'automatic',query:wordField('newWordGerman').value.trim(),translation:text,confirmedBy:'user',choices:Progress.clone(choices)};else if(choices.some(c=>c.editorialTranslation))newWordEvidence.suggestion={provider:'LEO',kind:'editorial_translation',query:wordField('newWordGerman').value.trim(),translation:text,choices:Progress.clone(choices),confirmedBy:'user'};else newWordEvidence.suggestion=null;}
+  syncNewWordChoices();
+}
 function resetNewWordLookup(){
-  newWordVerificationFinished=false;wordField('newWordSpelling').hidden=true;
+  newWordVerificationFinished=false;wordField('newWordSpelling').hidden=true;renderNewWordChoices();
   clearTimeout(newWordTimer);newWordRequest++;newWordLookupBusy=false;newWordEvidence=null;wordField('newWordSuggestions').hidden=true;
 }
 wordField('newWordGerman').oninput=()=>{
@@ -996,7 +1020,7 @@ wordField('newWordGerman').oninput=()=>{
   wordField('newWordStatus').textContent=trainingLocked?'Увійди, щоб додавати слова.':'Введи слово — український переклад підставиться автоматично.';
   if(!trainingLocked&&wordField('newWordGerman').value.trim().length>=2)newWordTimer=setTimeout(lookupNewWord,900);
 };
-wordField('newWordTranslation').oninput=()=>{newWordTranslationEdit++};
+wordField('newWordTranslation').oninput=()=>{newWordTranslationEdit++;syncNewWordChoices()};
 wordField('newWordType').onchange=()=>{newWordTypeEdited=true;wordField('newWordTypeField').hidden=false;updateNewWordAddState()};
 wordField('newWordGerman').onkeydown=event=>{if(event.key==='Enter'){event.preventDefault();clearTimeout(newWordTimer);lookupNewWord()}};
 async function lookupNewWord(options={}){
@@ -1005,19 +1029,26 @@ async function lookupNewWord(options={}){
   if(data.some(w=>key(w)===q.toLowerCase())){wordField('newWordStatus').textContent='Це слово вже є у словнику — знайди його через пошук.';return;}
   const version=++newWordRequest,edit=newWordTranslationEdit,keepTranslation=options.keepTranslation===true;newWordLookupBusy=true;updateNewWordAddState();wordField('newWordStatus').textContent='Перевіряю написання, артикль і переклад…';
   try{
-    const result=newWordCache.get(q)||await Cloud.lookupDictionary(q);if(version!==newWordRequest||trainingLocked)return;
+    const result=newWordCache.get(q)||await Cloud.lookupDictionary(q,true);if(version!==newWordRequest||trainingLocked)return;
     if(newWordCache.size>=100)newWordCache.delete(newWordCache.keys().next().value);newWordCache.set(q,result);
     const box=wordField('newWordSuggestions');box.innerHTML='';box.hidden=false;newWordEvidence={sources:[],translation:'',origin:'user',suggestion:null,verified:false,suggestions:[]};
     const translation=Array.isArray(result.ukrainian)?result.ukrainian.slice(0,3).join('; '):'';
     const provider=result.translationSource,automatic=provider==='MyMemory';
     const automaticUrl='https://mymemory.translated.net/en/German/Ukrainian/'+encodeURIComponent(q.replace(/^(der|die|das)\s+/i,''));
-    if(translation&&['Wiktionary','MyMemory'].includes(provider)){
+    if(translation&&['Wiktionary','MyMemory','LEO'].includes(provider)){
       if(!keepTranslation&&edit===newWordTranslationEdit)wordField('newWordTranslation').value=translation;
-      newWordEvidence.translation=translation;newWordEvidence.origin=automatic?'user':provider;
+      newWordEvidence.translation=translation;newWordEvidence.origin=automatic||provider==='LEO'?'user':provider;
       if(automatic)newWordEvidence.suggestion={provider:'MyMemory',kind:'automatic',query:q,translation,sourceUrl:automaticUrl,confirmedBy:'user'};
     }
+    const choices=Array.isArray(result.translationChoices)?result.translationChoices.filter(c=>c&&typeof c.text==='string'):[];
+    renderNewWordChoices(choices.length?choices.map(c=>c.text):Array.isArray(result.ukrainian)?result.ukrainian:[],provider);
+    if(choices.some(c=>c.editorialTranslation)){const note=document.createElement('small');note.textContent='Значення вручну звірено з LEO · український переклад адаптовано.';box.appendChild(note);}
+    if(choices.some(c=>c.automatic&&c.via)){const note=document.createElement('small');note.textContent='Додаткові значення: Wiktionary → автоматичний переклад українською. Звір у LEO.';box.appendChild(note);}
+    newWordEvidence.choices=choices;
+    if(provider==='LEO')newWordEvidence.suggestion={provider:'LEO',kind:'editorial_translation',query:q,translation,choices:Progress.clone(choices),confirmedBy:'user'};
     function source(label,url){const a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(a);}
     if(result.wiktionary){newWordEvidence.sources.push({provider:'Wiktionary',url:result.wiktionary.url});source((provider==='Wiktionary'?'Переклад':'Граматика')+': Wiktionary · CC BY-SA 4.0 ↗',result.wiktionary.url);}
+    if(provider==='LEO')source('Значення: LEO ↗',choices.find(c=>c.provider==='LEO')?.sourceUrl||leoLookup({de:q}));
     if(automatic)source('Український переклад: MyMemory ↗',automaticUrl);
     if(automatic){const note=document.createElement('small');note.textContent='Автоматичний переклад — звір у LEO.';box.appendChild(note);}
     const check=result.wordCheck,grammar=result.grammar,confirmed=check?check.verified&&check.typeConfirmed:!!(result.wiktionary&&grammar?.type);
