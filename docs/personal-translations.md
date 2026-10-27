@@ -1,0 +1,7 @@
+# Personal translation editing
+
+In search or a card’s word details, choose **Редагувати переклад**. Each meaning has an editable field and a remove button. Add another row with **Додати варіант**, then **Зберегти**. Closing the dialog discards unfinished edits. **Початкові варіанти** fills the editor with the original corpus translation; saving confirms restoration.
+
+Edits are personal `stats[wordKey].translationVariants` metadata in the existing synchronized progress snapshot. This nonempty array supersedes the corpus translation and legacy `additionalTranslations` for display and search. Legacy additions remain stored, so removing one does not resurrect it or discard its previous data. Until an override exists, the old corpus-plus-additions behavior is unchanged. Existing corpus records, examples, keys, counters, hidden words and cycle state are untouched. No server schema or cloud synchronization changes are required.
+
+The editor supports up to 20 distinct meanings of 200 characters each, including combined legacy meanings. Values are validated on save and progress import. Saving rolls back if local persistence fails; an edit opened before a remote translation change cannot overwrite that translation silently. The existing cloud revision conflict handling still applies to concurrent offline writes. Tests cover offline transfer, restoration, validation, unchanged progress and corpus, current/solved cards, search and escaped answer rendering.
