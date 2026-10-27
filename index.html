@@ -1070,9 +1070,12 @@ async function lookupNewWord(options={}){
     }
     else if(newWordEvidence.suggestions.length){
       const label=document.createElement('p');label.textContent=newWordEvidence.suggestionReason==='inflected'?'Знайдено форму слова. Обери слово для додавання:':'Можлива помилка або неповне слово. Обери правильний варіант:';spelling.appendChild(label);
-      for(const suggestion of newWordEvidence.suggestions){const button=document.createElement('button');button.type='button';button.textContent=(newWordEvidence.suggestionReason==='inflected'?'Обрати: ':'Виправити: ')+suggestion.de;button.onclick=()=>acceptNewWordCorrection(suggestion);spelling.appendChild(button);}
+      for(const suggestion of newWordEvidence.suggestions){
+        const button=document.createElement('button'),type={noun:'іменник',verb:'дієслово',adjective:'прикметник',adverb:'прислівник',phrase:'вираз',preposition:'дієслово з прийменником'}[suggestion.type];
+        button.type='button';button.textContent=(newWordEvidence.suggestionReason==='inflected'?'Обрати: ':'Виправити: ')+suggestion.de+(type?' · '+type:'');button.onclick=()=>acceptNewWordCorrection(suggestion);spelling.appendChild(button);
+      }
     }else spelling.textContent=grammar?.type==='noun'?'Іменник підтверджено, але артикль потребує перевірки в LEO.':'Не вдалося підтвердити написання та частину мови. Перевір у LEO й обери частину мови нижче.';
-    wordField('newWordTypeField').hidden=newWordEvidence.verified;
+    wordField('newWordTypeField').hidden=newWordEvidence.verified||newWordEvidence.suggestions.length>0;
 
     renderNewWordLeo();
     wordField('newWordStatus').textContent=newWordEvidence.suggestions.length?'Обери правильне словникове написання — після цього з’явиться переклад.':translation?'Перевір слово, артикль і переклад перед додаванням.':'Переклад не знайдено. Перевір у LEO та впиши українською.';
