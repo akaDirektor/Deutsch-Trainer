@@ -67,3 +67,5 @@
 
 /* Translation sense choices remain separate from the editable final translation. */
 .newWordChoices{margin:14px 0}.newWordChoices p{margin:0 0 8px;font-size:calc(14px * var(--text-scale,1));color:var(--muted)}.translationChoices{display:flex;flex-wrap:wrap;gap:8px}.translationChoices button{min-height:44px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:white;color:var(--text);font:inherit;text-align:left;overflow-wrap:anywhere;max-width:100%}.translationChoices button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}.translationChoices button:focus-visible{outline:3px solid #478dcc;outline-offset:2px}
+
+#newWordSpelling .verifiedWord{display:block;font-size:calc(20px * var(--text-scale,1));line-height:1.35;color:var(--text);margin:4px 0;overflow-wrap:anywhere}#newWordSpelling small{color:var(--muted)}#newWordSpelling p{color:var(--text)}
