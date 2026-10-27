@@ -51,27 +51,6 @@
     <p id="wordProgressDescription" class="muted"></p>
     <ul id="wordProgressList" class="wordProgressList"></ul>
   </section>
-  <section class="wordSearch" id="wordSearch" aria-label="Пошук слова">
-    <div class="wordSearchHeading"><label for="wordSearchInput">Пошук слова</label><span aria-hidden="true">DE / UA</span></div>
-    <div class="searchField"><svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-    <input id="wordSearchInput" type="search" aria-label="Пошук слова німецькою або українською" title="Пошук у всій базі, включно з прихованими словами" placeholder="Введи слово" autocomplete="off">
-    </div>
-    <p id="wordSearchStatus" class="muted" role="status" aria-live="polite" hidden></p>
-    <button type="button" id="wordSearchAdd" class="searchAddWord primary" hidden>＋ Додати слово</button>
-    <ul id="wordSearchResults" class="searchResults"></ul>
-    <div id="wordSearchDetail" class="exampleBox hidden"></div>
-    <section id="searchLessonEditor" class="searchLessonEditor" aria-labelledby="searchLessonHeading" hidden>
-      <h3 id="searchLessonHeading">Додати слово до уроку</h3>
-      <p id="searchLessonMemberships" class="muted"></p>
-      <div class="searchLessonFields">
-        <label for="searchLessonBook">Книжка<select id="searchLessonBook"><option value="">Обери книжку</option></select></label>
-        <label for="searchLessonNumber">Урок<select id="searchLessonNumber" disabled><option value="">Спочатку обери книжку</option></select></label>
-        <button id="searchLessonAdd" type="button" class="primary" disabled>Додати до уроку</button>
-      </div>
-      <p id="searchLessonStatus" class="muted" role="status" aria-live="polite"></p>
-    </section>
-  </section>
-
   <div class="controls">
     <div class="lessonFilters" aria-label="Вибір книжки та уроку">
       <label for="bookFilter">Книжка<select id="bookFilter" aria-label="Книжка"></select></label>
@@ -181,6 +160,27 @@
     <div id="verbWriteAnswer" class="recallAnswer hidden"></div>
     <div id="verbWriteJudge" class="row hidden"><button id="verbWriteCorrect" class="primary">✓ Правильно</button><button id="verbWriteWrong">✕ Неправильно</button></div>
   </div>
+
+  <section class="wordSearch" id="wordSearch" aria-label="Пошук слова">
+    <div class="wordSearchHeading"><label for="wordSearchInput">Пошук слова</label><span aria-hidden="true">DE / UA</span></div>
+    <div class="searchField"><svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+    <input id="wordSearchInput" type="search" aria-label="Пошук слова німецькою або українською" title="Пошук у всій базі, включно з прихованими словами" placeholder="Введи слово" autocomplete="off">
+    </div>
+    <p id="wordSearchStatus" class="muted" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="wordSearchAdd" class="searchAddWord primary" hidden>＋ Додати слово</button>
+    <ul id="wordSearchResults" class="searchResults"></ul>
+    <div id="wordSearchDetail" class="exampleBox hidden"></div>
+    <section id="searchLessonEditor" class="searchLessonEditor" aria-labelledby="searchLessonHeading" hidden>
+      <h3 id="searchLessonHeading">Додати слово до уроку</h3>
+      <p id="searchLessonMemberships" class="muted"></p>
+      <div class="searchLessonFields">
+        <label for="searchLessonBook">Книжка<select id="searchLessonBook"><option value="">Обери книжку</option></select></label>
+        <label for="searchLessonNumber">Урок<select id="searchLessonNumber" disabled><option value="">Спочатку обери книжку</option></select></label>
+        <button id="searchLessonAdd" type="button" class="primary" disabled>Додати до уроку</button>
+      </div>
+      <p id="searchLessonStatus" class="muted" role="status" aria-live="polite"></p>
+    </section>
+  </section>
 
   <details id="newWordPanel" class="personalWords" aria-labelledby="newWordHeading" open>
     <summary><h2 id="newWordHeading">＋ Додати слово</h2></summary>
