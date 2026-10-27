@@ -766,7 +766,8 @@ function select(side,e,w){
   if(side==='L') selectedL={e,w}; else selectedR={e,w};
   if(selectedL && selectedR) check();
 }
-function closeArticleDialog(){const dialog=document.getElementById('articleQuiz');if(dialog.close)dialog.close();else dialog.open=false;}
+let articleBackdropStartedOutside=false;
+function closeArticleDialog(){articleBackdropStartedOutside=false;const dialog=document.getElementById('articleQuiz');if(dialog.close)dialog.close();else dialog.open=false;}
 function openArticleQuestion(w,pair=null){
   articleQuestion={w,pair,answered:false,review:false};
   document.getElementById('articleReviewClose').hidden=true;
@@ -833,6 +834,15 @@ function acknowledgeArticle(){
   const question=articleQuestion;articleQuestion=null;closeArticleDialog();if(question.review){articleReviewSeen.add(key(question.w));renderArticleReview();return;}finishMatchedPair(question.pair);resumePendingArticle();
 }
 document.getElementById('articleDer').onclick=()=>answerArticle('der');document.getElementById('articleDie').onclick=()=>answerArticle('die');document.getElementById('articleDas').onclick=()=>answerArticle('das');document.getElementById('articleContinue').onclick=acknowledgeArticle;
+function isArticleBackdrop(event){
+  const dialog=document.getElementById('articleQuiz');if(event.target!==dialog)return false;
+  const box=dialog.getBoundingClientRect();return event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom;
+}
+document.getElementById('articleQuiz').addEventListener('pointerdown',event=>{articleBackdropStartedOutside=isArticleBackdrop(event)});
+document.getElementById('articleQuiz').addEventListener('click',event=>{
+  const outside=articleBackdropStartedOutside&&isArticleBackdrop(event);articleBackdropStartedOutside=false;
+  if(outside&&articleQuestion?.answered)acknowledgeArticle();
+});
 document.getElementById('articleQuiz').addEventListener('cancel',event=>{if(articleQuestion?.review){event.preventDefault();closeArticleReview();}else if(articleQuestion&&!articleQuestion.answered)event.preventDefault();else{event.preventDefault();acknowledgeArticle();}});
 function check(){
   const epoch=roundEpoch;
