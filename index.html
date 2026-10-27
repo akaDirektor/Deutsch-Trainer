@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261027-search-lessons">
+<link rel="stylesheet" href="app.css?v=20261027-fold-add">
 </head>
 <body>
 <div class="wrap">
@@ -181,8 +181,8 @@
     <div id="verbWriteJudge" class="row hidden"><button id="verbWriteCorrect" class="primary">✓ Правильно</button><button id="verbWriteWrong">✕ Неправильно</button></div>
   </div>
 
-  <section class="personalWords" aria-labelledby="newWordHeading">
-    <h2 id="newWordHeading">＋ Додати слово</h2>
+  <details id="newWordPanel" class="personalWords" aria-labelledby="newWordHeading" open>
+    <summary><h2 id="newWordHeading">＋ Додати слово</h2></summary>
     <form id="newWordForm">
       <label for="newWordGerman">Німецьке слово або вираз</label><input id="newWordGerman" required maxlength="150" placeholder="Наприклад: die Zuversicht" autocomplete="off" lang="de" aria-describedby="newWordStatus">
       <p id="newWordStatus" class="muted" role="status" aria-live="polite">Введи слово — український переклад підставиться автоматично.</p>
@@ -202,7 +202,7 @@
       </details>
       <button id="newWordAdd" class="primary" type="submit">Додати</button>
     </form>
-  </section>
+  </details>
   <details class="learningHelp">
     <summary>Як працює засвоєння</summary>
     <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Для іменника в режимі перекладу успішне повторення — це правильний переклад і артикль. Помилки в артиклях мають окремий облік. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
@@ -674,6 +674,7 @@ document.getElementById('wordSearchAdd').onclick=()=>{
   const query=document.getElementById('wordSearchInput').value.trim();if(!query||query.length>150)return;
   if(findWords(query).length){renderSearch();return;}
   const german=!/[А-Яа-яІіЇїЄєҐґ]/.test(query);
+  document.getElementById('newWordPanel').open=true;
   wordField('newWordGerman').value=german?query:'';wordField('newWordGerman').oninput();clearTimeout(newWordTimer);
   wordField('newWordForm').scrollIntoView({behavior:'smooth',block:'center'});wordField('newWordGerman').focus();
   if(german&&!trainingLocked)return lookupNewWord();
