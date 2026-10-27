@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261027-fold-add">
+<link rel="stylesheet" href="app.css?v=20261027-own-translations">
 </head>
 <body>
 <div class="wrap">
@@ -217,6 +217,16 @@
   <button type="button" id="articleReviewClose" hidden>Закрити</button>
   <button type="button" id="articleContinue" class="primary" hidden>Зрозуміло</button>
 </dialog>
+<dialog id="extraTranslationDialog" class="translationReport" aria-labelledby="extraTranslationTitle">
+  <form id="extraTranslationForm">
+    <div class="reportHeading"><h2 id="extraTranslationTitle">Додати свій переклад</h2><button type="button" id="closeExtraTranslation" class="reportClose" aria-label="Закрити">×</button></div>
+    <strong id="extraTranslationWord" lang="de"></strong>
+    <p id="extraTranslationCurrent" class="reportNote"></p>
+    <label for="extraTranslationInput">Додатковий український переклад</label><input id="extraTranslationInput" lang="uk" required maxlength="200" autocomplete="off">
+    <p id="extraTranslationStatus" class="reportNote" role="status" aria-live="polite"></p>
+    <button type="submit" class="primary" id="saveExtraTranslation">Додати переклад</button>
+  </form>
+</dialog>
 <dialog id="translationReport" class="translationReport" aria-labelledby="translationReportTitle">
   <form id="translationReportForm">
     <div class="reportHeading"><h2 id="translationReportTitle">Уточнити переклад</h2><button type="button" id="closeTranslationReport" class="reportClose" aria-label="Закрити зауваження">×</button></div>
@@ -252,7 +262,7 @@
 <script src="verb-forms.js?v=20261022-reflexive"></script>
 <script src="context-spans.js?v=20261025"></script>
 <script src="context.js?v=20261025"></script>
-<script src="progress.js?v=20261026-word-lessons"></script>
+<script src="progress.js?v=20261027-own-translations"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261027-translation-choices"></script>
 <script>
@@ -279,6 +289,42 @@ let followMatchExamples=false;
 let articleQuestion=null;
 
 function key(w){return w.de.toLowerCase().trim()}
+function wordTranslation(w){
+  const seen=new Set(w.uk.split(/[;,]/).map(Progress.translationKey)),extra=Progress.additionalTranslations(stats[key(w)]?.additionalTranslations||[]).filter(t=>!seen.has(Progress.translationKey(t)));
+  return [w.uk,...extra].join('; ');
+}
+let extraTranslationWord=null,extraTranslationTrigger=null;
+function addWordTranslation(w,text){
+  if(trainingLocked)throw Error('Увійди, щоб зберегти свій переклад.');
+  const original=data.find(item=>key(item)===key(w));if(!original)throw Error('Знайди слово ще раз.');
+  const incoming=Progress.additionalTranslations(text.split(';').map(t=>t.trim()).filter(Boolean));if(!incoming.length)throw Error('Введи додатковий переклад.');
+  const k=key(original),old=Progress.additionalTranslations(stats[k]?.additionalTranslations||[]),known=new Set([...original.uk.split(/[;,]/),...old].map(Progress.translationKey));
+  const additions=incoming.filter(t=>!known.has(Progress.translationKey(t)));if(!additions.length)return false;
+  const next=Progress.additionalTranslations([...old,...additions]),previous=stats;stats={...stats,[k]:{...(stats[k]||{}),additionalTranslations:next}};
+  try{save()}catch(error){stats=previous;throw error}
+  contextCache=null;refreshWordTranslations(original);return true;
+}
+function refreshWordTranslations(w){
+  const k=key(w),translation=wordTranslation(w);
+  const update=node=>{if(node.dataset?.k===k){node.textContent=translation;node.setAttribute('aria-label',translation+(node.title?.startsWith('✓')||node.title?.startsWith('✕')?' · '+node.title:''));}};
+  if(document.getElementById('mode').value==='translation')for(const card of document.getElementById('rightCol').children)update(card);
+  const updateMeaning=node=>{if(node.dataset?.k!==k)return;if(node.className==='exampleMeaning')node.textContent=translation;if(node.className==='personalTranslationNote')node.hidden=!stats[k]?.additionalTranslations?.length;};
+  for(const screen of [previousRoundState,activeRoundState])if(screen){if(screen.rightLabel==='Українською')for(const node of screen.columns.find(c=>c.id==='rightCol')?.nodes||[])update(node);for(const node of screen.columns.find(c=>c.id==='matchExample')?.nodes||[])updateMeaning(node);}
+  for(const id of ['matchExample','wordSearchDetail'])for(const node of document.getElementById(id).children)updateMeaning(node);
+  for(const row of document.getElementById('wordSearchResults').children){const button=row.children[0];if(button?.dataset.k===k)button.children[1].textContent=translation;}
+  if(articleQuestion&&key(articleQuestion.w)===k)document.getElementById('articleTranslation').textContent=translation;
+  if(contextQuestion&&key(contextQuestion.w)===k){document.getElementById('contextHintText').textContent=translation;if(contextQuestion.answered)document.getElementById('contextMeaning').textContent=w.de+' — '+translation;}
+}
+function openExtraTranslation(w,trigger){
+  extraTranslationWord=data.find(item=>key(item)===key(w))||null;extraTranslationTrigger=trigger;if(!extraTranslationWord)return;
+  document.getElementById('extraTranslationWord').textContent=w.de;document.getElementById('extraTranslationCurrent').textContent='Зараз: '+wordTranslation(w);document.getElementById('extraTranslationInput').value='';document.getElementById('extraTranslationStatus').textContent='';document.getElementById('saveExtraTranslation').disabled=trainingLocked;
+  const dialog=document.getElementById('extraTranslationDialog');if(dialog.showModal)dialog.showModal();else dialog.open=true;document.getElementById('extraTranslationInput').focus();
+}
+function closeExtraTranslation(){const dialog=document.getElementById('extraTranslationDialog');if(dialog.close)dialog.close();else dialog.open=false;if(extraTranslationTrigger?.isConnected)extraTranslationTrigger.focus();}
+document.getElementById('closeExtraTranslation').onclick=closeExtraTranslation;
+document.getElementById('extraTranslationForm').onsubmit=event=>{
+  event.preventDefault();try{if(!extraTranslationWord)throw Error('Спочатку обери слово.');const added=addWordTranslation(extraTranslationWord,document.getElementById('extraTranslationInput').value);if(added)closeExtraTranslation();else document.getElementById('extraTranslationStatus').textContent='Такий переклад уже є.';}catch(error){document.getElementById('extraTranslationStatus').textContent=error.message;}
+};
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
 function addWorkedDay(st,day){
   const cutoff=new Date(day+'T12:00:00');cutoff.setDate(cutoff.getDate()-30);
@@ -358,7 +404,7 @@ function renderWordProgress(){
   if(!words.length){const item=document.createElement('li');item.textContent='У цьому списку поки немає слів.';list.appendChild(item);}
   words.forEach(w=>{
     const st=stats[key(w)]||{},item=document.createElement('li'),de=document.createElement('strong'),uk=document.createElement('span'),detail=document.createElement('small');
-    de.textContent=w.de;uk.textContent=w.uk;
+    de.textContent=w.de;uk.textContent=wordTranslation(w);
     detail.textContent='Серія: '+(st.streak||0)+' / 3 · Помилок у зіставленні: '+(st.wrong||0)+' · У пригадуванні: '+(st.recallWrong||0)+(st.mastered?' · Готове до пригадування':'');
     item.appendChild(de);item.appendChild(uk);item.appendChild(detail);list.appendChild(item);
     if(wordProgressView==='feedback'){detail.textContent='Чернетка · '+(st.translationFeedback.reason||'Перевірити переклад');const button=document.createElement('button');button.type='button';button.textContent='Відкрити зауваження';button.onclick=()=>openTranslationReport(w,button);item.appendChild(button);}
@@ -497,7 +543,7 @@ function nounPromptName(w){
 }
 function rightText(w){
   let mode=document.getElementById('mode').value;
-  return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : w.uk;
+  return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : wordTranslation(w);
 }
 function renderRound(round=null){
   viewingPreviousRound=false;activeRoundState=null;document.getElementById('previousRound').textContent='← Попередній раунд';document.getElementById('previousRound').disabled=false;document.getElementById('previousRound').hidden=!previousRoundState;
@@ -529,7 +575,7 @@ function translationIssueUrl(w,feedback){
 function openTranslationReport(w,trigger=null){
   reportWord=w;reportTrigger=trigger;
   const feedback=stats[key(w)]?.translationFeedback;
-  document.getElementById('reportGerman').textContent=w.de;document.getElementById('reportCurrent').textContent='Зараз: '+w.uk;
+  document.getElementById('reportGerman').textContent=w.de;document.getElementById('reportCurrent').textContent='Зараз: '+wordTranslation(w);
   document.getElementById('reportReason').value=feedback?.reason||'';document.getElementById('reportSuggestion').value=feedback?.suggestion||'';
   document.getElementById('reportStatus').textContent=feedback?'Чернетку збережено. Для надсилання потрібно підтвердити заявку у GitHub.':'';
   const link=document.getElementById('reportGitHub');link.hidden=!feedback;if(feedback)link.href=translationIssueUrl(w,feedback);
@@ -541,7 +587,7 @@ document.getElementById('translationReportForm').onsubmit=event=>{
   event.preventDefault();const status=document.getElementById('reportStatus');
   if(trainingLocked||!reportWord){status.textContent='Для збереження зауваження увійди до свого хмарного профілю.';return;}
   const previous=stats[key(reportWord)]?.translationFeedback;
-  const feedback={translation:reportWord.uk,reason:document.getElementById('reportReason').value.trim().slice(0,600),suggestion:document.getElementById('reportSuggestion').value.trim().slice(0,200),updatedAt:new Date().toISOString(),status:'draft'};
+  const feedback={translation:wordTranslation(reportWord),reason:document.getElementById('reportReason').value.trim().slice(0,600),suggestion:document.getElementById('reportSuggestion').value.trim().slice(0,200),updatedAt:new Date().toISOString(),status:'draft'};
   s(reportWord).translationFeedback=feedback;
   try{save();const link=document.getElementById('reportGitHub');link.href=translationIssueUrl(reportWord,feedback);link.hidden=false;status.textContent='Чернетку додано до прогресу. Тепер відкрий GitHub і підтвердь створення заявки — лише тоді її буде надіслано.';renderWordProgress();}
   catch(error){if(previous)s(reportWord).translationFeedback=previous;else delete s(reportWord).translationFeedback;status.textContent='Не вдалося зберегти зауваження: '+error.message;}
@@ -568,6 +614,7 @@ function showMatchExample(w,boxId='matchExample',enriched=false){
   const request={};box.wordDetailRequest=request;
   if(boxId==='matchExample')followMatchExamples=true;
   box.innerHTML='<div class="exampleHeading">'+escapeExample(w.de)+'</div><b>'+exampleLabel(w)+':</b><br>'+escapeExample(w.example||makeExample(w));
+  const meaning=document.createElement('div');meaning.className='exampleMeaning';meaning.dataset.k=key(w);meaning.textContent=wordTranslation(w);box.appendChild(meaning);box.exampleWordKey=key(w);box.wordMeaning=meaning;const ownNote=document.createElement('small');ownNote.className='personalTranslationNote';ownNote.dataset.k=key(w);ownNote.textContent='Доповнено твоїм перекладом';ownNote.hidden=!stats[key(w)]?.additionalTranslations?.length;box.wordPersonalNote=ownNote;box.appendChild(ownNote);
   const verbForms=exampleVerbForms(w);
   if(verbForms.praeteritum||verbForms.perfekt){
     const forms=document.createElement('div');forms.className='exampleVerbForms';
@@ -596,6 +643,7 @@ function showMatchExample(w,boxId='matchExample',enriched=false){
   link.ariaLabel=link.title;
   box.appendChild(document.createElement('br'));box.appendChild(link);
   const report=document.createElement('button');report.type='button';report.className='reportTranslation';report.textContent='Уточнити переклад';report.onclick=()=>openTranslationReport(w,report);box.appendChild(report);
+  const own=document.createElement('button');own.type='button';own.className='addOwnTranslation';own.textContent='＋ Додати свій переклад';own.disabled=trainingLocked;own.onclick=()=>openExtraTranslation(w,own);box.appendChild(own);
   const close=document.createElement('button');close.type='button';close.className='exampleClose';close.textContent='×';close.setAttribute('aria-label','Закрити приклад');close.title='Закрити приклад';
   close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else{document.getElementById('searchLessonEditor').hidden=true;document.getElementById('wordSearchInput').focus();}};
   box.appendChild(close);
@@ -655,7 +703,7 @@ document.getElementById('searchLessonAdd').onclick=()=>{
 function searchText(text){return text.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[’‘ʼ]/g,"'").trim();}
 function findWords(query){
   const terms=searchText(query).split(/\s+/).filter(Boolean);
-  return terms.length?data.filter(w=>terms.every(term=>searchText(w.de+' '+w.uk).includes(term))):[];
+  return terms.length?data.filter(w=>terms.every(term=>searchText(w.de+' '+wordTranslation(w)).includes(term))):[];
 }
 function renderSearch(){
   const query=document.getElementById('wordSearchInput').value,words=findWords(query),list=document.getElementById('wordSearchResults');list.innerHTML='';
@@ -664,8 +712,8 @@ function renderSearch(){
   document.getElementById('wordSearchStatus').textContent=!query.trim()?'Введи слово або частину слова.':words.length?'Знайдено: '+words.length:'Нічого не знайдено.';
   const add=document.getElementById('wordSearchAdd'),q=query.trim();add.hidden=!q||q.length>150||words.length>0;add.textContent=/[А-Яа-яІіЇїЄєҐґ]/.test(q)?'＋ Додати нове слово':'＋ Додати «'+q+'»';
   words.forEach(w=>{
-    const item=document.createElement('li'),button=document.createElement('button'),de=document.createElement('span'),uk=document.createElement('small');button.type='button';
-    de.textContent=w.de+(hiddenWords.has(key(w))?' · приховане':'');uk.textContent=w.uk;button.appendChild(de);button.appendChild(uk);
+    const item=document.createElement('li'),button=document.createElement('button'),de=document.createElement('span'),uk=document.createElement('small');button.type='button';button.dataset.k=key(w);
+    de.textContent=w.de+(hiddenWords.has(key(w))?' · приховане':'');uk.textContent=wordTranslation(w);button.appendChild(de);button.appendChild(uk);
     button.onclick=()=>{showMatchExample(w,'wordSearchDetail');document.getElementById('wordSearchDetail').scrollIntoView({block:'nearest'});};item.appendChild(button);list.appendChild(item);
   });
 }
@@ -722,7 +770,7 @@ function closeArticleDialog(){const dialog=document.getElementById('articleQuiz'
 function openArticleQuestion(w,pair=null){
   articleQuestion={w,pair,answered:false,review:false};
   document.getElementById('articleReviewClose').hidden=true;
-  document.getElementById('articleNoun').textContent=nounPromptName(w);document.getElementById('articleTranslation').textContent=w.uk;document.getElementById('articleResult').textContent='';document.getElementById('articleContinue').hidden=true;
+  document.getElementById('articleNoun').textContent=nounPromptName(w);document.getElementById('articleTranslation').textContent=wordTranslation(w);document.getElementById('articleResult').textContent='';document.getElementById('articleContinue').hidden=true;
   for(const id of ['articleDer','articleDie','articleDas']){const button=document.getElementById(id);button.disabled=false;button.classList.remove('correctArticle');}
   const dialog=document.getElementById('articleQuiz');if(dialog.showModal)dialog.showModal();else dialog.open=true;
 }
@@ -765,7 +813,7 @@ function finishMatchedPair(pair){
   a.e.classList.remove('articlePending');b.e.classList.remove('articlePending');a.e.textContent=a.w.de;
   const error=pair.article&&s(a.w).articleNeedsReview;
   if(error){a.e.classList.add('articleMistake');b.e.classList.add('articleMistake');}
-  if(pair.article){const result=error?'✕ Артикль не вгадано — повторення не зараховано':'✓ Артикль правильний — повторення зараховано';a.e.setAttribute('aria-label',a.w.de+' · '+result);b.e.setAttribute('aria-label',b.w.uk+' · '+result);a.e.title=result;b.e.title=result;}
+  if(pair.article){const result=error?'✕ Артикль не вгадано — повторення не зараховано':'✓ Артикль правильний — повторення зараховано';a.e.setAttribute('aria-label',a.w.de+' · '+result);b.e.setAttribute('aria-label',wordTranslation(b.w)+' · '+result);a.e.title=result;b.e.title=result;}
   setTimeout(()=>{if(epoch!==roundEpoch)return;solved.add(key(a.w));if(solved.size===currentRound.length){rememberCompletedRound();document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(epoch===roundEpoch&&!trainingLocked&&!document.getElementById('training').classList.contains('hidden'))renderRound()},650);}},180);
 }
 function answerArticle(article){
@@ -886,7 +934,7 @@ document.getElementById('contextHint').ontoggle=()=>{if(document.getElementById(
 function contextInventory(){
   const hidden=[...hiddenWords].sort().join('\n');
   if(contextCache?.data===data&&contextCache.hidden===hidden)return contextCache;
-  const cards=data.filter(w=>!hiddenWords.has(key(w))).flatMap(w=>window.ContextPractice.cards(w,window.WORD_EXAMPLES?.[key(w)]||[],exampleVerbForms(w)));
+  const cards=data.filter(w=>!hiddenWords.has(key(w))).flatMap(w=>window.ContextPractice.cards({...w,uk:wordTranslation(w)},window.WORD_EXAMPLES?.[key(w)]||[],exampleVerbForms(w)));
   const byKey=new Map(),choices=new Map();
   for(const card of cards){if(!byKey.has(card.key))byKey.set(card.key,[]);byKey.get(card.key).push(card)}
   contextCache={data,hidden,cards,byKey,choices};return contextCache;
@@ -901,7 +949,7 @@ function renderContext(){
   const w=shuffle(cyclePool())[0];if(!w)return;
   const cards=contextInventory().byKey.get(key(w)).filter(c=>contextChoices(c).length>=4),old=previousContextSentence.get(key(w));
   const card=shuffle(cards.filter(c=>c.sentence!==old).length?cards.filter(c=>c.sentence!==old):cards)[0];previousContextSentence.set(key(w),card.sentence);
-  document.getElementById('contextHint').hidden=false;document.getElementById('contextHintText').textContent=w.uk;document.getElementById('contextSentenceUk').textContent='Відкрий підказку, щоб побачити переклад речення.';document.getElementById('contextSentenceTranslationSource').textContent='';
+  document.getElementById('contextHint').hidden=false;document.getElementById('contextHintText').textContent=wordTranslation(w);document.getElementById('contextSentenceUk').textContent='Відкрий підказку, щоб побачити переклад речення.';document.getElementById('contextSentenceTranslationSource').textContent='';
   const q=contextQuestion={...card,w,answered:false,options:shuffle([card.answer,...shuffle(contextChoices(card)).slice(0,4)])};
   document.getElementById('contextSentence').innerHTML=escapeExample(q.before)+'<span class="contextGap" aria-label="Пропущене слово">_____</span>'+escapeExample(q.after);
   document.getElementById('contextSource').textContent=q.source==='stored'?'Збережений приклад':'Авторський приклад (ШІ)';
@@ -915,7 +963,7 @@ function answerContext(answer,q=contextQuestion){
   for(const button of document.getElementById('contextOptions').children){button.disabled=true;if(button.dataset.answer===q.answer)button.classList.add('correct');else if(button.dataset.answer===answer)button.classList.add('wrong')}
   document.getElementById('contextSentence').innerHTML=escapeExample(q.before)+'<strong class="contextFilled">'+escapeExample(q.answer)+'</strong>'+escapeExample(q.after);
   document.getElementById('contextFeedback').textContent=correct?'✓ Правильно':'✕ Правильний варіант: '+q.answer;
-  const meaning=document.getElementById('contextMeaning');meaning.textContent=q.w.de+' — '+q.w.uk;meaning.hidden=false;
+  const meaning=document.getElementById('contextMeaning');meaning.textContent=q.w.de+' — '+wordTranslation(q.w);meaning.hidden=false;
   const link=document.getElementById('contextLeo');link.href=leoLookup(q.w);link.hidden=false;document.getElementById('contextNext').hidden=false;
   const ready=recallPool();document.getElementById('contextStats').textContent='У контексті: ✓ '+ready.reduce((n,w)=>n+(s(w).contextCorrect||0),0)+' · ✕ '+ready.reduce((n,w)=>n+(s(w).contextWrong||0),0);
 }
@@ -951,7 +999,7 @@ function showRecallAnswer(){
   if(!recallWord)return;
   const typed=document.getElementById('recallInput').value.trim();
   const ex=recallWord.example||makeExample(recallWord);
-  document.getElementById('recallAnswer').innerHTML='<b>Твоя відповідь:</b> '+escapeExample(typed||'—')+'<br><b>Правильний переклад:</b> '+escapeExample(recallWord.uk)+'<br><br><b>'+exampleLabel(recallWord)+':</b><br>'+escapeExample(ex);
+  document.getElementById('recallAnswer').innerHTML='<b>Твоя відповідь:</b> '+escapeExample(typed||'—')+'<br><b>Правильний переклад:</b> '+escapeExample(wordTranslation(recallWord))+'<br><br><b>'+exampleLabel(recallWord)+':</b><br>'+escapeExample(ex);
   document.getElementById('recallAnswer').classList.remove('hidden');
   document.getElementById('recallJudge').classList.remove('hidden');
 }
@@ -984,7 +1032,7 @@ function renderVerbWrite(){
 let verbWriteUkSkipped=false;
 function showVerbWriteAnswer(){
  if(!verbWriteWord)return; const vals=['verbWriteUk','verbWritePraet','verbWritePerf'].map(id=>document.getElementById(id).value.trim()||'—');
- document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+(verbWriteUkSkipped?'пропущено':vals[0])+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+verbWriteWord.uk+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
+ document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+(verbWriteUkSkipped?'пропущено':vals[0])+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+escapeExample(wordTranslation(verbWriteWord))+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
  document.getElementById('verbWriteAnswer').classList.remove('hidden');document.getElementById('verbWriteJudge').classList.remove('hidden');
 }
 function judgeVerbWrite(ok){if(trainingLocked||!verbWriteWord)return;const st=s(verbWriteWord);markWorked(verbWriteWord);markCycleSeen(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
@@ -1154,7 +1202,7 @@ function rawLegacy(){return Object.fromEntries([DATA_KEY,STATS_KEY,HIDDEN_KEY,CY
 function legacy(){return Progress.validate({schema:1,stats:JSON.parse(localStorage.getItem(STATS_KEY)||'{}'),hidden:JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'),cycle:JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}')})}
 Cloud.init({snapshot,legacy,rawLegacy,
  active:()=>['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
- lock(value){trainingLocked=value;if(searchLessonWord)refreshSearchLessonFields();document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();updateNewWordAddState();if(value){contextQuestion=null;articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
+ lock(value){trainingLocked=value;document.getElementById('saveExtraTranslation').disabled=value;if(value){extraTranslationWord=null;const dialog=document.getElementById('extraTranslationDialog');if(dialog.open){if(dialog.close)dialog.close();else dialog.open=false;}}if(searchLessonWord)refreshSearchLessonFields();document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();updateNewWordAddState();if(value){contextQuestion=null;articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
  apply(value,options={}){
   const sections=['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'];
   const active=options.resume&&sections.find(id=>!document.getElementById(id).classList.contains('hidden'));

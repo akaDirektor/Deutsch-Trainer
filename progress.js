@@ -32,6 +32,11 @@
   }
   return result;
  }
+ const translationKey=text=>text.normalize('NFC').toLocaleLowerCase('uk').replace(/[’‘ʼ]/g,"'").replace(/\s+/g,' ').trim();
+ function additionalTranslations(value=[]){
+  if(!Array.isArray(value)||value.length>10||value.some(t=>typeof t!=='string'||!t.trim()||t.length>200||/[\u0000-\u001f]/.test(t)))throw Error('Додатковий переклад: до 10 варіантів, кожен до 200 символів.');
+  const seen=new Set();return value.map(t=>t.trim()).filter(t=>{const k=translationKey(t);if(seen.has(k))return false;seen.add(k);return true});
+ }
  function vocabulary(seed,stats){
   const result=[...seed],keys=new Set(seed.map(w=>w.de.toLowerCase().trim()));
   for(const [storedKey,st] of Object.entries(stats))if(st.customWord){
@@ -61,6 +66,7 @@
   if(x.hidden.some(k=>typeof k!=='string')||x.cycle.seen.some(k=>typeof k!=='string'))throw Error('Некоректні ключі слів');
   for(const [storedKey,st] of Object.entries(x.stats)){
    if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Некоректна статистика');
+   if(st.additionalTranslations!=null)additionalTranslations(st.additionalTranslations);
    if(st.lessonMemberships!=null)lessonMemberships(st.lessonMemberships);
    if(st.customWord&&customWord(st.customWord).de.toLowerCase().trim()!==storedKey)throw Error('Ключ власного слова не збігається зі статистикою');
    for(const k of ['correct','wrong','streak','recallCorrect','recallWrong','verbWriteCorrect','verbWriteWrong','articleCorrect','articleWrong','contextCorrect','contextWrong','contextStreak'])if(st[k]!=null&&(!Number.isSafeInteger(st[k])||st[k]<0))throw Error('Некоректний лічильник '+k);
@@ -79,5 +85,5 @@
   if(!p.length&&words.length){cycle.seen=[];cycle.number=(cycle.number||0)+1;p=words;}
   return p;
  }
- root.Progress={validate,unseen,clone,customWord,lessonMemberships,vocabulary,vocabularyReport};
+ root.Progress={validate,unseen,clone,customWord,lessonMemberships,additionalTranslations,translationKey,vocabulary,vocabularyReport};
 })(typeof window==='undefined'?globalThis:window);

@@ -52,3 +52,8 @@ test('a personal word and its lesson assignment synchronize as shared per-word m
 test('canonical search lesson assignments sync to another device without creating a custom word or changing learning/hidden state',async()=>{
  const first=setup();await first.login();await first.initialize();const state=empty();state.stats['die kenntnis']={correct:7,wrong:1,streak:3,mastered:true,articleWrong:2,lessonMemberships:[{book:'b1plus',lesson:'2'},{book:'b2',lesson:'6'}],retained:{example:'unchanged'}};state.hidden=['die kenntnis'];state.cycle.seen=['die kenntnis'];first.save(state);await first.settle();await first.sync();const second=setup();second.row=JSON.parse(JSON.stringify(first.row));await second.login();await second.settle();assert.deepEqual(second.applied,state);assert.equal(second.applied.stats['die kenntnis'].customWord,undefined);
 });
+
+
+test('additional translations sync offline to a second device while original counters, lesson membership and hidden state remain intact',async()=>{
+ const a=setup();await a.login();await a.initialize();a.offline=true;const state=empty();state.stats['die kenntnis']={correct:8,wrong:1,streak:2,articleWrong:1,additionalTranslations:['обізнаність','поінформованість'],lessonMemberships:[{book:'b2',lesson:'4'}],legacy:{keep:7}};state.hidden=['die kenntnis'];state.cycle.seen=['die kenntnis'];a.save(state);await a.settle();a.offline=false;await a.sync();const b=setup();b.row=JSON.parse(JSON.stringify(a.row));await b.login();await b.settle();assert.deepEqual(b.applied,state);assert.equal(b.applied.stats['die kenntnis'].customWord,undefined);
+});
