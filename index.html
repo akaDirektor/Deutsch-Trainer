@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261027-article-preview">
+<link rel="stylesheet" href="app.css?v=20261027-search-lessons">
 </head>
 <body>
 <div class="wrap">
@@ -59,6 +59,16 @@
     <button type="button" id="wordSearchAdd" class="searchAddWord primary" hidden>＋ Додати слово</button>
     <ul id="wordSearchResults" class="searchResults"></ul>
     <div id="wordSearchDetail" class="exampleBox hidden"></div>
+    <section id="searchLessonEditor" class="searchLessonEditor" aria-labelledby="searchLessonHeading" hidden>
+      <h3 id="searchLessonHeading">Додати слово до уроку</h3>
+      <p id="searchLessonMemberships" class="muted"></p>
+      <div class="searchLessonFields">
+        <label for="searchLessonBook">Книжка<select id="searchLessonBook"><option value="">Обери книжку</option></select></label>
+        <label for="searchLessonNumber">Урок<select id="searchLessonNumber" disabled><option value="">Спочатку обери книжку</option></select></label>
+        <button id="searchLessonAdd" type="button" class="primary" disabled>Додати до уроку</button>
+      </div>
+      <p id="searchLessonStatus" class="muted" role="status" aria-live="polite"></p>
+    </section>
   </section>
 
   <div class="controls">
@@ -587,9 +597,10 @@ function showMatchExample(w,boxId='matchExample',enriched=false){
   box.appendChild(document.createElement('br'));box.appendChild(link);
   const report=document.createElement('button');report.type='button';report.className='reportTranslation';report.textContent='Уточнити переклад';report.onclick=()=>openTranslationReport(w,report);box.appendChild(report);
   const close=document.createElement('button');close.type='button';close.className='exampleClose';close.textContent='×';close.setAttribute('aria-label','Закрити приклад');close.title='Закрити приклад';
-  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else document.getElementById('wordSearchInput').focus();};
+  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else{document.getElementById('searchLessonEditor').hidden=true;document.getElementById('wordSearchInput').focus();}};
   box.appendChild(close);
   box.classList.remove('hidden');
+  if(boxId==='wordSearchDetail')renderSearchLessonEditor(w);
   // Missing personal-word details are read-only enrichment; saved examples win.
   const hasExample=!!(w.example||window.WORD_EXAMPLES?.[key(w)]?.length),isVerb=['verb','preposition'].includes(w.type);
   if(!enriched&&!trainingLocked&&(!hasExample||(isVerb&&(!verbForms.praeteritum||!verbForms.perfekt)))){
@@ -606,6 +617,41 @@ function showMatchExample(w,boxId='matchExample',enriched=false){
   }
   if(boxId==='matchExample'&&wasHidden)box.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
 }
+let searchLessonWord=null;
+function addWordToLesson(w,book,lesson){
+  if(trainingLocked)throw Error('Увійди, щоб додавати слова до уроків.');
+  const k=key(w);if(!data.some(item=>key(item)===k))throw Error('Слово більше недоступне. Знайди його ще раз.');
+  const [place]=Progress.lessonMemberships([{book,lesson}]);
+  if(wordLessonMemberships(w).some(p=>p.book===place.book&&p.lesson===place.lesson))return false;
+  const associations=Progress.lessonMemberships([...(stats[k]?.lessonMemberships||[]),place]),previous=stats;
+  stats={...stats,[k]:{...(stats[k]||{}),lessonMemberships:associations}};
+  try{save()}catch(error){stats=previous;throw error}
+  updateStats();updateRecallStats();return true;
+}
+function refreshSearchLessonFields(preferredLesson){
+  const book=document.getElementById('searchLessonBook'),lesson=document.getElementById('searchLessonNumber'),previous=preferredLesson??lesson.value;
+  const options=LessonCatalog.books[book.value]?.lessons||[];
+  lesson.innerHTML='<option value="">'+(options.length?'Обери урок':'Спочатку обери книжку')+'</option>'+options.map(l=>'<option value="'+l.id+'">'+l.label+'</option>').join('');
+  lesson.value=options.some(l=>l.id===previous)?previous:'';book.disabled=trainingLocked;lesson.disabled=trainingLocked||!options.length;
+  const places=searchLessonWord?wordLessonMemberships(searchLessonWord):[],already=places.some(p=>p.book===book.value&&p.lesson===lesson.value);
+  const add=document.getElementById('searchLessonAdd');add.disabled=trainingLocked||!searchLessonWord||!options.some(l=>l.id===lesson.value)||already;add.textContent=already?'Уже в цьому уроці':'Додати до уроку';
+  document.getElementById('searchLessonMemberships').textContent=places.length?'Уже в уроках: '+places.map(p=>(LessonCatalog.books[p.book]?.label||p.book)+' · '+(LessonCatalog.books[p.book]?.lessons.find(l=>l.id===p.lesson)?.label||p.lesson)).join('; '):'Слово ще не прив’язане до уроку.';
+}
+function renderSearchLessonEditor(w){
+  const canonical=data.find(item=>key(item)===key(w));if(!canonical){document.getElementById('searchLessonEditor').hidden=true;return;}
+  const same=searchLessonWord&&key(searchLessonWord)===key(w),book=document.getElementById('searchLessonBook'),lesson=document.getElementById('searchLessonNumber');
+  const current=selectedBook(),chosen=same?book.value:LessonCatalog.books[current]&&!LessonCatalog.books[current].pending?current:'',selected=same?lesson.value:chosen&&selectedLessons().length===1?selectedLessons()[0]:'';
+  searchLessonWord=canonical;book.innerHTML='<option value="">Обери книжку</option>'+Object.entries(LessonCatalog.books).filter(([,b])=>!b.pending).map(([id,b])=>'<option value="'+id+'">'+b.label+'</option>').join('');book.value=chosen;
+  if(!same)document.getElementById('searchLessonStatus').textContent='';
+  refreshSearchLessonFields(selected);document.getElementById('searchLessonEditor').hidden=false;
+}
+document.getElementById('searchLessonBook').onchange=()=>{document.getElementById('searchLessonNumber').value='';document.getElementById('searchLessonStatus').textContent='';refreshSearchLessonFields()};
+document.getElementById('searchLessonNumber').onchange=()=>{document.getElementById('searchLessonStatus').textContent='';refreshSearchLessonFields()};
+document.getElementById('searchLessonAdd').onclick=()=>{
+  const status=document.getElementById('searchLessonStatus');
+  try{if(!searchLessonWord)throw Error('Спочатку обери слово в результатах пошуку.');const book=document.getElementById('searchLessonBook').value,lesson=document.getElementById('searchLessonNumber').value,added=addWordToLesson(searchLessonWord,book,lesson);refreshSearchLessonFields();status.textContent=added?'✓ Додано до '+LessonCatalog.books[book].label+' · Урок '+lesson:'Слово вже є в цьому уроці.';}
+  catch(error){status.textContent=error.message;}
+};
 function searchText(text){return text.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[’‘ʼ]/g,"'").trim();}
 function findWords(query){
   const terms=searchText(query).split(/\s+/).filter(Boolean);
@@ -613,7 +659,7 @@ function findWords(query){
 }
 function renderSearch(){
   const query=document.getElementById('wordSearchInput').value,words=findWords(query),list=document.getElementById('wordSearchResults');list.innerHTML='';
-  document.getElementById('wordSearchDetail').classList.add('hidden');document.getElementById('wordSearchDetail').wordDetailRequest=null;
+  document.getElementById('wordSearchDetail').classList.add('hidden');document.getElementById('wordSearchDetail').wordDetailRequest=null;document.getElementById('searchLessonEditor').hidden=true;searchLessonWord=null;
   document.getElementById('wordSearchStatus').hidden=!query.trim();
   document.getElementById('wordSearchStatus').textContent=!query.trim()?'Введи слово або частину слова.':words.length?'Знайдено: '+words.length:'Нічого не знайдено.';
   const add=document.getElementById('wordSearchAdd'),q=query.trim();add.hidden=!q||q.length>150||words.length>0;add.textContent=/[А-Яа-яІіЇїЄєҐґ]/.test(q)?'＋ Додати нове слово':'＋ Додати «'+q+'»';
@@ -1107,12 +1153,12 @@ function rawLegacy(){return Object.fromEntries([DATA_KEY,STATS_KEY,HIDDEN_KEY,CY
 function legacy(){return Progress.validate({schema:1,stats:JSON.parse(localStorage.getItem(STATS_KEY)||'{}'),hidden:JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'),cycle:JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}')})}
 Cloud.init({snapshot,legacy,rawLegacy,
  active:()=>['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
- lock(value){trainingLocked=value;document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();updateNewWordAddState();if(value){contextQuestion=null;articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
+ lock(value){trainingLocked=value;if(searchLessonWord)refreshSearchLessonFields();document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();updateNewWordAddState();if(value){contextQuestion=null;articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
  apply(value,options={}){
   const sections=['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'];
   const active=options.resume&&sections.find(id=>!document.getElementById(id).classList.contains('hidden'));
   const x=Progress.validate(value);contextQuestion=null;articleQuestion=null;closeArticleDialog();stats=x.stats;data=Progress.vocabulary(seed,stats);hiddenWords=new Set(x.hidden);cycle=x.cycle;roundEpoch++;
-  sections.forEach(id=>document.getElementById(id).classList.add('hidden'));updateStats();updateRecallStats();
+  sections.forEach(id=>document.getElementById(id).classList.add('hidden'));updateStats();updateRecallStats();if(searchLessonWord)renderSearchLessonEditor(searchLessonWord);
   if(active){document.getElementById(active).classList.remove('hidden');if(active==='training')renderRound();else if(active==='recallTraining')renderRecall();else if(active==='articleReviewTraining')renderArticleReview();else if(active==='contextTraining')renderContext();else renderVerbWrite();}resumePendingArticle();
  },
  preview(value){imported=Progress.validate(value);const known=new Set(data.map(key));document.getElementById('importPreview').textContent=JSON.stringify({wordsWithProgress:Object.keys(imported.stats).length,hidden:imported.hidden.length,cycleSeen:imported.cycle.seen.length,unknownKeysPreserved:Object.keys(imported.stats).filter(k=>!known.has(k)).length},null,2);},
