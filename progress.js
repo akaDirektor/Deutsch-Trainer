@@ -33,9 +33,13 @@
   return result;
  }
  const translationKey=text=>text.normalize('NFC').toLocaleLowerCase('uk').replace(/[’‘ʼ]/g,"'").replace(/\s+/g,' ').trim();
- function additionalTranslations(value=[]){
-  if(!Array.isArray(value)||value.length>10||value.some(t=>typeof t!=='string'||!t.trim()||t.length>200||/[\u0000-\u001f]/.test(t)))throw Error('Додатковий переклад: до 10 варіантів, кожен до 200 символів.');
+ function translationList(value,limit,message){
+  if(!Array.isArray(value)||value.length>limit||value.some(t=>typeof t!=='string'||!t.trim()||t.length>200||/[\u0000-\u001f]/.test(t)))throw Error(message);
   const seen=new Set();return value.map(t=>t.trim()).filter(t=>{const k=translationKey(t);if(seen.has(k))return false;seen.add(k);return true});
+ }
+ function additionalTranslations(value=[]){return translationList(value,10,'Додатковий переклад: до 10 варіантів, кожен до 200 символів.');}
+ function translationVariants(value){
+  const variants=translationList(value,20,'Переклад: до 20 варіантів, кожен до 200 символів.');if(!variants.length)throw Error('Залиши хоча б один варіант перекладу.');return variants;
  }
  function vocabulary(seed,stats){
   const result=[...seed],keys=new Set(seed.map(w=>w.de.toLowerCase().trim()));
@@ -66,6 +70,7 @@
   if(x.hidden.some(k=>typeof k!=='string')||x.cycle.seen.some(k=>typeof k!=='string'))throw Error('Некоректні ключі слів');
   for(const [storedKey,st] of Object.entries(x.stats)){
    if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Некоректна статистика');
+   if(Object.prototype.hasOwnProperty.call(st,'translationVariants'))translationVariants(st.translationVariants);
    if(st.additionalTranslations!=null)additionalTranslations(st.additionalTranslations);
    if(st.lessonMemberships!=null)lessonMemberships(st.lessonMemberships);
    if(st.customWord&&customWord(st.customWord).de.toLowerCase().trim()!==storedKey)throw Error('Ключ власного слова не збігається зі статистикою');
@@ -85,5 +90,5 @@
   if(!p.length&&words.length){cycle.seen=[];cycle.number=(cycle.number||0)+1;p=words;}
   return p;
  }
- root.Progress={validate,unseen,clone,customWord,lessonMemberships,additionalTranslations,translationKey,vocabulary,vocabularyReport};
+ root.Progress={validate,unseen,clone,customWord,lessonMemberships,additionalTranslations,translationVariants,translationKey,vocabulary,vocabularyReport};
 })(typeof window==='undefined'?globalThis:window);

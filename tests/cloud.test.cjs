@@ -67,3 +67,8 @@ test('feedback sends in one action, retries idempotently and never changes learn
 test('offline feedback survives reload and is automatically flushed on the next synchronization',async()=>{
  const h=setup();await h.login();await h.initialize();await h.settle();h.offline=true;const r=await h.ctx.window.Cloud.submitTranslationFeedback(feedbackRequest);assert.equal(r.delivery,'queued');const key='deutsch_feedback_outbox_v1:one-user';assert.equal(JSON.parse(h.store.get(key)).length,1);const restored=setup({initialStore:new Map(h.store),initialRow:JSON.parse(JSON.stringify(h.row))});await restored.settle();await restored.settle();assert.equal(restored.feedbackRows.size,1);assert.equal(JSON.parse(restored.store.get(key)).length,0);
 });
+
+
+test('replaced and removed meanings sync offline without resurrecting original variants or changing learning state',async()=>{
+ const a=setup();await a.login();await a.initialize();a.offline=true;const state=empty();state.stats['die kenntnis']={correct:8,wrong:1,streak:2,articleWrong:1,additionalTranslations:['старе доповнення'],translationVariants:['знання','обізнаність'],lessonMemberships:[{book:'b2',lesson:'4'}],legacy:{keep:7}};state.hidden=['die kenntnis'];state.cycle.seen=['die kenntnis'];a.save(state);await a.settle();a.offline=false;await a.sync();const b=setup();b.row=JSON.parse(JSON.stringify(a.row));await b.login();await b.settle();assert.deepEqual(b.applied,state);assert.equal(b.applied.stats['die kenntnis'].customWord,undefined);
+});
