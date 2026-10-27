@@ -236,10 +236,9 @@
     <textarea id="reportReason" maxlength="600" rows="3" placeholder="Наприклад: переклад незрозумілий або не відповідає контексту"></textarea>
     <label for="reportSuggestion">Твій варіант <span class="muted">(необов’язково)</span></label>
     <input id="reportSuggestion" maxlength="200" placeholder="Як би ти переклав це слово?">
-    <p class="reportNote">Чернетка зберігається з твоїм прогресом. Для надсилання відкрий і підтвердь заявку у GitHub. Вона буде публічною. Збереження чернетки саме по собі не надсилає повідомлення й не змінює словник.</p>
-    <button type="submit" class="primary">Зберегти зауваження</button>
+    <p class="reportNote">Надішлемо зауваження автоматично, без переходів. Слово й коментар потраплять до відкритого списку перевірки.</p>
+    <button type="submit" class="primary" id="sendTranslationReport">Надіслати на перевірку</button>
     <p id="reportStatus" class="reportNote" role="status" aria-live="polite"></p>
-    <a id="reportGitHub" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>Відкрити заявку у GitHub ↗</a>
   </form>
 </dialog>
 
@@ -263,9 +262,9 @@
 <script src="verb-forms.js?v=20261022-reflexive"></script>
 <script src="context-spans.js?v=20261025"></script>
 <script src="context.js?v=20261025"></script>
-<script src="progress.js?v=20261027-own-translations"></script>
+<script src="progress.js?v=20261027-feedback-send"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
-<script src="cloud.js?v=20261027-translation-choices"></script>
+<script src="cloud.js?v=20261027-feedback-send"></script>
 <script>
 const rawSeed=window.WORDS || [];
 const LessonCatalog=window.Lessons||{books:{},matches:(w,book)=>book==='all',memberships:()=>[]};
@@ -400,7 +399,7 @@ function renderWordProgress(){
   const title=wordProgressView==='once'?'Вгадано 1 із 3':wordProgressView==='twice'?'Вгадано 2 із 3':wordProgressView==='feedback'?'Зауваження до перекладів':'Слова з помилками';
   document.getElementById('wordProgressTitle').textContent=title+' — '+words.length;
   document.getElementById('wordProgressDescription').textContent=wordProgressView==='mistakes'?'Усі слова з помилками в зіставленні або активному пригадуванні. Першими — ще не засвоєні слова з найбільшою кількістю помилок. Історія першої спроби не зберігалася. Приховані слова не показані.':'Поточна серія правильних зіставлень поспіль. Після третього слово готове до активного пригадування. Приховані слова не показані.';
-  if(wordProgressView==='feedback')document.getElementById('wordProgressDescription').textContent='Збережені чернетки зауважень, включно з прихованими словами. Щоб надіслати зауваження, відкрий його й підтвердь створення заявки у GitHub.';
+  if(wordProgressView==='feedback')document.getElementById('wordProgressDescription').textContent='Твої зауваження до перекладів, включно з прихованими словами. Нові зауваження надсилаються однією кнопкою прямо тут.';
   if(wordProgressView==='articles'){document.getElementById('wordProgressTitle').textContent='Іменники: помилки в артиклях — '+words.length;document.getElementById('wordProgressDescription').textContent='Переклад цих іменників було зіставлено правильно, але в артиклі сталася помилка. Першими — ті, які ще потребують повторення. Історія помилок залишається після правильної відповіді.';}
   if(!words.length){const item=document.createElement('li');item.textContent='У цьому списку поки немає слів.';list.appendChild(item);}
   words.forEach(w=>{
@@ -408,7 +407,7 @@ function renderWordProgress(){
     de.textContent=w.de;uk.textContent=wordTranslation(w);
     detail.textContent='Серія: '+(st.streak||0)+' / 3 · Помилок у зіставленні: '+(st.wrong||0)+' · У пригадуванні: '+(st.recallWrong||0)+(st.mastered?' · Готове до пригадування':'');
     item.appendChild(de);item.appendChild(uk);item.appendChild(detail);list.appendChild(item);
-    if(wordProgressView==='feedback'){detail.textContent='Чернетка · '+(st.translationFeedback.reason||'Перевірити переклад');const button=document.createElement('button');button.type='button';button.textContent='Відкрити зауваження';button.onclick=()=>openTranslationReport(w,button);item.appendChild(button);}
+    if(wordProgressView==='feedback'){detail.textContent=(st.translationFeedback.delivery==='sent'?'Надіслано':st.translationFeedback.delivery==='queued'?'Очікує надсилання':'Чернетка')+' · '+(st.translationFeedback.reason||'Перевірити переклад');const button=document.createElement('button');button.type='button';button.textContent='Відкрити зауваження';button.onclick=()=>openTranslationReport(w,button);item.appendChild(button);}
     if(wordProgressView==='articles')detail.textContent='Артикль: '+w.article+' · Правильно: '+(st.articleCorrect||0)+' · Помилок: '+(st.articleWrong||0)+' · '+(st.articleNeedsReview?'Потребує повторення':'Останній артикль визначено правильно');
   });
 }
@@ -568,31 +567,42 @@ function leoLookup(w){
   query=query.replace(/\b(?:jdn|jdm|jmdn|jmdm|etw)\.(?=\s|$)/g,' ').replace(/\s+/g,' ').trim();
   return 'https://dict.leo.org/russisch-deutsch/'+encodeURIComponent(query||w.de.trim());
 }
-let reportWord=null,reportTrigger=null;
-function translationIssueUrl(w,feedback){
-  const body=['Прошу перевірити український переклад за словниковими джерелами.','','Німецьке слово: '+w.de,'Ключ слова: '+key(w),'Поточний переклад: '+feedback.translation,'Зауваження: '+(feedback.reason||'Переклад потребує уточнення.'),'Запропонований варіант: '+(feedback.suggestion||'Не запропоновано.'),'','Зберегти німецький ключ, усі наявні приклади й навчальний прогрес.'].join('\n');
-  return 'https://github.com/akaDirektor/Deutsch-Trainer/issues/new?title='+encodeURIComponent('Перевірити переклад: '+w.de)+'&body='+encodeURIComponent(body);
-}
+let reportWord=null,reportTrigger=null,reportSending=false,reportEpoch=0;
 function openTranslationReport(w,trigger=null){
   reportWord=w;reportTrigger=trigger;
   const feedback=stats[key(w)]?.translationFeedback;
   document.getElementById('reportGerman').textContent=w.de;document.getElementById('reportCurrent').textContent='Зараз: '+wordTranslation(w);
   document.getElementById('reportReason').value=feedback?.reason||'';document.getElementById('reportSuggestion').value=feedback?.suggestion||'';
-  document.getElementById('reportStatus').textContent=feedback?'Чернетку збережено. Для надсилання потрібно підтвердити заявку у GitHub.':'';
-  const link=document.getElementById('reportGitHub');link.hidden=!feedback;if(feedback)link.href=translationIssueUrl(w,feedback);
+  document.getElementById('reportStatus').textContent=feedback?.delivery==='sent'?'✓ Зауваження надіслано на перевірку.':feedback?.delivery==='queued'?'Зауваження збережено й очікує автоматичного надсилання.':feedback?'Чернетку збережено. Можна надіслати однією кнопкою.':'';document.getElementById('sendTranslationReport').disabled=trainingLocked||reportSending;
   const dialog=document.getElementById('translationReport');if(dialog.showModal)dialog.showModal();else dialog.open=true;
 }
 document.getElementById('closeTranslationReport').onclick=()=>{const dialog=document.getElementById('translationReport');if(dialog.close)dialog.close();else dialog.open=false;if(reportTrigger?.isConnected)reportTrigger.focus();};
-for(const id of ['reportReason','reportSuggestion'])document.getElementById(id).oninput=()=>{document.getElementById('reportGitHub').hidden=true;document.getElementById('reportStatus').textContent='Зміни ще не збережені.';};
-document.getElementById('translationReportForm').onsubmit=event=>{
-  event.preventDefault();const status=document.getElementById('reportStatus');
-  if(trainingLocked||!reportWord){status.textContent='Для збереження зауваження увійди до свого хмарного профілю.';return;}
-  const previous=stats[key(reportWord)]?.translationFeedback;
-  const feedback={translation:wordTranslation(reportWord),reason:document.getElementById('reportReason').value.trim().slice(0,600),suggestion:document.getElementById('reportSuggestion').value.trim().slice(0,200),updatedAt:new Date().toISOString(),status:'draft'};
-  s(reportWord).translationFeedback=feedback;
-  try{save();const link=document.getElementById('reportGitHub');link.href=translationIssueUrl(reportWord,feedback);link.hidden=false;status.textContent='Чернетку додано до прогресу. Тепер відкрий GitHub і підтвердь створення заявки — лише тоді її буде надіслано.';renderWordProgress();}
-  catch(error){if(previous)s(reportWord).translationFeedback=previous;else delete s(reportWord).translationFeedback;status.textContent='Не вдалося зберегти зауваження: '+error.message;}
+for(const id of ['reportReason','reportSuggestion'])document.getElementById(id).oninput=()=>{document.getElementById('reportStatus').textContent='Можна надіслати зауваження.';};
+document.getElementById('translationReportForm').onsubmit=async event=>{
+  event.preventDefault();if(reportSending)return;const status=document.getElementById('reportStatus');
+  if(trainingLocked||!reportWord){status.textContent='Увійди до свого профілю, щоб надіслати зауваження.';return;}
+  const word=reportWord,k=key(word),previous=stats[k]?.translationFeedback;
+  const feedback={translation:wordTranslation(word),reason:document.getElementById('reportReason').value.trim().slice(0,600),suggestion:document.getElementById('reportSuggestion').value.trim().slice(0,200),updatedAt:new Date().toISOString(),status:'draft'};
+  const unchanged=previous&&['translation','reason','suggestion'].every(field=>feedback[field]===previous[field]);
+  if(unchanged&&previous.delivery==='sent'){status.textContent='✓ Це зауваження вже надіслано на перевірку.';return;}
+  feedback.reportId=unchanged&&previous.reportId?previous.reportId:crypto.randomUUID();feedback.delivery='queued';
+  const ownerState=stats,epoch=reportEpoch;reportSending=true;document.getElementById('sendTranslationReport').disabled=true;status.textContent='Надсилаю…';
+  try{
+    stats[k]={...(stats[k]||{}),translationFeedback:feedback};try{save()}catch(error){if(previous)stats[k].translationFeedback=previous;else delete stats[k].translationFeedback;throw error;}
+    const receipt=await Cloud.submitTranslationFeedback({id:feedback.reportId,word_key:k,german:word.de,translation:feedback.translation,reason:feedback.reason,suggestion:feedback.suggestion});
+    if(!trainingLocked&&stats===ownerState&&stats[k]?.translationFeedback?.reportId===feedback.reportId){stats[k].translationFeedback.delivery=receipt.delivery;try{save()}catch{}renderWordProgress();}
+    if(reportEpoch===epoch&&reportWord&&key(reportWord)===k&&!trainingLocked)status.textContent=receipt.delivery==='sent'?'✓ Надіслано на перевірку. Більше нічого робити не потрібно.':'Зауваження збережено. Воно надішлеться автоматично.';
+  }catch(error){if(reportEpoch===epoch&&reportWord&&key(reportWord)===k)status.textContent='Не вдалося надіслати: '+error.message;}
+  finally{reportSending=false;document.getElementById('sendTranslationReport').disabled=trainingLocked;}
 };
+window.addEventListener?.('trainer-feedback-delivery',event=>{
+  if(trainingLocked)return;let changed=false;
+  for(const st of Object.values(stats))if(st.translationFeedback?.reportId===event.detail?.id&&st.translationFeedback.delivery!=='sent'){st.translationFeedback.delivery='sent';changed=true;}
+  if(changed){try{save()}catch{}if(wordProgressView==='feedback')renderWordProgress();}
+  const feedback=reportWord&&stats[key(reportWord)]?.translationFeedback;
+  if(feedback?.reportId===event.detail?.id&&feedback.reason===document.getElementById('reportReason').value.trim()&&feedback.suggestion===document.getElementById('reportSuggestion').value.trim())document.getElementById('reportStatus').textContent='✓ Надіслано на перевірку. Більше нічого робити не потрібно.';
+});
+
 function exampleVerbForms(w){
   const checked=window.VERB_FORMS?.[key(w)]||{};
   return {praeteritum:w.praeteritum||checked.praeteritum||'',perfekt:w.perfekt||checked.perfekt||w.partizipII||'',perfektLabel:w.partizipII&&!w.perfekt&&!checked.perfekt?'Partizip II':w.perfekt?'Perfekt · Partizip II':checked.perfektLabel||'Perfekt · Partizip II',source:(!w.praeteritum||!w.perfekt)?checked.source:null};
@@ -1213,7 +1223,7 @@ function rawLegacy(){return Object.fromEntries([DATA_KEY,STATS_KEY,HIDDEN_KEY,CY
 function legacy(){return Progress.validate({schema:1,stats:JSON.parse(localStorage.getItem(STATS_KEY)||'{}'),hidden:JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'),cycle:JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}')})}
 Cloud.init({snapshot,legacy,rawLegacy,
  active:()=>['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
- lock(value){trainingLocked=value;document.getElementById('saveExtraTranslation').disabled=value;if(value){extraTranslationWord=null;const dialog=document.getElementById('extraTranslationDialog');if(dialog.open){if(dialog.close)dialog.close();else dialog.open=false;}}if(searchLessonWord)refreshSearchLessonFields();document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();updateNewWordAddState();if(value){contextQuestion=null;articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
+ lock(value){trainingLocked=value;document.getElementById('saveExtraTranslation').disabled=value;if(value){reportEpoch++;reportWord=null;const report=document.getElementById('translationReport');if(report.open){if(report.close)report.close();else report.open=false;}extraTranslationWord=null;const dialog=document.getElementById('extraTranslationDialog');if(dialog.open){if(dialog.close)dialog.close();else dialog.open=false;}}if(searchLessonWord)refreshSearchLessonFields();document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();updateNewWordAddState();if(value){contextQuestion=null;articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
  apply(value,options={}){
   const sections=['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'];
   const active=options.resume&&sections.find(id=>!document.getElementById(id).classList.contains('hidden'));

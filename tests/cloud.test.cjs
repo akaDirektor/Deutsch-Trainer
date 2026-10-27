@@ -1,11 +1,12 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
 const empty=()=>({schema:1,stats:{},hidden:[],cycle:{seen:[]}});
-function setup(){
- let row=null,calls=0,offline=false,adapter,applied,locked,readHook=null;const elements={},store=new Map(),intervals=[];
+function setup({initialStore,initialRow}={}){
+ const feedbackRows=new Map();let row=initialRow||null,calls=0,offline=false,adapter,applied,locked,readHook=null;const elements={},store=initialStore||new Map(),intervals=[];
  const ctx=vm.createContext({console,Date,JSON,Promise,Error,AbortSignal,Blob,URL:{createObjectURL:()=>'',revokeObjectURL(){}},navigator:{locks:{request:(name,options,fn)=>{fn({});}}},setTimeout:()=>{},setInterval:f=>intervals.push(f),addEventListener(){},confirm:()=>true,localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},document:{getElementById:id=>elements[id]??(elements[id]={value:id==='email'?'test@example.test':'password',disabled:true,textContent:''}),createElement:()=>({click(){}})},window:{CLOUD_CONFIG:{url:'https://test.supabase.co',publishableKey:'sb_publishable_test'}},fetch:async(url,options)=>{
   calls++;if(offline)throw Error('Offline');
   let value;
   if(url.includes('/token?'))value={user:{id:'one-user'},access_token:'access',refresh_token:'refresh',expires_in:3600};
+  else if(url.includes('/translation_feedback_reports')){if(options.method==='POST'){const body=JSON.parse(options.body);if(feedbackRows.has(body.id))value=[];else{feedbackRows.set(body.id,body);value=[body]}}else value=[...feedbackRows.values()].filter(r=>url.includes(r.id));}
   else if(options.method==='GET'){if(readHook){const fn=readHook;readHook=null;fn();}value=row?[row]:[];}
   else{const body=JSON.parse(options.body);if(body.expected_revision===(row?.revision??-1)){row={revision:(row?.revision??-1)+1,state:body.next_state};value=[row]}else value=[];}
   return {ok:true,json:async()=>value};
@@ -13,7 +14,7 @@ function setup(){
  vm.runInContext(fs.readFileSync('progress.js','utf8'),ctx);ctx.Progress=ctx.window.Progress;
  vm.runInContext(fs.readFileSync('cloud.js','utf8'),ctx);
  ctx.window.Cloud.init(adapter={lock:x=>locked=x,active:()=>false,apply:s=>applied=s,snapshot:()=>applied,legacy:empty,rawLegacy:()=>({}),preview(){},importCandidate:empty});
- return {ctx,store,elements,adapter,set readHook(fn){readHook=fn},get row(){return row},set row(x){row=x},get locked(){return locked},get applied(){return applied},set offline(x){offline=x},async login(){await elements.loginForm.onsubmit({preventDefault(){}})},async initialize(){await elements.newProfile.onclick();await new Promise(setImmediate)},async sync(){await elements.syncNow.onclick()},save(s){ctx.window.Cloud.save(s)},async settle(){await new Promise(setImmediate)}};
+ return {ctx,store,elements,adapter,feedbackRows,set readHook(fn){readHook=fn},get row(){return row},set row(x){row=x},get locked(){return locked},get applied(){return applied},set offline(x){offline=x},async login(){await elements.loginForm.onsubmit({preventDefault(){}})},async initialize(){await elements.newProfile.onclick();await new Promise(setImmediate)},async sync(){await elements.syncNow.onclick()},save(s){ctx.window.Cloud.save(s)},async settle(){await new Promise(setImmediate)}};
 }
 test('empty account never automatically imports or resets legacy progress',async()=>{const h=setup();await h.login();assert.equal(h.row,null);assert(h.locked);assert.equal(h.elements.importProgress.disabled,false);});
 test('cloud writes are durable and versioned; offline edits retry',async()=>{const h=setup();await h.login();await h.initialize();h.offline=true;const s=empty();s.stats.wort={correct:4};h.save(s);await h.settle();assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,true);h.offline=false;await h.sync();assert.equal(h.row.state.stats.wort.correct,4);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,false);});
@@ -56,4 +57,13 @@ test('canonical search lesson assignments sync to another device without creatin
 
 test('additional translations sync offline to a second device while original counters, lesson membership and hidden state remain intact',async()=>{
  const a=setup();await a.login();await a.initialize();a.offline=true;const state=empty();state.stats['die kenntnis']={correct:8,wrong:1,streak:2,articleWrong:1,additionalTranslations:['обізнаність','поінформованість'],lessonMemberships:[{book:'b2',lesson:'4'}],legacy:{keep:7}};state.hidden=['die kenntnis'];state.cycle.seen=['die kenntnis'];a.save(state);await a.settle();a.offline=false;await a.sync();const b=setup();b.row=JSON.parse(JSON.stringify(a.row));await b.login();await b.settle();assert.deepEqual(b.applied,state);assert.equal(b.applied.stats['die kenntnis'].customWord,undefined);
+});
+
+
+const feedbackRequest={id:'4b95d879-2b7c-44de-845c-6574b3e4c221',word_key:'das controlling',german:'das Controlling',translation:'контролінг',reason:'Уточнити значення',suggestion:'управлінський облік'};
+test('feedback sends in one action, retries idempotently and never changes learning progress',async()=>{
+ const h=setup();await h.login();await h.initialize();await h.settle();const before=JSON.stringify(h.applied);let r=await h.ctx.window.Cloud.submitTranslationFeedback(feedbackRequest);assert.equal(r.delivery,'sent');assert.equal(h.feedbackRows.size,1);r=await h.ctx.window.Cloud.submitTranslationFeedback(feedbackRequest);assert.equal(r.delivery,'sent');assert.equal(h.feedbackRows.size,1);assert.equal(JSON.stringify(h.applied),before);
+});
+test('offline feedback survives reload and is automatically flushed on the next synchronization',async()=>{
+ const h=setup();await h.login();await h.initialize();await h.settle();h.offline=true;const r=await h.ctx.window.Cloud.submitTranslationFeedback(feedbackRequest);assert.equal(r.delivery,'queued');const key='deutsch_feedback_outbox_v1:one-user';assert.equal(JSON.parse(h.store.get(key)).length,1);const restored=setup({initialStore:new Map(h.store),initialRow:JSON.parse(JSON.stringify(h.row))});await restored.settle();await restored.settle();assert.equal(restored.feedbackRows.size,1);assert.equal(JSON.parse(restored.store.get(key)).length,0);
 });

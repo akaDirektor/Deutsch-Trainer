@@ -21,19 +21,51 @@ window.Cloud=(()=>{
  const lock=()=>{adapter.lock(!ready||blocked);accountView();};
  const cacheKey=()=>`deutsch_cloud_cache_v1:${session.user.id}`;
  function persist(){localStorage.setItem(cacheKey(),JSON.stringify(cache));}
- async function request(path,body,auth=true){
+ async function request(path,body,auth=true,extraHeaders={}){
   if(auth&&session.expires_at*1000<Date.now()+60000){
    const next=await request('/auth/v1/token?grant_type=refresh_token',{refresh_token:session.refresh_token},false);
    session={...next,expires_at:Math.floor(Date.now()/1000)+next.expires_in};localStorage.setItem(sessionKey,JSON.stringify(session));
   }
-  const res=await fetch(cfg.url+path,{method:body?'POST':'GET',signal:AbortSignal.timeout(15000),headers:{apikey:cfg.publishableKey,...(auth?{Authorization:'Bearer '+session.access_token}:{}),'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
+  const res=await fetch(cfg.url+path,{method:body?'POST':'GET',signal:AbortSignal.timeout(15000),headers:{apikey:cfg.publishableKey,...(auth?{Authorization:'Bearer '+session.access_token}:{}),'Content-Type':'application/json',...extraHeaders},...(body?{body:JSON.stringify(body)}:{})});
   if(!res.ok)throw Error('Supabase HTTP '+res.status);
   return res.json();
+ }
+ let feedbackBusy=false;
+ const feedbackKey=owner=>'deutsch_feedback_outbox_v1:'+owner;
+ function feedbackQueue(owner){const rows=JSON.parse(localStorage.getItem(feedbackKey(owner))||'[]');if(!Array.isArray(rows)||rows.length>50)throw Error('Не вдалося прочитати чергу зауважень');return rows;}
+ function feedbackPayload(value){
+  const limits={word_key:200,german:200,translation:4000,reason:600,suggestion:200};
+  if(!value||typeof value.id!=='string'||!/^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/i.test(value.id))throw Error('Некоректний запит');
+  const result={id:value.id.toLowerCase()};for(const [name,max] of Object.entries(limits)){if(typeof value[name]!=='string'||value[name].length>max)throw Error('Некоректне зауваження');result[name]=value[name];}if(!result.word_key||!result.german)throw Error('Спочатку обери слово');return result;
+ }
+ async function flushFeedback(){
+  if(!session||!ready||blocked||busy||feedbackBusy)return;
+  const owner=session.user.id;let queue;try{queue=feedbackQueue(owner)}catch{return}if(!queue.length)return;
+  feedbackBusy=true;
+  try{
+   for(const item of queue){
+    if(!session||session.user.id!==owner||blocked)break;
+    const row={...feedbackPayload(item),user_id:owner};
+    const result=await request('/rest/v1/translation_feedback_reports?on_conflict=id',row,true,{Prefer:'resolution=ignore-duplicates,return=representation'});
+    if(!Array.isArray(result))throw Error('Немає підтвердження');
+    if(!result.some(r=>r.id===row.id)){const found=await request('/rest/v1/translation_feedback_reports?select=id&id=eq.'+row.id);if(!found.some(r=>r.id===row.id))throw Error('Немає підтвердження');}
+    const current=feedbackQueue(owner);localStorage.setItem(feedbackKey(owner),JSON.stringify(current.filter(r=>r.id!==row.id)));
+    if(session?.user.id===owner)globalThis.dispatchEvent?.(new CustomEvent('trainer-feedback-delivery',{detail:{id:row.id}}));
+   }
+  }catch{ /* Durable outbox remains for the next online/focus/periodic retry. */ }
+  finally{feedbackBusy=false;}
+ }
+ async function submitTranslationFeedback(value){
+  if(!session||!ready||blocked)throw Error('Увійди до готового хмарного профілю');
+  const owner=session.user.id,payload=feedbackPayload(value),queue=feedbackQueue(owner),old=queue.find(r=>r.id===payload.id);
+  if(old&&JSON.stringify(feedbackPayload(old))!==JSON.stringify(payload))throw Error('Запит змінився. Надішли нову версію.');
+  if(!old){if(queue.length>=50)throw Error('Черга заповнена. Дочекайся відновлення зв’язку.');localStorage.setItem(feedbackKey(owner),JSON.stringify([...queue,payload]));}
+  await flushFeedback();return {delivery:feedbackQueue(owner).some(r=>r.id===payload.id)?'queued':'sent',id:payload.id};
  }
  async function pull(){return (await request('/rest/v1/trainer_progress?select=*&user_id=eq.'+encodeURIComponent(session.user.id)))[0]||null;}
  function conflict(){blocked=true;lock();status('Конфлікт версій. Локальний прогрес збережено. Експортуй його перед завантаженням хмарної версії.');el('loadCloud').disabled=false;}
  async function sync(){
-  if(!session||!ready||blocked||busy)return;busy=true;
+  if(!session||!ready||blocked||busy||feedbackBusy)return;busy=true;
   try{
    if(cache.pending){
     const snapshot=Progress.clone(cache.state),rev=cache.revision;
@@ -49,7 +81,7 @@ window.Cloud=(()=>{
     if(row&&row.revision!==cache.revision){cache={revision:row.revision,state:Progress.validate(row.state),pending:false};persist();adapter.apply(cache.state,{resume:true});status('Оновлено з хмари');}
    }
   }catch(e){status('Офлайн / помилка синхронізації: '+e.message+'. Локальні зміни збережено.');}
-  finally{busy=false;if(cache?.pending&&!blocked&&dirty){dirty=false;setTimeout(sync,100);}}
+  finally{busy=false;if(cache?.pending&&!blocked&&dirty){dirty=false;setTimeout(sync,100);}else flushFeedback();}
  }
  async function connect(){
   ready=false;blocked=false;lock();
@@ -75,6 +107,7 @@ window.Cloud=(()=>{
   }catch(e){status(e.message);}finally{busy=false;}
  }
  return {
+  submitTranslationFeedback,
   lookupDictionary(q,alternatives=false){if(!ready||blocked)throw Error('Увійди до готового хмарного профілю');return request('/functions/v1/dictionary-lookup',alternatives?{q,alternatives:true}:{q});},
   translateSentence(q){if(!ready||blocked)throw Error('Увійди до готового хмарного профілю');return request('/functions/v1/dictionary-lookup',{q,kind:'sentence'});},
   save(state){if(!ready||blocked)throw Error('Хмарний профіль не готовий');cache.state=Progress.validate(state);cache.pending=true;try{persist();}catch(e){blocked=true;lock();status('Не вдалося зберегти кеш. Експортуй прогрес перед закриттям сторінки.');throw e;}dirty=true;sync();},
