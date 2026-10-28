@@ -949,7 +949,9 @@
         "sich ereignen",
         "kippen",
         "rufen",
-        "der verdacht"
+        "der verdacht",
+        "die quetschung",
+        "die gehirnerschütterung"
       ]
     },
     {
