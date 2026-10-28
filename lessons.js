@@ -944,7 +944,8 @@
         "der zeuge",
         "der unfallhergang",
         "die berufsgenossenschaft",
-        "wahrnehmen"
+        "wahrnehmen",
+        "die heilung"
       ]
     },
     {
