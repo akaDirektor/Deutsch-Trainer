@@ -911,7 +911,13 @@
         "der flucht- und rettungsweg",
         "die persönliche schutzausrüstung",
         "verstauen",
-        "zwingen"
+        "zwingen",
+        "die arbeitsplatzgestaltung",
+        "eng",
+        "die schutzvorrichtung",
+        "die schutzausrüstung",
+        "vorhanden",
+        "ehrenamtlich tätig"
       ]
     },
     {
