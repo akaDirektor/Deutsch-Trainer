@@ -738,7 +738,15 @@ document.getElementById('searchLessonAdd').onclick=()=>{
 function searchText(text){return text.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[’‘ʼ]/g,"'").trim();}
 function findWords(query){
   const terms=searchText(query).split(/\s+/).filter(Boolean);
-  return terms.length?data.filter(w=>terms.every(term=>searchText(w.de+' '+wordTranslation(w)).includes(term))):[];
+  if(!terms.length)return [];
+  const direct=[],inflected=[];
+  for(const w of data){
+    const text=searchText(w.de+' '+wordTranslation(w));
+    if(terms.every(term=>text.includes(term))){direct.push(w);continue;}
+    const forms=exampleVerbForms(w),withForms=searchText(text+' '+forms.praeteritum+' '+forms.perfekt+' '+(w.partizipII||''));
+    if(terms.every(term=>withForms.includes(term)))inflected.push(w);
+  }
+  return [...direct,...inflected];
 }
 function renderSearch(){
   const query=document.getElementById('wordSearchInput').value,words=findWords(query),list=document.getElementById('wordSearchResults');list.innerHTML='';
