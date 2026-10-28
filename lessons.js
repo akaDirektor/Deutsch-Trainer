@@ -910,7 +910,8 @@
         "freihalten",
         "der flucht- und rettungsweg",
         "die persönliche schutzausrüstung",
-        "verstauen"
+        "verstauen",
+        "zwingen"
       ]
     },
     {
