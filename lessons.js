@@ -922,7 +922,19 @@
         "erforderlich",
         "untersagen",
         "beabsichtigen",
-        "bereitstellen"
+        "bereitstellen",
+        "sich (etw.) brechen",
+        "sich schneiden",
+        "bluten",
+        "sich (etw.) verbrennen",
+        "stolpern",
+        "ausrutschen",
+        "hinfallen",
+        "stürzen",
+        "sich (etw.) einklemmen",
+        "sich (etw.) quetschen",
+        "sich (etw.) zerren",
+        "sich verletzen"
       ]
     },
     {
