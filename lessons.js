@@ -919,7 +919,8 @@
         "vorhanden",
         "ehrenamtlich tätig",
         "die entsprechung",
-        "erforderlich"
+        "erforderlich",
+        "untersagen"
       ]
     },
     {
