@@ -935,7 +935,12 @@
         "sich (etw.) quetschen",
         "sich (etw.) zerren",
         "sich verletzen",
-        "die vorsichtsmaßnahme"
+        "die vorsichtsmaßnahme",
+        "sich quetschen",
+        "sich verbrennen",
+        "bzw.",
+        "bewahren",
+        "schildern"
       ]
     },
     {
