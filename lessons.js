@@ -917,7 +917,8 @@
         "die schutzvorrichtung",
         "die schutzausrüstung",
         "vorhanden",
-        "ehrenamtlich tätig"
+        "ehrenamtlich tätig",
+        "die entsprechung"
       ]
     },
     {
