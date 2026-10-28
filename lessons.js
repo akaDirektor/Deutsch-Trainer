@@ -943,7 +943,8 @@
         "schildern",
         "der zeuge",
         "der unfallhergang",
-        "die berufsgenossenschaft"
+        "die berufsgenossenschaft",
+        "wahrnehmen"
       ]
     },
     {
