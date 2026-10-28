@@ -945,7 +945,11 @@
         "der unfallhergang",
         "die berufsgenossenschaft",
         "wahrnehmen",
-        "die heilung"
+        "die heilung",
+        "sich ereignen",
+        "kippen",
+        "rufen",
+        "der verdacht"
       ]
     },
     {
