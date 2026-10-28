@@ -940,7 +940,10 @@
         "sich verbrennen",
         "bzw.",
         "bewahren",
-        "schildern"
+        "schildern",
+        "der zeuge",
+        "der unfallhergang",
+        "die berufsgenossenschaft"
       ]
     },
     {
