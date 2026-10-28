@@ -934,7 +934,16 @@
         "sich (etw.) einklemmen",
         "sich (etw.) quetschen",
         "sich (etw.) zerren",
-        "sich verletzen"
+        "sich verletzen",
+        "die vorsichtsmaßnahme",
+        "ruhe bewahren",
+        "der rettungsdienst",
+        "der notarzt",
+        "die notrufnummer",
+        "die notrufzentrale",
+        "die verletzung",
+        "den notruf schildern",
+        "die rückfrage"
       ]
     },
     {
