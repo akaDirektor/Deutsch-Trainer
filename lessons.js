@@ -918,7 +918,8 @@
         "die schutzausrüstung",
         "vorhanden",
         "ehrenamtlich tätig",
-        "die entsprechung"
+        "die entsprechung",
+        "erforderlich"
       ]
     },
     {
