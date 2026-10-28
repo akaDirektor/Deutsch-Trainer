@@ -909,7 +909,8 @@
         "eine gefahr darstellen",
         "freihalten",
         "der flucht- und rettungsweg",
-        "die persönliche schutzausrüstung"
+        "die persönliche schutzausrüstung",
+        "verstauen"
       ]
     },
     {
