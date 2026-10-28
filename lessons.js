@@ -920,7 +920,8 @@
         "ehrenamtlich tätig",
         "die entsprechung",
         "erforderlich",
-        "untersagen"
+        "untersagen",
+        "beabsichtigen"
       ]
     },
     {
