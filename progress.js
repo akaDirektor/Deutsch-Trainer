@@ -41,6 +41,27 @@
  function translationVariants(value){
   const variants=translationList(value,20,'Переклад: до 20 варіантів, кожен до 200 символів.');if(!variants.length)throw Error('Залиши хоча б один варіант перекладу.');return variants;
  }
+ // New exercise counters are additive metadata; legacy fields remain unchanged.
+ function learning(st={}){
+  if(st.learningV2){validateLearning(st.learningV2);const v={...st.learningV2};return {...v,ready:v.matchingCorrect>=3,learned:v.matchingCorrect>=3&&v.choiceCorrect>=2&&v.writingCorrect>=2};}
+  const v={version:2,matchingCorrect:st.mastered?3:Math.min(3,st.streak||0),matchingWrong:0,choiceCorrect:0,choiceWrong:0,writingCorrect:st.recallCorrect||0,writingWrong:st.recallWrong||0};
+  return {...v,ready:v.matchingCorrect>=3,learned:false};
+ }
+ function validateLearning(v){
+  if(!v||typeof v!=='object'||Array.isArray(v)||v.version!==2)throw Error('Некоректний облік етапів навчання');
+  for(const k of ['matchingCorrect','matchingWrong','choiceCorrect','choiceWrong','writingCorrect','writingWrong'])if(!Number.isSafeInteger(v[k])||v[k]<0)throw Error('Некоректний лічильник етапу '+k);
+ }
+ function recordLearning(st,kind,correct){
+  if(!['matching','choice','writing'].includes(kind)||typeof correct!=='boolean')throw Error('Невідомий тип вправи');
+  const v=learning(st);if(kind==='choice'&&!v.ready||kind==='writing'&&(!v.ready||v.choiceCorrect<2))throw Error('Спочатку заверши попередній етап');
+  delete v.ready;delete v.learned;const field=kind+(correct?'Correct':'Wrong');if(v[field]>=Number.MAX_SAFE_INTEGER)throw Error('Завеликий лічильник');v[field]++;return v;
+ }
+ function germanWritingForms(text){
+  const clean=s=>s.replace(/\+\s*(?:Akk|Dat|Gen|Nom)\.?/gi,' ').replace(/\b(?:etw|jdn|jdm|jmdn|jmdm)\./g,' ').replace(/\s+/g,' ').trim();
+  return [...new Set([text,clean(text.replace(/\([^)]*\)/g,' ')),clean(text.replace(/[()]/g,' '))].filter(Boolean))];
+ }
+ function writtenKey(text){return String(text).normalize('NFC').toLocaleLowerCase('de').replace(/[’‘ʼ]/g,"'").replace(/[·;|]/g,' ').replace(/\s+/g,' ').replace(/[.!?]+$/,'').trim();}
+ function writtenMatches(text,variants){const typed=writtenKey(text);return !!typed&&variants.some(answer=>writtenKey(answer)===typed);}
  function vocabulary(seed,stats){
   const result=[...seed],keys=new Set(seed.map(w=>w.de.toLowerCase().trim()));
   for(const [storedKey,st] of Object.entries(stats))if(st.customWord){
@@ -70,6 +91,7 @@
   if(x.hidden.some(k=>typeof k!=='string')||x.cycle.seen.some(k=>typeof k!=='string'))throw Error('Некоректні ключі слів');
   for(const [storedKey,st] of Object.entries(x.stats)){
    if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Некоректна статистика');
+   if(st.learningV2!=null)validateLearning(st.learningV2);
    if(Object.prototype.hasOwnProperty.call(st,'translationVariants'))translationVariants(st.translationVariants);
    if(st.additionalTranslations!=null)additionalTranslations(st.additionalTranslations);
    if(st.lessonMemberships!=null)lessonMemberships(st.lessonMemberships);
@@ -90,5 +112,5 @@
   if(!p.length&&words.length){cycle.seen=[];cycle.number=(cycle.number||0)+1;p=words;}
   return p;
  }
- root.Progress={validate,unseen,clone,customWord,lessonMemberships,additionalTranslations,translationVariants,translationKey,vocabulary,vocabularyReport};
+ root.Progress={germanWritingForms,learning,recordLearning,validateLearning,writtenKey,writtenMatches,validate,unseen,clone,customWord,lessonMemberships,additionalTranslations,translationVariants,translationKey,vocabulary,vocabularyReport};
 })(typeof window==='undefined'?globalThis:window);

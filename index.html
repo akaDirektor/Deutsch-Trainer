@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261027-edit-translations">
+<link rel="stylesheet" href="app.css?v=20261029-stages">
 </head>
 <body>
 <div class="wrap">
@@ -32,11 +32,11 @@
 
   <div class="stats" aria-label="Твій прогрес">
     <div class="stat statToday"><span class="statLabel">Сьогодні опрацьовано</span><b id="todayWorked">0</b><span class="statNote">Кожне слово — крок уперед</span></div>
-    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Поточна серія правильних зіставлень. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0 з 0</strong></button><button type="button" id="startContext" class="textButton">Слово в контексті →</button></div>
+    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Накопичені успішні зіставлення. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0 з 0</strong></button><button type="button" id="startContext" class="textButton">Слово в контексті →</button></div>
     <div class="stat statAccuracy"><span class="statLabel">Точність</span><div class="accuracyRow"><span>Слова</span><b id="accuracy">0%</b></div><div class="accuracyRow" title="Частка правильних відповідей на артиклі за весь час"><span>Артиклі</span><b id="articleAccuracy">—</b></div><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div>
   </div>
   <div class="progress" aria-hidden="true"><div id="progressBar" style="width:0"></div></div>
-  <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Активно пригадано <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Мої зауваження</button></div></details>
+  <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Засвоєно <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Мої зауваження</button></div></details>
   <details class="dailyActivity" id="dailyActivity" open>
     <summary><span>Прогрес за 7 днів</span><span class="dailySummary" id="dailySummary"></span></summary>
     <div class="dailyBody">
@@ -57,6 +57,8 @@
       <fieldset class="lessonPicker" id="lessonPicker"><legend>Уроки · можна кілька</legend><input id="lessonFilter" type="hidden" value="all"><div id="lessonChoices" class="lessonChoices" aria-label="Уроки для спільного тренування"></div></fieldset>
     </div>
     <p id="lessonStatus" class="lessonStatus"></p>
+    <section class="stageOverview" aria-label="Етапи засвоєння"><div id="stageGlobalSummary" class="muted"></div><h3 id="stageScopeTitle"></h3><div id="stageScopeStats" class="stageScopeStats"></div><button id="showLearnedArchive" type="button">Архів засвоєних слів</button><ul id="learnedArchive" class="wordProgressList" hidden></ul></section>
+    <div class="exerciseTools"><label for="exerciseType">Тип тренування<select id="exerciseType"><option value="matching">Картки · зіставлення 5 × 5</option><option value="choice">Активне пригадування · вибір перекладу</option><option value="context">Речення зі словом у контексті</option><option value="writing">Написання слова</option></select></label><label id="exerciseDirectionField" for="exerciseDirection" hidden>Напрямок<select id="exerciseDirection"><option value="uk-de">Українська → німецька</option><option value="de-uk">Німецька → українська</option></select></label><label id="writingSizeField" for="writingSize" hidden>Рядків на сторінці<select id="writingSize"><option value="5">5</option><option value="10">10</option><option value="15" selected>15</option><option value="20">20</option></select></label></div>
     <details id="trainingSettings"><summary class="settingsSummary"><span><span class="eyebrow">Тренування</span><strong id="trainingSelection">Усі слова · Переклад</strong></span><span class="settingsHint">Налаштувати</span></summary>
     <div class="settingsBody">
     <div class="sectionTitle">Що тренуємо</div>
@@ -82,7 +84,6 @@
     <div class="row">
       <select id="mode" aria-label="Режим тренування">
         <option value="translation">Німецьке ↔ український переклад</option>
-        <option value="context">Слово в контексті · 5 варіантів</option>
         <option value="articleReview">Артиклі: іменники з помилками</option>
         <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>
         <option value="verbPast">Дієслово ↔ Präteritum + Perfekt</option>
@@ -92,7 +93,7 @@
         <option value="all">Усі, включно із засвоєними</option>
         <option value="unmastered" selected>Ще не засвоєні</option>
         <option value="weak">Слабкі / з помилками</option>
-        <option value="recall">Активне пригадування (після 3 збігів)</option>
+        <option value="learned">Засвоєні · архів</option>
       </select>
       <span id="contextFocusLabel" class="contextFocusLabel" hidden>Готові після 3 зіставлень</span>
     </div>
@@ -111,6 +112,8 @@
     <details id="recentMatches" class="recentMatches" hidden><summary>Останні вгадані слова</summary><div id="recentMatchWords" class="row"></div></details>
   </section>
 
+  <section id="choiceTraining" class="recall hidden" aria-label="Активне пригадування з вибором"><h2>Активне пригадування</h2><p id="choiceStatus" class="muted"></p><p id="choicePrompt" class="recallWord"></p><div id="choiceOptions" class="contextOptions"></div><p id="choiceFeedback" role="status" aria-live="polite"></p><div id="choiceDetail" class="exampleBox hidden"></div><button id="choiceNext" type="button" class="primary" hidden>Наступне слово →</button></section>
+  <section id="writingTraining" class="recall hidden" aria-label="Письмове пригадування"><h2>Написання слова</h2><p id="writingStatus" class="muted"></p><p class="muted">Клавіатура або Apple Pencil: пиши прямо в полі. На iPad увімкни Apple Pencil → Scribble («Від руки»). Перевір розпізнаний текст перед відповіддю.</p><div id="writingRows" class="writingRows"></div><button id="writingNext" type="button" class="primary" hidden>Наступна сторінка →</button></section>
   <section id="contextTraining" class="recall hidden" aria-labelledby="contextTitle">
     <h2 id="contextTitle">Слово в контексті</h2>
     <p id="contextStatus" class="muted"></p>
@@ -206,7 +209,7 @@
   </details>
   <details class="learningHelp">
     <summary>Як працює засвоєння</summary>
-    <div class="muted" style="margin-top:6px">Після 3 правильних збігів поспіль слово переходить до активного пригадування. Для іменника в режимі перекладу успішне повторення — це правильний переклад і артикль. Помилки в артиклях мають окремий облік. Там ти вже сам пишеш переклад. Показник «Активно пригадано» означає слова, які ти правильно відтворив щонайменше 3 рази.</div>
+    <div class="muted" style="margin-top:6px">3 успішні зіставлення → 2 правильні вибори перекладу → 2 правильні написання = засвоєне слово. Правильні результати накопичуються, помилки їх не обнуляють. Для іменника у зіставленні перекладу потрібен правильний артикль. Контекст — додаткова вправа, достатньо однієї правильної відповіді. Старі дані збережено: попередня готовність дає 3 зіставлення, стара письмова вправа врахована як написання. Новий вибір картки обліковується окремо.</div>
   </details>
 </div>
 
@@ -259,15 +262,17 @@
 <script src="words-11.js"></script>
 <script src="words-approved.js"></script>
 <script src="lessons.js?v=20261025-b2"></script>
-<script src="examples.js"></script>
+<script src="examples.js?v=20261029-stages"></script>
 <script src="synonyms.js?v=20261022"></script>
 <script src="verb-forms.js?v=20261022-reflexive"></script>
-<script src="context-spans.js?v=20261025"></script>
+<script src="context-spans.js?v=20261029-stages-20261025"></script>
 <script src="context.js?v=20261025"></script>
-<script src="progress.js?v=20261027-edit-translations"></script>
+<script src="progress.js?v=20261029-stages"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261027-feedback-send"></script>
+<script src="training-stages.js?v=20261029-stages"></script>
 <script>
+const StageTraining=window.StageTraining;
 const rawSeed=window.WORDS || [];
 const LessonCatalog=window.Lessons||{books:{},matches:(w,book)=>book==='all',memberships:()=>[]};
 const seenSeed=new Set();
@@ -283,7 +288,7 @@ let stats={};
 let hiddenWords=new Set();
 let cycle={seen:[],scopes:{}};
 let trainingLocked=true, roundEpoch=0;
-function cancelTraining(){roundEpoch++;contextQuestion=null;articleQuestion=null;closeArticleDialog();['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
+function cancelTraining(){StageTraining.cancel();roundEpoch++;contextQuestion=null;articleQuestion=null;closeArticleDialog();['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining','choiceTraining','writingTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
 let typeFilter='all', dateFilter='all', currentRound=[], selectedL=null, selectedR=null, solved=new Set();
 let recentMatched=[];
 let previousRoundState=null,activeRoundState=null,viewingPreviousRound=false;
@@ -323,7 +328,7 @@ function refreshWordTranslations(w){
   if(document.getElementById('mode').value==='translation')for(const card of document.getElementById('rightCol').children)update(card);
   const updateMeaning=node=>{if(node.dataset?.k!==k)return;if(node.className==='exampleMeaning')node.textContent=translation;if(node.className==='personalTranslationNote')node.hidden=!(stats[k]?.additionalTranslations?.length||stats[k]?.translationVariants);};
   for(const screen of [previousRoundState,activeRoundState])if(screen){if(screen.rightLabel==='Українською')for(const node of screen.columns.find(c=>c.id==='rightCol')?.nodes||[])update(node);for(const node of screen.columns.find(c=>c.id==='matchExample')?.nodes||[])updateMeaning(node);}
-  for(const id of ['matchExample','wordSearchDetail'])for(const node of document.getElementById(id).children)updateMeaning(node);
+  for(const id of ['matchExample','wordSearchDetail','choiceDetail'])for(const node of document.getElementById(id).children)updateMeaning(node);
   for(const row of document.getElementById('wordSearchResults').children){const button=row.children[0];if(button?.dataset.k===k)button.children[1].textContent=translation;}
   if(articleQuestion&&key(articleQuestion.w)===k)document.getElementById('articleTranslation').textContent=translation;
   if(contextQuestion&&key(contextQuestion.w)===k){document.getElementById('contextHintText').textContent=translation;if(contextQuestion.answered)document.getElementById('contextMeaning').textContent=w.de+' — '+translation;}
@@ -407,7 +412,7 @@ function wordProgressWords(view){
     if(view==='feedback')return !!st.translationFeedback;
     if(hiddenWords.has(key(w)))return false;
     if(view==='articles')return w.type==='noun'&&(st.articleWrong||0)>0;
-    return view==='mistakes'?(st.wrong||0)+(st.recallWrong||0)>0:!st.mastered&&st.streak===(view==='once'?1:2);
+    const learning=Progress.learning(st);return view==='mistakes'?(st.wrong||0)+(st.recallWrong||0)+learning.choiceWrong+learning.writingWrong>0:!learning.ready&&learning.matchingCorrect===(view==='once'?1:2);
   }).sort((a,b)=>{
     const x=stats[key(a)]||{},y=stats[key(b)]||{};
     if(view==='articles')return Number(!!y.articleNeedsReview)-Number(!!x.articleNeedsReview)||(y.articleWrong||0)-(x.articleWrong||0)||a.de.localeCompare(b.de,'de');
@@ -422,14 +427,14 @@ function renderWordProgress(){
   const words=wordProgressWords(wordProgressView),list=document.getElementById('wordProgressList');list.innerHTML='';
   const title=wordProgressView==='once'?'Вгадано 1 із 3':wordProgressView==='twice'?'Вгадано 2 із 3':wordProgressView==='feedback'?'Зауваження до перекладів':'Слова з помилками';
   document.getElementById('wordProgressTitle').textContent=title+' — '+words.length;
-  document.getElementById('wordProgressDescription').textContent=wordProgressView==='mistakes'?'Усі слова з помилками в зіставленні або активному пригадуванні. Першими — ще не засвоєні слова з найбільшою кількістю помилок. Історія першої спроби не зберігалася. Приховані слова не показані.':'Поточна серія правильних зіставлень поспіль. Після третього слово готове до активного пригадування. Приховані слова не показані.';
+  document.getElementById('wordProgressDescription').textContent=wordProgressView==='mistakes'?'Усі слова з помилками в зіставленні або активному пригадуванні. Першими — ще не засвоєні слова з найбільшою кількістю помилок. Історія першої спроби не зберігалася. Приховані слова не показані.':'Накопичені правильні зіставлення. Помилки не обнуляють успішні повторення. Після третього слово готове до вибору перекладу. Приховані слова не показані.';
   if(wordProgressView==='feedback')document.getElementById('wordProgressDescription').textContent='Твої зауваження до перекладів, включно з прихованими словами. Нові зауваження надсилаються однією кнопкою прямо тут.';
   if(wordProgressView==='articles'){document.getElementById('wordProgressTitle').textContent='Іменники: помилки в артиклях — '+words.length;document.getElementById('wordProgressDescription').textContent='Переклад цих іменників було зіставлено правильно, але в артиклі сталася помилка. Першими — ті, які ще потребують повторення. Історія помилок залишається після правильної відповіді.';}
   if(!words.length){const item=document.createElement('li');item.textContent='У цьому списку поки немає слів.';list.appendChild(item);}
   words.forEach(w=>{
     const st=stats[key(w)]||{},item=document.createElement('li'),de=document.createElement('strong'),uk=document.createElement('span'),detail=document.createElement('small');
     de.textContent=w.de;uk.textContent=wordTranslation(w);
-    detail.textContent='Серія: '+(st.streak||0)+' / 3 · Помилок у зіставленні: '+(st.wrong||0)+' · У пригадуванні: '+(st.recallWrong||0)+(st.mastered?' · Готове до пригадування':'');
+    const learning=Progress.learning(st);detail.textContent='Картки: '+Math.min(3,learning.matchingCorrect)+' / 3 · Вибір: '+Math.min(2,learning.choiceCorrect)+' / 2 · Написання: '+Math.min(2,learning.writingCorrect)+' / 2 · Помилок у зіставленні: '+(st.wrong||0)+(learning.learned?' · Засвоєне':'');
     item.appendChild(de);item.appendChild(uk);item.appendChild(detail);list.appendChild(item);
     if(wordProgressView==='feedback'){detail.textContent=(st.translationFeedback.delivery==='sent'?'Надіслано':st.translationFeedback.delivery==='queued'?'Очікує надсилання':'Чернетка')+' · '+(st.translationFeedback.reason||'Перевірити переклад');const button=document.createElement('button');button.type='button';button.textContent='Відкрити зауваження';button.onclick=()=>openTranslationReport(w,button);item.appendChild(button);}
     if(wordProgressView==='articles')detail.textContent='Артикль: '+w.article+' · Правильно: '+(st.articleCorrect||0)+' · Помилок: '+(st.articleWrong||0)+' · '+(st.articleNeedsReview?'Потребує повторення':'Останній артикль визначено правильно');
@@ -481,7 +486,7 @@ function lessonSelectionLabel(){
 function renderLessonStatus(){
   const book=selectedBook(),status=document.getElementById('lessonStatus');
   if(book==='all'){status.textContent=window.Lessons?'Прогрес спільний для уроків і всієї бази.':'Розподіл за уроками тимчасово недоступний. Доступна вся база.';return;}
-  const words=data.filter(w=>lessonMatches(w)&&!hiddenWords.has(key(w))),remaining=words.filter(w=>!stats[key(w)]?.mastered).length;
+  const words=data.filter(w=>lessonMatches(w)&&!hiddenWords.has(key(w))),remaining=words.filter(w=>!Progress.learning(stats[key(w)]).learned).length;
   status.textContent=lessonSelectionLabel()+': '+words.length+' слів · ще не засвоєно '+remaining+'. Прогрес спільний.'+(book==='b2'?' Розподілено лише наявні слова бази.':'');
 }
 function renderLessonControls(){
@@ -493,7 +498,7 @@ function renderLessonControls(){
 }
 document.getElementById('bookFilter').onchange=()=>{cancelTraining();renderLessonControls();updateStats()};
 document.getElementById('lessonFilter').onchange=()=>{cancelTraining();document.getElementById('lessonFilter').value=selectedLesson();lessonsByBook.set(selectedBook(),selectedLesson());renderLessonChoices();updateStats()};
-function eligible(w){return eligibleForFocus(w,document.getElementById('focus').value)}
+function eligible(w){return eligibleForFocus(w,document.getElementById('focus').value)&&!(document.getElementById('focus').value==='unmastered'&&document.getElementById('mode').value!=='articleReview'&&Progress.learning(stats[key(w)]).ready)}
 function eligibleForFocus(w,focus){
   if(!lessonMatches(w))return false;
   if(hiddenWords.has(key(w))) return false;
@@ -505,14 +510,16 @@ function eligibleForFocus(w,focus){
   if(dateFilter==='7' && !(ageDays(w)>=0 && ageDays(w)<7)) return false;
   if(dateFilter==='30' && !(ageDays(w)>=0 && ageDays(w)<30)) return false;
   let f=focus, st=s(w);
-  if(f==='unmastered' && st.mastered) return false;
-  if(f==='weak' && !(st.wrong>0 || st.streak===0)) return false;
-  if(f==='recall' && !st.mastered) return false;
+  if(f==='unmastered' && Progress.learning(st).learned) return false;
+  if(f==='learned' && !Progress.learning(st).learned)return false;
+  if(f==='weak' && !(st.wrong>0 || st.streak===0 || (st.learningV2?.choiceWrong||0)>0 || (st.learningV2?.writingWrong||0)>0)) return false;
+  if(f==='recall' && !Progress.learning(st).ready) return false;
   return true;
 }
-function pool(){return document.getElementById('mode').value==='context'?contextPool():data.filter(eligible)}
+function pool(){return document.getElementById('exerciseType').value==='context'||document.getElementById('mode').value==='context'?contextPool():data.filter(eligible)}
 function baseCycleSignature(){
-  return document.getElementById('mode').value+'|'+typeFilter+'|'+dateFilter+'|'+(document.getElementById('mode').value==='context'?'ready':document.getElementById('focus').value);
+  const mode=document.getElementById('exerciseType').value==='context'?'context':document.getElementById('mode').value;
+  return mode+'|'+typeFilter+'|'+dateFilter+'|'+(mode==='context'?'ready':document.getElementById('focus').value);
 }
 function cycleSignature(){
   const base=baseCycleSignature(),book=selectedBook();
@@ -539,7 +546,7 @@ function cyclePool(){
 }
 function emptyMatchingMessage(){
   const words=data.filter(w=>eligibleForFocus(w,'all'));
-  return selectedBook()!=='all'&&document.getElementById('focus').value==='unmastered'&&words.length&&words.every(w=>stats[key(w)]?.mastered)?'Усі слова цього вибору готові до активного пригадування ✓':'Для цього фільтра немає слів.';
+  return selectedBook()!=='all'&&document.getElementById('focus').value==='unmastered'&&words.length&&words.every(w=>Progress.learning(stats[key(w)]).ready)?'Усі слова цього вибору готові до активного пригадування ✓':'Для цього фільтра немає слів.';
 }
 function pick5(){
   let p=shuffle(cyclePool());
@@ -863,8 +870,8 @@ function finishMatchedPair(pair){
 function answerArticle(article){
   const question=articleQuestion;if(trainingLocked||!question||question.answered||!['der','die','das'].includes(article)||(!question.review&&!stats[key(question.w)]?.pendingArticle))return;
   const st=s(question.w),ok=article===question.w.article;question.answered=true;if(!question.review)st.pendingArticle=false;markWorked(question.w);
-  if(ok){st.articleCorrect=(st.articleCorrect||0)+1;st.articleNeedsReview=false;if(!question.review){st.streak++;if(st.streak>=3)st.mastered=true;}}
-  else{st.articleWrong=(st.articleWrong||0)+1;st.articleNeedsReview=true;if(!question.review){st.streak=0;st.mastered=false;}}
+  if(ok){st.articleCorrect=(st.articleCorrect||0)+1;st.articleNeedsReview=false;if(!question.review){st.learningV2=Progress.recordLearning(st,'matching',true);st.streak++;if(st.streak>=3)st.mastered=true;}}
+  else{st.articleWrong=(st.articleWrong||0)+1;st.articleNeedsReview=true;if(!question.review){st.learningV2=Progress.recordLearning(st,'matching',false);st.streak=0;st.mastered=false;}}
   for(const id of ['articleDer','articleDie','articleDas'])document.getElementById(id).disabled=true;
   document.getElementById('article'+question.w.article[0].toUpperCase()+question.w.article.slice(1)).classList.add('correctArticle');
   document.getElementById('articleNoun').textContent=question.w.de;
@@ -893,12 +900,13 @@ function check(){
   if(ok){
     recentMatched=[a.w,...recentMatched.filter(w=>key(w)!==key(a.w))].slice(0,20);renderRecentMatches();
     a.e.classList.add('done');b.e.classList.add('done');
+    st.learningV2=needsArticle(a.w)?Progress.learning(st):Progress.recordLearning(st,'matching',true);delete st.learningV2.ready;delete st.learningV2.learned;
     st.correct++;markCycleSeen(a.w);
     a.e.classList.add('ok'); b.e.classList.add('ok');
     if(needsArticle(a.w)){st.pendingArticle=true;a.e.classList.add('articlePending');b.e.classList.add('articlePending');openArticleQuestion(a.w,{a,b,epoch,article:true});}
     else{st.streak++;if(st.streak>=3)st.mastered=true;finishMatchedPair({a,b,epoch});}
   }else{
-    st.wrong++; st.streak=0; st.mastered=false;
+    st.learningV2=Progress.recordLearning(st,'matching',false);st.wrong++; st.streak=0; st.mastered=false;
     a.e.classList.add('bad'); b.e.classList.add('bad');
     setTimeout(()=>{a.e.classList.remove('bad','selected');b.e.classList.remove('bad','selected')},260);
   }
@@ -919,9 +927,9 @@ function updateStats(){
   const modeNames={context:'Слово в контексті',translation:'Переклад',articleReview:'Артиклі з помилками',nounPlural:'Множина',verbPast:'Форми дієслів',verbWrite:'Письмові дієслова'};
   const focusNames={all:'',unmastered:'Ще не засвоєні',weak:'З помилками',recall:'Пригадування'};
   const dateNames={all:'',today:'Сьогодні','7':'7 днів','30':'30 днів'};
-  const contextMode=document.getElementById('mode').value==='context';document.getElementById('focus').disabled=contextMode;document.getElementById('focus').hidden=contextMode;document.getElementById('contextFocusLabel').hidden=!contextMode;
-  renderLessonStatus();
-  document.getElementById('trainingSelection').textContent=[lessonSelectionLabel(),typeNames[typeFilter],modeNames[document.getElementById('mode').value],contextMode?'Після 3 зіставлень':focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
+  const contextMode=document.getElementById('exerciseType').value==='context'||document.getElementById('mode').value==='context';document.getElementById('focus').disabled=document.getElementById('mode').value==='context';document.getElementById('focus').hidden=document.getElementById('mode').value==='context';document.getElementById('contextFocusLabel').hidden=!contextMode;
+  renderLessonStatus();StageTraining.renderStats();
+  document.getElementById('trainingSelection').textContent=[StageTraining.label(),lessonSelectionLabel(),typeNames[typeFilter],modeNames[document.getElementById('mode').value],contextMode?'Після 3 зіставлень':focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
   renderWordProgress();
   renderRecentMatches();
   let correct=0,wrong=0,mastered=0,once=0,twice=0,articleCorrect=0,articleWrong=0;
@@ -929,9 +937,9 @@ function updateStats(){
     const st=s(w);correct+=st.correct;wrong+=st.wrong;
     if(w.type==='noun'){articleCorrect+=st.articleCorrect||0;articleWrong+=st.articleWrong||0;}
     if(hiddenWords.has(key(w)))return;
-    if(st.mastered)mastered++;
-    else if(st.streak===1)once++;
-    else if(st.streak===2)twice++;
+    const learning=Progress.learning(st);if(learning.ready)mastered++;
+    else if(learning.matchingCorrect===1)once++;
+    else if(learning.matchingCorrect===2)twice++;
   });
   document.getElementById('matchingOnceCount').textContent=once;
   document.getElementById('matchingTwiceCount').textContent=twice;
@@ -942,10 +950,10 @@ function updateStats(){
   const activeTotal=data.filter(w=>!hiddenWords.has(key(w))).length;
   document.getElementById('totalCount').textContent=activeTotal;
   document.getElementById('recallMasteredCount').textContent=mastered+' / '+activeTotal;
-  let activeKnown=0; data.forEach(w=>{if(!hiddenWords.has(key(w))&&(s(w).recallCorrect||0)>=3)activeKnown++});
+  let activeKnown=0; data.forEach(w=>{if(!hiddenWords.has(key(w))&&Progress.learning(stats[key(w)]).learned)activeKnown++});
   document.getElementById('activeKnownCount').textContent=activeKnown+' / '+activeTotal;
   document.getElementById('accuracy').textContent=(correct+wrong)?Math.round(correct/(correct+wrong)*100)+'%':'0%';
-  document.getElementById('progressBar').style.width=(activeTotal?Math.round(mastered/activeTotal*100):0)+'%';
+  document.getElementById('progressBar').style.width=(activeTotal?Math.round(activeKnown/activeTotal*100):0)+'%';
   const counts={noun:0,verb:0,adjective:0,adverb:0,phrase:0,preposition:0,other:0};
   data.forEach(w=>counts[w.type]=(counts[w.type]||0)+1);
   document.getElementById('typeLegend').innerHTML=
@@ -967,7 +975,7 @@ function cacheContextTranslation(sentence,text){
   contextSentenceTranslations.set(sentence,text);try{localStorage.setItem(contextTranslationCacheKey,JSON.stringify([...contextSentenceTranslations]));}catch{}
 }
 async function loadContextSentenceTranslation(q=contextQuestion){
-  if(trainingLocked||!q||q!==contextQuestion||document.getElementById('mode').value!=='context')return;
+  if(trainingLocked||!q||q!==contextQuestion||document.getElementById('exerciseType').value!=='context'&&document.getElementById('mode').value!=='context')return;
   const field=document.getElementById('contextSentenceUk'),source=document.getElementById('contextSentenceTranslationSource');
   field.textContent='Перекладаю речення…';source.textContent='';
   try{
@@ -993,7 +1001,7 @@ function contextInventory(){
   contextCache={data,hidden,cards,byKey,choices};return contextCache;
 }
 function contextChoices(card){const cache=contextInventory();if(!cache.choices.has(card))cache.choices.set(card,window.ContextPractice.alternatives(card,cache.cards,window.WORD_SYNONYMS||{}));return cache.choices.get(card)}
-function contextPool(){const cache=contextInventory();return recallPool().filter(w=>(cache.byKey.get(key(w))||[]).some(card=>contextChoices(card).length>=4))}
+function contextPool(){const cache=contextInventory();return StageTraining.pool('context').filter(w=>(cache.byKey.get(key(w))||[]).some(card=>contextChoices(card).length>=4))}
 function renderContext(){
   contextQuestion=null;document.getElementById('contextHint').open=false;document.getElementById('contextHint').hidden=true;const ready=recallPool(),available=contextPool(),options=document.getElementById('contextOptions');options.innerHTML='';document.getElementById('contextFeedback').textContent='';document.getElementById('contextMeaning').hidden=true;document.getElementById('contextNext').hidden=true;document.getElementById('contextLeo').hidden=true;document.getElementById('contextSource').textContent='';
   document.getElementById('contextStatus').textContent='Для цієї вправи: '+available.length+' із '+ready.length+' готових слів у вибраному наборі.';
@@ -1009,7 +1017,7 @@ function renderContext(){
   for(const text of q.options){const button=document.createElement('button');button.type='button';button.textContent=text;button.lang='de';button.dataset.answer=text;button.onclick=()=>answerContext(text,q);options.appendChild(button)}
 }
 function answerContext(answer,q=contextQuestion){
-  if(trainingLocked||!q||q!==contextQuestion||q.answered||document.getElementById('mode').value!=='context'||!q.options.includes(answer))return;
+  if(trainingLocked||!q||q!==contextQuestion||q.answered||document.getElementById('exerciseType').value!=='context'&&document.getElementById('mode').value!=='context'||!q.options.includes(answer))return;
   if(!contextPool().some(w=>key(w)===key(q.w))){renderContext();return;}
   q.answered=true;const correct=answer===q.answer,st=s(q.w);st.contextCorrect=(st.contextCorrect||0)+(correct?1:0);st.contextWrong=(st.contextWrong||0)+(correct?0:1);st.contextStreak=correct?(st.contextStreak||0)+1:0;
   markWorked(q.w);markCycleSeen(q.w);save();updateStats();
@@ -1021,9 +1029,9 @@ function answerContext(answer,q=contextQuestion){
   const ready=recallPool();document.getElementById('contextStats').textContent='У контексті: ✓ '+ready.reduce((n,w)=>n+(s(w).contextCorrect||0),0)+' · ✕ '+ready.reduce((n,w)=>n+(s(w).contextWrong||0),0);
 }
 document.getElementById('contextNext').onclick=()=>{if(!trainingLocked&&contextQuestion?.answered)renderContext()};
-document.getElementById('startContext').onclick=()=>{document.getElementById('mode').value='context';document.getElementById('mode').onchange();document.getElementById('startBtn').onclick()};
+document.getElementById('startContext').onclick=()=>{document.getElementById('exerciseType').value='context';StageTraining.configure();document.getElementById('startBtn').onclick()};
 let recallWord=null;
-function recallPool(){return data.filter(w=>lessonMatches(w)&&!hiddenWords.has(key(w)) && s(w).mastered && (typeFilter==='all'||w.type===typeFilter) && (dateFilter==='all'||(dateFilter==='today'&&ageDays(w)===0)||(dateFilter==='7'&&ageDays(w)>=0&&ageDays(w)<7)||(dateFilter==='30'&&ageDays(w)>=0&&ageDays(w)<30)))}
+function recallPool(){return data.filter(w=>lessonMatches(w)&&!hiddenWords.has(key(w)) && Progress.learning(stats[key(w)]).ready && (typeFilter==='all'||w.type===typeFilter) && (dateFilter==='all'||(dateFilter==='today'&&ageDays(w)===0)||(dateFilter==='7'&&ageDays(w)>=0&&ageDays(w)<7)||(dateFilter==='30'&&ageDays(w)>=0&&ageDays(w)<30)))}
 function renderRecall(){
   const p=recallPool();
   document.getElementById('recallReady').textContent=p.length;
@@ -1095,7 +1103,7 @@ document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
 document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');showVerbWriteAnswer()};
 document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
 ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')showVerbWriteAnswer()});
-document.getElementById('startBtn').onclick=()=>{if(trainingLocked||resumePendingArticle())return;document.getElementById('trainingSettings').open=false;roundEpoch++;const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='context'){document.getElementById('contextTraining').classList.remove('hidden');renderContext();document.getElementById('contextTraining').scrollIntoView({behavior:'smooth'});}else if(mode==='articleReview'){articleReviewSeen.clear();document.getElementById('articleReviewTraining').classList.remove('hidden');renderArticleReview();}else if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
+document.getElementById('startBtn').onclick=()=>{if(trainingLocked||resumePendingArticle())return;if(StageTraining.start())return;document.getElementById('trainingSettings').open=false;roundEpoch++;const mode=document.getElementById('mode').value,focus=document.getElementById('focus').value;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining','choiceTraining','writingTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));if(mode==='context'){document.getElementById('contextTraining').classList.remove('hidden');renderContext();document.getElementById('contextTraining').scrollIntoView({behavior:'smooth'});}else if(mode==='articleReview'){articleReviewSeen.clear();document.getElementById('articleReviewTraining').classList.remove('hidden');renderArticleReview();}else if(mode==='verbWrite'){document.getElementById('verbWriteTraining').classList.remove('hidden');renderVerbWrite();document.getElementById('verbWriteTraining').scrollIntoView({behavior:'smooth'})}else if(focus==='recall'){document.getElementById('recallTraining').classList.remove('hidden');renderRecall();document.getElementById('recallTraining').scrollIntoView({behavior:'smooth'})}else{document.getElementById('training').classList.remove('hidden');renderRound();document.getElementById('training').scrollIntoView({behavior:'smooth'})}};
 
 let newWordRequest=0,newWordLookupBusy=false,newWordEvidence=null,newWordTimer=null,newWordTranslationEdit=0,newWordTypeEdited=false,newWordVerificationFinished=false;
 const newWordCache=new Map();
@@ -1254,18 +1262,18 @@ let imported=null;
 function rawLegacy(){return Object.fromEntries([DATA_KEY,STATS_KEY,HIDDEN_KEY,CYCLE_KEY].map(k=>[k,localStorage.getItem(k)]))}
 function legacy(){return Progress.validate({schema:1,stats:JSON.parse(localStorage.getItem(STATS_KEY)||'{}'),hidden:JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]'),cycle:JSON.parse(localStorage.getItem(CYCLE_KEY)||'{"seen":[]}')})}
 Cloud.init({snapshot,legacy,rawLegacy,
- active:()=>['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
- lock(value){trainingLocked=value;document.getElementById('saveExtraTranslation').disabled=value;if(value){reportEpoch++;reportWord=null;const report=document.getElementById('translationReport');if(report.open){if(report.close)report.close();else report.open=false;}extraTranslationWord=null;const dialog=document.getElementById('extraTranslationDialog');if(dialog.open){if(dialog.close)dialog.close();else dialog.open=false;}}if(searchLessonWord)refreshSearchLessonFields();document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();updateNewWordAddState();if(value){contextQuestion=null;articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
+ active:()=>['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining','choiceTraining','writingTraining'].some(id=>!document.getElementById(id).classList.contains('hidden')),
+ lock(value){if(value)StageTraining.cancel();trainingLocked=value;document.getElementById('saveExtraTranslation').disabled=value;if(value){reportEpoch++;reportWord=null;const report=document.getElementById('translationReport');if(report.open){if(report.close)report.close();else report.open=false;}extraTranslationWord=null;const dialog=document.getElementById('extraTranslationDialog');if(dialog.open){if(dialog.close)dialog.close();else dialog.open=false;}}if(searchLessonWord)refreshSearchLessonFields();document.getElementById('startBtn').disabled=value;if(value)resetNewWordLookup();updateNewWordAddState();if(value){contextQuestion=null;articleQuestion=null;closeArticleDialog();roundEpoch++;['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining','choiceTraining','writingTraining'].forEach(id=>document.getElementById(id).classList.add('hidden'));}else resumePendingArticle();},
  apply(value,options={}){
-  const sections=['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining'];
+  const sections=['training','recallTraining','verbWriteTraining','articleReviewTraining','contextTraining','choiceTraining','writingTraining'];
   const active=options.resume&&sections.find(id=>!document.getElementById(id).classList.contains('hidden'));
-  const x=Progress.validate(value);contextQuestion=null;articleQuestion=null;closeArticleDialog();stats=x.stats;data=Progress.vocabulary(seed,stats);hiddenWords=new Set(x.hidden);cycle=x.cycle;roundEpoch++;
+  const x=Progress.validate(value),stageDraft=StageTraining.draft();StageTraining.cancel();contextCache=null;contextQuestion=null;articleQuestion=null;closeArticleDialog();stats=x.stats;data=Progress.vocabulary(seed,stats);hiddenWords=new Set(x.hidden);cycle=x.cycle;roundEpoch++;
   sections.forEach(id=>document.getElementById(id).classList.add('hidden'));updateStats();updateRecallStats();if(searchLessonWord)renderSearchLessonEditor(searchLessonWord);
-  if(active){document.getElementById(active).classList.remove('hidden');if(active==='training')renderRound();else if(active==='recallTraining')renderRecall();else if(active==='articleReviewTraining')renderArticleReview();else if(active==='contextTraining')renderContext();else renderVerbWrite();}resumePendingArticle();
+  if(active){document.getElementById(active).classList.remove('hidden');if(active==='choiceTraining'||active==='writingTraining')StageTraining.resume(active,stageDraft);else if(active==='training')renderRound();else if(active==='recallTraining')renderRecall();else if(active==='articleReviewTraining')renderArticleReview();else if(active==='contextTraining')renderContext();else renderVerbWrite();}resumePendingArticle();
  },
  preview(value){imported=Progress.validate(value);const known=new Set(data.map(key));document.getElementById('importPreview').textContent=JSON.stringify({wordsWithProgress:Object.keys(imported.stats).length,hidden:imported.hidden.length,cycleSeen:imported.cycle.seen.length,unknownKeysPreserved:Object.keys(imported.stats).filter(k=>!known.has(k)).length},null,2);},
  importCandidate(){return imported||legacy();}
 });
-renderLessonControls();renderNewWordLessonControls();updateNewWordAddState();updateStats();updateRecallStats();
+StageTraining.init();renderLessonControls();renderNewWordLessonControls();updateNewWordAddState();updateStats();updateRecallStats();
 </script>
 </body></html>
