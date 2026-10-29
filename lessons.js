@@ -954,7 +954,8 @@
         "die gehirnerschütterung",
         "feststellen",
         "befriedigen",
-        "ausschmücken"
+        "ausschmücken",
+        "vorgehen"
       ]
     },
     {
