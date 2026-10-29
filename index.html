@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261029-stages">
+<link rel="stylesheet" href="app.css?v=20261029-compact-controls">
 </head>
 <body>
 <div class="wrap">
@@ -270,7 +270,7 @@
 <script src="progress.js?v=20261029-stages"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261027-feedback-send"></script>
-<script src="training-stages.js?v=20261029-stages"></script>
+<script src="training-stages.js?v=20261029-compact-controls"></script>
 <script>
 const StageTraining=window.StageTraining;
 const rawSeed=window.WORDS || [];
@@ -929,7 +929,7 @@ function updateStats(){
   const dateNames={all:'',today:'Сьогодні','7':'7 днів','30':'30 днів'};
   const contextMode=document.getElementById('exerciseType').value==='context'||document.getElementById('mode').value==='context';document.getElementById('focus').disabled=document.getElementById('mode').value==='context';document.getElementById('focus').hidden=document.getElementById('mode').value==='context';document.getElementById('contextFocusLabel').hidden=!contextMode;
   renderLessonStatus();StageTraining.renderStats();
-  document.getElementById('trainingSelection').textContent=[StageTraining.label(),lessonSelectionLabel(),typeNames[typeFilter],modeNames[document.getElementById('mode').value],contextMode?'Після 3 зіставлень':focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
+  document.getElementById('trainingSelection').textContent=[typeNames[typeFilter],modeNames[document.getElementById('mode').value],contextMode?'Після 3 зіставлень':focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
   renderWordProgress();
   renderRecentMatches();
   let correct=0,wrong=0,mastered=0,once=0,twice=0,articleCorrect=0,articleWrong=0;
