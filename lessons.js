@@ -952,7 +952,8 @@
         "der verdacht",
         "die quetschung",
         "die gehirnerschütterung",
-        "feststellen"
+        "feststellen",
+        "befriedigen"
       ]
     },
     {
