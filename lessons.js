@@ -953,7 +953,8 @@
         "die quetschung",
         "die gehirnerschütterung",
         "feststellen",
-        "befriedigen"
+        "befriedigen",
+        "ausschmücken"
       ]
     },
     {
