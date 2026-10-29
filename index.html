@@ -30,13 +30,13 @@
   <div class="textSizeTools" role="group" aria-label="Розмір тексту"><span>Розмір тексту</span><button type="button" data-text-size="normal" aria-label="Звичайний текст" aria-pressed="true">A</button><button type="button" data-text-size="large" aria-label="Великий текст" aria-pressed="false">A+</button><button type="button" data-text-size="largest" aria-label="Дуже великий текст" aria-pressed="false">A++</button></div>
   <p id="syncAlert" class="syncAlert" role="status" aria-live="polite" hidden></p>
 
-  <div class="stats" aria-label="Твій прогрес">
+  <div class="stats" aria-label="Твій прогрес без прихованих слів">
     <div class="stat statToday"><span class="statLabel">Сьогодні опрацьовано</span><b id="todayWorked">0</b><span class="statNote">Кожне слово — крок уперед</span></div>
     <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Накопичені успішні зіставлення. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0 з 0</strong></button><button type="button" id="startContext" class="textButton">Слово в контексті →</button></div>
     <div class="stat statAccuracy"><span class="statLabel">Точність</span><div class="accuracyRow"><span>Слова</span><b id="accuracy">0%</b></div><div class="accuracyRow" title="Частка правильних відповідей на артиклі за весь час"><span>Артиклі</span><b id="articleAccuracy">—</b></div><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div>
   </div>
   <div class="progress" aria-hidden="true"><div id="progressBar" style="width:0"></div></div>
-  <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Засвоєно <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Мої зауваження</button></div></details>
+  <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Усі показники — без прихованих слів</span><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Засвоєно <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Мої зауваження</button></div></details>
   <details class="dailyActivity" id="dailyActivity" open>
     <summary><span>Прогрес за 7 днів</span><span class="dailySummary" id="dailySummary"></span></summary>
     <div class="dailyBody">
@@ -270,7 +270,7 @@
 <script src="progress.js?v=20261029-stages"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261027-feedback-send"></script>
-<script src="training-stages.js?v=20261029-compact-controls"></script>
+<script src="training-stages.js?v=20261029-active-statistics"></script>
 <script>
 const StageTraining=window.StageTraining;
 const rawSeed=window.WORDS || [];
@@ -296,6 +296,7 @@ let followMatchExamples=false;
 let articleQuestion=null;
 
 function key(w){return w.de.toLowerCase().trim()}
+function activeVocabulary(){return data.filter(w=>!hiddenWords.has(key(w)))}
 function wordTranslation(w){
   if(stats[key(w)]?.translationVariants)return Progress.translationVariants(stats[key(w)].translationVariants).join('; ');
   const seen=new Set(w.uk.split(/[;,]/).map(Progress.translationKey)),extra=Progress.additionalTranslations(stats[key(w)]?.additionalTranslations||[]).filter(t=>!seen.has(Progress.translationKey(t)));
@@ -368,7 +369,7 @@ function markWorked(w){
 }
 let selectedActivityDay=null;
 function dailyCoverage(day){
-  const words=data.filter(w=>!hiddenWords.has(key(w))),total=words.length;
+  const words=activeVocabulary(),total=words.length;
   const count=words.filter(w=>{const st=stats[key(w)];return st&&(st.lastWorked===day||st.workedDays?.includes(day));}).length;
   return {count,total,percent:total?count/total*100:0};
 }
@@ -923,6 +924,7 @@ function updateStats(){
     ...(inventory.corpusMissing.length||inventory.unexplainedRuntime.length?['Увага: джерела словника не збігаються. Збережи резервну копію.']:[])
   ].join('\n');
   renderDailyChart();
+  const activeWords=activeVocabulary();
   const typeNames={all:'Усі слова',noun:'Іменники',verb:'Дієслова',adjective:'Прикметники',adverb:'Прислівники',phrase:'Вирази',preposition:'Дієслова + Präposition'};
   const modeNames={context:'Слово в контексті',translation:'Переклад',articleReview:'Артиклі з помилками',nounPlural:'Множина',verbPast:'Форми дієслів',verbWrite:'Письмові дієслова'};
   const focusNames={all:'',unmastered:'Ще не засвоєні',weak:'З помилками',recall:'Пригадування'};
@@ -933,10 +935,9 @@ function updateStats(){
   renderWordProgress();
   renderRecentMatches();
   let correct=0,wrong=0,mastered=0,once=0,twice=0,articleCorrect=0,articleWrong=0;
-  data.forEach(w=>{
+  activeWords.forEach(w=>{
     const st=s(w);correct+=st.correct;wrong+=st.wrong;
     if(w.type==='noun'){articleCorrect+=st.articleCorrect||0;articleWrong+=st.articleWrong||0;}
-    if(hiddenWords.has(key(w)))return;
     const learning=Progress.learning(st);if(learning.ready)mastered++;
     else if(learning.matchingCorrect===1)once++;
     else if(learning.matchingCorrect===2)twice++;
@@ -945,23 +946,24 @@ function updateStats(){
   document.getElementById('matchingTwiceCount').textContent=twice;
   const articleTotal=articleCorrect+articleWrong;
   document.getElementById('articleMistakesCount').textContent=articleWrong+' з '+articleTotal;
-  document.getElementById('showArticleMistakes').title='Помилкові відповіді з усіх відповідей на артиклі за весь час. Натисни, щоб переглянути слова.';
+  document.getElementById('showArticleMistakes').title='Помилкові відповіді на артиклі серед неприхованих слів за весь час. Натисни, щоб переглянути слова.';
   document.getElementById('articleAccuracy').textContent=articleTotal?Math.round(articleCorrect/articleTotal*100)+'%':'—';
-  const activeTotal=data.filter(w=>!hiddenWords.has(key(w))).length;
+  const activeTotal=activeWords.length;
   document.getElementById('totalCount').textContent=activeTotal;
   document.getElementById('recallMasteredCount').textContent=mastered+' / '+activeTotal;
-  let activeKnown=0; data.forEach(w=>{if(!hiddenWords.has(key(w))&&Progress.learning(stats[key(w)]).learned)activeKnown++});
+  let activeKnown=0; activeWords.forEach(w=>{if(Progress.learning(stats[key(w)]).learned)activeKnown++});
   document.getElementById('activeKnownCount').textContent=activeKnown+' / '+activeTotal;
   document.getElementById('accuracy').textContent=(correct+wrong)?Math.round(correct/(correct+wrong)*100)+'%':'0%';
   document.getElementById('progressBar').style.width=(activeTotal?Math.round(activeKnown/activeTotal*100):0)+'%';
   const counts={noun:0,verb:0,adjective:0,adverb:0,phrase:0,preposition:0,other:0};
-  data.forEach(w=>counts[w.type]=(counts[w.type]||0)+1);
+  activeWords.forEach(w=>counts[w.type]=(counts[w.type]||0)+1);
   document.getElementById('typeLegend').innerHTML=
     '<span class="typecount">Іменники: '+counts.noun+'</span>'+
     '<span class="typecount">Дієслова: '+counts.verb+'</span>'+
     '<span class="typecount">Прикметники: '+counts.adjective+'</span>'+
     '<span class="typecount">Прислівники: '+counts.adverb+'</span>'+
     '<span class="typecount">Вирази: '+counts.phrase+'</span>'+ '<span class="typecount">Präpositionen: '+counts.preposition+'</span>';
+  updateRecallStats();updateContextStats();
 }
 document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{cancelTraining();document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
 document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{cancelTraining();document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
@@ -1001,6 +1003,9 @@ function contextInventory(){
   contextCache={data,hidden,cards,byKey,choices};return contextCache;
 }
 function contextChoices(card){const cache=contextInventory();if(!cache.choices.has(card))cache.choices.set(card,window.ContextPractice.alternatives(card,cache.cards,window.WORD_SYNONYMS||{}));return cache.choices.get(card)}
+function updateContextStats(){
+  const ready=recallPool();document.getElementById('contextStats').textContent='У контексті: ✓ '+ready.reduce((n,w)=>n+(s(w).contextCorrect||0),0)+' · ✕ '+ready.reduce((n,w)=>n+(s(w).contextWrong||0),0);
+}
 function contextPool(){const cache=contextInventory();return StageTraining.pool('context').filter(w=>(cache.byKey.get(key(w))||[]).some(card=>contextChoices(card).length>=4))}
 function renderContext(){
   contextQuestion=null;document.getElementById('contextHint').open=false;document.getElementById('contextHint').hidden=true;const ready=recallPool(),available=contextPool(),options=document.getElementById('contextOptions');options.innerHTML='';document.getElementById('contextFeedback').textContent='';document.getElementById('contextMeaning').hidden=true;document.getElementById('contextNext').hidden=true;document.getElementById('contextLeo').hidden=true;document.getElementById('contextSource').textContent='';
@@ -1070,7 +1075,7 @@ function judgeRecall(ok){
   save(); updateRecallStats(); renderRecall();
 }
 function updateRecallStats(){
-  let good=0,bad=0;data.forEach(w=>{good+=s(w).recallCorrect||0;bad+=s(w).recallWrong||0});
+  let good=0,bad=0;activeVocabulary().forEach(w=>{good+=s(w).recallCorrect||0;bad+=s(w).recallWrong||0});
   document.getElementById('recallReady').textContent=recallPool().length;
   document.getElementById('recallGood').textContent=good;
   document.getElementById('recallBad').textContent=bad;

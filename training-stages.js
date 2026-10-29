@@ -28,7 +28,7 @@ window.StageTraining=(()=>{
  function label(){return names[type()]}
  function totals(words){const result={total:words.length,matching:0,choice:0,writing:0,learned:0,context:0,once:0,twice:0};for(const w of words){const v=Progress.learning(stats[key(w)]);result[v.learned?'learned':v.ready?(v.choiceCorrect>=2?'writing':'choice'):'matching']++;if(v.matchingCorrect===1)result.once++;if(v.matchingCorrect===2)result.twice++;if((stats[key(w)]?.contextCorrect||0)>=1)result.context++;}return result;}
  function renderStats(){
-  const all=data.filter(w=>!hiddenWords.has(key(w))),selected=all.filter(lessonMatches),global=totals(all),local=totals(selected);
+  const all=activeVocabulary(),selected=all.filter(lessonMatches),global=totals(all),local=totals(selected);
   el('stageGlobalSummary').textContent='Вся база: '+global.total+' слів · засвоєно '+global.learned;el('stageGlobalSummary').hidden=selectedBook()==='all';el('lessonStatus').hidden=selectedBook()==='all';
   el('stageScopeTitle').textContent=(lessonSelectionLabel()||'Вся база')+' · '+local.total+' слів';
   const box=el('stageScopeStats');box.innerHTML='';
