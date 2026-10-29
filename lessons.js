@@ -951,7 +951,8 @@
         "rufen",
         "der verdacht",
         "die quetschung",
-        "die gehirnerschütterung"
+        "die gehirnerschütterung",
+        "feststellen"
       ]
     },
     {
