@@ -2491,3 +2491,124 @@ Object.assign(window.WORD_EXAMPLES,{
  "mitbringen":["Bringen Sie zum Vorstellungsgespräch bitte Ihre Zeugnisse mit."],
  "gründen":["Nach ihrer Meisterprüfung gründete sie einen eigenen Handwerksbetrieb."]
 });
+
+// Individually authored AI examples for recently added corpus entries (2026-10-29).
+Object.assign(window.WORD_EXAMPLES, {
+ "verstauen": [
+  "Bitte verstauen Sie die Werkzeuge nach der Schicht im Schrank."
+ ],
+ "die arbeitsplatzgestaltung": [
+  "Eine ergonomische Arbeitsplatzgestaltung entlastet den Rücken."
+ ],
+ "eng": [
+  "Zwischen den beiden Maschinen ist der Durchgang zu eng."
+ ],
+ "die schutzvorrichtung": [
+  "Ohne die Schutzvorrichtung darf die Maschine nicht laufen."
+ ],
+ "die schutzausrüstung": [
+  "Vor dem Betreten der Halle legen alle ihre Schutzausrüstung an."
+ ],
+ "vorhanden": [
+  "Im Besprechungsraum sind genügend Steckdosen vorhanden."
+ ],
+ "ehrenamtlich tätig": [
+  "Neben ihrem Beruf ist sie im Sportverein ehrenamtlich tätig."
+ ],
+ "die entsprechung": [
+  "Für diesen Fachbegriff gibt es keine genaue deutsche Entsprechung."
+ ],
+ "untersagen": [
+  "Der Betrieb kann das Rauchen auf dem Gelände untersagen."
+ ],
+ "beabsichtigen": [
+  "Wir beabsichtigen, die neue Software im Januar einzuführen."
+ ],
+ "bereitstellen": [
+  "Die IT-Abteilung wird uns rechtzeitig neue Laptops bereitstellen."
+ ],
+ "sich (etw.) brechen": [
+  "Bei dem Sturz hat er sich den Arm gebrochen."
+ ],
+ "sich schneiden": [
+  "Beim Öffnen des Kartons hat sie sich in den Finger geschnitten."
+ ],
+ "bluten": [
+  "Die kleine Wunde am Finger hat noch einige Minuten geblutet."
+ ],
+ "sich (etw.) verbrennen": [
+  "Am heißen Backblech hat er sich die Hand verbrannt."
+ ],
+ "stolpern": [
+  "Auf dem Weg ins Lager ist sie über ein loses Kabel gestolpert."
+ ],
+ "ausrutschen": [
+  "Im Eingangsbereich ist ein Besucher auf dem nassen Boden ausgerutscht."
+ ],
+ "hinfallen": [
+  "Als er die schwere Kiste tragen wollte, ist er hingefallen."
+ ],
+ "stürzen": [
+  "Bei der Montage ist ein Mitarbeiter von der Leiter gestürzt."
+ ],
+ "sich (etw.) einklemmen": [
+  "An der Schublade hat sie sich den Finger eingeklemmt."
+ ],
+ "sich (etw.) quetschen": [
+  "Beim Verschieben des Schranks hat er sich die Hand gequetscht."
+ ],
+ "sich (etw.) zerren": [
+  "Beim Heben des schweren Pakets hat sie sich einen Muskel gezerrt."
+ ],
+ "sich verletzen": [
+  "Zum Glück hat sich bei dem Unfall niemand verletzt."
+ ],
+ "die vorsichtsmaßnahme": [
+  "Als zusätzliche Vorsichtsmaßnahme wurde der Bereich abgesperrt."
+ ],
+ "sich quetschen": [
+  "Zwischen den beiden Kisten hat sie sich den Daumen gequetscht."
+ ],
+ "sich verbrennen": [
+  "Beim Kochen hat sie sich am heißen Dampf verbrannt."
+ ],
+ "bzw.": [
+  "Bitte wenden Sie sich an Frau Klein bzw. an ihre Vertretung."
+ ],
+ "bewahren": [
+  "In schwierigen Gesprächen sollte man Ruhe bewahren."
+ ],
+ "schildern": [
+  "Können Sie den Ablauf des Unfalls möglichst genau schildern?"
+ ],
+ "der zeuge": [
+  "Ein Zeuge bestätigte, dass die Ampel bereits rot war."
+ ],
+ "der unfallhergang": [
+  "Die Polizei rekonstruierte den Unfallhergang anhand der Fotos."
+ ],
+ "die berufsgenossenschaft": [
+  "Der Arbeitgeber meldete den Arbeitsunfall der Berufsgenossenschaft."
+ ],
+ "wahrnehmen": [
+  "Durch den Lärm konnte er das Warnsignal kaum wahrnehmen."
+ ],
+ "die heilung": [
+  "Die Heilung der verletzten Hand dauerte mehrere Wochen."
+ ],
+ "sich ereignen": [
+  "Der Unfall hat sich kurz vor dem Schichtwechsel ereignet."
+ ],
+ "kippen": [
+  "Der Gabelstapler darf beim Transport der Last nicht kippen."
+ ],
+ "der verdacht": [
+  "Es besteht der Verdacht, dass ein technischer Fehler vorliegt."
+ ],
+ "die quetschung": [
+  "Nach dem Unfall wurde bei ihm eine Quetschung am Fuß festgestellt."
+ ],
+ "die gehirnerschütterung": [
+  "Wegen einer Gehirnerschütterung blieb sie zur Beobachtung im Krankenhaus."
+ ]
+});

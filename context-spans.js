@@ -494,3 +494,241 @@ window.CONTEXT_SPANS={
   "kind": "verb:past"
  }
 };
+
+// Individually authored AI examples for recently added corpus entries (2026-10-29).
+Object.assign(window.CONTEXT_SPANS, {
+ "verstauen": {
+  "sentence": "Bitte verstauen Sie die Werkzeuge nach der Schicht im Schrank.",
+  "answer": "verstauen",
+  "start": 6,
+  "kind": "verb:infinitive"
+ },
+ "die arbeitsplatzgestaltung": {
+  "sentence": "Eine ergonomische Arbeitsplatzgestaltung entlastet den Rücken.",
+  "answer": "Arbeitsplatzgestaltung",
+  "start": 18,
+  "kind": "noun"
+ },
+ "eng": {
+  "sentence": "Zwischen den beiden Maschinen ist der Durchgang zu eng.",
+  "answer": "eng",
+  "start": 51,
+  "kind": "adjective"
+ },
+ "die schutzvorrichtung": {
+  "sentence": "Ohne die Schutzvorrichtung darf die Maschine nicht laufen.",
+  "answer": "Schutzvorrichtung",
+  "start": 9,
+  "kind": "noun"
+ },
+ "die schutzausrüstung": {
+  "sentence": "Vor dem Betreten der Halle legen alle ihre Schutzausrüstung an.",
+  "answer": "Schutzausrüstung",
+  "start": 43,
+  "kind": "noun"
+ },
+ "vorhanden": {
+  "sentence": "Im Besprechungsraum sind genügend Steckdosen vorhanden.",
+  "answer": "vorhanden",
+  "start": 45,
+  "kind": "adjective"
+ },
+ "ehrenamtlich tätig": {
+  "sentence": "Neben ihrem Beruf ist sie im Sportverein ehrenamtlich tätig.",
+  "answer": "ehrenamtlich tätig",
+  "start": 41,
+  "kind": "phrase"
+ },
+ "die entsprechung": {
+  "sentence": "Für diesen Fachbegriff gibt es keine genaue deutsche Entsprechung.",
+  "answer": "Entsprechung",
+  "start": 53,
+  "kind": "noun"
+ },
+ "untersagen": {
+  "sentence": "Der Betrieb kann das Rauchen auf dem Gelände untersagen.",
+  "answer": "untersagen",
+  "start": 45,
+  "kind": "verb:infinitive"
+ },
+ "beabsichtigen": {
+  "sentence": "Wir beabsichtigen, die neue Software im Januar einzuführen.",
+  "answer": "beabsichtigen",
+  "start": 4,
+  "kind": "verb:present"
+ },
+ "bereitstellen": {
+  "sentence": "Die IT-Abteilung wird uns rechtzeitig neue Laptops bereitstellen.",
+  "answer": "bereitstellen",
+  "start": 51,
+  "kind": "verb:infinitive"
+ },
+ "sich (etw.) brechen": {
+  "sentence": "Bei dem Sturz hat er sich den Arm gebrochen.",
+  "answer": "gebrochen",
+  "start": 34,
+  "kind": "verb:participle"
+ },
+ "sich schneiden": {
+  "sentence": "Beim Öffnen des Kartons hat sie sich in den Finger geschnitten.",
+  "answer": "geschnitten",
+  "start": 51,
+  "kind": "verb:participle"
+ },
+ "bluten": {
+  "sentence": "Die kleine Wunde am Finger hat noch einige Minuten geblutet.",
+  "answer": "geblutet",
+  "start": 51,
+  "kind": "verb:participle"
+ },
+ "sich (etw.) verbrennen": {
+  "sentence": "Am heißen Backblech hat er sich die Hand verbrannt.",
+  "answer": "verbrannt",
+  "start": 41,
+  "kind": "verb:participle"
+ },
+ "stolpern": {
+  "sentence": "Auf dem Weg ins Lager ist sie über ein loses Kabel gestolpert.",
+  "answer": "gestolpert",
+  "start": 51,
+  "kind": "verb:participle"
+ },
+ "ausrutschen": {
+  "sentence": "Im Eingangsbereich ist ein Besucher auf dem nassen Boden ausgerutscht.",
+  "answer": "ausgerutscht",
+  "start": 57,
+  "kind": "verb:participle"
+ },
+ "hinfallen": {
+  "sentence": "Als er die schwere Kiste tragen wollte, ist er hingefallen.",
+  "answer": "hingefallen",
+  "start": 47,
+  "kind": "verb:participle"
+ },
+ "stürzen": {
+  "sentence": "Bei der Montage ist ein Mitarbeiter von der Leiter gestürzt.",
+  "answer": "gestürzt",
+  "start": 51,
+  "kind": "verb:participle"
+ },
+ "sich (etw.) einklemmen": {
+  "sentence": "An der Schublade hat sie sich den Finger eingeklemmt.",
+  "answer": "eingeklemmt",
+  "start": 41,
+  "kind": "verb:participle"
+ },
+ "sich (etw.) quetschen": {
+  "sentence": "Beim Verschieben des Schranks hat er sich die Hand gequetscht.",
+  "answer": "gequetscht",
+  "start": 51,
+  "kind": "verb:participle"
+ },
+ "sich (etw.) zerren": {
+  "sentence": "Beim Heben des schweren Pakets hat sie sich einen Muskel gezerrt.",
+  "answer": "gezerrt",
+  "start": 57,
+  "kind": "verb:participle"
+ },
+ "sich verletzen": {
+  "sentence": "Zum Glück hat sich bei dem Unfall niemand verletzt.",
+  "answer": "verletzt",
+  "start": 42,
+  "kind": "verb:participle"
+ },
+ "die vorsichtsmaßnahme": {
+  "sentence": "Als zusätzliche Vorsichtsmaßnahme wurde der Bereich abgesperrt.",
+  "answer": "Vorsichtsmaßnahme",
+  "start": 16,
+  "kind": "noun"
+ },
+ "sich quetschen": {
+  "sentence": "Zwischen den beiden Kisten hat sie sich den Daumen gequetscht.",
+  "answer": "gequetscht",
+  "start": 51,
+  "kind": "verb:participle"
+ },
+ "sich verbrennen": {
+  "sentence": "Beim Kochen hat sie sich am heißen Dampf verbrannt.",
+  "answer": "verbrannt",
+  "start": 41,
+  "kind": "verb:participle"
+ },
+ "bzw.": {
+  "sentence": "Bitte wenden Sie sich an Frau Klein bzw. an ihre Vertretung.",
+  "answer": "bzw.",
+  "start": 36,
+  "kind": "phrase"
+ },
+ "bewahren": {
+  "sentence": "In schwierigen Gesprächen sollte man Ruhe bewahren.",
+  "answer": "bewahren",
+  "start": 42,
+  "kind": "verb:infinitive"
+ },
+ "schildern": {
+  "sentence": "Können Sie den Ablauf des Unfalls möglichst genau schildern?",
+  "answer": "schildern",
+  "start": 50,
+  "kind": "verb:infinitive"
+ },
+ "der zeuge": {
+  "sentence": "Ein Zeuge bestätigte, dass die Ampel bereits rot war.",
+  "answer": "Zeuge",
+  "start": 4,
+  "kind": "noun"
+ },
+ "der unfallhergang": {
+  "sentence": "Die Polizei rekonstruierte den Unfallhergang anhand der Fotos.",
+  "answer": "Unfallhergang",
+  "start": 31,
+  "kind": "noun"
+ },
+ "die berufsgenossenschaft": {
+  "sentence": "Der Arbeitgeber meldete den Arbeitsunfall der Berufsgenossenschaft.",
+  "answer": "Berufsgenossenschaft",
+  "start": 46,
+  "kind": "noun"
+ },
+ "wahrnehmen": {
+  "sentence": "Durch den Lärm konnte er das Warnsignal kaum wahrnehmen.",
+  "answer": "wahrnehmen",
+  "start": 45,
+  "kind": "verb:infinitive"
+ },
+ "die heilung": {
+  "sentence": "Die Heilung der verletzten Hand dauerte mehrere Wochen.",
+  "answer": "Heilung",
+  "start": 4,
+  "kind": "noun"
+ },
+ "sich ereignen": {
+  "sentence": "Der Unfall hat sich kurz vor dem Schichtwechsel ereignet.",
+  "answer": "ereignet",
+  "start": 48,
+  "kind": "verb:participle"
+ },
+ "kippen": {
+  "sentence": "Der Gabelstapler darf beim Transport der Last nicht kippen.",
+  "answer": "kippen",
+  "start": 52,
+  "kind": "verb:infinitive"
+ },
+ "der verdacht": {
+  "sentence": "Es besteht der Verdacht, dass ein technischer Fehler vorliegt.",
+  "answer": "Verdacht",
+  "start": 15,
+  "kind": "noun"
+ },
+ "die quetschung": {
+  "sentence": "Nach dem Unfall wurde bei ihm eine Quetschung am Fuß festgestellt.",
+  "answer": "Quetschung",
+  "start": 35,
+  "kind": "noun"
+ },
+ "die gehirnerschütterung": {
+  "sentence": "Wegen einer Gehirnerschütterung blieb sie zur Beobachtung im Krankenhaus.",
+  "answer": "Gehirnerschütterung",
+  "start": 12,
+  "kind": "noun"
+ }
+});
