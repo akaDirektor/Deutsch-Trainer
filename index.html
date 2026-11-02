@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Trainer — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261102-german-ui">
+<link rel="stylesheet" href="app.css?v=20261102-recent-words">
 </head>
 <body>
 <div class="wrap">
@@ -72,13 +72,17 @@
       <button data-type="preposition">Verben mit Präposition</button>
     </div>
 
-    <div class="sectionTitle">Zeitraum</div>
+    <div class="sectionTitle">Zeitraum · hinzugefügt</div>
     <div class="row" id="dateButtons">
-      <button class="active" data-date="all">Gesamter Wortschatz</button>
+      <button class="active" data-date="all">Alle</button>
       <button data-date="today">Heute</button>
+      <button data-date="3">3 Tage</button>
       <button data-date="7">7 Tage</button>
       <button data-date="30">30 Tage</button>
+      <button type="button" data-date="custom" aria-controls="customDateRange" aria-expanded="false">Eigene…</button>
     </div>
+    <div id="customDateRange" class="customDateRange" hidden><label for="recentDays">Letzte <input id="recentDays" type="number" min="1" max="3650" step="1" value="3" inputmode="numeric" aria-label="Anzahl der letzten Tage"> Tage</label><button id="applyRecentDays" type="button">Anwenden</button></div>
+    <p id="recentPeriodStatus" class="recentPeriodStatus" role="status" aria-live="polite" hidden></p>
 
     <div class="sectionTitle">Modus</div>
     <div class="row">
@@ -445,7 +449,15 @@ Object.entries(wordProgressButtons).forEach(([view,id])=>document.getElementById
 document.getElementById('closeWordProgress').onclick=()=>{const id=wordProgressButtons[wordProgressView];wordProgressView=null;renderWordProgress();if(id)document.getElementById(id).focus();};
 function hideWord(w){if(trainingLocked||!w)return false;if(confirm('„'+w.de+'“ aus dem Training ausblenden?')){hiddenWords.add(key(w));save();updateStats();if(contextQuestion&&key(contextQuestion.w)===key(w))renderContext();return true}return false}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function ageDays(w){return Math.floor((new Date(today()+'T12:00:00')-new Date((w.addedAt||today())+'T12:00:00'))/86400000)}
+function wordAddedDay(w){
+  const day=stats[key(w)]?.customWord?.addedAt||w.addedAt;
+  if(typeof day!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(day))return null;
+  const date=new Date(day+'T12:00:00Z');return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===day?day:null;
+}
+function ageDays(w){const day=wordAddedDay(w);return day?Math.round((Date.parse(today()+'T00:00:00Z')-Date.parse(day+'T00:00:00Z'))/86400000):Infinity;}
+function matchesAddedPeriod(w){if(dateFilter==='all')return true;const days=dateFilter==='today'?1:Number(dateFilter),age=ageDays(w);return Number.isSafeInteger(days)&&days>=1&&age>=0&&age<days;}
+function addedPeriodLabel(){return dateFilter==='all'?'':dateFilter==='today'?'Heute hinzugefügt':'Letzte '+dateFilter+' Tage';}
+
 function selectedBook(){return document.getElementById('bookFilter').value||'all'}
 const lessonsByBook=new Map();
 function selectedLessons(){
@@ -507,9 +519,7 @@ function eligibleForFocus(w,focus){
   if(mode==='nounPlural' && (w.type!=='noun' || !w.plural)) return false;
   if((mode==='verbPast'||mode==='verbWrite') && (w.type!=='verb' || !w.praeteritum || !w.perfekt)) return false;
   if(typeFilter!=='all' && w.type!==typeFilter) return false;
-  if(dateFilter==='today' && ageDays(w)!==0) return false;
-  if(dateFilter==='7' && !(ageDays(w)>=0 && ageDays(w)<7)) return false;
-  if(dateFilter==='30' && !(ageDays(w)>=0 && ageDays(w)<30)) return false;
+  if(!matchesAddedPeriod(w))return false;
   let f=focus, st=s(w);
   if(f==='unmastered' && Progress.learning(st).learned) return false;
   if(f==='learned' && !Progress.learning(st).learned)return false;
@@ -651,7 +661,7 @@ async function lookupWordDetails(q){
   try{const result=await work;if(wordDetailCache.size>=100)wordDetailCache.delete(wordDetailCache.keys().next().value);wordDetailCache.set(q,result);return result;}finally{wordDetailPending.delete(q)}
 }
 function wordMetadataText(w){
-  const original=data.find(item=>key(item)===key(w))||w,storedDate=stats[key(original)]?.customWord?.addedAt||original.addedAt;
+  const original=data.find(item=>key(item)===key(w))||w,storedDate=wordAddedDay(original);
   let date='Nicht gespeichert';
   if(typeof storedDate==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(storedDate)){const parsed=new Date(storedDate+'T12:00:00Z');if(Number.isFinite(parsed.getTime())&&parsed.toISOString().slice(0,10)===storedDate)date=parsed.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});}
   const places=wordLessonMemberships(original),lessons=places.length?places.map(p=>(LessonCatalog.books[p.book]?.label||p.book)+' · '+(LessonCatalog.books[p.book]?.lessons.find(l=>l.id===p.lesson)?.label||'Lektion '+p.lesson)).join('; '):'Keine Lektionszuordnung';
@@ -840,7 +850,7 @@ function openArticleQuestion(w,pair=null){
   const dialog=document.getElementById('articleQuiz');if(dialog.showModal)dialog.showModal();else dialog.open=true;
 }
 let articleReviewSeen=new Set();
-function articleReviewPool(){return data.filter(w=>lessonMatches(w)&&w.type==='noun'&&!hiddenWords.has(key(w))&&['der','die','das'].includes(w.article)&&(s(w).articleWrong||0)>0&&s(w).articleNeedsReview!==false);}
+function articleReviewPool(){return data.filter(w=>lessonMatches(w)&&w.type==='noun'&&!hiddenWords.has(key(w))&&matchesAddedPeriod(w)&&['der','die','das'].includes(w.article)&&(s(w).articleWrong||0)>0&&s(w).articleNeedsReview!==false);}
 function closeArticleReview(){if(articleQuestion?.review){if(articleQuestion.answered)articleReviewSeen.add(key(articleQuestion.w));articleQuestion=null;closeArticleDialog();}updateArticleReviewStatus();}
 function updateArticleReviewStatus(){const count=articleReviewPool().length;document.getElementById('articleReviewStatus').textContent=count?'Wiederholung nötig: '+count:'Keine Nomen mit offenen Artikelfehlern ✓';document.getElementById('articleReviewResume').hidden=!count;}
 function renderArticleReview(){
@@ -941,10 +951,10 @@ function updateStats(){
   const typeNames={all:'Alle Wörter',noun:'Nomen',verb:'Verben',adjective:'Adjektive',adverb:'Adverbien',phrase:'Wendungen',preposition:'Verben mit Präposition'};
   const modeNames={context:'Wort im Kontext',translation:'Übersetzung',articleReview:'Artikel mit Fehlern',nounPlural:'Plural',verbPast:'Verbformen',verbWrite:'Verben schreiben'};
   const focusNames={all:'',unmastered:'Noch nicht gelernt',weak:'Mit Fehlern',learned:'Gelernt',recall:'Erinnern'};
-  const dateNames={all:'',today:'Heute','7':'7 Tage','30':'30 Tage'};
+  const periodName=addedPeriodLabel();
   const contextMode=document.getElementById('exerciseType').value==='context'||document.getElementById('mode').value==='context';document.getElementById('focus').disabled=document.getElementById('mode').value==='context';document.getElementById('focus').hidden=document.getElementById('mode').value==='context';document.getElementById('contextFocusLabel').hidden=!contextMode;
   renderLessonStatus();StageTraining.renderStats();
-  document.getElementById('trainingSelection').textContent=[typeNames[typeFilter],modeNames[document.getElementById('mode').value],contextMode?'Nach 3 Zuordnungen':focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
+  document.getElementById('trainingSelection').textContent=[typeNames[typeFilter],modeNames[document.getElementById('mode').value],contextMode?'Nach 3 Zuordnungen':focusNames[document.getElementById('focus').value],periodName].filter(Boolean).join(' · ');
   renderWordProgress();
   renderRecentMatches();refreshWordMetadata();
   let correct=0,wrong=0,mastered=0,once=0,twice=0,articleCorrect=0,articleWrong=0;
@@ -976,10 +986,26 @@ function updateStats(){
     '<span class="typecount">Adjektive: '+counts.adjective+'</span>'+
     '<span class="typecount">Adverbien: '+counts.adverb+'</span>'+
     '<span class="typecount">Wendungen: '+counts.phrase+'</span>'+ '<span class="typecount">Präpositionen: '+counts.preposition+'</span>';
-  updateRecallStats();updateContextStats();
+  updateRecallStats();updateContextStats();renderRecentPeriodStatus();
 }
 document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{cancelTraining();document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
-document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{cancelTraining();document.querySelectorAll('#dateButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');dateFilter=b.dataset.date;updateStats()});
+function renderRecentPeriodStatus(){
+  const status=document.getElementById('recentPeriodStatus'),count=data.filter(w=>eligibleForFocus(w,'all')).length;status.hidden=dateFilter==='all';status.textContent=dateFilter==='all'?'':addedPeriodLabel()+': '+count+' '+(count===1?'Wort':'Wörter')+' in dieser Auswahl. Heute zählt mit; ausgeblendete Wörter zählen nicht.';
+}
+function setAddedPeriod(value){
+  cancelTraining();dateFilter=value;document.querySelectorAll('#dateButtons button').forEach(b=>b.classList.toggle('active',b.dataset.date===value));updateStats();
+}
+document.querySelectorAll('#dateButtons button').forEach(b=>b.onclick=()=>{
+  const custom=b.dataset.date==='custom';document.getElementById('customDateRange').hidden=!custom;document.querySelectorAll('#dateButtons button').forEach(button=>{if(button.dataset.date==='custom')button.setAttribute('aria-expanded',String(custom))});
+  if(custom){document.getElementById('recentDays').focus();return;}setAddedPeriod(b.dataset.date);
+});
+document.getElementById('applyRecentDays').onclick=()=>{
+  const input=document.getElementById('recentDays'),raw=input.value.trim(),days=Number(raw);
+  if(!raw||!Number.isSafeInteger(days)||days<1||days>3650){const status=document.getElementById('recentPeriodStatus');status.hidden=false;status.textContent='Bitte eine ganze Zahl von 1 bis 3650 eingeben.';return;}
+  setAddedPeriod(days===1?'today':String(days));document.querySelectorAll('#dateButtons button').forEach(b=>b.classList.toggle('active',b.dataset.date==='custom'));
+};
+document.getElementById('recentDays').onkeydown=event=>{if(event.key==='Enter'){event.preventDefault();document.getElementById('applyRecentDays').onclick()}};
+
 document.getElementById('mode').onchange=()=>{cancelTraining();const m=document.getElementById('mode').value;if(m==='nounPlural'||m==='articleReview'){typeFilter='noun';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='noun'));} else if(m==='verbPast'||m==='verbWrite'){typeFilter='verb';document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.toggle('active',x.dataset.type==='verb'));} updateStats()};
 let contextQuestion=null,contextCache=null;
 const previousContextSentence=new Map();
@@ -1049,7 +1075,7 @@ function answerContext(answer,q=contextQuestion){
 document.getElementById('contextNext').onclick=()=>{if(!trainingLocked&&contextQuestion?.answered)renderContext()};
 document.getElementById('startContext').onclick=()=>{document.getElementById('exerciseType').value='context';StageTraining.configure();document.getElementById('startBtn').onclick()};
 let recallWord=null;
-function recallPool(){return data.filter(w=>lessonMatches(w)&&!hiddenWords.has(key(w)) && Progress.learning(stats[key(w)]).ready && (typeFilter==='all'||w.type===typeFilter) && (dateFilter==='all'||(dateFilter==='today'&&ageDays(w)===0)||(dateFilter==='7'&&ageDays(w)>=0&&ageDays(w)<7)||(dateFilter==='30'&&ageDays(w)>=0&&ageDays(w)<30)))}
+function recallPool(){return data.filter(w=>lessonMatches(w)&&!hiddenWords.has(key(w)) && Progress.learning(stats[key(w)]).ready && (typeFilter==='all'||w.type===typeFilter) && matchesAddedPeriod(w))}
 function renderRecall(){
   const p=recallPool();
   document.getElementById('recallReady').textContent=p.length;
