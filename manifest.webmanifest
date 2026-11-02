@@ -1,9 +1,9 @@
 {
   "id": "./",
-  "name": "Deutsch Match — B2 Beruf",
+  "name": "Deutsch Trainer — B2 Beruf",
   "short_name": "Deutsch B2",
-  "lang": "uk",
-  "description": "Тренажер німецької лексики B2 з українськими перекладами",
+  "lang": "de",
+  "description": "Deutscher B2-Wortschatztrainer mit ukrainischen Übersetzungen",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

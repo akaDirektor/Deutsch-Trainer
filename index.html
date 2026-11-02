@@ -1,6 +1,6 @@
 <!-- deploy-marker: 2026-10-20-buttons-removed-cycle-fixed -->
 <!doctype html>
-<html lang="uk">
+<html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -12,237 +12,237 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/deutsch-b2-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Deutsch Match — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261029-compact-controls">
+<title>Deutsch Trainer — B2 Beruf</title>
+<link rel="stylesheet" href="app.css?v=20261102-german-ui">
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="brand"><img src="icons/deutsch-b2-180.png" width="44" height="44" alt=""><div><div class="brandLine"><h1>Deutsch Trainer</h1><span class="levelBadge">B2 Beruf</span></div><p class="brandSubtitle">Крок за кроком — до впевненої німецької</p></div></div>
-    <details id="accountTools" class="accountMenu"><summary aria-label="Налаштування облікового запису" title="Налаштування">⚙</summary><div class="accountPopover">
-    <form id="loginForm" class="row"><input id="email" type="email" autocomplete="username" placeholder="Email" required><input id="password" type="password" autocomplete="current-password" placeholder="Пароль" required><button>Увійти</button></form>
+    <div class="brand"><img src="icons/deutsch-b2-180.png" width="44" height="44" alt=""><div><div class="brandLine"><h1>Deutsch Trainer</h1><span class="levelBadge">B2 Beruf</span></div><p class="brandSubtitle">Schritt für Schritt zu sicherem Deutsch</p></div></div>
+    <details id="accountTools" class="accountMenu"><summary aria-label="Kontoeinstellungen" title="Einstellungen">⚙</summary><div class="accountPopover">
+    <form id="loginForm" class="row"><input id="email" type="email" autocomplete="username" placeholder="Email" required><input id="password" type="password" autocomplete="current-password" placeholder="Passwort" required><button>Anmelden</button></form>
     <div class="cloudSummary"><p id="syncStatus" role="status" aria-live="polite"></p><span id="accountIdentity" class="muted"></span></div>
-    <div class="row"><button id="exportProgress">Експорт / резервна копія</button><input id="importFile" type="file" accept="application/json"><button id="importProgress" disabled>Імпорт у порожню хмару</button><button id="newProfile" disabled>Новий профіль</button><button id="logout">Вийти</button><button id="syncNow">Синхронізувати</button><button id="loadCloud" disabled>Завантажити хмарну версію</button></div>
-    <details class="vocabularyDiagnostics"><summary>Склад словника</summary><p id="vocabularySummary"></p><p class="muted">Особисті слова додаються лише після твого підтвердження. Перенесення такого слова в GitHub не змінює його статистику.</p></details>
+    <div class="row"><button id="exportProgress">Export / Sicherungskopie</button><label id="importFileControl" class="importFileControl">Sicherungsdatei auswählen<input id="importFile" type="file" accept="application/json"><span id="importFileName">Keine Datei ausgewählt</span></label><button id="importProgress" disabled>In leeres Cloud-Profil importieren</button><button id="newProfile" disabled>Neues Profil</button><button id="logout">Abmelden</button><button id="syncNow">Synchronisieren</button><button id="loadCloud" disabled>Cloud-Version laden</button></div>
+    <details class="vocabularyDiagnostics"><summary>Wortschatzbestand</summary><p id="vocabularySummary"></p><p class="muted">Eigene Wörter werden erst nach deiner Bestätigung hinzugefügt. Die Übernahme eines Wortes in GitHub ändert seinen Lernstand nicht.</p></details>
     <pre id="importPreview" style="white-space:pre-wrap"></pre>
     </div></details>
   </div>
-  <div class="textSizeTools" role="group" aria-label="Розмір тексту"><span>Розмір тексту</span><button type="button" data-text-size="normal" aria-label="Звичайний текст" aria-pressed="true">A</button><button type="button" data-text-size="large" aria-label="Великий текст" aria-pressed="false">A+</button><button type="button" data-text-size="largest" aria-label="Дуже великий текст" aria-pressed="false">A++</button></div>
+  <div class="textSizeTools" role="group" aria-label="Textgröße"><span>Textgröße</span><button type="button" data-text-size="normal" aria-label="Normale Textgröße" aria-pressed="true">A</button><button type="button" data-text-size="large" aria-label="Große Textgröße" aria-pressed="false">A+</button><button type="button" data-text-size="largest" aria-label="Sehr große Textgröße" aria-pressed="false">A++</button></div>
   <p id="syncAlert" class="syncAlert" role="status" aria-live="polite" hidden></p>
 
-  <div class="stats" aria-label="Твій прогрес без прихованих слів">
-    <div class="stat statToday"><span class="statLabel">Сьогодні опрацьовано</span><b id="todayWorked">0</b><span class="statNote">Кожне слово — крок уперед</span></div>
-    <div class="stat statReady"><span class="statLabel">Готові до пригадування</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Накопичені успішні зіставлення. Для іменника в режимі перекладу потрібен і правильний артикль."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 із 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 із 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Помилки в артиклях: <strong id="articleMistakesCount">0 з 0</strong></button><button type="button" id="startContext" class="textButton">Слово в контексті →</button></div>
-    <div class="stat statAccuracy"><span class="statLabel">Точність</span><div class="accuracyRow"><span>Слова</span><b id="accuracy">0%</b></div><div class="accuracyRow" title="Частка правильних відповідей на артиклі за весь час"><span>Артиклі</span><b id="articleAccuracy">—</b></div><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Слова з помилками ↗</button></div>
+  <div class="stats" aria-label="Dein Fortschritt ohne ausgeblendete Wörter">
+    <div class="stat statToday"><span class="statLabel">Heute geübt</span><b id="todayWorked">0</b><span class="statNote">Jedes Wort ist ein Schritt nach vorn</span></div>
+    <div class="stat statReady"><span class="statLabel">Bereit zum Erinnern</span><b id="recallMasteredCount">0</b><div class="readinessSteps" title="Gesammelte richtige Zuordnungen. Bei Nomen muss auch der Artikel stimmen."><button type="button" id="showMatchingOnce" aria-controls="wordProgressPanel" aria-expanded="false">1 von 3 <strong id="matchingOnceCount">0</strong></button><button type="button" id="showMatchingTwice" aria-controls="wordProgressPanel" aria-expanded="false">2 von 3 <strong id="matchingTwiceCount">0</strong></button></div><button type="button" id="showArticleMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Artikelfehler: <strong id="articleMistakesCount">0 von 0</strong></button><button type="button" id="startContext" class="textButton">Wort im Kontext →</button></div>
+    <div class="stat statAccuracy"><span class="statLabel">Genauigkeit</span><div class="accuracyRow"><span>Wörter</span><b id="accuracy">0%</b></div><div class="accuracyRow" title="Anteil richtiger Artikelantworten insgesamt"><span>Artikel</span><b id="articleAccuracy">—</b></div><button type="button" id="showMistakes" class="textButton" aria-controls="wordProgressPanel" aria-expanded="false">Wörter mit Fehlern ↗</button></div>
   </div>
   <div class="progress" aria-hidden="true"><div id="progressBar" style="width:0"></div></div>
-  <details class="progressDetails"><summary>Деталі прогресу</summary><div class="progressNumbers"><span>Усі показники — без прихованих слів</span><span>Слів у тренуванні <strong id="totalCount">0</strong></span><span>Засвоєно <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Мої зауваження</button></div></details>
+  <details class="progressDetails"><summary>Fortschrittsdetails</summary><div class="progressNumbers"><span>Alle Angaben ohne ausgeblendete Wörter</span><span>Wörter im Training <strong id="totalCount">0</strong></span><span>Gelernt <strong id="activeKnownCount">0</strong></span><button type="button" id="showFeedback" aria-controls="wordProgressPanel" aria-expanded="false">Meine Hinweise</button></div></details>
   <details class="dailyActivity" id="dailyActivity" open>
-    <summary><span>Прогрес за 7 днів</span><span class="dailySummary" id="dailySummary"></span></summary>
+    <summary><span>Fortschritt der letzten 7 Tage</span><span class="dailySummary" id="dailySummary"></span></summary>
     <div class="dailyBody">
-      <div class="dailyChart" id="dailyChart" role="group" aria-label="Частка бази, опрацьована за кожен з останніх семи днів"></div>
+      <div class="dailyChart" id="dailyChart" role="group" aria-label="Anteil des Wortschatzes, der an jedem der letzten sieben Tage geübt wurde"></div>
       <p id="dailyDetail" class="dailyDetail" role="status" aria-live="polite"></p>
       <p id="dailyHistoryNote" class="dailyNote"></p>
-      <p class="dailyNote">Одне слово рахується один раз на день в усіх режимах, навіть після помилки. Як і в лічильнику згори, приховані слова не враховуються. Історія роботи з ними зберігається.</p>
+      <p class="dailyNote">Jedes Wort zählt pro Tag nur einmal, über alle Übungen hinweg und auch nach einem Fehler. Ausgeblendete Wörter zählen nicht mit. Ihr Lernverlauf bleibt gespeichert.</p>
     </div>
   </details>
   <section id="wordProgressPanel" class="wordProgressPanel" hidden aria-labelledby="wordProgressTitle">
-    <div class="row"><h2 id="wordProgressTitle" tabindex="-1"></h2><button type="button" id="closeWordProgress">Закрити список</button></div>
+    <div class="row"><h2 id="wordProgressTitle" tabindex="-1"></h2><button type="button" id="closeWordProgress">Liste schließen</button></div>
     <p id="wordProgressDescription" class="muted"></p>
     <ul id="wordProgressList" class="wordProgressList"></ul>
   </section>
   <div class="controls">
-    <div class="lessonFilters" aria-label="Вибір книжки та уроку">
-      <label for="bookFilter">Книжка<select id="bookFilter" aria-label="Книжка"></select></label>
-      <fieldset class="lessonPicker" id="lessonPicker"><legend>Уроки · можна кілька</legend><input id="lessonFilter" type="hidden" value="all"><div id="lessonChoices" class="lessonChoices" aria-label="Уроки для спільного тренування"></div></fieldset>
+    <div class="lessonFilters" aria-label="Buch und Lektion auswählen">
+      <label for="bookFilter">Buch<select id="bookFilter" aria-label="Buch"></select></label>
+      <fieldset class="lessonPicker" id="lessonPicker"><legend>Lektionen · Mehrfachauswahl</legend><input id="lessonFilter" type="hidden" value="all"><div id="lessonChoices" class="lessonChoices" aria-label="Gemeinsam zu übende Lektionen"></div></fieldset>
     </div>
     <p id="lessonStatus" class="lessonStatus"></p>
-    <section class="stageOverview" aria-label="Етапи засвоєння"><div id="stageGlobalSummary" class="muted"></div><h3 id="stageScopeTitle"></h3><div id="stageScopeStats" class="stageScopeStats"></div><button id="showLearnedArchive" type="button">Архів засвоєних слів</button><ul id="learnedArchive" class="wordProgressList" hidden></ul></section>
-    <div class="exerciseTools"><label for="exerciseType">Тип тренування<select id="exerciseType"><option value="matching">Картки · зіставлення 5 × 5</option><option value="choice">Активне пригадування · вибір перекладу</option><option value="context">Речення зі словом у контексті</option><option value="writing">Написання слова</option></select></label><label id="exerciseDirectionField" for="exerciseDirection" hidden>Напрямок<select id="exerciseDirection"><option value="uk-de">Українська → німецька</option><option value="de-uk">Німецька → українська</option></select></label><label id="writingSizeField" for="writingSize" hidden>Рядків на сторінці<select id="writingSize"><option value="5">5</option><option value="10">10</option><option value="15" selected>15</option><option value="20">20</option></select></label></div>
-    <details id="trainingSettings"><summary class="settingsSummary"><span><span class="eyebrow">Тренування</span><strong id="trainingSelection">Усі слова · Переклад</strong></span><span class="settingsHint">Налаштувати</span></summary>
+    <section class="stageOverview" aria-label="Lernstufen"><div id="stageGlobalSummary" class="muted"></div><h3 id="stageScopeTitle"></h3><div id="stageScopeStats" class="stageScopeStats"></div><button id="showLearnedArchive" type="button">Archiv gelernter Wörter</button><ul id="learnedArchive" class="wordProgressList" hidden></ul></section>
+    <div class="exerciseTools"><label for="exerciseType">Übungstyp<select id="exerciseType"><option value="matching">Karten · 5 × 5 zuordnen</option><option value="choice">Aktives Erinnern · Übersetzung auswählen</option><option value="context">Wort im Satz ergänzen</option><option value="writing">Wort schreiben</option></select></label><label id="exerciseDirectionField" for="exerciseDirection" hidden>Richtung<select id="exerciseDirection"><option value="uk-de">Ukrainisch → Deutsch</option><option value="de-uk">Deutsch → Ukrainisch</option></select></label><label id="writingSizeField" for="writingSize" hidden>Zeilen pro Seite<select id="writingSize"><option value="5">5</option><option value="10">10</option><option value="15" selected>15</option><option value="20">20</option></select></label></div>
+    <details id="trainingSettings"><summary class="settingsSummary"><span><span class="eyebrow">Training</span><strong id="trainingSelection">Alle Wörter · Übersetzung</strong></span><span class="settingsHint">Anpassen</span></summary>
     <div class="settingsBody">
-    <div class="sectionTitle">Що тренуємо</div>
+    <div class="sectionTitle">Wortauswahl</div>
     <div class="row" id="typeButtons">
-      <button class="active" data-type="all">Усі</button>
-      <button data-type="noun">Іменники</button>
-      <button data-type="verb">Дієслова</button>
-      <button data-type="adjective">Прикметники</button>
-      <button data-type="adverb">Прислівники</button>
-      <button data-type="phrase">Вирази</button>
-      <button data-type="preposition">Дієслова + Präposition</button>
+      <button class="active" data-type="all">Alle</button>
+      <button data-type="noun">Nomen</button>
+      <button data-type="verb">Verben</button>
+      <button data-type="adjective">Adjektive</button>
+      <button data-type="adverb">Adverbien</button>
+      <button data-type="phrase">Wendungen</button>
+      <button data-type="preposition">Verben mit Präposition</button>
     </div>
 
-    <div class="sectionTitle">Період</div>
+    <div class="sectionTitle">Zeitraum</div>
     <div class="row" id="dateButtons">
-      <button class="active" data-date="all">Вся база</button>
-      <button data-date="today">Сьогодні</button>
-      <button data-date="7">7 днів</button>
-      <button data-date="30">30 днів</button>
+      <button class="active" data-date="all">Gesamter Wortschatz</button>
+      <button data-date="today">Heute</button>
+      <button data-date="7">7 Tage</button>
+      <button data-date="30">30 Tage</button>
     </div>
 
-    <div class="sectionTitle">Режим</div>
+    <div class="sectionTitle">Modus</div>
     <div class="row">
-      <select id="mode" aria-label="Режим тренування">
-        <option value="translation">Німецьке ↔ український переклад</option>
-        <option value="articleReview">Артиклі: іменники з помилками</option>
-        <option value="nounPlural">Іменник ↔ множина (тільки іменники)</option>
-        <option value="verbPast">Дієслово ↔ Präteritum + Perfekt</option>
-        <option value="verbWrite">✍️ Дієслова: переклад + Präteritum + Perfekt</option>
+      <select id="mode" aria-label="Trainingsmodus">
+        <option value="translation">Deutsch ↔ Ukrainisch</option>
+        <option value="articleReview">Artikel · Nomen mit Fehlern</option>
+        <option value="nounPlural">Nomen ↔ Plural</option>
+        <option value="verbPast">Verb ↔ Präteritum + Perfekt</option>
+        <option value="verbWrite">✍️ Verben: Übersetzung + Präteritum + Perfekt</option>
       </select>
-      <select id="focus" aria-label="Які слова тренувати">
-        <option value="all">Усі, включно із засвоєними</option>
-        <option value="unmastered" selected>Ще не засвоєні</option>
-        <option value="weak">Слабкі / з помилками</option>
-        <option value="learned">Засвоєні · архів</option>
+      <select id="focus" aria-label="Lernstand auswählen">
+        <option value="all">Alle, auch gelernte Wörter</option>
+        <option value="unmastered" selected>Noch nicht gelernt</option>
+        <option value="weak">Schwache Wörter / mit Fehlern</option>
+        <option value="learned">Gelernte Wörter · Archiv</option>
       </select>
-      <span id="contextFocusLabel" class="contextFocusLabel" hidden>Готові після 3 зіставлень</span>
+      <span id="contextFocusLabel" class="contextFocusLabel" hidden>Bereit nach 3 Zuordnungen</span>
     </div>
     <div class="legend" id="typeLegend"></div>
     </div></details>
-    <button id="startBtn" class="primary start">Почати тренування <span aria-hidden="true">→</span></button>
+    <button id="startBtn" class="primary start">Training starten <span aria-hidden="true">→</span></button>
   </div>
 
-  <section id="training" class="hidden" aria-label="Зіставлення слів">
-    <div class="trainingHeader"><div><span class="eyebrow">Зіставлення</span><div class="msg" id="msg" role="status" aria-live="polite"></div></div><span id="roundDirection" class="roundBadge">DE ↔ UA</span></div>
-    <button type="button" id="previousRound" class="roundReturn" hidden>← Попередній раунд</button>
-    <div class="boardLabels" aria-hidden="true"><span id="leftColumnLabel">Німецькою</span><span id="rightColumnLabel">Українською</span></div>
+  <section id="training" class="hidden" aria-label="Wörter zuordnen">
+    <div class="trainingHeader"><div><span class="eyebrow">Zuordnen</span><div class="msg" id="msg" role="status" aria-live="polite"></div></div><span id="roundDirection" class="roundBadge">DE ↔ UA</span></div>
+    <button type="button" id="previousRound" class="roundReturn" hidden>← Vorherige Runde</button>
+    <div class="boardLabels" aria-hidden="true"><span id="leftColumnLabel">Deutsch</span><span id="rightColumnLabel">Ukrainisch</span></div>
     <div class="board"><div class="col" id="leftCol"></div><div class="col" id="rightCol"></div></div>
-    <p class="gestureHint">Німецьке: повторне натискання — приклад, утримання — приховати. Українське: утримання — зауваження до перекладу.</p>
+    <p class="gestureHint">Deutsch: erneut antippen für ein Beispiel, gedrückt halten zum Ausblenden. Ukrainisch: gedrückt halten, um die Übersetzung zu melden.</p>
     <div id="matchExample" class="answer exampleBox hidden" aria-live="polite"></div>
-    <details id="recentMatches" class="recentMatches" hidden><summary>Останні вгадані слова</summary><div id="recentMatchWords" class="row"></div></details>
+    <details id="recentMatches" class="recentMatches" hidden><summary>Zuletzt richtig zugeordnete Wörter</summary><div id="recentMatchWords" class="row"></div></details>
   </section>
 
-  <section id="choiceTraining" class="recall hidden" aria-label="Активне пригадування з вибором"><h2>Активне пригадування</h2><p id="choiceStatus" class="muted"></p><p id="choicePrompt" class="recallWord"></p><div id="choiceOptions" class="contextOptions"></div><p id="choiceFeedback" role="status" aria-live="polite"></p><div id="choiceDetail" class="exampleBox hidden"></div><button id="choiceNext" type="button" class="primary" hidden>Наступне слово →</button></section>
-  <section id="writingTraining" class="recall hidden" aria-label="Письмове пригадування"><h2>Написання слова</h2><p id="writingStatus" class="muted"></p><p class="muted">Клавіатура або Apple Pencil: пиши прямо в полі. На iPad увімкни Apple Pencil → Scribble («Від руки»). Перевір розпізнаний текст перед відповіддю.</p><div id="writingRows" class="writingRows"></div><button id="writingNext" type="button" class="primary" hidden>Наступна сторінка →</button></section>
+  <section id="choiceTraining" class="recall hidden" aria-label="Aktives Erinnern mit Auswahl"><h2>Aktives Erinnern</h2><p id="choiceStatus" class="muted"></p><p id="choicePrompt" class="recallWord"></p><div id="choiceOptions" class="contextOptions"></div><p id="choiceFeedback" role="status" aria-live="polite"></p><div id="choiceDetail" class="exampleBox hidden"></div><button id="choiceNext" type="button" class="primary" hidden>Nächstes Wort →</button></section>
+  <section id="writingTraining" class="recall hidden" aria-label="Schriftliches Erinnern"><h2>Wort schreiben</h2><p id="writingStatus" class="muted"></p><p class="muted">Tastatur oder Apple Pencil: direkt ins Feld schreiben. Auf dem iPad unter Apple Pencil die Funktion „Kritzeln“ aktivieren. Prüfe den erkannten Text vor dem Bestätigen.</p><div id="writingRows" class="writingRows"></div><button id="writingNext" type="button" class="primary" hidden>Nächste Seite →</button></section>
   <section id="contextTraining" class="recall hidden" aria-labelledby="contextTitle">
-    <h2 id="contextTitle">Слово в контексті</h2>
+    <h2 id="contextTitle">Wort im Kontext</h2>
     <p id="contextStatus" class="muted"></p>
     <p id="contextSentence" class="contextSentence" lang="de"></p>
-    <details id="contextHint" class="contextHint"><summary>Підказка українською</summary><p><strong>Слово:</strong> <span id="contextHintText"></span></p><p><strong>Речення:</strong> <span id="contextSentenceUk"></span></p><small id="contextSentenceTranslationSource"></small></details>
-    <div id="contextOptions" class="contextOptions" role="group" aria-label="Обери слово для пропуску"></div>
+    <details id="contextHint" class="contextHint"><summary>Hinweis auf Ukrainisch</summary><p><strong>Wort:</strong> <span id="contextHintText" lang="uk"></span></p><p><strong>Satz:</strong> <span id="contextSentenceUk"></span></p><small id="contextSentenceTranslationSource"></small></details>
+    <div id="contextOptions" class="contextOptions" role="group" aria-label="Wähle das passende Wort für die Lücke"></div>
     <p id="contextFeedback" class="contextFeedback" role="status" aria-live="polite"></p>
     <div id="contextMeaning" class="contextMeaning" hidden></div>
     <p id="contextSource" class="muted"></p>
-    <div class="row"><button type="button" id="contextNext" class="primary" hidden>Далі →</button><a id="contextLeo" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>LEO ↗</a></div>
+    <div class="row"><button type="button" id="contextNext" class="primary" hidden>Weiter →</button><a id="contextLeo" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>LEO ↗</a></div>
     <p id="contextStats" class="muted"></p>
   </section>
 
-  <section id="articleReviewTraining" class="recall hidden" aria-label="Іменники з помилками в артиклях"><h2>Артиклі: робота над помилками</h2><p id="articleReviewStatus" role="status" aria-live="polite"></p><button type="button" id="articleReviewResume" class="primary">Обрати артикль</button></section>
+  <section id="articleReviewTraining" class="recall hidden" aria-label="Nomen mit Artikelfehlern"><h2>Artikel: Fehler üben</h2><p id="articleReviewStatus" role="status" aria-live="polite"></p><button type="button" id="articleReviewResume" class="primary">Artikel auswählen</button></section>
   <div id="recallTraining" class="recall hidden">
-    <div class="sectionTitle">Активне пригадування</div>
-    <div class="muted">Напиши український переклад самостійно.</div>
+    <div class="sectionTitle">Aktives Erinnern</div>
+    <div class="muted">Schreibe die ukrainische Übersetzung selbst.</div>
     <div id="recallWord" class="recallWord"></div>
-    <button id="recallRemove">Прибрати слово</button>
-    <input id="recallInput" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Український переклад">
+    <button id="recallRemove">Wort ausblenden</button>
+    <input id="recallInput" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Ukrainische Übersetzung">
     <div class="row">
-      <button id="recallCheck" class="primary">Перевірити</button>
-      <button id="recallDontKnow">Не знаю</button>
+      <button id="recallCheck" class="primary">Prüfen</button>
+      <button id="recallDontKnow">Weiß ich nicht</button>
     </div>
     <div id="recallAnswer" class="recallAnswer hidden"></div>
     <div id="recallJudge" class="row hidden">
-      <button id="recallCorrect" class="primary">✓ Правильно</button>
-      <button id="recallWrong">✕ Неправильно</button>
+      <button id="recallCorrect" class="primary">✓ Richtig</button>
+      <button id="recallWrong">✕ Falsch</button>
     </div>
     <div class="recallStats">
-      <span class="typecount">Готові: <b id="recallReady">0</b></span>
-      <span class="typecount">Правильно: <b id="recallGood">0</b></span>
-      <span class="typecount">Помилки: <b id="recallBad">0</b></span>
+      <span class="typecount">Bereit: <b id="recallReady">0</b></span>
+      <span class="typecount">Richtig: <b id="recallGood">0</b></span>
+      <span class="typecount">Fehler: <b id="recallBad">0</b></span>
     </div>
   </div>
 
   <div id="verbWriteTraining" class="recall hidden">
-    <div class="sectionTitle">Дієслова — активне тренування</div>
-    <div class="muted">Напиши переклад, Präteritum і Perfekt самостійно.</div>
+    <div class="sectionTitle">Verben aktiv üben</div>
+    <div class="muted">Schreibe die Übersetzung, das Präteritum und das Perfekt selbst.</div>
     <div id="verbWriteWord" class="recallWord"></div>
-    <button id="verbWriteRemove">Прибрати слово</button>
-    <input id="verbWriteUk" class="recallInput" autocomplete="off" placeholder="Український переклад">
-    <div class="row"><button id="verbWriteSkipUk">Пропустити переклад</button></div>
+    <button id="verbWriteRemove">Wort ausblenden</button>
+    <input id="verbWriteUk" class="recallInput" autocomplete="off" placeholder="Ukrainische Übersetzung">
+    <div class="row"><button id="verbWriteSkipUk">Übersetzung überspringen</button></div>
     <input id="verbWritePraet" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Präteritum">
     <input id="verbWritePerf" class="recallInput" autocomplete="off" autocapitalize="off" placeholder="Perfekt">
-    <div class="row"><button id="verbWriteCheck" class="primary">Перевірити</button><button id="verbWriteDontKnow">Не знаю</button></div>
+    <div class="row"><button id="verbWriteCheck" class="primary">Prüfen</button><button id="verbWriteDontKnow">Weiß ich nicht</button></div>
     <div id="verbWriteAnswer" class="recallAnswer hidden"></div>
-    <div id="verbWriteJudge" class="row hidden"><button id="verbWriteCorrect" class="primary">✓ Правильно</button><button id="verbWriteWrong">✕ Неправильно</button></div>
+    <div id="verbWriteJudge" class="row hidden"><button id="verbWriteCorrect" class="primary">✓ Richtig</button><button id="verbWriteWrong">✕ Falsch</button></div>
   </div>
 
-  <section class="wordSearch" id="wordSearch" aria-label="Пошук слова">
-    <div class="wordSearchHeading"><label for="wordSearchInput">Пошук слова</label><span aria-hidden="true">DE / UA</span></div>
+  <section class="wordSearch" id="wordSearch" aria-label="Wort suchen">
+    <div class="wordSearchHeading"><label for="wordSearchInput">Wort suchen</label><span aria-hidden="true">DE / UA</span></div>
     <div class="searchField"><svg class="searchIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-    <input id="wordSearchInput" type="search" aria-label="Пошук слова німецькою або українською" title="Пошук у всій базі, включно з прихованими словами" placeholder="Введи слово" autocomplete="off">
+    <input id="wordSearchInput" type="search" aria-label="Wort auf Deutsch oder Ukrainisch suchen" title="Im gesamten Wortschatz suchen, auch in ausgeblendeten Wörtern" placeholder="Wort eingeben" autocomplete="off">
     </div>
     <p id="wordSearchStatus" class="muted" role="status" aria-live="polite" hidden></p>
-    <button type="button" id="wordSearchAdd" class="searchAddWord primary" hidden>＋ Додати слово</button>
+    <button type="button" id="wordSearchAdd" class="searchAddWord primary" hidden>＋ Wort hinzufügen</button>
     <ul id="wordSearchResults" class="searchResults"></ul>
     <div id="wordSearchDetail" class="exampleBox hidden"></div>
     <section id="searchLessonEditor" class="searchLessonEditor" aria-labelledby="searchLessonHeading" hidden>
-      <h3 id="searchLessonHeading">Додати слово до уроку</h3>
+      <h3 id="searchLessonHeading">Wort einer Lektion zuordnen</h3>
       <p id="searchLessonMemberships" class="muted"></p>
       <div class="searchLessonFields">
-        <label for="searchLessonBook">Книжка<select id="searchLessonBook"><option value="">Обери книжку</option></select></label>
-        <label for="searchLessonNumber">Урок<select id="searchLessonNumber" disabled><option value="">Спочатку обери книжку</option></select></label>
-        <button id="searchLessonAdd" type="button" class="primary" disabled>Додати до уроку</button>
+        <label for="searchLessonBook">Buch<select id="searchLessonBook"><option value="">Buch auswählen</option></select></label>
+        <label for="searchLessonNumber">Lektion<select id="searchLessonNumber" disabled><option value="">Zuerst ein Buch auswählen</option></select></label>
+        <button id="searchLessonAdd" type="button" class="primary" disabled>Zur Lektion hinzufügen</button>
       </div>
       <p id="searchLessonStatus" class="muted" role="status" aria-live="polite"></p>
     </section>
   </section>
 
   <details id="newWordPanel" class="personalWords" aria-labelledby="newWordHeading" open>
-    <summary><h2 id="newWordHeading">＋ Додати слово</h2></summary>
+    <summary><h2 id="newWordHeading">＋ Wort hinzufügen</h2></summary>
     <form id="newWordForm">
-      <label for="newWordGerman">Німецьке слово або вираз</label><input id="newWordGerman" required maxlength="150" placeholder="Наприклад: die Zuversicht" autocomplete="off" lang="de" aria-describedby="newWordStatus">
-      <p id="newWordStatus" class="muted" role="status" aria-live="polite">Введи слово — український переклад підставиться автоматично.</p>
+      <label for="newWordGerman">Deutsches Wort oder Wendung</label><input id="newWordGerman" required maxlength="150" placeholder="Zum Beispiel: die Zuversicht" autocomplete="off" lang="de" aria-describedby="newWordStatus">
+      <p id="newWordStatus" class="muted" role="status" aria-live="polite">Gib ein Wort ein. Die ukrainische Übersetzung wird automatisch vorgeschlagen.</p>
       <div id="newWordSpelling" class="newWordSuggestions" role="status" aria-live="polite" hidden></div>
-      <a id="newWordLeo" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>Перевірити в LEO ↗</a>
-      <label for="newWordTranslation">Український переклад · можна виправити</label><input id="newWordTranslation" required maxlength="500" autocomplete="off" lang="uk">
-      <div id="newWordChoices" class="newWordChoices" hidden role="group" aria-label="Обери значення для перекладу"></div>
+      <a id="newWordLeo" class="dictionaryLink" target="_blank" rel="noopener noreferrer" hidden>In LEO prüfen ↗</a>
+      <label for="newWordTranslation">Ukrainische Übersetzung · bearbeitbar</label><input id="newWordTranslation" required maxlength="500" autocomplete="off" lang="uk">
+      <div id="newWordChoices" class="newWordChoices" hidden role="group" aria-label="Wähle die zu übersetzenden Bedeutungen"></div>
       <div id="newWordSuggestions" class="newWordSuggestions" hidden></div>
-      <div id="newWordTypeField" hidden><label for="newWordType">Частина мови · обери після перевірки в LEO</label><select id="newWordType"><option value="">Не визначено — обери</option><option value="phrase">Вираз</option><option value="noun">Іменник</option><option value="verb">Дієслово</option><option value="adjective">Прикметник</option><option value="adverb">Прислівник</option><option value="preposition">Дієслово з прийменником</option></select><p class="muted">Для іменника потрібен артикль der, die або das у полі слова.</p></div>
-      <div class="newWordLessonFields" role="group" aria-label="З якого уроку слово">
-        <label for="newWordBook">Книжка<select id="newWordBook"><option value="">Без прив’язки до уроку</option></select></label>
-        <label for="newWordLesson">Урок<select id="newWordLesson" disabled><option value="">Спочатку обери книжку</option></select></label>
+      <div id="newWordTypeField" hidden><label for="newWordType">Wortart · nach der Prüfung in LEO auswählen</label><select id="newWordType"><option value="">Noch nicht bestimmt — auswählen</option><option value="phrase">Wendung</option><option value="noun">Nomen</option><option value="verb">Verb</option><option value="adjective">Adjektiv</option><option value="adverb">Adverb</option><option value="preposition">Verb mit Präposition</option></select><p class="muted">Bei Nomen muss der Artikel der, die oder das vor dem Wort stehen.</p></div>
+      <div class="newWordLessonFields" role="group" aria-label="Lektionszuordnung des Wortes">
+        <label for="newWordBook">Buch<select id="newWordBook"><option value="">Ohne Lektionszuordnung</option></select></label>
+        <label for="newWordLesson">Lektion<select id="newWordLesson" disabled><option value="">Zuerst ein Buch auswählen</option></select></label>
       </div>
-      <details class="newWordGrammar"><summary>Форми та приклад · необов’язково</summary>
+      <details class="newWordGrammar"><summary>Formen und Beispiel · optional</summary>
         
-        <label for="newWordPlural">Множина іменника</label><input id="newWordPlural" maxlength="200" lang="de"><label for="newWordPast">Präteritum</label><input id="newWordPast" maxlength="200" lang="de"><label for="newWordPerfect">Perfekt із haben / sein</label><input id="newWordPerfect" maxlength="200" lang="de"><label for="newWordExample">Приклад речення</label><textarea id="newWordExample" maxlength="3000" rows="3" lang="de"></textarea>
+        <label for="newWordPlural">Plural des Nomens</label><input id="newWordPlural" maxlength="200" lang="de"><label for="newWordPast">Präteritum</label><input id="newWordPast" maxlength="200" lang="de"><label for="newWordPerfect">Perfekt mit haben / sein</label><input id="newWordPerfect" maxlength="200" lang="de"><label for="newWordExample">Beispielsatz</label><textarea id="newWordExample" maxlength="3000" rows="3" lang="de"></textarea>
       </details>
-      <button id="newWordAdd" class="primary" type="submit">Додати</button>
+      <button id="newWordAdd" class="primary" type="submit">Hinzufügen</button>
     </form>
   </details>
   <details class="learningHelp">
-    <summary>Як працює засвоєння</summary>
-    <div class="muted" style="margin-top:6px">3 успішні зіставлення → 2 правильні вибори перекладу → 2 правильні написання = засвоєне слово. Правильні результати накопичуються, помилки їх не обнуляють. Для іменника у зіставленні перекладу потрібен правильний артикль. Контекст — додаткова вправа, достатньо однієї правильної відповіді. Старі дані збережено: попередня готовність дає 3 зіставлення, стара письмова вправа врахована як написання. Новий вибір картки обліковується окремо.</div>
+    <summary>So funktioniert das Lernen</summary>
+    <div class="muted" style="margin-top:6px">3 richtige Zuordnungen → 2 richtige Übersetzungswahlen → 2 richtige Schreibantworten = gelernt. Richtige Antworten sammeln sich; Fehler setzen sie nicht zurück. Bei Nomen muss auch der Artikel stimmen. Die Kontextübung ist zusätzlich und nach einer richtigen Antwort erfüllt. Bisherige Daten bleiben erhalten: frühere Bereitschaft zählt als 3 Zuordnungen, die bisherige Schreibübung als Schreiben. Die neue Auswahlübung wird getrennt erfasst.</div>
   </details>
 </div>
 
 <dialog id="articleQuiz" class="articleQuiz" aria-labelledby="articleQuizTitle">
-  <h2 id="articleQuizTitle">Який артикль?</h2>
+  <h2 id="articleQuizTitle">Welcher Artikel?</h2>
   <strong id="articleNoun" lang="de"></strong><p id="articleTranslation" class="muted"></p>
   <div class="articleChoices"><button type="button" id="articleDer" lang="de">der</button><button type="button" id="articleDie" lang="de">die</button><button type="button" id="articleDas" lang="de">das</button></div>
   <p id="articleResult" role="status" aria-live="polite"></p>
-  <button type="button" id="articleReviewClose" hidden>Закрити</button>
-  <button type="button" id="articleContinue" class="primary" hidden>Зрозуміло</button>
+  <button type="button" id="articleReviewClose" hidden>Schließen</button>
+  <button type="button" id="articleContinue" class="primary" hidden>Verstanden</button>
 </dialog>
 <dialog id="extraTranslationDialog" class="translationReport" aria-labelledby="extraTranslationTitle">
   <form id="extraTranslationForm">
-    <div class="reportHeading"><h2 id="extraTranslationTitle">Редагувати переклад</h2><button type="button" id="closeExtraTranslation" class="reportClose" aria-label="Закрити">×</button></div>
+    <div class="reportHeading"><h2 id="extraTranslationTitle">Übersetzung bearbeiten</h2><button type="button" id="closeExtraTranslation" class="reportClose" aria-label="Schließen">×</button></div>
     <strong id="extraTranslationWord" lang="de"></strong>
     <p id="extraTranslationCurrent" class="reportNote"></p>
     <div id="translationVariantRows" class="translationVariantRows"></div>
-    <button type="button" id="addTranslationVariant">＋ Додати варіант</button>
-    <button type="button" id="restoreTranslationVariants" class="translationRestore">Початкові варіанти</button>
+    <button type="button" id="addTranslationVariant">＋ Variante hinzufügen</button>
+    <button type="button" id="restoreTranslationVariants" class="translationRestore">Ursprüngliche Varianten</button>
     <p id="extraTranslationStatus" class="reportNote" role="status" aria-live="polite"></p>
-    <button type="submit" class="primary" id="saveExtraTranslation">Зберегти</button>
+    <button type="submit" class="primary" id="saveExtraTranslation">Speichern</button>
   </form>
 </dialog>
 <dialog id="translationReport" class="translationReport" aria-labelledby="translationReportTitle">
   <form id="translationReportForm">
-    <div class="reportHeading"><h2 id="translationReportTitle">Уточнити переклад</h2><button type="button" id="closeTranslationReport" class="reportClose" aria-label="Закрити зауваження">×</button></div>
+    <div class="reportHeading"><h2 id="translationReportTitle">Übersetzung melden</h2><button type="button" id="closeTranslationReport" class="reportClose" aria-label="Hinweis schließen">×</button></div>
     <strong id="reportGerman" lang="de"></strong><p id="reportCurrent" class="muted"></p>
-    <label for="reportReason">Що варто перевірити? <span class="muted">(необов’язково)</span></label>
-    <textarea id="reportReason" maxlength="600" rows="3" placeholder="Наприклад: переклад незрозумілий або не відповідає контексту"></textarea>
-    <label for="reportSuggestion">Твій варіант <span class="muted">(необов’язково)</span></label>
-    <input id="reportSuggestion" maxlength="200" placeholder="Як би ти переклав це слово?">
-    <p class="reportNote">Надішлемо зауваження автоматично, без переходів. Слово й коментар потраплять до відкритого списку перевірки.</p>
-    <button type="submit" class="primary" id="sendTranslationReport">Надіслати на перевірку</button>
+    <label for="reportReason">Was soll geprüft werden? <span class="muted">(optional)</span></label>
+    <textarea id="reportReason" maxlength="600" rows="3" placeholder="Zum Beispiel: Die Übersetzung ist unklar oder passt nicht zum Kontext"></textarea>
+    <label for="reportSuggestion">Dein Vorschlag <span class="muted">(optional)</span></label>
+    <input id="reportSuggestion" maxlength="200" placeholder="Wie würdest du dieses Wort übersetzen?">
+    <p class="reportNote">Dein Hinweis wird hier automatisch gesendet. Das Wort und dein Kommentar erscheinen in einer öffentlichen Prüfliste.</p>
+    <button type="submit" class="primary" id="sendTranslationReport">Zur Prüfung senden</button>
     <p id="reportStatus" class="reportNote" role="status" aria-live="polite"></p>
   </form>
 </dialog>
@@ -261,16 +261,16 @@
 <script src="words-10.js"></script>
 <script src="words-11.js"></script>
 <script src="words-approved.js"></script>
-<script src="lessons.js?v=20261025-b2"></script>
+<script src="lessons.js?v=20261102-german-ui"></script>
 <script src="examples.js?v=20261029-stages"></script>
 <script src="synonyms.js?v=20261022"></script>
 <script src="verb-forms.js?v=20261022-reflexive"></script>
 <script src="context-spans.js?v=20261029-stages-20261025"></script>
 <script src="context.js?v=20261025"></script>
-<script src="progress.js?v=20261029-stages"></script>
+<script src="progress.js?v=20261102-german-ui"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
-<script src="cloud.js?v=20261027-feedback-send"></script>
-<script src="training-stages.js?v=20261029-active-statistics"></script>
+<script src="cloud.js?v=20261102-german-ui"></script>
+<script src="training-stages.js?v=20261102-german-ui"></script>
 <script>
 const StageTraining=window.StageTraining;
 const rawSeed=window.WORDS || [];
@@ -305,17 +305,17 @@ function wordTranslation(w){
 let extraTranslationWord=null,extraTranslationTrigger=null,extraTranslationBaseline=null;
 function wordTranslationVariants(w){return Progress.translationVariants(stats[key(w)]?.translationVariants||[...w.uk.split(/[;,]/).map(t=>t.trim()).filter(Boolean),...(stats[key(w)]?.additionalTranslations||[])]);}
 function saveWordTranslations(w,variants){
-  if(trainingLocked)throw Error('Увійди, щоб зберегти переклад.');
-  const original=data.find(item=>key(item)===key(w));if(!original)throw Error('Знайди слово ще раз.');
+  if(trainingLocked)throw Error('Melde dich an, um die Übersetzung zu speichern.');
+  const original=data.find(item=>key(item)===key(w));if(!original)throw Error('Suche das Wort erneut.');
   const next=Progress.translationVariants(variants);if(JSON.stringify(wordTranslationVariants(original))===JSON.stringify(next))return false;
   const k=key(original),previous=stats;stats={...stats,[k]:{...(stats[k]||{}),translationVariants:next}};
   try{save()}catch(error){stats=previous;throw error}
   contextCache=null;refreshWordTranslations(original);return true;
 }
 function addWordTranslation(w,text){
-  if(trainingLocked)throw Error('Увійди, щоб зберегти свій переклад.');
-  const original=data.find(item=>key(item)===key(w));if(!original)throw Error('Знайди слово ще раз.');
-  const incoming=Progress.additionalTranslations(text.split(';').map(t=>t.trim()).filter(Boolean));if(!incoming.length)throw Error('Введи додатковий переклад.');
+  if(trainingLocked)throw Error('Melde dich an, um deine Übersetzung zu speichern.');
+  const original=data.find(item=>key(item)===key(w));if(!original)throw Error('Suche das Wort erneut.');
+  const incoming=Progress.additionalTranslations(text.split(';').map(t=>t.trim()).filter(Boolean));if(!incoming.length)throw Error('Gib eine weitere Übersetzung ein.');
   if(stats[key(original)]?.translationVariants){const current=wordTranslationVariants(original),known=new Set(current.map(Progress.translationKey)),added=incoming.filter(t=>!known.has(Progress.translationKey(t)));return added.length?saveWordTranslations(original,[...current,...added]):false;}
   const k=key(original),old=Progress.additionalTranslations(stats[k]?.additionalTranslations||[]),known=new Set([...original.uk.split(/[;,]/),...old].map(Progress.translationKey));
   const additions=incoming.filter(t=>!known.has(Progress.translationKey(t)));if(!additions.length)return false;
@@ -328,32 +328,32 @@ function refreshWordTranslations(w){
   const update=node=>{if(node.dataset?.k===k){node.textContent=translation;node.setAttribute('aria-label',translation+(node.title?.startsWith('✓')||node.title?.startsWith('✕')?' · '+node.title:''));}};
   if(document.getElementById('mode').value==='translation')for(const card of document.getElementById('rightCol').children)update(card);
   const updateMeaning=node=>{if(node.dataset?.k!==k)return;if(node.className==='exampleMeaning')node.textContent=translation;if(node.className==='personalTranslationNote')node.hidden=!(stats[k]?.additionalTranslations?.length||stats[k]?.translationVariants);};
-  for(const screen of [previousRoundState,activeRoundState])if(screen){if(screen.rightLabel==='Українською')for(const node of screen.columns.find(c=>c.id==='rightCol')?.nodes||[])update(node);for(const node of screen.columns.find(c=>c.id==='matchExample')?.nodes||[])updateMeaning(node);}
+  for(const screen of [previousRoundState,activeRoundState])if(screen){if(screen.rightLabel==='Ukrainisch')for(const node of screen.columns.find(c=>c.id==='rightCol')?.nodes||[])update(node);for(const node of screen.columns.find(c=>c.id==='matchExample')?.nodes||[])updateMeaning(node);}
   for(const id of ['matchExample','wordSearchDetail','choiceDetail'])for(const node of document.getElementById(id).children)updateMeaning(node);
   for(const row of document.getElementById('wordSearchResults').children){const button=row.children[0];if(button?.dataset.k===k)button.children[1].textContent=translation;}
   if(articleQuestion&&key(articleQuestion.w)===k)document.getElementById('articleTranslation').textContent=translation;
   if(contextQuestion&&key(contextQuestion.w)===k){document.getElementById('contextHintText').textContent=translation;if(contextQuestion.answered)document.getElementById('contextMeaning').textContent=w.de+' — '+translation;}
 }
 function appendTranslationVariant(text=''){
-  const rows=document.getElementById('translationVariantRows');if(rows.children.length>=20){document.getElementById('extraTranslationStatus').textContent='Можна зберегти до 20 варіантів.';return;}
+  const rows=document.getElementById('translationVariantRows');if(rows.children.length>=20){document.getElementById('extraTranslationStatus').textContent='Bis zu 20 Varianten sind möglich.';return;}
   const row=document.createElement('div');row.className='translationVariantRow';
-  const input=document.createElement('input');input.type='text';input.lang='uk';input.value=text;input.required=true;input.maxLength=200;input.autocomplete='off';input.setAttribute('aria-label','Варіант українського перекладу');
-  const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Прибрати цей варіант');remove.title='Прибрати цей варіант';remove.onclick=()=>{row.remove();document.getElementById('extraTranslationStatus').textContent='Зміни застосуються після збереження.';};
+  const input=document.createElement('input');input.type='text';input.lang='uk';input.value=text;input.required=true;input.maxLength=200;input.autocomplete='off';input.setAttribute('aria-label','Ukrainische Übersetzungsvariante');
+  const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Diese Variante entfernen');remove.title='Diese Variante entfernen';remove.onclick=()=>{row.remove();document.getElementById('extraTranslationStatus').textContent='Änderungen werden beim Speichern übernommen.';};
   row.appendChild(input);row.appendChild(remove);rows.appendChild(row);return input;
 }
 function renderTranslationVariantRows(variants){const rows=document.getElementById('translationVariantRows');rows.innerHTML='';variants.forEach(text=>appendTranslationVariant(text));}
 function openExtraTranslation(w,trigger){
   extraTranslationWord=data.find(item=>key(item)===key(w))||null;extraTranslationTrigger=trigger;if(!extraTranslationWord)return;
   extraTranslationBaseline=wordTranslation(extraTranslationWord);
-  document.getElementById('extraTranslationWord').textContent=w.de;document.getElementById('extraTranslationCurrent').textContent='Зміни текст або прибери зайвий варіант хрестиком.';renderTranslationVariantRows(wordTranslationVariants(extraTranslationWord));document.getElementById('extraTranslationStatus').textContent='';document.getElementById('saveExtraTranslation').disabled=trainingLocked;
+  document.getElementById('extraTranslationWord').textContent=w.de;document.getElementById('extraTranslationCurrent').textContent='Ändere den Text oder entferne eine Variante mit dem Kreuz.';renderTranslationVariantRows(wordTranslationVariants(extraTranslationWord));document.getElementById('extraTranslationStatus').textContent='';document.getElementById('saveExtraTranslation').disabled=trainingLocked;
   const dialog=document.getElementById('extraTranslationDialog');if(dialog.showModal)dialog.showModal();else dialog.open=true;document.getElementById('translationVariantRows').children[0]?.children[0]?.focus();
 }
 function closeExtraTranslation(){const dialog=document.getElementById('extraTranslationDialog');if(dialog.close)dialog.close();else dialog.open=false;if(extraTranslationTrigger?.isConnected)extraTranslationTrigger.focus();}
 document.getElementById('closeExtraTranslation').onclick=closeExtraTranslation;
 document.getElementById('addTranslationVariant').onclick=()=>appendTranslationVariant()?.focus();
-document.getElementById('restoreTranslationVariants').onclick=()=>{if(extraTranslationWord){renderTranslationVariantRows(Progress.translationVariants(extraTranslationWord.uk.split(/[;,]/).map(t=>t.trim()).filter(Boolean)));document.getElementById('extraTranslationStatus').textContent='Початкові варіанти відновляться після збереження.';}};
+document.getElementById('restoreTranslationVariants').onclick=()=>{if(extraTranslationWord){renderTranslationVariantRows(Progress.translationVariants(extraTranslationWord.uk.split(/[;,]/).map(t=>t.trim()).filter(Boolean)));document.getElementById('extraTranslationStatus').textContent='Die ursprünglichen Varianten werden beim Speichern wiederhergestellt.';}};
 document.getElementById('extraTranslationForm').onsubmit=event=>{
-  event.preventDefault();try{if(!extraTranslationWord)throw Error('Спочатку обери слово.');if(wordTranslation(extraTranslationWord)!==extraTranslationBaseline)throw Error('Переклад змінився на іншому пристрої. Закрий і відкрий редагування ще раз.');const variants=[...document.getElementById('translationVariantRows').children].map(row=>row.children[0].value);saveWordTranslations(extraTranslationWord,variants);closeExtraTranslation();}catch(error){document.getElementById('extraTranslationStatus').textContent=error.message;}
+  event.preventDefault();try{if(!extraTranslationWord)throw Error('Wähle zuerst ein Wort aus.');if(wordTranslation(extraTranslationWord)!==extraTranslationBaseline)throw Error('Die Übersetzung wurde auf einem anderen Gerät geändert. Schließe und öffne den Editor erneut.');const variants=[...document.getElementById('translationVariantRows').children].map(row=>row.children[0].value);saveWordTranslations(extraTranslationWord,variants);closeExtraTranslation();}catch(error){document.getElementById('extraTranslationStatus').textContent=error.message;}
 };
 function s(w){let k=key(w); if(!stats[k]) stats[k]={correct:0,wrong:0,streak:0,mastered:false}; if(stats[k].recallCorrect==null)stats[k].recallCorrect=0;if(stats[k].recallWrong==null)stats[k].recallWrong=0;return stats[k]}
 function addWorkedDay(st,day){
@@ -383,24 +383,24 @@ function activitySeries(endDay=today()){
     return {day,date,known,...coverage,count:known?coverage.count:null,percent:known?coverage.percent:0};
   });
 }
-function activityPercent(value){return value.toLocaleString('uk-UA',{maximumFractionDigits:1})+'%';}
+function activityPercent(value){return value.toLocaleString('de-DE',{maximumFractionDigits:1})+'%';}
 function renderDailyChart(){
   const series=activitySeries(),chart=document.getElementById('dailyChart'),end=series[6];chart.innerHTML='';
   document.getElementById('todayWorked').textContent=end.count+' / '+end.total;
   if(!series.some(item=>item.day===selectedActivityDay))selectedActivityDay=end.day;
-  document.getElementById('dailySummary').textContent='Сьогодні '+activityPercent(end.percent);
+  document.getElementById('dailySummary').textContent='Heute '+activityPercent(end.percent);
   series.forEach((item,index)=>{
     const button=document.createElement('button'),value=document.createElement('span'),track=document.createElement('span'),bar=document.createElement('span'),label=document.createElement('span');
     button.type='button';button.className='dailyDay'+(item.day===end.day?' isToday':'')+(item.known?'':' isUnknown');button.setAttribute('aria-pressed',String(item.day===selectedActivityDay));
-    const fullDate=item.date.toLocaleDateString('uk-UA',{day:'numeric',month:'long'}),description=fullDate+': '+(item.known?item.count+' із '+item.total+' слів, '+activityPercent(item.percent):'історія ще не зберігалася');
+    const fullDate=item.date.toLocaleDateString('de-DE',{day:'numeric',month:'long'}),description=fullDate+': '+(item.known?item.count+' von '+item.total+' Wörter, '+activityPercent(item.percent):'noch kein Verlauf gespeichert');
     button.setAttribute('aria-label',description);button.title=description;
     value.className='dailyValue';value.textContent=item.known?activityPercent(item.percent):'—';track.className='dailyTrack';track.setAttribute('aria-hidden','true');bar.className='dailyBar';bar.style.height=item.known?Math.min(100,item.percent)+'%':'0%';
-    label.className='dailyLabel';label.textContent=item.day===end.day?'Сьог.':item.date.toLocaleDateString('uk-UA',{weekday:'short'});track.appendChild(bar);button.appendChild(value);button.appendChild(track);button.appendChild(label);
+    label.className='dailyLabel';label.textContent=item.day===end.day?'Heute':item.date.toLocaleDateString('de-DE',{weekday:'short'});track.appendChild(bar);button.appendChild(value);button.appendChild(track);button.appendChild(label);
     button.onclick=()=>{selectedActivityDay=item.day;renderDailyChart();document.getElementById('dailyChart').children[index].focus();};chart.appendChild(button);
   });
   const selected=series.find(item=>item.day===selectedActivityDay);
-  document.getElementById('dailyDetail').textContent=selected.date.toLocaleDateString('uk-UA',{day:'numeric',month:'long'})+' · '+(selected.known?selected.count+' із '+selected.total+' слів · '+activityPercent(selected.percent):'Дані за цей день не накопичені.');
-  document.getElementById('dailyHistoryNote').textContent=series.some(item=>!item.known)?'«—» означає, що точної історії за цей день немає. Нові дні заповнюватимуться під час навчання.':'Шкала стовпчиків: від 0 до 100% бази. Натисни на день, щоб побачити кількість слів.';
+  document.getElementById('dailyDetail').textContent=selected.date.toLocaleDateString('de-DE',{day:'numeric',month:'long'})+' · '+(selected.known?selected.count+' von '+selected.total+' Wörter · '+activityPercent(selected.percent):'Für diesen Tag liegen noch keine Daten vor.');
+  document.getElementById('dailyHistoryNote').textContent=series.some(item=>!item.known)?'„—“ bedeutet, dass für diesen Tag kein genauer Verlauf vorliegt. Neue Tage werden beim Lernen erfasst.':'Die Balken zeigen 0 bis 100 % des Wortschatzes. Tippe auf einen Tag, um die Wortzahl zu sehen.';
 }
 document.addEventListener?.('visibilitychange',()=>{if(!document.hidden)renderDailyChart();});
 function snapshot(){return {schema:1,stats,hidden:[...hiddenWords],cycle}}
@@ -426,24 +426,24 @@ function renderWordProgress(){
   Object.entries(wordProgressButtons).forEach(([view,id])=>document.getElementById(id).setAttribute('aria-expanded',String(view===wordProgressView)));
   if(!wordProgressView)return;
   const words=wordProgressWords(wordProgressView),list=document.getElementById('wordProgressList');list.innerHTML='';
-  const title=wordProgressView==='once'?'Вгадано 1 із 3':wordProgressView==='twice'?'Вгадано 2 із 3':wordProgressView==='feedback'?'Зауваження до перекладів':'Слова з помилками';
+  const title=wordProgressView==='once'?'1 von 3 richtig':wordProgressView==='twice'?'2 von 3 richtig':wordProgressView==='feedback'?'Übersetzungshinweise':'Wörter mit Fehlern';
   document.getElementById('wordProgressTitle').textContent=title+' — '+words.length;
-  document.getElementById('wordProgressDescription').textContent=wordProgressView==='mistakes'?'Усі слова з помилками в зіставленні або активному пригадуванні. Першими — ще не засвоєні слова з найбільшою кількістю помилок. Історія першої спроби не зберігалася. Приховані слова не показані.':'Накопичені правильні зіставлення. Помилки не обнуляють успішні повторення. Після третього слово готове до вибору перекладу. Приховані слова не показані.';
-  if(wordProgressView==='feedback')document.getElementById('wordProgressDescription').textContent='Твої зауваження до перекладів, включно з прихованими словами. Нові зауваження надсилаються однією кнопкою прямо тут.';
-  if(wordProgressView==='articles'){document.getElementById('wordProgressTitle').textContent='Іменники: помилки в артиклях — '+words.length;document.getElementById('wordProgressDescription').textContent='Переклад цих іменників було зіставлено правильно, але в артиклі сталася помилка. Першими — ті, які ще потребують повторення. Історія помилок залишається після правильної відповіді.';}
-  if(!words.length){const item=document.createElement('li');item.textContent='У цьому списку поки немає слів.';list.appendChild(item);}
+  document.getElementById('wordProgressDescription').textContent=wordProgressView==='mistakes'?'Wörter mit Fehlern beim Zuordnen oder Erinnern. Noch nicht gelernte Wörter mit den meisten Fehlern stehen zuerst. Der erste Versuch wurde früher nicht gesondert erfasst. Ausgeblendete Wörter werden nicht angezeigt.':'Gesammelte richtige Zuordnungen. Fehler setzen richtige Wiederholungen nicht zurück. Nach der dritten ist das Wort für die Auswahlübung bereit. Ausgeblendete Wörter werden nicht angezeigt.';
+  if(wordProgressView==='feedback')document.getElementById('wordProgressDescription').textContent='Deine Übersetzungshinweise, auch zu ausgeblendeten Wörtern. Neue Hinweise lassen sich direkt hier mit einem Knopfdruck senden.';
+  if(wordProgressView==='articles'){document.getElementById('wordProgressTitle').textContent='Nomen mit Artikelfehlern — '+words.length;document.getElementById('wordProgressDescription').textContent='Bei diesen Nomen war die Übersetzung richtig, aber der Artikel falsch. Wörter mit Wiederholungsbedarf stehen zuerst. Die Fehlerhistorie bleibt auch nach einer richtigen Antwort erhalten.';}
+  if(!words.length){const item=document.createElement('li');item.textContent='In dieser Liste gibt es noch keine Wörter.';list.appendChild(item);}
   words.forEach(w=>{
     const st=stats[key(w)]||{},item=document.createElement('li'),de=document.createElement('strong'),uk=document.createElement('span'),detail=document.createElement('small');
-    de.textContent=w.de;uk.textContent=wordTranslation(w);
-    const learning=Progress.learning(st);detail.textContent='Картки: '+Math.min(3,learning.matchingCorrect)+' / 3 · Вибір: '+Math.min(2,learning.choiceCorrect)+' / 2 · Написання: '+Math.min(2,learning.writingCorrect)+' / 2 · Помилок у зіставленні: '+(st.wrong||0)+(learning.learned?' · Засвоєне':'');
+    de.textContent=w.de;uk.lang='uk';uk.textContent=wordTranslation(w);
+    const learning=Progress.learning(st);detail.textContent='Karten: '+Math.min(3,learning.matchingCorrect)+' / 3 · Auswahl: '+Math.min(2,learning.choiceCorrect)+' / 2 · Schreiben: '+Math.min(2,learning.writingCorrect)+' / 2 · Zuordnungsfehler: '+(st.wrong||0)+(learning.learned?' · Gelernt':'');
     item.appendChild(de);item.appendChild(uk);item.appendChild(detail);list.appendChild(item);
-    if(wordProgressView==='feedback'){detail.textContent=(st.translationFeedback.delivery==='sent'?'Надіслано':st.translationFeedback.delivery==='queued'?'Очікує надсилання':'Чернетка')+' · '+(st.translationFeedback.reason||'Перевірити переклад');const button=document.createElement('button');button.type='button';button.textContent='Відкрити зауваження';button.onclick=()=>openTranslationReport(w,button);item.appendChild(button);}
-    if(wordProgressView==='articles')detail.textContent='Артикль: '+w.article+' · Правильно: '+(st.articleCorrect||0)+' · Помилок: '+(st.articleWrong||0)+' · '+(st.articleNeedsReview?'Потребує повторення':'Останній артикль визначено правильно');
+    if(wordProgressView==='feedback'){detail.textContent=(st.translationFeedback.delivery==='sent'?'Gesendet':st.translationFeedback.delivery==='queued'?'Versand ausstehend':'Entwurf')+' · '+(st.translationFeedback.reason||'Übersetzung prüfen');const button=document.createElement('button');button.type='button';button.textContent='Hinweis öffnen';button.onclick=()=>openTranslationReport(w,button);item.appendChild(button);}
+    if(wordProgressView==='articles')detail.textContent='Artikel: '+w.article+' · Richtig: '+(st.articleCorrect||0)+' · Fehler: '+(st.articleWrong||0)+' · '+(st.articleNeedsReview?'Wiederholung nötig':'Der letzte Artikel war richtig');
   });
 }
 Object.entries(wordProgressButtons).forEach(([view,id])=>document.getElementById(id).onclick=()=>{wordProgressView=wordProgressView===view?null:view;renderWordProgress();if(wordProgressView)document.getElementById('wordProgressTitle').focus();});
 document.getElementById('closeWordProgress').onclick=()=>{const id=wordProgressButtons[wordProgressView];wordProgressView=null;renderWordProgress();if(id)document.getElementById(id).focus();};
-function hideWord(w){if(trainingLocked||!w)return false;if(confirm('Прибрати «'+w.de+'» з тренувань?')){hiddenWords.add(key(w));save();updateStats();if(contextQuestion&&key(contextQuestion.w)===key(w))renderContext();return true}return false}
+function hideWord(w){if(trainingLocked||!w)return false;if(confirm('„'+w.de+'“ aus dem Training ausblenden?')){hiddenWords.add(key(w));save();updateStats();if(contextQuestion&&key(contextQuestion.w)===key(w))renderContext();return true}return false}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function ageDays(w){return Math.floor((new Date(today()+'T12:00:00')-new Date((w.addedAt||today())+'T12:00:00'))/86400000)}
 function selectedBook(){return document.getElementById('bookFilter').value||'all'}
@@ -466,8 +466,8 @@ function lessonMatches(w){
 function renderLessonChoices(){
   const box=document.getElementById('lessonChoices'),options=LessonCatalog.books[selectedBook()]?.lessons||[],selection=selectedLesson();box.innerHTML='';
   document.getElementById('lessonPicker').hidden=!options.length;
-  for(const item of [{id:'all',label:'Усі уроки'},...options]){
-    const button=document.createElement('button');button.type='button';button.dataset.lesson=item.id;button.textContent=item.id==='all'?item.label:item.id;button.setAttribute('aria-label',item.id==='all'?'Усі уроки':'Урок '+item.id);
+  for(const item of [{id:'all',label:'Alle Lektionen'},...options]){
+    const button=document.createElement('button');button.type='button';button.dataset.lesson=item.id;button.textContent=item.id==='all'?item.label:item.id;button.setAttribute('aria-label',item.id==='all'?'Alle Lektionen':'Lektion '+item.id);
     const pressed=item.id==='all'?selection==='all':selection!=='all'&&selection.split(',').includes(item.id);
     button.className='lessonChoice'+(pressed?' selected':'');button.setAttribute('aria-pressed',String(pressed));
     button.onclick=()=>toggleLesson(item.id);box.appendChild(button);
@@ -481,18 +481,18 @@ function toggleLesson(id){
 
 function lessonSelectionLabel(){
   const book=selectedBook();if(book==='all')return '';
-  if(book==='unassigned')return 'Без прив’язки до уроку';
-  const choice=selectedLesson();return LessonCatalog.books[book].label+(choice==='all'?' · Усі уроки':choice.includes(',')?' · Уроки '+choice.split(',').join(', '):' · Урок '+choice);
+  if(book==='unassigned')return 'Ohne Lektionszuordnung';
+  const choice=selectedLesson();return LessonCatalog.books[book].label+(choice==='all'?' · Alle Lektionen':choice.includes(',')?' · Lektionen '+choice.split(',').join(', '):' · Lektion '+choice);
 }
 function renderLessonStatus(){
   const book=selectedBook(),status=document.getElementById('lessonStatus');
-  if(book==='all'){status.textContent=window.Lessons?'Прогрес спільний для уроків і всієї бази.':'Розподіл за уроками тимчасово недоступний. Доступна вся база.';return;}
+  if(book==='all'){status.textContent=window.Lessons?'Der Lernstand gilt für Lektionen und den gesamten Wortschatz gemeinsam.':'Die Lektionszuordnung ist vorübergehend nicht verfügbar. Der gesamte Wortschatz ist verfügbar.';return;}
   const words=data.filter(w=>lessonMatches(w)&&!hiddenWords.has(key(w))),remaining=words.filter(w=>!Progress.learning(stats[key(w)]).learned).length;
-  status.textContent=lessonSelectionLabel()+': '+words.length+' слів · ще не засвоєно '+remaining+'. Прогрес спільний.'+(book==='b2'?' Розподілено лише наявні слова бази.':'');
+  status.textContent=lessonSelectionLabel()+': '+words.length+' Wörter · noch nicht gelernt '+remaining+'. Gemeinsamer Lernstand.'+(book==='b2'?' Nur vorhandene Wörter sind zugeordnet.':'');
 }
 function renderLessonControls(){
   const book=document.getElementById('bookFilter'),lesson=document.getElementById('lessonFilter'),value=book.value||'all',old=lessonsByBook.get(value)||'all';
-  book.innerHTML='<option value="all">Вся база</option>'+Object.entries(LessonCatalog.books).map(([id,b])=>'<option value="'+id+'"'+(b.pending?' disabled':'')+'>'+b.label+(b.pending?' — очікуємо фото':'')+'</option>').join('')+'<option value="unassigned">Без прив’язки до уроку</option>';book.value=value;
+  book.innerHTML='<option value="all">Gesamter Wortschatz</option>'+Object.entries(LessonCatalog.books).map(([id,b])=>'<option value="'+id+'"'+(b.pending?' disabled':'')+'>'+b.label+(b.pending?' — Fotos ausstehend':'')+'</option>').join('')+'<option value="unassigned">Ohne Lektionszuordnung</option>';book.value=value;
   const options=LessonCatalog.books[value]?.lessons||[];
   lesson.value=old;lesson.disabled=!options.length;lesson.value=selectedLesson();renderLessonChoices();
   renderLessonStatus();
@@ -547,7 +547,7 @@ function cyclePool(){
 }
 function emptyMatchingMessage(){
   const words=data.filter(w=>eligibleForFocus(w,'all'));
-  return selectedBook()!=='all'&&document.getElementById('focus').value==='unmastered'&&words.length&&words.every(w=>Progress.learning(stats[key(w)]).ready)?'Усі слова цього вибору готові до активного пригадування ✓':'Для цього фільтра немає слів.';
+  return selectedBook()!=='all'&&document.getElementById('focus').value==='unmastered'&&words.length&&words.every(w=>Progress.learning(stats[key(w)]).ready)?'Alle Wörter dieser Auswahl sind zum aktiven Erinnern bereit ✓':'Keine Wörter für diesen Filter.';
 }
 function pick5(){
   let p=shuffle(cyclePool());
@@ -571,22 +571,22 @@ function needsArticle(w){return document.getElementById('mode').value==='transla
 function nounPromptName(w){
   const bare=w.de.replace(/^(der|die|das)\s+/i,'');
   const ambiguous=data.some(other=>other.type==='noun'&&other.article!==w.article&&other.de.replace(/^(der|die|das)\s+/i,'')===bare);
-  return bare+(ambiguous?(w.article==='der'?' (чол.)':w.article==='die'?' (жін.)':''):'');
+  return bare+(ambiguous?(w.article==='der'?' (m.)':w.article==='die'?' (f.)':''):'');
 }
 function rightText(w){
   let mode=document.getElementById('mode').value;
   return mode==='nounPlural' ? w.plural : mode==='verbPast' ? (w.praeteritum+' · '+w.perfekt) : wordTranslation(w);
 }
 function renderRound(round=null){
-  viewingPreviousRound=false;activeRoundState=null;document.getElementById('previousRound').textContent='← Попередній раунд';document.getElementById('previousRound').disabled=false;document.getElementById('previousRound').hidden=!previousRoundState;
+  viewingPreviousRound=false;activeRoundState=null;document.getElementById('previousRound').textContent='← Vorherige Runde';document.getElementById('previousRound').disabled=false;document.getElementById('previousRound').hidden=!previousRoundState;
   articleQuestion=null;closeArticleDialog();
-  document.getElementById('rightColumnLabel').textContent=({articleReview:'Артиклі з помилками',nounPlural:'Множина',verbPast:'Präteritum · Perfekt'})[document.getElementById('mode').value]||'Українською';
+  document.getElementById('rightColumnLabel').textContent=({articleReview:'Artikel mit Fehlern',nounPlural:'Plural',verbPast:'Präteritum · Perfekt'})[document.getElementById('mode').value]||'Ukrainisch';
   document.getElementById('roundDirection').textContent=document.getElementById('mode').value==='translation'?'DE ↔ UA':'DE ↔ DE';
   const epoch=++roundEpoch;
   currentRound=round?[...round]:pick5(); solved.clear(); selectedL=selectedR=null;
   document.getElementById('leftCol').innerHTML=''; document.getElementById('rightCol').innerHTML=''; const exBox=document.getElementById('matchExample');if(exBox){exBox.classList.add('hidden');exBox.innerHTML='';}
   if(!currentRound.length){document.getElementById('msg').textContent=emptyMatchingMessage();updateStats();resumePendingArticle();return}
-  document.getElementById('msg').textContent='Знайди 5 пар';
+  document.getElementById('msg').textContent='Finde 5 Paare';
   shuffle(currentRound).forEach(w=>addCard('leftCol','L',w,leftText(w)));
   shuffle(currentRound).forEach(w=>addCard('rightCol','R',w,rightText(w)));
   updateStats();
@@ -603,28 +603,28 @@ let reportWord=null,reportTrigger=null,reportSending=false,reportEpoch=0;
 function openTranslationReport(w,trigger=null){
   reportWord=w;reportTrigger=trigger;
   const feedback=stats[key(w)]?.translationFeedback;
-  document.getElementById('reportGerman').textContent=w.de;document.getElementById('reportCurrent').textContent='Зараз: '+wordTranslation(w);
+  document.getElementById('reportGerman').textContent=w.de;document.getElementById('reportCurrent').textContent='Aktuell: '+wordTranslation(w);
   document.getElementById('reportReason').value=feedback?.reason||'';document.getElementById('reportSuggestion').value=feedback?.suggestion||'';
-  document.getElementById('reportStatus').textContent=feedback?.delivery==='sent'?'✓ Зауваження надіслано на перевірку.':feedback?.delivery==='queued'?'Зауваження збережено й очікує автоматичного надсилання.':feedback?'Чернетку збережено. Можна надіслати однією кнопкою.':'';document.getElementById('sendTranslationReport').disabled=trainingLocked||reportSending;
+  document.getElementById('reportStatus').textContent=feedback?.delivery==='sent'?'✓ Hinweis zur Prüfung gesendet.':feedback?.delivery==='queued'?'Hinweis gespeichert; der automatische Versand steht aus.':feedback?'Entwurf gespeichert. Mit einem Knopfdruck senden.':'';document.getElementById('sendTranslationReport').disabled=trainingLocked||reportSending;
   const dialog=document.getElementById('translationReport');if(dialog.showModal)dialog.showModal();else dialog.open=true;
 }
 document.getElementById('closeTranslationReport').onclick=()=>{const dialog=document.getElementById('translationReport');if(dialog.close)dialog.close();else dialog.open=false;if(reportTrigger?.isConnected)reportTrigger.focus();};
-for(const id of ['reportReason','reportSuggestion'])document.getElementById(id).oninput=()=>{document.getElementById('reportStatus').textContent='Можна надіслати зауваження.';};
+for(const id of ['reportReason','reportSuggestion'])document.getElementById(id).oninput=()=>{document.getElementById('reportStatus').textContent='Der Hinweis kann gesendet werden.';};
 document.getElementById('translationReportForm').onsubmit=async event=>{
   event.preventDefault();if(reportSending)return;const status=document.getElementById('reportStatus');
-  if(trainingLocked||!reportWord){status.textContent='Увійди до свого профілю, щоб надіслати зауваження.';return;}
+  if(trainingLocked||!reportWord){status.textContent='Melde dich an, um den Hinweis zu senden.';return;}
   const word=reportWord,k=key(word),previous=stats[k]?.translationFeedback;
   const feedback={translation:wordTranslation(word),reason:document.getElementById('reportReason').value.trim().slice(0,600),suggestion:document.getElementById('reportSuggestion').value.trim().slice(0,200),updatedAt:new Date().toISOString(),status:'draft'};
   const unchanged=previous&&['translation','reason','suggestion'].every(field=>feedback[field]===previous[field]);
-  if(unchanged&&previous.delivery==='sent'){status.textContent='✓ Це зауваження вже надіслано на перевірку.';return;}
+  if(unchanged&&previous.delivery==='sent'){status.textContent='✓ Dieser Hinweis wurde bereits zur Prüfung gesendet.';return;}
   feedback.reportId=unchanged&&previous.reportId?previous.reportId:crypto.randomUUID();feedback.delivery='queued';
-  const ownerState=stats,epoch=reportEpoch;reportSending=true;document.getElementById('sendTranslationReport').disabled=true;status.textContent='Надсилаю…';
+  const ownerState=stats,epoch=reportEpoch;reportSending=true;document.getElementById('sendTranslationReport').disabled=true;status.textContent='Wird gesendet…';
   try{
     stats[k]={...(stats[k]||{}),translationFeedback:feedback};try{save()}catch(error){if(previous)stats[k].translationFeedback=previous;else delete stats[k].translationFeedback;throw error;}
     const receipt=await Cloud.submitTranslationFeedback({id:feedback.reportId,word_key:k,german:word.de,translation:feedback.translation,reason:feedback.reason,suggestion:feedback.suggestion});
     if(!trainingLocked&&stats===ownerState&&stats[k]?.translationFeedback?.reportId===feedback.reportId){stats[k].translationFeedback.delivery=receipt.delivery;try{save()}catch{}renderWordProgress();}
-    if(reportEpoch===epoch&&reportWord&&key(reportWord)===k&&!trainingLocked)status.textContent=receipt.delivery==='sent'?'✓ Надіслано на перевірку. Більше нічого робити не потрібно.':'Зауваження збережено. Воно надішлеться автоматично.';
-  }catch(error){if(reportEpoch===epoch&&reportWord&&key(reportWord)===k)status.textContent='Не вдалося надіслати: '+error.message;}
+    if(reportEpoch===epoch&&reportWord&&key(reportWord)===k&&!trainingLocked)status.textContent=receipt.delivery==='sent'?'✓ Zur Prüfung gesendet. Du musst nichts weiter tun.':'Hinweis gespeichert. Er wird automatisch gesendet.';
+  }catch(error){if(reportEpoch===epoch&&reportWord&&key(reportWord)===k)status.textContent='Versand fehlgeschlagen: '+error.message;}
   finally{reportSending=false;document.getElementById('sendTranslationReport').disabled=trainingLocked;}
 };
 window.addEventListener?.('trainer-feedback-delivery',event=>{
@@ -632,7 +632,7 @@ window.addEventListener?.('trainer-feedback-delivery',event=>{
   for(const st of Object.values(stats))if(st.translationFeedback?.reportId===event.detail?.id&&st.translationFeedback.delivery!=='sent'){st.translationFeedback.delivery='sent';changed=true;}
   if(changed){try{save()}catch{}if(wordProgressView==='feedback')renderWordProgress();}
   const feedback=reportWord&&stats[key(reportWord)]?.translationFeedback;
-  if(feedback?.reportId===event.detail?.id&&feedback.reason===document.getElementById('reportReason').value.trim()&&feedback.suggestion===document.getElementById('reportSuggestion').value.trim())document.getElementById('reportStatus').textContent='✓ Надіслано на перевірку. Більше нічого робити не потрібно.';
+  if(feedback?.reportId===event.detail?.id&&feedback.reason===document.getElementById('reportReason').value.trim()&&feedback.suggestion===document.getElementById('reportSuggestion').value.trim())document.getElementById('reportStatus').textContent='✓ Zur Prüfung gesendet. Du musst nichts weiter tun.';
 });
 
 function exampleVerbForms(w){
@@ -650,6 +650,18 @@ async function lookupWordDetails(q){
   const work=Promise.resolve().then(()=>Cloud.lookupDictionary(q));wordDetailPending.set(q,work);
   try{const result=await work;if(wordDetailCache.size>=100)wordDetailCache.delete(wordDetailCache.keys().next().value);wordDetailCache.set(q,result);return result;}finally{wordDetailPending.delete(q)}
 }
+function wordMetadataText(w){
+  const original=data.find(item=>key(item)===key(w))||w,storedDate=stats[key(original)]?.customWord?.addedAt||original.addedAt;
+  let date='Nicht gespeichert';
+  if(typeof storedDate==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(storedDate)){const parsed=new Date(storedDate+'T12:00:00Z');if(Number.isFinite(parsed.getTime())&&parsed.toISOString().slice(0,10)===storedDate)date=parsed.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});}
+  const places=wordLessonMemberships(original),lessons=places.length?places.map(p=>(LessonCatalog.books[p.book]?.label||p.book)+' · '+(LessonCatalog.books[p.book]?.lessons.find(l=>l.id===p.lesson)?.label||'Lektion '+p.lesson)).join('; '):'Keine Lektionszuordnung';
+  return 'Hinzugefügt am: '+date+'\nBuch / Lektionen: '+lessons;
+}
+function refreshWordMetadata(){
+  const update=node=>{if(node.className!=='wordMetadata')return;const w=data.find(item=>key(item)===node.dataset.k);if(w)node.textContent=wordMetadataText(w);};
+  for(const id of ['matchExample','wordSearchDetail','choiceDetail'])for(const node of document.getElementById(id).children)update(node);
+  for(const screen of [previousRoundState,activeRoundState])for(const node of screen?.columns.find(c=>c.id==='matchExample')?.nodes||[])update(node);
+}
 function showMatchExample(w,boxId='matchExample',enriched=false){
   const box=document.getElementById(boxId);
   if(!box)return;
@@ -657,7 +669,8 @@ function showMatchExample(w,boxId='matchExample',enriched=false){
   const request={};box.wordDetailRequest=request;
   if(boxId==='matchExample')followMatchExamples=true;
   box.innerHTML='<div class="exampleHeading">'+escapeExample(w.de)+'</div><b>'+exampleLabel(w)+':</b><br>'+escapeExample(w.example||makeExample(w));
-  const meaning=document.createElement('div');meaning.className='exampleMeaning';meaning.dataset.k=key(w);meaning.textContent=wordTranslation(w);box.appendChild(meaning);box.exampleWordKey=key(w);box.wordMeaning=meaning;const ownNote=document.createElement('small');ownNote.className='personalTranslationNote';ownNote.dataset.k=key(w);ownNote.textContent='Твій переклад';ownNote.hidden=!(stats[key(w)]?.additionalTranslations?.length||stats[key(w)]?.translationVariants);box.wordPersonalNote=ownNote;box.appendChild(ownNote);
+  const meaning=document.createElement('div');meaning.className='exampleMeaning';meaning.lang='uk';meaning.dataset.k=key(w);meaning.textContent=wordTranslation(w);box.appendChild(meaning);box.exampleWordKey=key(w);box.wordMeaning=meaning;const ownNote=document.createElement('small');ownNote.className='personalTranslationNote';ownNote.dataset.k=key(w);ownNote.textContent='Deine Übersetzung';ownNote.hidden=!(stats[key(w)]?.additionalTranslations?.length||stats[key(w)]?.translationVariants);box.wordPersonalNote=ownNote;box.appendChild(ownNote);
+  const metadata=document.createElement('div');metadata.className='wordMetadata';metadata.lang='de';metadata.dataset.k=key(w);metadata.textContent=wordMetadataText(w);box.appendChild(metadata);
   const verbForms=exampleVerbForms(w);
   if(verbForms.praeteritum||verbForms.perfekt){
     const forms=document.createElement('div');forms.className='exampleVerbForms';
@@ -666,28 +679,28 @@ function showMatchExample(w,boxId='matchExample',enriched=false){
       const line=document.createElement('div'),name=document.createElement('span'),form=document.createElement('strong');
       name.textContent=label+': ';form.lang='de';form.textContent=value;line.appendChild(name);line.appendChild(form);forms.appendChild(line);
     }
-    if(verbForms.source){const source=document.createElement('a');source.textContent='Форми: Wiktionary · CC BY-SA 4.0 ↗';source.href=verbForms.source;source.target='_blank';source.rel='noopener noreferrer';source.className='dictionaryLink';forms.appendChild(source);}
+    if(verbForms.source){const source=document.createElement('a');source.textContent='Formen: Wiktionary · CC BY-SA 4.0 ↗';source.href=verbForms.source;source.target='_blank';source.rel='noopener noreferrer';source.className='dictionaryLink';forms.appendChild(source);}
     box.appendChild(forms);
   }
   const synonymEntry=exampleSynonyms(w);
   if(synonymEntry){
     const group=document.createElement('div');group.className='exampleSynonyms';
-    const heading=document.createElement('strong');heading.textContent='Близькі за значенням';group.appendChild(heading);
-    if(synonymEntry.context){const context=document.createElement('div');context.className='synonymContext';context.textContent='Значення: '+synonymEntry.context;group.appendChild(context);}
+    const heading=document.createElement('strong');heading.textContent='Ähnliche Bedeutungen';group.appendChild(heading);
+    if(synonymEntry.context){const context=document.createElement('div');context.className='synonymContext';context.textContent='Bedeutung: '+synonymEntry.context;group.appendChild(context);}
     const terms=document.createElement('div');terms.className='synonymTerms';terms.lang='de';
-    for(const term of synonymEntry.terms){const a=document.createElement('a');a.className='synonymTerm';a.textContent=term;a.href=leoLookup({de:term,type:/^(der|die|das) /.test(term)?'noun':'phrase'});a.target='_blank';a.rel='noopener noreferrer';a.title='Перевірити «'+term+'» у LEO';terms.appendChild(a);}
+    for(const term of synonymEntry.terms){const a=document.createElement('a');a.className='synonymTerm';a.textContent=term;a.href=leoLookup({de:term,type:/^(der|die|das) /.test(term)?'noun':'phrase'});a.target='_blank';a.rel='noopener noreferrer';a.title='„'+term+'“ in LEO prüfen';terms.appendChild(a);}
     group.appendChild(terms);
-    const source=document.createElement('a');source.className='synonymSource';source.textContent='Wiktionary · CC BY-SA 4.0 ↗';source.href=synonymEntry.source;source.target='_blank';source.rel='noopener noreferrer';source.title='Словникове джерело. Близькі слова можуть мати інше керування й не завжди замінюють одне одного в реченні.';group.appendChild(source);box.appendChild(group);
+    const source=document.createElement('a');source.className='synonymSource';source.textContent='Wiktionary · CC BY-SA 4.0 ↗';source.href=synonymEntry.source;source.target='_blank';source.rel='noopener noreferrer';source.title='Wörterbuchquelle. Ähnliche Wörter können andere Ergänzungen verlangen und sind nicht immer austauschbar.';group.appendChild(source);box.appendChild(group);
   }
-  for(const source of w.sources||[]){const a=document.createElement('a');a.textContent='Джерело: '+source.provider+(source.provider==='Wiktionary'?' · CC BY-SA 4.0':'')+' ↗';a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(document.createElement('br'));box.appendChild(a);}
+  for(const source of w.sources||[]){const a=document.createElement('a');a.textContent='Quelle: '+source.provider+(source.provider==='Wiktionary'?' · CC BY-SA 4.0':'')+' ↗';a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(document.createElement('br'));box.appendChild(a);}
   const link=document.createElement('a');
   link.className='dictionaryLink';link.textContent='LEO ↗';link.href=leoLookup(w);
-  link.target='_blank';link.rel='noopener noreferrer';link.title='Перевірити «'+w.de+'» у німецько-російському словнику LEO (нова вкладка)';
+  link.target='_blank';link.rel='noopener noreferrer';link.title='„'+w.de+'“ im deutsch-russischen LEO-Wörterbuch prüfen (neuer Tab)';
   link.ariaLabel=link.title;
   box.appendChild(document.createElement('br'));box.appendChild(link);
-  const report=document.createElement('button');report.type='button';report.className='reportTranslation';report.textContent='Уточнити переклад';report.onclick=()=>openTranslationReport(w,report);box.appendChild(report);
-  const own=document.createElement('button');own.type='button';own.className='addOwnTranslation';own.textContent='Редагувати переклад';own.disabled=trainingLocked;own.onclick=()=>openExtraTranslation(w,own);box.appendChild(own);
-  const close=document.createElement('button');close.type='button';close.className='exampleClose';close.textContent='×';close.setAttribute('aria-label','Закрити приклад');close.title='Закрити приклад';
+  const report=document.createElement('button');report.type='button';report.className='reportTranslation';report.textContent='Übersetzung melden';report.onclick=()=>openTranslationReport(w,report);box.appendChild(report);
+  const own=document.createElement('button');own.type='button';own.className='addOwnTranslation';own.textContent='Übersetzung bearbeiten';own.disabled=trainingLocked;own.onclick=()=>openExtraTranslation(w,own);box.appendChild(own);
+  const close=document.createElement('button');close.type='button';close.className='exampleClose';close.textContent='×';close.setAttribute('aria-label','Beispiel schließen');close.title='Beispiel schließen';
   close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else{document.getElementById('searchLessonEditor').hidden=true;document.getElementById('wordSearchInput').focus();}};
   box.appendChild(close);
   box.classList.remove('hidden');
@@ -695,23 +708,23 @@ function showMatchExample(w,boxId='matchExample',enriched=false){
   // Missing personal-word details are read-only enrichment; saved examples win.
   const hasExample=!!(w.example||window.WORD_EXAMPLES?.[key(w)]?.length),isVerb=['verb','preposition'].includes(w.type);
   if(!enriched&&!trainingLocked&&(!hasExample||(isVerb&&(!verbForms.praeteritum||!verbForms.perfekt)))){
-    const status=document.createElement('div');status.className='muted';status.textContent='Шукаю приклад і форми у словнику…';box.appendChild(status);
+    const status=document.createElement('div');status.className='muted';status.textContent='Beispiel und Formen werden im Wörterbuch gesucht…';box.appendChild(status);
     lookupWordDetails(w.de).then(result=>{
       if(box.wordDetailRequest!==request||box.classList.contains('hidden')||trainingLocked)return;
       const grammar=result.grammar,verified=result.wordCheck?.verified&&result.wordCheck?.typeConfirmed;
-      if(!verified){status.textContent='Додаткові приклад і форми не підтверджені. Перевір у LEO.';return;}
+      if(!verified){status.textContent='Zusätzliches Beispiel und Formen sind nicht bestätigt. Prüfe sie in LEO.';return;}
       const details={...w};
       if(!hasExample&&result.example){details.example=result.example;details.dictionaryExample=true;details.sources=[...(w.sources||[]),...(result.wiktionary?[{provider:'Wiktionary',url:result.wiktionary.url}]:[])];}
       if(['verb','preposition'].includes(grammar?.type)){details.praeteritum=verbForms.praeteritum||grammar.praeteritum||'';details.perfekt=verbForms.perfekt||grammar.perfekt||'';details.partizipII=grammar.partizipII||'';if(result.wiktionary&&!details.sources?.some(s=>s.url===result.wiktionary.url))details.sources=[...(details.sources||[]),{provider:'Wiktionary',url:result.wiktionary.url}];}
       showMatchExample(details,boxId,true);
-    }).catch(()=>{if(box.wordDetailRequest===request&&!box.classList.contains('hidden'))status.textContent='Словник зараз недоступний. Збережені дані та LEO залишаються доступними.';});
+    }).catch(()=>{if(box.wordDetailRequest===request&&!box.classList.contains('hidden'))status.textContent='Das Wörterbuch ist gerade nicht erreichbar. Gespeicherte Angaben und LEO bleiben verfügbar.';});
   }
   if(boxId==='matchExample'&&wasHidden)box.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
 }
 let searchLessonWord=null;
 function addWordToLesson(w,book,lesson){
-  if(trainingLocked)throw Error('Увійди, щоб додавати слова до уроків.');
-  const k=key(w);if(!data.some(item=>key(item)===k))throw Error('Слово більше недоступне. Знайди його ще раз.');
+  if(trainingLocked)throw Error('Melde dich an, um Wörter Lektionen zuzuordnen.');
+  const k=key(w);if(!data.some(item=>key(item)===k))throw Error('Das Wort ist nicht mehr verfügbar. Suche es erneut.');
   const [place]=Progress.lessonMemberships([{book,lesson}]);
   if(wordLessonMemberships(w).some(p=>p.book===place.book&&p.lesson===place.lesson))return false;
   const associations=Progress.lessonMemberships([...(stats[k]?.lessonMemberships||[]),place]),previous=stats;
@@ -722,17 +735,17 @@ function addWordToLesson(w,book,lesson){
 function refreshSearchLessonFields(preferredLesson){
   const book=document.getElementById('searchLessonBook'),lesson=document.getElementById('searchLessonNumber'),previous=preferredLesson??lesson.value;
   const options=LessonCatalog.books[book.value]?.lessons||[];
-  lesson.innerHTML='<option value="">'+(options.length?'Обери урок':'Спочатку обери книжку')+'</option>'+options.map(l=>'<option value="'+l.id+'">'+l.label+'</option>').join('');
+  lesson.innerHTML='<option value="">'+(options.length?'Lektion auswählen':'Zuerst ein Buch auswählen')+'</option>'+options.map(l=>'<option value="'+l.id+'">'+l.label+'</option>').join('');
   lesson.value=options.some(l=>l.id===previous)?previous:'';book.disabled=trainingLocked;lesson.disabled=trainingLocked||!options.length;
   const places=searchLessonWord?wordLessonMemberships(searchLessonWord):[],already=places.some(p=>p.book===book.value&&p.lesson===lesson.value);
-  const add=document.getElementById('searchLessonAdd');add.disabled=trainingLocked||!searchLessonWord||!options.some(l=>l.id===lesson.value)||already;add.textContent=already?'Уже в цьому уроці':'Додати до уроку';
-  document.getElementById('searchLessonMemberships').textContent=places.length?'Уже в уроках: '+places.map(p=>(LessonCatalog.books[p.book]?.label||p.book)+' · '+(LessonCatalog.books[p.book]?.lessons.find(l=>l.id===p.lesson)?.label||p.lesson)).join('; '):'Слово ще не прив’язане до уроку.';
+  const add=document.getElementById('searchLessonAdd');add.disabled=trainingLocked||!searchLessonWord||!options.some(l=>l.id===lesson.value)||already;add.textContent=already?'Bereits zugeordnet':'Zur Lektion hinzufügen';
+  document.getElementById('searchLessonMemberships').textContent=places.length?'Zugeordnete Lektionen: '+places.map(p=>(LessonCatalog.books[p.book]?.label||p.book)+' · '+(LessonCatalog.books[p.book]?.lessons.find(l=>l.id===p.lesson)?.label||p.lesson)).join('; '):'Das Wort ist noch keiner Lektion zugeordnet.';
 }
 function renderSearchLessonEditor(w){
   const canonical=data.find(item=>key(item)===key(w));if(!canonical){document.getElementById('searchLessonEditor').hidden=true;return;}
   const same=searchLessonWord&&key(searchLessonWord)===key(w),book=document.getElementById('searchLessonBook'),lesson=document.getElementById('searchLessonNumber');
   const current=selectedBook(),chosen=same?book.value:LessonCatalog.books[current]&&!LessonCatalog.books[current].pending?current:'',selected=same?lesson.value:chosen&&selectedLessons().length===1?selectedLessons()[0]:'';
-  searchLessonWord=canonical;book.innerHTML='<option value="">Обери книжку</option>'+Object.entries(LessonCatalog.books).filter(([,b])=>!b.pending).map(([id,b])=>'<option value="'+id+'">'+b.label+'</option>').join('');book.value=chosen;
+  searchLessonWord=canonical;book.innerHTML='<option value="">Buch auswählen</option>'+Object.entries(LessonCatalog.books).filter(([,b])=>!b.pending).map(([id,b])=>'<option value="'+id+'">'+b.label+'</option>').join('');book.value=chosen;
   if(!same)document.getElementById('searchLessonStatus').textContent='';
   refreshSearchLessonFields(selected);document.getElementById('searchLessonEditor').hidden=false;
 }
@@ -740,7 +753,7 @@ document.getElementById('searchLessonBook').onchange=()=>{document.getElementByI
 document.getElementById('searchLessonNumber').onchange=()=>{document.getElementById('searchLessonStatus').textContent='';refreshSearchLessonFields()};
 document.getElementById('searchLessonAdd').onclick=()=>{
   const status=document.getElementById('searchLessonStatus');
-  try{if(!searchLessonWord)throw Error('Спочатку обери слово в результатах пошуку.');const book=document.getElementById('searchLessonBook').value,lesson=document.getElementById('searchLessonNumber').value,added=addWordToLesson(searchLessonWord,book,lesson);refreshSearchLessonFields();status.textContent=added?'✓ Додано до '+LessonCatalog.books[book].label+' · Урок '+lesson:'Слово вже є в цьому уроці.';}
+  try{if(!searchLessonWord)throw Error('Wähle zuerst ein Wort aus den Suchergebnissen.');const book=document.getElementById('searchLessonBook').value,lesson=document.getElementById('searchLessonNumber').value,added=addWordToLesson(searchLessonWord,book,lesson);refreshSearchLessonFields();status.textContent=added?'✓ Hinzugefügt zu '+LessonCatalog.books[book].label+' · Lektion '+lesson:'Das Wort ist bereits in dieser Lektion.';}
   catch(error){status.textContent=error.message;}
 };
 function searchText(text){return text.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[’‘ʼ]/g,"'").trim();}
@@ -760,11 +773,11 @@ function renderSearch(){
   const query=document.getElementById('wordSearchInput').value,words=findWords(query),list=document.getElementById('wordSearchResults');list.innerHTML='';
   document.getElementById('wordSearchDetail').classList.add('hidden');document.getElementById('wordSearchDetail').wordDetailRequest=null;document.getElementById('searchLessonEditor').hidden=true;searchLessonWord=null;
   document.getElementById('wordSearchStatus').hidden=!query.trim();
-  document.getElementById('wordSearchStatus').textContent=!query.trim()?'Введи слово або частину слова.':words.length?'Знайдено: '+words.length:'Нічого не знайдено.';
-  const add=document.getElementById('wordSearchAdd'),q=query.trim();add.hidden=!q||q.length>150||words.length>0;add.textContent=/[А-Яа-яІіЇїЄєҐґ]/.test(q)?'＋ Додати нове слово':'＋ Додати «'+q+'»';
+  document.getElementById('wordSearchStatus').textContent=!query.trim()?'Gib ein Wort oder einen Wortteil ein.':words.length?'Gefunden: '+words.length:'Keine Treffer.';
+  const add=document.getElementById('wordSearchAdd'),q=query.trim();add.hidden=!q||q.length>150||words.length>0;add.textContent=/[А-Яа-яІіЇїЄєҐґ]/.test(q)?'＋ Neues Wort hinzufügen':'＋ „'+q+'“ hinzufügen';
   words.forEach(w=>{
     const item=document.createElement('li'),button=document.createElement('button'),de=document.createElement('span'),uk=document.createElement('small');button.type='button';button.dataset.k=key(w);
-    de.textContent=w.de+(hiddenWords.has(key(w))?' · приховане':'');uk.textContent=wordTranslation(w);button.appendChild(de);button.appendChild(uk);
+    de.textContent=w.de+(hiddenWords.has(key(w))?' · ausgeblendet':'');uk.lang='uk';uk.textContent=wordTranslation(w);button.appendChild(de);button.appendChild(uk);
     button.onclick=()=>{showMatchExample(w,'wordSearchDetail');document.getElementById('wordSearchDetail').scrollIntoView({block:'nearest'});};item.appendChild(button);list.appendChild(item);
   });
 }
@@ -777,7 +790,7 @@ document.getElementById('wordSearchAdd').onclick=()=>{
   wordField('newWordGerman').value=german?query:'';wordField('newWordGerman').oninput();clearTimeout(newWordTimer);
   wordField('newWordForm').scrollIntoView({behavior:'smooth',block:'center'});wordField('newWordGerman').focus();
   if(german&&!trainingLocked)return lookupNewWord();
-  if(!german)wordField('newWordStatus').textContent='Введи німецьке слово — український переклад підставиться автоматично.';
+  if(!german)wordField('newWordStatus').textContent='Gib ein deutsches Wort ein. Die ukrainische Übersetzung wird automatisch vorgeschlagen.';
 };
 function renderRecentMatches(){
   const words=recentMatched.filter(w=>!hiddenWords.has(key(w))),list=document.getElementById('recentMatchWords');list.innerHTML='';document.getElementById('recentMatches').hidden=!words.length;
@@ -788,7 +801,7 @@ function addCard(col,side,w,text){
   e.lang=side==='L'||document.getElementById('mode').value!=='translation'?'de':'uk';
   if(side==='L'){
     e.classList.add('reviewable');e.setAttribute('role','button');e.tabIndex=0;
-    e.title='Натисни ще раз для прикладу · утримуй, щоб прибрати слово';
+    e.title='Erneut antippen für ein Beispiel · gedrückt halten zum Ausblenden';
     let t=null,longPressed=false;
     e.addEventListener('pointerdown',()=>{longPressed=false;if(viewingPreviousRound)return;t=setTimeout(()=>{longPressed=true;if(hideWord(w))renderRound()},650)});
     ['pointerup','pointercancel','pointerleave'].forEach(ev=>e.addEventListener(ev,()=>{if(t)clearTimeout(t)}));
@@ -798,7 +811,7 @@ function addCard(col,side,w,text){
     let held=false,timer=null,startX=0,startY=0;
     const cancel=()=>{if(timer)clearTimeout(timer);timer=null;};
     if(document.getElementById('mode').value==='translation'){
-      e.classList.add('reportable');e.title='Утримуй, щоб повідомити про переклад';
+      e.classList.add('reportable');e.title='Gedrückt halten, um die Übersetzung zu melden';
       e.addEventListener('pointerdown',(event={})=>{held=false;if(event.button!=null&&event.button!==0)return;startX=event.clientX||0;startY=event.clientY||0;cancel();timer=setTimeout(()=>{held=true;openTranslationReport(w,e);},650);});
       e.addEventListener('pointermove',(event={})=>{if(Math.hypot((event.clientX||0)-startX,(event.clientY||0)-startY)>10)cancel();});
       ['pointerup','pointercancel','pointerleave'].forEach(name=>e.addEventListener(name,cancel));
@@ -829,7 +842,7 @@ function openArticleQuestion(w,pair=null){
 let articleReviewSeen=new Set();
 function articleReviewPool(){return data.filter(w=>lessonMatches(w)&&w.type==='noun'&&!hiddenWords.has(key(w))&&['der','die','das'].includes(w.article)&&(s(w).articleWrong||0)>0&&s(w).articleNeedsReview!==false);}
 function closeArticleReview(){if(articleQuestion?.review){if(articleQuestion.answered)articleReviewSeen.add(key(articleQuestion.w));articleQuestion=null;closeArticleDialog();}updateArticleReviewStatus();}
-function updateArticleReviewStatus(){const count=articleReviewPool().length;document.getElementById('articleReviewStatus').textContent=count?'Потребують повторення: '+count:'Немає іменників із невиправленими помилками в артиклях ✓';document.getElementById('articleReviewResume').hidden=!count;}
+function updateArticleReviewStatus(){const count=articleReviewPool().length;document.getElementById('articleReviewStatus').textContent=count?'Wiederholung nötig: '+count:'Keine Nomen mit offenen Artikelfehlern ✓';document.getElementById('articleReviewResume').hidden=!count;}
 function renderArticleReview(){
   if(trainingLocked)return;updateArticleReviewStatus();
   const pool=articleReviewPool();if(!pool.length)return;
@@ -851,12 +864,12 @@ function showRoundScreen(screen){
   screen.columns.forEach(({id,nodes,hidden})=>{const element=document.getElementById(id);element.innerHTML='';nodes.forEach(node=>element.appendChild(node));if(hidden)element.classList.add('hidden');else element.classList.remove('hidden');});
   document.getElementById('msg').textContent=screen.message;document.getElementById('roundDirection').textContent=screen.direction;document.getElementById('rightColumnLabel').textContent=screen.rightLabel;followMatchExamples=screen.follow;
 }
-function rememberCompletedRound(){previousRoundState=captureRoundScreen();previousRoundState.message='Раунд завершено';document.getElementById('previousRound').disabled=true;}
+function rememberCompletedRound(){previousRoundState=captureRoundScreen();previousRoundState.message='Runde abgeschlossen';document.getElementById('previousRound').disabled=true;}
 function togglePreviousRound(){
   if(trainingLocked||articleQuestion||!previousRoundState||document.getElementById('previousRound').disabled)return;
   if(viewingPreviousRound){showRoundScreen(activeRoundState);activeRoundState=null;viewingPreviousRound=false;}
   else{activeRoundState=captureRoundScreen();viewingPreviousRound=true;showRoundScreen(previousRoundState);}
-  document.getElementById('previousRound').textContent=viewingPreviousRound?'До поточного раунду →':'← Попередній раунд';
+  document.getElementById('previousRound').textContent=viewingPreviousRound?'Zur aktuellen Runde →':'← Vorherige Runde';
 }
 document.getElementById('previousRound').onclick=togglePreviousRound;
 function finishMatchedPair(pair){
@@ -865,8 +878,8 @@ function finishMatchedPair(pair){
   a.e.classList.remove('articlePending');b.e.classList.remove('articlePending');a.e.textContent=a.w.de;
   const error=pair.article&&s(a.w).articleNeedsReview;
   if(error){a.e.classList.add('articleMistake');b.e.classList.add('articleMistake');}
-  if(pair.article){const result=error?'✕ Артикль не вгадано — повторення не зараховано':'✓ Артикль правильний — повторення зараховано';a.e.setAttribute('aria-label',a.w.de+' · '+result);b.e.setAttribute('aria-label',wordTranslation(b.w)+' · '+result);a.e.title=result;b.e.title=result;}
-  setTimeout(()=>{if(epoch!==roundEpoch)return;solved.add(key(a.w));if(solved.size===currentRound.length){rememberCompletedRound();document.getElementById('msg').textContent='Раунд завершено ✓ · наступний автоматично';setTimeout(()=>{if(epoch===roundEpoch&&!trainingLocked&&!document.getElementById('training').classList.contains('hidden'))renderRound()},650);}},180);
+  if(pair.article){const result=error?'✕ Artikel falsch — Wiederholung zählt nicht':'✓ Artikel richtig — Wiederholung zählt';a.e.setAttribute('aria-label',a.w.de+' · '+result);b.e.setAttribute('aria-label',wordTranslation(b.w)+' · '+result);a.e.title=result;b.e.title=result;}
+  setTimeout(()=>{if(epoch!==roundEpoch)return;solved.add(key(a.w));if(solved.size===currentRound.length){rememberCompletedRound();document.getElementById('msg').textContent='Runde abgeschlossen ✓ · automatisch weiter';setTimeout(()=>{if(epoch===roundEpoch&&!trainingLocked&&!document.getElementById('training').classList.contains('hidden'))renderRound()},650);}},180);
 }
 function answerArticle(article){
   const question=articleQuestion;if(trainingLocked||!question||question.answered||!['der','die','das'].includes(article)||(!question.review&&!stats[key(question.w)]?.pendingArticle))return;
@@ -876,7 +889,7 @@ function answerArticle(article){
   for(const id of ['articleDer','articleDie','articleDas'])document.getElementById(id).disabled=true;
   document.getElementById('article'+question.w.article[0].toUpperCase()+question.w.article.slice(1)).classList.add('correctArticle');
   document.getElementById('articleNoun').textContent=question.w.de;
-  document.getElementById('articleResult').textContent=ok?'✓ Правильно':'✕ Неправильно';
+  document.getElementById('articleResult').textContent=ok?'✓ Richtig':'✕ Falsch';
   document.getElementById('articleContinue').hidden=false;save();updateStats();
   // Keep either result visible until the learner acknowledges it.
 }
@@ -916,24 +929,24 @@ function check(){
 function updateStats(){
   const inventory=Progress.vocabularyReport(rawSeed,stats,hiddenWords,data);
   document.getElementById('vocabularySummary').textContent=[
-    'У GitHub: '+inventory.corpusUnique,
-    'Особистих, ще не в GitHub: '+inventory.personalOnly.length,
-    'Разом завантажено: '+inventory.runtimeUnique,
-    'Приховано: '+inventory.hiddenPresent.length,
-    'Активних: '+inventory.active,
-    ...(inventory.corpusMissing.length||inventory.unexplainedRuntime.length?['Увага: джерела словника не збігаються. Збережи резервну копію.']:[])
+    'In GitHub: '+inventory.corpusUnique,
+    'Eigene Wörter, noch nicht in GitHub: '+inventory.personalOnly.length,
+    'Insgesamt geladen: '+inventory.runtimeUnique,
+    'Ausgeblendet: '+inventory.hiddenPresent.length,
+    'Aktiv: '+inventory.active,
+    ...(inventory.corpusMissing.length||inventory.unexplainedRuntime.length?['Achtung: Die Wortschatzquellen stimmen nicht überein. Erstelle eine Sicherungskopie.']:[])
   ].join('\n');
   renderDailyChart();
   const activeWords=activeVocabulary();
-  const typeNames={all:'Усі слова',noun:'Іменники',verb:'Дієслова',adjective:'Прикметники',adverb:'Прислівники',phrase:'Вирази',preposition:'Дієслова + Präposition'};
-  const modeNames={context:'Слово в контексті',translation:'Переклад',articleReview:'Артиклі з помилками',nounPlural:'Множина',verbPast:'Форми дієслів',verbWrite:'Письмові дієслова'};
-  const focusNames={all:'',unmastered:'Ще не засвоєні',weak:'З помилками',recall:'Пригадування'};
-  const dateNames={all:'',today:'Сьогодні','7':'7 днів','30':'30 днів'};
+  const typeNames={all:'Alle Wörter',noun:'Nomen',verb:'Verben',adjective:'Adjektive',adverb:'Adverbien',phrase:'Wendungen',preposition:'Verben mit Präposition'};
+  const modeNames={context:'Wort im Kontext',translation:'Übersetzung',articleReview:'Artikel mit Fehlern',nounPlural:'Plural',verbPast:'Verbformen',verbWrite:'Verben schreiben'};
+  const focusNames={all:'',unmastered:'Noch nicht gelernt',weak:'Mit Fehlern',learned:'Gelernt',recall:'Erinnern'};
+  const dateNames={all:'',today:'Heute','7':'7 Tage','30':'30 Tage'};
   const contextMode=document.getElementById('exerciseType').value==='context'||document.getElementById('mode').value==='context';document.getElementById('focus').disabled=document.getElementById('mode').value==='context';document.getElementById('focus').hidden=document.getElementById('mode').value==='context';document.getElementById('contextFocusLabel').hidden=!contextMode;
   renderLessonStatus();StageTraining.renderStats();
-  document.getElementById('trainingSelection').textContent=[typeNames[typeFilter],modeNames[document.getElementById('mode').value],contextMode?'Після 3 зіставлень':focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
+  document.getElementById('trainingSelection').textContent=[typeNames[typeFilter],modeNames[document.getElementById('mode').value],contextMode?'Nach 3 Zuordnungen':focusNames[document.getElementById('focus').value],dateNames[dateFilter]].filter(Boolean).join(' · ');
   renderWordProgress();
-  renderRecentMatches();
+  renderRecentMatches();refreshWordMetadata();
   let correct=0,wrong=0,mastered=0,once=0,twice=0,articleCorrect=0,articleWrong=0;
   activeWords.forEach(w=>{
     const st=s(w);correct+=st.correct;wrong+=st.wrong;
@@ -945,8 +958,8 @@ function updateStats(){
   document.getElementById('matchingOnceCount').textContent=once;
   document.getElementById('matchingTwiceCount').textContent=twice;
   const articleTotal=articleCorrect+articleWrong;
-  document.getElementById('articleMistakesCount').textContent=articleWrong+' з '+articleTotal;
-  document.getElementById('showArticleMistakes').title='Помилкові відповіді на артиклі серед неприхованих слів за весь час. Натисни, щоб переглянути слова.';
+  document.getElementById('articleMistakesCount').textContent=articleWrong+' von '+articleTotal;
+  document.getElementById('showArticleMistakes').title='Falsche Artikelantworten bei nicht ausgeblendeten Wörtern insgesamt. Antippen, um die Wörter zu sehen.';
   document.getElementById('articleAccuracy').textContent=articleTotal?Math.round(articleCorrect/articleTotal*100)+'%':'—';
   const activeTotal=activeWords.length;
   document.getElementById('totalCount').textContent=activeTotal;
@@ -958,11 +971,11 @@ function updateStats(){
   const counts={noun:0,verb:0,adjective:0,adverb:0,phrase:0,preposition:0,other:0};
   activeWords.forEach(w=>counts[w.type]=(counts[w.type]||0)+1);
   document.getElementById('typeLegend').innerHTML=
-    '<span class="typecount">Іменники: '+counts.noun+'</span>'+
-    '<span class="typecount">Дієслова: '+counts.verb+'</span>'+
-    '<span class="typecount">Прикметники: '+counts.adjective+'</span>'+
-    '<span class="typecount">Прислівники: '+counts.adverb+'</span>'+
-    '<span class="typecount">Вирази: '+counts.phrase+'</span>'+ '<span class="typecount">Präpositionen: '+counts.preposition+'</span>';
+    '<span class="typecount">Nomen: '+counts.noun+'</span>'+
+    '<span class="typecount">Verben: '+counts.verb+'</span>'+
+    '<span class="typecount">Adjektive: '+counts.adjective+'</span>'+
+    '<span class="typecount">Adverbien: '+counts.adverb+'</span>'+
+    '<span class="typecount">Wendungen: '+counts.phrase+'</span>'+ '<span class="typecount">Präpositionen: '+counts.preposition+'</span>';
   updateRecallStats();updateContextStats();
 }
 document.querySelectorAll('#typeButtons button').forEach(b=>b.onclick=()=>{cancelTraining();document.querySelectorAll('#typeButtons button').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeFilter=b.dataset.type;updateStats()});
@@ -979,7 +992,7 @@ function cacheContextTranslation(sentence,text){
 async function loadContextSentenceTranslation(q=contextQuestion){
   if(trainingLocked||!q||q!==contextQuestion||document.getElementById('exerciseType').value!=='context'&&document.getElementById('mode').value!=='context')return;
   const field=document.getElementById('contextSentenceUk'),source=document.getElementById('contextSentenceTranslationSource');
-  field.textContent='Перекладаю речення…';source.textContent='';
+  field.lang='de';field.textContent='Satz wird übersetzt…';source.textContent='';
   try{
     let text=contextSentenceTranslations.get(q.sentence);
     if(!text){
@@ -990,8 +1003,8 @@ async function loadContextSentenceTranslation(q=contextQuestion){
       text=result.translation;cacheContextTranslation(q.sentence,text);
     }
     if(q!==contextQuestion||trainingLocked)return;
-    field.textContent=text;source.textContent='Автоматичний переклад · MyMemory';
-  }catch{if(q===contextQuestion&&!trainingLocked){field.textContent='Переклад речення зараз недоступний. Закрий і знову відкрий підказку, щоб повторити.';source.textContent='';}}
+    field.lang='uk';field.textContent=text;source.textContent='Automatische Übersetzung · MyMemory';
+  }catch{if(q===contextQuestion&&!trainingLocked){field.textContent='Die Satzübersetzung ist gerade nicht verfügbar. Schließe und öffne den Hinweis erneut.';source.textContent='';}}
 }
 document.getElementById('contextHint').ontoggle=()=>{if(document.getElementById('contextHint').open)loadContextSentenceTranslation()};
 function contextInventory(){
@@ -1004,21 +1017,21 @@ function contextInventory(){
 }
 function contextChoices(card){const cache=contextInventory();if(!cache.choices.has(card))cache.choices.set(card,window.ContextPractice.alternatives(card,cache.cards,window.WORD_SYNONYMS||{}));return cache.choices.get(card)}
 function updateContextStats(){
-  const ready=recallPool();document.getElementById('contextStats').textContent='У контексті: ✓ '+ready.reduce((n,w)=>n+(s(w).contextCorrect||0),0)+' · ✕ '+ready.reduce((n,w)=>n+(s(w).contextWrong||0),0);
+  const ready=recallPool();document.getElementById('contextStats').textContent='Im Kontext: ✓ '+ready.reduce((n,w)=>n+(s(w).contextCorrect||0),0)+' · ✕ '+ready.reduce((n,w)=>n+(s(w).contextWrong||0),0);
 }
 function contextPool(){const cache=contextInventory();return StageTraining.pool('context').filter(w=>(cache.byKey.get(key(w))||[]).some(card=>contextChoices(card).length>=4))}
 function renderContext(){
   contextQuestion=null;document.getElementById('contextHint').open=false;document.getElementById('contextHint').hidden=true;const ready=recallPool(),available=contextPool(),options=document.getElementById('contextOptions');options.innerHTML='';document.getElementById('contextFeedback').textContent='';document.getElementById('contextMeaning').hidden=true;document.getElementById('contextNext').hidden=true;document.getElementById('contextLeo').hidden=true;document.getElementById('contextSource').textContent='';
-  document.getElementById('contextStatus').textContent='Для цієї вправи: '+available.length+' із '+ready.length+' готових слів у вибраному наборі.';
-  let good=0,bad=0;for(const w of ready){good+=s(w).contextCorrect||0;bad+=s(w).contextWrong||0}document.getElementById('contextStats').textContent='У контексті: ✓ '+good+' · ✕ '+bad;
-  if(!available.length){document.getElementById('contextSentence').textContent=ready.length?'Для цих слів ще потрібні придатні приклади з пропуском.':'Спочатку вгадай слова тричі у зіставленні — тоді вони з’являться тут.';return;}
+  document.getElementById('contextStatus').textContent='Für diese Übung: '+available.length+' von '+ready.length+' bereite Wörter in dieser Auswahl.';
+  let good=0,bad=0;for(const w of ready){good+=s(w).contextCorrect||0;bad+=s(w).contextWrong||0}document.getElementById('contextStats').textContent='Im Kontext: ✓ '+good+' · ✕ '+bad;
+  if(!available.length){document.getElementById('contextSentence').textContent=ready.length?'Für diese Wörter fehlen noch geeignete Lückensätze.':'Ordne die Wörter zuerst dreimal richtig zu. Danach erscheinen sie hier.';return;}
   const w=shuffle(cyclePool())[0];if(!w)return;
   const cards=contextInventory().byKey.get(key(w)).filter(c=>contextChoices(c).length>=4),old=previousContextSentence.get(key(w));
   const card=shuffle(cards.filter(c=>c.sentence!==old).length?cards.filter(c=>c.sentence!==old):cards)[0];previousContextSentence.set(key(w),card.sentence);
-  document.getElementById('contextHint').hidden=false;document.getElementById('contextHintText').textContent=wordTranslation(w);document.getElementById('contextSentenceUk').textContent='Відкрий підказку, щоб побачити переклад речення.';document.getElementById('contextSentenceTranslationSource').textContent='';
+  document.getElementById('contextHint').hidden=false;document.getElementById('contextHintText').textContent=wordTranslation(w);document.getElementById('contextSentenceUk').textContent='Öffne den Hinweis, um die Satzübersetzung zu sehen.';document.getElementById('contextSentenceTranslationSource').textContent='';
   const q=contextQuestion={...card,w,answered:false,options:shuffle([card.answer,...shuffle(contextChoices(card)).slice(0,4)])};
-  document.getElementById('contextSentence').innerHTML=escapeExample(q.before)+'<span class="contextGap" aria-label="Пропущене слово">_____</span>'+escapeExample(q.after);
-  document.getElementById('contextSource').textContent=q.source==='stored'?'Збережений приклад':'Авторський приклад (ШІ)';
+  document.getElementById('contextSentence').innerHTML=escapeExample(q.before)+'<span class="contextGap" aria-label="Fehlendes Wort">_____</span>'+escapeExample(q.after);
+  document.getElementById('contextSource').textContent=q.source==='stored'?'Gespeichertes Beispiel':'KI-Beispiel';
   for(const text of q.options){const button=document.createElement('button');button.type='button';button.textContent=text;button.lang='de';button.dataset.answer=text;button.onclick=()=>answerContext(text,q);options.appendChild(button)}
 }
 function answerContext(answer,q=contextQuestion){
@@ -1028,10 +1041,10 @@ function answerContext(answer,q=contextQuestion){
   markWorked(q.w);markCycleSeen(q.w);save();updateStats();
   for(const button of document.getElementById('contextOptions').children){button.disabled=true;if(button.dataset.answer===q.answer)button.classList.add('correct');else if(button.dataset.answer===answer)button.classList.add('wrong')}
   document.getElementById('contextSentence').innerHTML=escapeExample(q.before)+'<strong class="contextFilled">'+escapeExample(q.answer)+'</strong>'+escapeExample(q.after);
-  document.getElementById('contextFeedback').textContent=correct?'✓ Правильно':'✕ Правильний варіант: '+q.answer;
+  document.getElementById('contextFeedback').textContent=correct?'✓ Richtig':'✕ Richtige Antwort: '+q.answer;
   const meaning=document.getElementById('contextMeaning');meaning.textContent=q.w.de+' — '+wordTranslation(q.w);meaning.hidden=false;
   const link=document.getElementById('contextLeo');link.href=leoLookup(q.w);link.hidden=false;document.getElementById('contextNext').hidden=false;
-  const ready=recallPool();document.getElementById('contextStats').textContent='У контексті: ✓ '+ready.reduce((n,w)=>n+(s(w).contextCorrect||0),0)+' · ✕ '+ready.reduce((n,w)=>n+(s(w).contextWrong||0),0);
+  const ready=recallPool();document.getElementById('contextStats').textContent='Im Kontext: ✓ '+ready.reduce((n,w)=>n+(s(w).contextCorrect||0),0)+' · ✕ '+ready.reduce((n,w)=>n+(s(w).contextWrong||0),0);
 }
 document.getElementById('contextNext').onclick=()=>{if(!trainingLocked&&contextQuestion?.answered)renderContext()};
 document.getElementById('startContext').onclick=()=>{document.getElementById('exerciseType').value='context';StageTraining.configure();document.getElementById('startBtn').onclick()};
@@ -1040,7 +1053,7 @@ function recallPool(){return data.filter(w=>lessonMatches(w)&&!hiddenWords.has(k
 function renderRecall(){
   const p=recallPool();
   document.getElementById('recallReady').textContent=p.length;
-  if(!p.length){document.getElementById('recallWord').textContent='Ще немає слів після 3 правильних збігів';recallWord=null;return}
+  if(!p.length){document.getElementById('recallWord').textContent='Noch keine Wörter mit 3 richtigen Zuordnungen';recallWord=null;return}
   recallWord=shuffle(p).sort((a,b)=>(s(a).recallCorrect-s(a).recallWrong)-(s(b).recallCorrect-s(b).recallWrong))[0];
   document.getElementById('recallWord').textContent=recallWord.de;
   document.getElementById('recallInput').value='';
@@ -1050,12 +1063,12 @@ function renderRecall(){
 }
 const previousExample=new Map();
 function escapeExample(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function exampleLabel(w){return w.dictionaryExample?'Приклад: Wiktionary':w.example?'Збережений приклад':window.WORD_EXAMPLES?.[key(w)]?.length?'Авторський приклад (ШІ)':'Приклад';}
+function exampleLabel(w){return w.dictionaryExample?'Beispiel: Wiktionary':w.example?'Gespeichertes Beispiel':window.WORD_EXAMPLES?.[key(w)]?.length?'KI-Beispiel':'Beispiel';}
 function makeExample(w){
   // Never rotate, replace or edit a sentence supplied with the vocabulary.
   if(w.example)return w.example;
   const choices=window.WORD_EXAMPLES?.[key(w)];
-  if(!choices?.length)return 'Для цього слова приклад ще не підготовлено. Значення можна перевірити в LEO.';
+  if(!choices?.length)return 'Für dieses Wort gibt es noch kein Beispiel. Die Bedeutung kannst du in LEO prüfen.';
   const previous=previousExample.get(key(w));
   const index=previous===undefined?Math.floor(Math.random()*choices.length):(previous+1)%choices.length;
   previousExample.set(key(w),index);
@@ -1065,7 +1078,7 @@ function showRecallAnswer(){
   if(!recallWord)return;
   const typed=document.getElementById('recallInput').value.trim();
   const ex=recallWord.example||makeExample(recallWord);
-  document.getElementById('recallAnswer').innerHTML='<b>Твоя відповідь:</b> '+escapeExample(typed||'—')+'<br><b>Правильний переклад:</b> '+escapeExample(wordTranslation(recallWord))+'<br><br><b>'+exampleLabel(recallWord)+':</b><br>'+escapeExample(ex);
+  document.getElementById('recallAnswer').innerHTML='<b>Deine Antwort:</b> '+escapeExample(typed||'—')+'<br><b>Richtige Übersetzung:</b> '+escapeExample(wordTranslation(recallWord))+'<br><br><b>'+exampleLabel(recallWord)+':</b><br>'+escapeExample(ex);
   document.getElementById('recallAnswer').classList.remove('hidden');
   document.getElementById('recallJudge').classList.remove('hidden');
 }
@@ -1090,20 +1103,20 @@ document.getElementById('focus').onchange=()=>{if(trainingLocked)return;cancelTr
 let verbWriteWord=null;
 function verbWritePool(){return cyclePool()}
 function renderVerbWrite(){
- const p=verbWritePool(); if(!p.length){document.getElementById('verbWriteWord').textContent='Для цього фільтра немає дієслів.';verbWriteWord=null;return}
+ const p=verbWritePool(); if(!p.length){document.getElementById('verbWriteWord').textContent='Keine Verben für diesen Filter.';verbWriteWord=null;return}
  verbWriteWord=shuffle(p)[0]; document.getElementById('verbWriteWord').textContent=verbWriteWord.de;
- ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value=''); verbWriteUkSkipped=false; document.getElementById('verbWriteUk').disabled=false; document.getElementById('verbWriteUk').placeholder='Український переклад';
+ ['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value=''); verbWriteUkSkipped=false; document.getElementById('verbWriteUk').disabled=false; document.getElementById('verbWriteUk').placeholder='Ukrainische Übersetzung';
  document.getElementById('verbWriteAnswer').classList.add('hidden');document.getElementById('verbWriteJudge').classList.add('hidden');document.getElementById('verbWriteUk').focus();
 }
 let verbWriteUkSkipped=false;
 function showVerbWriteAnswer(){
  if(!verbWriteWord)return; const vals=['verbWriteUk','verbWritePraet','verbWritePerf'].map(id=>document.getElementById(id).value.trim()||'—');
- document.getElementById('verbWriteAnswer').innerHTML='<b>Твої відповіді:</b><br>Переклад: '+(verbWriteUkSkipped?'пропущено':vals[0])+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Правильно:</b><br>Переклад: '+escapeExample(wordTranslation(verbWriteWord))+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
+ document.getElementById('verbWriteAnswer').innerHTML='<b>Deine Antworten:</b><br>Übersetzung: '+(verbWriteUkSkipped?'übersprungen':vals[0])+'<br>Präteritum: '+vals[1]+'<br>Perfekt: '+vals[2]+'<br><br><b>Richtig:</b><br>Übersetzung: '+escapeExample(wordTranslation(verbWriteWord))+'<br>Präteritum: '+verbWriteWord.praeteritum+'<br>Perfekt: '+verbWriteWord.perfekt;
  document.getElementById('verbWriteAnswer').classList.remove('hidden');document.getElementById('verbWriteJudge').classList.remove('hidden');
 }
 function judgeVerbWrite(ok){if(trainingLocked||!verbWriteWord)return;const st=s(verbWriteWord);markWorked(verbWriteWord);markCycleSeen(verbWriteWord);if(st.verbWriteCorrect==null)st.verbWriteCorrect=0;if(st.verbWriteWrong==null)st.verbWriteWrong=0;if(ok)st.verbWriteCorrect++;else st.verbWriteWrong++;save();renderVerbWrite()}
 document.getElementById('verbWriteRemove').onclick=()=>{if(hideWord(verbWriteWord))renderVerbWrite()};
-document.getElementById('verbWriteSkipUk').onclick=()=>{verbWriteUkSkipped=true;const e=document.getElementById('verbWriteUk');e.value='';e.disabled=true;e.placeholder='Переклад пропущено';document.getElementById('verbWritePraet').focus()};
+document.getElementById('verbWriteSkipUk').onclick=()=>{verbWriteUkSkipped=true;const e=document.getElementById('verbWriteUk');e.value='';e.disabled=true;e.placeholder='Übersetzung übersprungen';document.getElementById('verbWritePraet').focus()};
 document.getElementById('verbWriteCheck').onclick=showVerbWriteAnswer;
 document.getElementById('verbWriteDontKnow').onclick=()=>{['verbWriteUk','verbWritePraet','verbWritePerf'].forEach(id=>document.getElementById(id).value='');showVerbWriteAnswer()};
 document.getElementById('verbWriteCorrect').onclick=()=>judgeVerbWrite(true);document.getElementById('verbWriteWrong').onclick=()=>judgeVerbWrite(false);
@@ -1117,9 +1130,9 @@ const wordField=id=>document.getElementById(id);
 let newWordLessonSuggested=false;
 function renderNewWordLessonControls(){
   const book=wordField('newWordBook'),lesson=wordField('newWordLesson'),chosen=book.value||'',old=lesson.value||'';
-  book.innerHTML='<option value="">Без прив’язки до уроку</option>'+Object.entries(LessonCatalog.books).filter(([,b])=>!b.pending).map(([id,b])=>'<option value="'+id+'">'+b.label+'</option>').join('');
+  book.innerHTML='<option value="">Ohne Lektionszuordnung</option>'+Object.entries(LessonCatalog.books).filter(([,b])=>!b.pending).map(([id,b])=>'<option value="'+id+'">'+b.label+'</option>').join('');
   book.value=LessonCatalog.books[chosen]&&!LessonCatalog.books[chosen].pending?chosen:'';
-  const options=LessonCatalog.books[book.value]?.lessons||[];lesson.innerHTML='<option value="">'+(options.length?'Обери урок':'Спочатку обери книжку')+'</option>'+options.map(l=>'<option value="'+l.id+'">'+l.label+'</option>').join('');
+  const options=LessonCatalog.books[book.value]?.lessons||[];lesson.innerHTML='<option value="">'+(options.length?'Lektion auswählen':'Zuerst ein Buch auswählen')+'</option>'+options.map(l=>'<option value="'+l.id+'">'+l.label+'</option>').join('');
   lesson.value=options.some(l=>l.id===old)?old:'';lesson.disabled=!options.length;lesson.required=!!book.value;
 }
 function suggestNewWordLesson(){
@@ -1129,14 +1142,14 @@ function suggestNewWordLesson(){
 }
 function newWordLessonMemberships(){
   const book=wordField('newWordBook').value,lesson=wordField('newWordLesson').value;
-  if(!book)return [];if(!LessonCatalog.books[book]?.lessons.some(l=>l.id===lesson))throw Error('Обери урок або залиш слово без прив’язки до книжки.');
+  if(!book)return [];if(!LessonCatalog.books[book]?.lessons.some(l=>l.id===lesson))throw Error('Wähle eine Lektion oder lasse das Wort ohne Buchzuordnung.');
   return Progress.lessonMemberships([{book,lesson}]);
 }
 wordField('newWordBook').onchange=()=>{newWordLessonSuggested=true;wordField('newWordLesson').value='';renderNewWordLessonControls()};
 function addPersonalWord(candidate,suggestion=null,memberships=[]){
-  if(trainingLocked)throw Error('Спочатку увійди до готового хмарного профілю');
+  if(trainingLocked)throw Error('Melde dich zuerst bei einem eingerichteten Cloud-Profil an');
   const w=Progress.customWord({...candidate,addedAt:today(),approvedBy:'user'}),k=key(w);
-  if(data.some(other=>key(other).replace(/\s+/g,' ')===k.replace(/\s+/g,' ')))throw Error('Це слово вже є у словнику. Знайди його через пошук.');
+  if(data.some(other=>key(other).replace(/\s+/g,' ')===k.replace(/\s+/g,' ')))throw Error('Dieses Wort ist bereits im Wortschatz. Finde es über die Suche.');
   const associations=Progress.lessonMemberships([...(stats[k]?.lessonMemberships||[]),...Progress.lessonMemberships(memberships)]);
   const oldStats=stats;stats={...stats,[k]:{correct:0,wrong:0,streak:0,mastered:false,...(Object.prototype.hasOwnProperty.call(stats,k)?stats[k]:{}),customWord:w,...(associations.length?{lessonMemberships:associations}:{}),...(suggestion?{translationSuggestion:Progress.clone(suggestion)}:{})}};
   try{save()}catch(error){stats=oldStats;throw error}
@@ -1151,7 +1164,7 @@ function renderNewWordChoices(values=[],provider=''){
   const box=wordField('newWordChoices');box.innerHTML='';
   newWordChoices=[...new Set(values.filter(v=>typeof v==='string').map(v=>v.trim()).filter(v=>v&&v.length<=200))].slice(0,12);
   box.hidden=!newWordChoices.length;if(box.hidden)return;
-  const heading=document.createElement('p');heading.textContent='Обери потрібні значення · можна декілька';box.appendChild(heading);
+  const heading=document.createElement('p');heading.textContent='Wähle die passenden Bedeutungen · Mehrfachauswahl möglich';box.appendChild(heading);
   const group=document.createElement('div');group.className='translationChoices';box.appendChild(group);
   for(const value of newWordChoices){const button=document.createElement('button');button.type='button';button.textContent=value;button.lang='uk';button.dataset.value=value;button.setAttribute('aria-pressed','false');button.onclick=()=>toggleNewWordChoice(value);group.appendChild(button);}
   syncNewWordChoices();
@@ -1164,7 +1177,7 @@ function toggleNewWordChoice(value){
   if(trainingLocked||!newWordChoices.includes(value))return;
   const field=wordField('newWordTranslation'),selected=field.value.split(/\s*;\s*/).map(v=>v.trim()).filter(Boolean);
   const next=selected.includes(value)?selected.filter(v=>v!==value):[...selected,value],text=next.join('; ');
-  if(text.length>500){wordField('newWordStatus').textContent='Забагато тексту: обери менше значень або скороти переклад.';return;}
+  if(text.length>500){wordField('newWordStatus').textContent='Zu viel Text: Wähle weniger Bedeutungen oder kürze die Übersetzung.';return;}
   field.value=text;newWordTranslationEdit++;
   if(newWordEvidence){const choices=(newWordEvidence.choices||[]).filter(c=>next.includes(c.text));newWordEvidence.translation=text;newWordEvidence.origin=choices.length===next.length&&choices.length&&choices.every(c=>!c.automatic&&c.provider==='Wiktionary')?'Wiktionary':'user';if(choices.some(c=>c.automatic))newWordEvidence.suggestion={provider:'MyMemory',kind:'automatic',query:wordField('newWordGerman').value.trim(),translation:text,confirmedBy:'user',choices:Progress.clone(choices)};else if(choices.some(c=>c.editorialTranslation))newWordEvidence.suggestion={provider:'LEO',kind:'editorial_translation',query:wordField('newWordGerman').value.trim(),translation:text,choices:Progress.clone(choices),confirmedBy:'user'};else newWordEvidence.suggestion=null;}
   syncNewWordChoices();
@@ -1178,7 +1191,7 @@ wordField('newWordGerman').oninput=()=>{
   resetNewWordLookup();wordField('newWordTranslation').value='';newWordTranslationEdit++;newWordTypeEdited=false;
   wordField('newWordType').value=/^(der|die|das)\s/i.test(wordField('newWordGerman').value.trim())?'noun':'';wordField('newWordTypeField').hidden=true;updateNewWordAddState();
   ['newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');renderNewWordLeo();
-  wordField('newWordStatus').textContent=trainingLocked?'Увійди, щоб додавати слова.':'Введи слово — український переклад підставиться автоматично.';
+  wordField('newWordStatus').textContent=trainingLocked?'Melde dich an, um Wörter hinzuzufügen.':'Gib ein Wort ein. Die ukrainische Übersetzung wird automatisch vorgeschlagen.';
   if(!trainingLocked&&wordField('newWordGerman').value.trim().length>=2)newWordTimer=setTimeout(lookupNewWord,450);
 };
 wordField('newWordTranslation').oninput=()=>{newWordTranslationEdit++;syncNewWordChoices()};
@@ -1187,8 +1200,8 @@ wordField('newWordGerman').onkeydown=event=>{if(event.key==='Enter'){event.preve
 async function lookupNewWord(options={}){
   if(trainingLocked||newWordLookupBusy)return;
   const q=wordField('newWordGerman').value.trim();if(!q)return;
-  if(data.some(w=>key(w)===q.toLowerCase())){wordField('newWordStatus').textContent='Це слово вже є у словнику — знайди його через пошук.';return;}
-  const version=++newWordRequest,edit=newWordTranslationEdit,keepTranslation=options.keepTranslation===true;newWordLookupBusy=true;updateNewWordAddState();wordField('newWordStatus').textContent='Перевіряю написання, артикль і переклад…';
+  if(data.some(w=>key(w)===q.toLowerCase())){wordField('newWordStatus').textContent='Dieses Wort ist bereits im Wortschatz — nutze die Suche.';return;}
+  const version=++newWordRequest,edit=newWordTranslationEdit,keepTranslation=options.keepTranslation===true;newWordLookupBusy=true;updateNewWordAddState();wordField('newWordStatus').textContent='Schreibweise, Artikel und Übersetzung werden geprüft…';
   try{
     const result=newWordCache.get(q)||await Cloud.lookupDictionary(q,true);if(version!==newWordRequest||trainingLocked)return;
     if(newWordCache.size>=100)newWordCache.delete(newWordCache.keys().next().value);newWordCache.set(q,result);
@@ -1203,15 +1216,15 @@ async function lookupNewWord(options={}){
     }
     const choices=Array.isArray(result.translationChoices)?result.translationChoices.filter(c=>c&&typeof c.text==='string'):[];
     renderNewWordChoices(choices.length?choices.map(c=>c.text):Array.isArray(result.ukrainian)?result.ukrainian:[],provider);
-    if(choices.some(c=>c.editorialTranslation)){const note=document.createElement('small');note.textContent='Значення вручну звірено з LEO · український переклад адаптовано.';box.appendChild(note);}
-    if(choices.some(c=>c.automatic&&c.via)){const note=document.createElement('small');note.textContent='Додаткові значення: Wiktionary → автоматичний переклад українською. Звір у LEO.';box.appendChild(note);}
+    if(choices.some(c=>c.editorialTranslation)){const note=document.createElement('small');note.textContent='Bedeutung manuell mit LEO abgeglichen · ukrainische Übersetzung angepasst.';box.appendChild(note);}
+    if(choices.some(c=>c.automatic&&c.via)){const note=document.createElement('small');note.textContent='Weitere Bedeutungen: Wiktionary → automatische ukrainische Übersetzung. Bitte in LEO prüfen.';box.appendChild(note);}
     newWordEvidence.choices=choices;
     if(provider==='LEO')newWordEvidence.suggestion={provider:'LEO',kind:'editorial_translation',query:q,translation,choices:Progress.clone(choices),confirmedBy:'user'};
     function source(label,url){const a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.className='dictionaryLink';box.appendChild(a);}
-    if(result.wiktionary){newWordEvidence.sources.push({provider:'Wiktionary',url:result.wiktionary.url});source((provider==='Wiktionary'?'Переклад':'Граматика')+': Wiktionary · CC BY-SA 4.0 ↗',result.wiktionary.url);}
-    if(provider==='LEO')source('Значення: LEO ↗',choices.find(c=>c.provider==='LEO')?.sourceUrl||leoLookup({de:q}));
-    if(automatic)source('Український переклад: MyMemory ↗',automaticUrl);
-    if(automatic){const note=document.createElement('small');note.textContent='Автоматичний переклад — звір у LEO.';box.appendChild(note);}
+    if(result.wiktionary){newWordEvidence.sources.push({provider:'Wiktionary',url:result.wiktionary.url});source((provider==='Wiktionary'?'Übersetzung':'Grammatik')+': Wiktionary · CC BY-SA 4.0 ↗',result.wiktionary.url);}
+    if(provider==='LEO')source('Bedeutung: LEO ↗',choices.find(c=>c.provider==='LEO')?.sourceUrl||leoLookup({de:q}));
+    if(automatic)source('Ukrainische Übersetzung: MyMemory ↗',automaticUrl);
+    if(automatic){const note=document.createElement('small');note.textContent='Automatische Übersetzung — bitte in LEO prüfen.';box.appendChild(note);}
     const check=result.wordCheck,grammar=result.grammar,confirmed=check?check.verified&&check.typeConfirmed:!!(result.wiktionary&&grammar?.type);
     newWordEvidence.suggestions=check?.suggestions||[];newWordEvidence.suggestionReason=check?.reason||'';
     if(confirmed&&grammar){
@@ -1225,22 +1238,22 @@ async function lookupNewWord(options={}){
     const spelling=wordField('newWordSpelling');spelling.innerHTML='';spelling.hidden=false;
     if(newWordEvidence.verified){
       const word=document.createElement('strong');word.className='verifiedWord';word.lang='de';word.textContent=newWordEvidence.checkedGerman;spelling.appendChild(word);
-      const type=document.createElement('small');type.textContent=({noun:'Іменник',verb:'Дієслово',preposition:'Дієслово з прийменником',adjective:'Прикметник',adverb:'Прислівник',phrase:'Вираз'}[grammar.type]||'')+' · написання перевірено';spelling.appendChild(type);
+      const type=document.createElement('small');type.textContent=({noun:'Nomen',verb:'Verb',preposition:'Verb mit Präposition',adjective:'Adjektiv',adverb:'Adverb',phrase:'Wendung'}[grammar.type]||'')+' · Schreibweise geprüft';spelling.appendChild(type);
       const provided=/^(der|die|das)\s+/i.exec(q)?.[1].toLowerCase();
-      if(grammar.type==='noun'&&provided&&provided!==grammar.article){const note=document.createElement('p');note.textContent='Артикль виправлено: '+provided+' → '+grammar.article;spelling.appendChild(note);}
+      if(grammar.type==='noun'&&provided&&provided!==grammar.article){const note=document.createElement('p');note.textContent='Artikel korrigiert: '+provided+' → '+grammar.article;spelling.appendChild(note);}
     }
     else if(newWordEvidence.suggestions.length){
-      const label=document.createElement('p');label.textContent=newWordEvidence.suggestionReason==='inflected'?'Знайдено форму слова. Обери слово для додавання:':'Можлива помилка або неповне слово. Обери правильний варіант:';spelling.appendChild(label);
+      const label=document.createElement('p');label.textContent=newWordEvidence.suggestionReason==='inflected'?'Eine gebeugte Form wurde gefunden. Wähle das hinzuzufügende Wort:':'Möglicher Tippfehler oder unvollständiges Wort. Wähle die richtige Variante:';spelling.appendChild(label);
       for(const suggestion of newWordEvidence.suggestions){
-        const button=document.createElement('button'),type={noun:'іменник',verb:'дієслово',adjective:'прикметник',adverb:'прислівник',phrase:'вираз',preposition:'дієслово з прийменником'}[suggestion.type];
-        button.type='button';button.textContent=(newWordEvidence.suggestionReason==='inflected'?'Обрати: ':'Виправити: ')+suggestion.de+(type?' · '+type:'');button.onclick=()=>acceptNewWordCorrection(suggestion);spelling.appendChild(button);
+        const button=document.createElement('button'),type={noun:'Nomen',verb:'Verb',adjective:'Adjektiv',adverb:'Adverb',phrase:'Wendung',preposition:'Verb mit Präposition'}[suggestion.type];
+        button.type='button';button.textContent=(newWordEvidence.suggestionReason==='inflected'?'Auswählen: ':'Korrigieren: ')+suggestion.de+(type?' · '+type:'');button.onclick=()=>acceptNewWordCorrection(suggestion);spelling.appendChild(button);
       }
-    }else spelling.textContent=grammar?.type==='noun'?'Іменник підтверджено, але артикль потребує перевірки в LEO.':'Не вдалося підтвердити написання та частину мови. Перевір у LEO й обери частину мови нижче.';
+    }else spelling.textContent=grammar?.type==='noun'?'Nomen bestätigt, aber der Artikel muss in LEO geprüft werden.':'Schreibweise und Wortart konnten nicht bestätigt werden. Prüfe das Wort in LEO und wähle unten die Wortart.';
     wordField('newWordTypeField').hidden=newWordEvidence.verified||newWordEvidence.suggestions.length>0;
 
     renderNewWordLeo();
-    wordField('newWordStatus').textContent=newWordEvidence.suggestions.length?'Обери правильне словникове написання — після цього з’явиться переклад.':translation?'Перевір слово, артикль і переклад перед додаванням.':'Переклад не знайдено. Перевір у LEO та впиши українською.';
-  }catch{if(version===newWordRequest){wordField('newWordStatus').textContent='Словникова перевірка недоступна. Перевір слово в LEO та обери частину мови.';wordField('newWordTypeField').hidden=false;}}
+    wordField('newWordStatus').textContent=newWordEvidence.suggestions.length?'Wähle die richtige Wörterbuchform. Danach erscheint die Übersetzung.':translation?'Prüfe Wort, Artikel und Übersetzung vor dem Hinzufügen.':'Keine Übersetzung gefunden. Prüfe in LEO und trage sie auf Ukrainisch ein.';
+  }catch{if(version===newWordRequest){wordField('newWordStatus').textContent='Die Wörterbuchprüfung ist nicht verfügbar. Prüfe das Wort in LEO und wähle die Wortart.';wordField('newWordTypeField').hidden=false;}}
   finally{if(version===newWordRequest){newWordLookupBusy=false;newWordVerificationFinished=true;updateNewWordAddState();}}
 }
 async function acceptNewWordCorrection(suggestion){
@@ -1251,16 +1264,16 @@ async function acceptNewWordCorrection(suggestion){
 }
 function validateNewWordCheck(){
   const de=wordField('newWordGerman').value.trim(),type=wordField('newWordType').value,verified=newWordEvidence?.verified&&newWordEvidence.checkedGerman===de;
-  if(!newWordVerificationFinished&&!newWordTypeEdited)throw Error('Зачекай перевірки слова або перевір його в LEO та явно обери частину мови.');
-  if(!type||(!verified&&!newWordTypeEdited&&!(newWordVerificationFinished&&type==='noun'&&/^(der|die|das)\s/i.test(de)&&!newWordEvidence?.suggestions?.length))){wordField('newWordTypeField').hidden=false;throw Error('Обери запропоноване виправлення або перевір слово в LEO та обери частину мови.');}
-  if(type==='noun'&&!/^(der|die|das)\s/i.test(de))throw Error('Для іменника потрібен артикль der, die або das перед словом.');
+  if(!newWordVerificationFinished&&!newWordTypeEdited)throw Error('Warte auf die Wortprüfung oder prüfe in LEO und wähle die Wortart ausdrücklich.');
+  if(!type||(!verified&&!newWordTypeEdited&&!(newWordVerificationFinished&&type==='noun'&&/^(der|die|das)\s/i.test(de)&&!newWordEvidence?.suggestions?.length))){wordField('newWordTypeField').hidden=false;throw Error('Wähle die vorgeschlagene Korrektur oder prüfe das Wort in LEO und wähle die Wortart.');}
+  if(type==='noun'&&!/^(der|die|das)\s/i.test(de))throw Error('Bei Nomen muss der Artikel der, die oder das vor dem Wort stehen.');
 }
 wordField('newWordForm').onsubmit=event=>{
   event.preventDefault();
   try{
    const associations=newWordLessonMemberships();validateNewWordCheck();
    const w=addPersonalWord({de:wordField('newWordGerman').value.trim().replace(/\s+/g,' '),uk:wordField('newWordTranslation').value,type:wordField('newWordType').value,plural:wordField('newWordPlural').value,praeteritum:wordField('newWordPast').value,perfekt:wordField('newWordPerfect').value,example:wordField('newWordExample').value,sources:newWordEvidence?.sources||[],translationOrigin:newWordEvidence?.translation===wordField('newWordTranslation').value?newWordEvidence.origin:'user'},newWordEvidence?.suggestion,associations);
-   newWordLessonSuggested=false;resetNewWordLookup();['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='';wordField('newWordTypeField').hidden=true;renderNewWordLeo();updateNewWordAddState();wordField('newWordStatus').textContent='✓ Додано: '+w.de+(associations.length?' · '+LessonCatalog.books[associations[0].book].label+' · Урок '+associations[0].lesson:'')+'. Зберігається у твоєму хмарному профілі.';renderSearch();wordField('newWordGerman').focus();
+   newWordLessonSuggested=false;resetNewWordLookup();['newWordGerman','newWordTranslation','newWordPlural','newWordPast','newWordPerfect','newWordExample'].forEach(id=>wordField(id).value='');wordField('newWordType').value='';wordField('newWordTypeField').hidden=true;renderNewWordLeo();updateNewWordAddState();wordField('newWordStatus').textContent='✓ Hinzugefügt: '+w.de+'. '+wordMetadataText(w).replace('\n',' · ')+'. Wird in deinem Cloud-Profil gespeichert.';renderSearch();wordField('newWordGerman').focus();
   }catch(error){wordField('newWordStatus').textContent=error.message;}
 };
 let imported=null;
@@ -1276,7 +1289,7 @@ Cloud.init({snapshot,legacy,rawLegacy,
   sections.forEach(id=>document.getElementById(id).classList.add('hidden'));updateStats();updateRecallStats();if(searchLessonWord)renderSearchLessonEditor(searchLessonWord);
   if(active){document.getElementById(active).classList.remove('hidden');if(active==='choiceTraining'||active==='writingTraining')StageTraining.resume(active,stageDraft);else if(active==='training')renderRound();else if(active==='recallTraining')renderRecall();else if(active==='articleReviewTraining')renderArticleReview();else if(active==='contextTraining')renderContext();else renderVerbWrite();}resumePendingArticle();
  },
- preview(value){imported=Progress.validate(value);const known=new Set(data.map(key));document.getElementById('importPreview').textContent=JSON.stringify({wordsWithProgress:Object.keys(imported.stats).length,hidden:imported.hidden.length,cycleSeen:imported.cycle.seen.length,unknownKeysPreserved:Object.keys(imported.stats).filter(k=>!known.has(k)).length},null,2);},
+ preview(value){imported=Progress.validate(value);const known=new Set(data.map(key));document.getElementById('importPreview').textContent=['Wörter mit Lernstand: '+Object.keys(imported.stats).length,'Ausgeblendete Wörter: '+imported.hidden.length,'Im aktuellen Durchgang gesehen: '+imported.cycle.seen.length,'Erhaltene unbekannte Schlüssel: '+Object.keys(imported.stats).filter(k=>!known.has(k)).length].join('\n');},
  importCandidate(){return imported||legacy();}
 });
 StageTraining.init();renderLessonControls();renderNewWordLessonControls();updateNewWordAddState();updateStats();updateRecallStats();
