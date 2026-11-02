@@ -8,7 +8,7 @@
   "lessons": [
    {
     "id": "1",
-    "label": "Урок 1",
+    "label": "Lektion 1",
     "page": 23,
     "photo": "IMG_8561.HEIC",
     "sections": [
@@ -104,7 +104,7 @@
    },
    {
     "id": "2",
-    "label": "Урок 2",
+    "label": "Lektion 2",
     "page": 41,
     "photo": "IMG_8562.HEIC",
     "sections": [
@@ -206,7 +206,7 @@
    },
    {
     "id": "3",
-    "label": "Урок 3",
+    "label": "Lektion 3",
     "page": 59,
     "photo": "IMG_8563.HEIC",
     "sections": [
@@ -299,7 +299,7 @@
    },
    {
     "id": "4",
-    "label": "Урок 4",
+    "label": "Lektion 4",
     "page": 77,
     "photo": "IMG_8564.HEIC",
     "sections": [
@@ -397,7 +397,7 @@
    },
    {
     "id": "5",
-    "label": "Урок 5",
+    "label": "Lektion 5",
     "page": 95,
     "photo": "IMG_8565.HEIC",
     "sections": [
@@ -498,7 +498,7 @@
    },
    {
     "id": "6",
-    "label": "Урок 6",
+    "label": "Lektion 6",
     "page": 113,
     "photo": "IMG_8566.HEIC",
     "sections": [
@@ -601,7 +601,7 @@
    },
    {
     "id": "7",
-    "label": "Урок 7",
+    "label": "Lektion 7",
     "page": 131,
     "photo": "IMG_8568.HEIC",
     "sections": [
@@ -697,7 +697,7 @@
   "lessons": [
     {
       "id": "1",
-      "label": "Урок 1",
+      "label": "Lektion 1",
       "photos": [
         {
           "file": "1.HEIC",
@@ -855,7 +855,7 @@
     },
     {
       "id": "2",
-      "label": "Урок 2",
+      "label": "Lektion 2",
       "photos": [
         {
           "file": "IMG_8538.HEIC",
@@ -960,7 +960,7 @@
     },
     {
       "id": "3",
-      "label": "Урок 3",
+      "label": "Lektion 3",
       "photos": [
         {
           "file": "IMG_8540.HEIC",
@@ -1009,7 +1009,7 @@
     },
     {
       "id": "4",
-      "label": "Урок 4",
+      "label": "Lektion 4",
       "photos": [
         {
           "file": "IMG_8542.HEIC",
@@ -1042,7 +1042,7 @@
     },
     {
       "id": "5",
-      "label": "Урок 5",
+      "label": "Lektion 5",
       "photos": [
         {
           "file": "IMG_8569.HEIC",
@@ -1072,7 +1072,7 @@
     },
     {
       "id": "6",
-      "label": "Урок 6",
+      "label": "Lektion 6",
       "photos": [
         {
           "file": "IMG_8570.HEIC",
@@ -1099,7 +1099,7 @@
     },
     {
       "id": "7",
-      "label": "Урок 7",
+      "label": "Lektion 7",
       "photos": [
         {
           "file": "IMG_8572.HEIC",
@@ -1130,7 +1130,7 @@
     },
     {
       "id": "8",
-      "label": "Урок 8",
+      "label": "Lektion 8",
       "photos": [
         {
           "file": "IMG_8574.HEIC",
@@ -1162,7 +1162,7 @@
     },
     {
       "id": "9",
-      "label": "Урок 9",
+      "label": "Lektion 9",
       "photos": [
         {
           "file": "IMG_8552.HEIC",
@@ -1195,7 +1195,7 @@
     },
     {
       "id": "10",
-      "label": "Урок 10",
+      "label": "Lektion 10",
       "photos": [
         {
           "file": "IMG_8554.heic",
@@ -1221,7 +1221,7 @@
     },
     {
       "id": "11",
-      "label": "Урок 11",
+      "label": "Lektion 11",
       "photos": [
         {
           "file": "IMG_8556.heic",
@@ -1252,7 +1252,7 @@
     },
     {
       "id": "12",
-      "label": "Урок 12",
+      "label": "Lektion 12",
       "photos": [
         {
           "file": "IMG_8558.heic",

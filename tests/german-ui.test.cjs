@@ -1,0 +1,8 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto'),vm=require('node:vm');
+test('all application-owned labels, lesson labels, validation and synchronization messages are German',()=>{
+ for(const file of ['index.html','cloud.js','progress.js','training-stages.js','lessons.js','manifest.webmanifest']){const source=fs.readFileSync(file,'utf8').replaceAll('[А-Яа-яІіЇїЄєҐґ]','');assert(!/[\u0400-\u04ff]/u.test(source),file);}
+ const html=fs.readFileSync('index.html','utf8');assert(html.includes('<html lang="de">'));assert(html.includes('lang="uk"'));assert(html.includes('Hinzugefügt am:'));assert(html.includes("toLocaleDateString('de-DE'"));assert.equal(JSON.parse(fs.readFileSync('manifest.webmanifest')).lang,'de');
+});
+test('German UI translation and word metadata preserve every original vocabulary record and every backup, Ukrainian translation and saved/generated example',()=>{
+ const before=JSON.parse(fs.readFileSync('tests/german-ui-preservation.json'));const context=vm.createContext({window:{}});for(const [,file] of fs.readFileSync('index.html','utf8').matchAll(/src="(words[^"?]+)(?:\?[^\"]*)?"/g))vm.runInContext(fs.readFileSync(file,'utf8'),context);const hashes=context.window.WORDS.map(w=>crypto.createHash('sha256').update(JSON.stringify(w)).digest('hex'));for(const hash of before.vocabularyHashes){const i=hashes.indexOf(hash);assert(i>=0,'Original vocabulary record changed or missing');hashes.splice(i,1);}for(const [file,hash] of Object.entries(before.sha256))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'),hash,file);
+});

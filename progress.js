@@ -3,31 +3,31 @@
  const clone=x=>JSON.parse(JSON.stringify(x));
  function customWord(value){
   const types=['noun','verb','adjective','adverb','phrase','preposition'];
-  if(!value||typeof value!=='object'||Array.isArray(value)||!types.includes(value.type))throw Error('Вкажи частину мови');
+  if(!value||typeof value!=='object'||Array.isArray(value)||!types.includes(value.type))throw Error('Wähle eine Wortart');
   const result={};
   for(const [name,max] of [['de',200],['uk',500],['plural',200],['praeteritum',200],['perfekt',200],['example',3000]]){
-   if(value[name]!=null&&typeof value[name]!=='string')throw Error('Некоректне поле '+name);
-   const text=(value[name]||'').trim();if(text.length>max)throw Error('Завелике поле '+name);if(text)result[name]=text;
+   if(value[name]!=null&&typeof value[name]!=='string')throw Error('Ungültiges Feld '+name);
+   const text=(value[name]||'').trim();if(text.length>max)throw Error('Feld zu lang '+name);if(text)result[name]=text;
   }
-  if(!result.de||!result.uk)throw Error('Потрібні слово й український переклад');
+  if(!result.de||!result.uk)throw Error('Wort und ukrainische Übersetzung erforderlich');
   result.type=value.type;result.article='';
-  if(value.type==='noun'){const article=/^(der|die|das)\s+/i.exec(result.de);if(!article)throw Error('Додай артикль der, die або das перед іменником');result.article=article[1].toLowerCase();}
-  if(typeof value.addedAt!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value.addedAt)||!Number.isFinite(Date.parse(value.addedAt+'T12:00:00Z')))throw Error('Некоректна дата слова');
+  if(value.type==='noun'){const article=/^(der|die|das)\s+/i.exec(result.de);if(!article)throw Error('Füge den Artikel der, die oder das vor dem Nomen hinzu');result.article=article[1].toLowerCase();}
+  if(typeof value.addedAt!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value.addedAt)||!Number.isFinite(Date.parse(value.addedAt+'T12:00:00Z')))throw Error('Ungültiges Hinzufügedatum');
   result.addedAt=value.addedAt;
   if(value.sources!=null){
-   if(!Array.isArray(value.sources)||value.sources.length>3||value.sources.some(s=>!s||!['PONS','Wiktionary'].includes(s.provider)||typeof s.url!=='string'||s.url.length>1200||!/^https:\/\/(?:en\.pons\.com|de\.wiktionary\.org)\//.test(s.url)))throw Error('Некоректне джерело слова');
+   if(!Array.isArray(value.sources)||value.sources.length>3||value.sources.some(s=>!s||!['PONS','Wiktionary'].includes(s.provider)||typeof s.url!=='string'||s.url.length>1200||!/^https:\/\/(?:en\.pons\.com|de\.wiktionary\.org)\//.test(s.url)))throw Error('Ungültige Wortquelle');
    result.sources=clone(value.sources);
   }
-  if(value.translationOrigin!=null){if(!['user','Wiktionary','PONS'].includes(value.translationOrigin))throw Error('Некоректне походження перекладу');result.translationOrigin=value.translationOrigin;}
+  if(value.translationOrigin!=null){if(!['user','Wiktionary','PONS'].includes(value.translationOrigin))throw Error('Ungültige Übersetzungsherkunft');result.translationOrigin=value.translationOrigin;}
 
-  if(value.approvedBy!=='user')throw Error('Потрібне підтвердження користувача');result.approvedBy='user';
+  if(value.approvedBy!=='user')throw Error('Bestätigung erforderlich');result.approvedBy='user';
   return result;
  }
  function lessonMemberships(value=[]){
-  if(!Array.isArray(value)||value.length>38)throw Error('Некоректна прив’язка до уроку');
+  if(!Array.isArray(value)||value.length>38)throw Error('Ungültige Lektionszuordnung');
   const limits={b1plus:7,b2:12},result=[],seen=new Set();
   for(const item of value){
-   if(!item||typeof item!=='object'||!Object.prototype.hasOwnProperty.call(limits,item.book)||typeof item.lesson!=='string'||!/^\d{1,2}$/.test(item.lesson)||String(Number(item.lesson))!==item.lesson||Number(item.lesson)<1||Number(item.lesson)>limits[item.book])throw Error('Некоректна прив’язка до уроку');
+   if(!item||typeof item!=='object'||!Object.prototype.hasOwnProperty.call(limits,item.book)||typeof item.lesson!=='string'||!/^\d{1,2}$/.test(item.lesson)||String(Number(item.lesson))!==item.lesson||Number(item.lesson)<1||Number(item.lesson)>limits[item.book])throw Error('Ungültige Lektionszuordnung');
    const id=item.book+':'+item.lesson;if(!seen.has(id)){seen.add(id);result.push({book:item.book,lesson:item.lesson});}
   }
   return result;
@@ -37,9 +37,9 @@
   if(!Array.isArray(value)||value.length>limit||value.some(t=>typeof t!=='string'||!t.trim()||t.length>200||/[\u0000-\u001f]/.test(t)))throw Error(message);
   const seen=new Set();return value.map(t=>t.trim()).filter(t=>{const k=translationKey(t);if(seen.has(k))return false;seen.add(k);return true});
  }
- function additionalTranslations(value=[]){return translationList(value,10,'Додатковий переклад: до 10 варіантів, кожен до 200 символів.');}
+ function additionalTranslations(value=[]){return translationList(value,10,'Zusätzliche Übersetzung: bis zu 10 Varianten mit je höchstens 200 Zeichen.');}
  function translationVariants(value){
-  const variants=translationList(value,20,'Переклад: до 20 варіантів, кожен до 200 символів.');if(!variants.length)throw Error('Залиши хоча б один варіант перекладу.');return variants;
+  const variants=translationList(value,20,'Übersetzung: bis zu 20 Varianten mit je höchstens 200 Zeichen.');if(!variants.length)throw Error('Behalte mindestens eine Übersetzungsvariante.');return variants;
  }
  // New exercise counters are additive metadata; legacy fields remain unchanged.
  function learning(st={}){
@@ -48,13 +48,13 @@
   return {...v,ready:v.matchingCorrect>=3,learned:false};
  }
  function validateLearning(v){
-  if(!v||typeof v!=='object'||Array.isArray(v)||v.version!==2)throw Error('Некоректний облік етапів навчання');
-  for(const k of ['matchingCorrect','matchingWrong','choiceCorrect','choiceWrong','writingCorrect','writingWrong'])if(!Number.isSafeInteger(v[k])||v[k]<0)throw Error('Некоректний лічильник етапу '+k);
+  if(!v||typeof v!=='object'||Array.isArray(v)||v.version!==2)throw Error('Ungültiger Lernstufenstand');
+  for(const k of ['matchingCorrect','matchingWrong','choiceCorrect','choiceWrong','writingCorrect','writingWrong'])if(!Number.isSafeInteger(v[k])||v[k]<0)throw Error('Ungültiger Stufenzähler '+k);
  }
  function recordLearning(st,kind,correct){
-  if(!['matching','choice','writing'].includes(kind)||typeof correct!=='boolean')throw Error('Невідомий тип вправи');
-  const v=learning(st);if(kind==='choice'&&!v.ready||kind==='writing'&&(!v.ready||v.choiceCorrect<2))throw Error('Спочатку заверши попередній етап');
-  delete v.ready;delete v.learned;const field=kind+(correct?'Correct':'Wrong');if(v[field]>=Number.MAX_SAFE_INTEGER)throw Error('Завеликий лічильник');v[field]++;return v;
+  if(!['matching','choice','writing'].includes(kind)||typeof correct!=='boolean')throw Error('Unbekannter Übungstyp');
+  const v=learning(st);if(kind==='choice'&&!v.ready||kind==='writing'&&(!v.ready||v.choiceCorrect<2))throw Error('Schließe zuerst die vorherige Stufe ab');
+  delete v.ready;delete v.learned;const field=kind+(correct?'Correct':'Wrong');if(v[field]>=Number.MAX_SAFE_INTEGER)throw Error('Zähler zu groß');v[field]++;return v;
  }
  function germanWritingForms(text){
   const clean=s=>s.replace(/\+\s*(?:Akk|Dat|Gen|Nom)\.?/gi,' ').replace(/\b(?:etw|jdn|jdm|jmdn|jmdm)\./g,' ').replace(/\s+/g,' ').trim();
@@ -66,7 +66,7 @@
   const result=[...seed],keys=new Set(seed.map(w=>w.de.toLowerCase().trim()));
   for(const [storedKey,st] of Object.entries(stats))if(st.customWord){
    const w=customWord(st.customWord),k=w.de.toLowerCase().trim();
-   if(k!==storedKey)throw Error('Ключ власного слова не збігається зі статистикою');
+   if(k!==storedKey)throw Error('Der Schlüssel des eigenen Wortes stimmt nicht mit der Statistik überein');
    if(!keys.has(k)){result.push(w);keys.add(k);}
   }
   return result;
@@ -87,23 +87,23 @@
   };
  }
  function validate(x){
-  if(!x||x.schema!==1||!x.stats||typeof x.stats!=='object'||Array.isArray(x.stats)||!Array.isArray(x.hidden)||!x.cycle||!Array.isArray(x.cycle.seen))throw Error('Невідомий формат прогресу. Оригінал збережено.');
-  if(x.hidden.some(k=>typeof k!=='string')||x.cycle.seen.some(k=>typeof k!=='string'))throw Error('Некоректні ключі слів');
+  if(!x||x.schema!==1||!x.stats||typeof x.stats!=='object'||Array.isArray(x.stats)||!Array.isArray(x.hidden)||!x.cycle||!Array.isArray(x.cycle.seen))throw Error('Unbekanntes Fortschrittsformat. Das Original bleibt erhalten.');
+  if(x.hidden.some(k=>typeof k!=='string')||x.cycle.seen.some(k=>typeof k!=='string'))throw Error('Ungültige Wortschlüssel');
   for(const [storedKey,st] of Object.entries(x.stats)){
-   if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Некоректна статистика');
+   if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Ungültige Statistik');
    if(st.learningV2!=null)validateLearning(st.learningV2);
    if(Object.prototype.hasOwnProperty.call(st,'translationVariants'))translationVariants(st.translationVariants);
    if(st.additionalTranslations!=null)additionalTranslations(st.additionalTranslations);
    if(st.lessonMemberships!=null)lessonMemberships(st.lessonMemberships);
-   if(st.customWord&&customWord(st.customWord).de.toLowerCase().trim()!==storedKey)throw Error('Ключ власного слова не збігається зі статистикою');
-   for(const k of ['correct','wrong','streak','recallCorrect','recallWrong','verbWriteCorrect','verbWriteWrong','articleCorrect','articleWrong','contextCorrect','contextWrong','contextStreak'])if(st[k]!=null&&(!Number.isSafeInteger(st[k])||st[k]<0))throw Error('Некоректний лічильник '+k);
-   for(const field of ['pendingArticle','articleNeedsReview'])if(st[field]!=null&&typeof st[field]!=='boolean')throw Error('Некоректний стан артикля');
-   if(st.workedDays!=null&&(!Array.isArray(st.workedDays)||st.workedDays.length>366||new Set(st.workedDays).size!==st.workedDays.length||st.workedDays.some(day=>typeof day!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(day)||!Number.isFinite(Date.parse(day+'T12:00:00Z'))||new Date(day+'T12:00:00Z').toISOString().slice(0,10)!==day)))throw Error('Некоректна історія роботи зі словом');
-   if(st.translationFeedback!=null){const f=st.translationFeedback;if(f.reportId!=null&&(typeof f.reportId!=='string'||!/^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/i.test(f.reportId)))throw Error('Некоректний номер зауваження');if(f.delivery!=null&&!['queued','sent'].includes(f.delivery))throw Error('Некоректний стан надсилання');if(typeof f!=='object'||Array.isArray(f)||typeof f.translation!=='string'||f.translation.length>4000||typeof f.reason!=='string'||f.reason.length>600||typeof f.suggestion!=='string'||f.suggestion.length>200||f.status!=='draft'||typeof f.updatedAt!=='string'||f.updatedAt.length>40||!Number.isFinite(Date.parse(f.updatedAt)))throw Error('Некоректне зауваження до перекладу');}
+   if(st.customWord&&customWord(st.customWord).de.toLowerCase().trim()!==storedKey)throw Error('Der Schlüssel des eigenen Wortes stimmt nicht mit der Statistik überein');
+   for(const k of ['correct','wrong','streak','recallCorrect','recallWrong','verbWriteCorrect','verbWriteWrong','articleCorrect','articleWrong','contextCorrect','contextWrong','contextStreak'])if(st[k]!=null&&(!Number.isSafeInteger(st[k])||st[k]<0))throw Error('Ungültiger Zähler '+k);
+   for(const field of ['pendingArticle','articleNeedsReview'])if(st[field]!=null&&typeof st[field]!=='boolean')throw Error('Ungültiger Artikelstatus');
+   if(st.workedDays!=null&&(!Array.isArray(st.workedDays)||st.workedDays.length>366||new Set(st.workedDays).size!==st.workedDays.length||st.workedDays.some(day=>typeof day!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(day)||!Number.isFinite(Date.parse(day+'T12:00:00Z'))||new Date(day+'T12:00:00Z').toISOString().slice(0,10)!==day)))throw Error('Ungültiger Wortlernverlauf');
+   if(st.translationFeedback!=null){const f=st.translationFeedback;if(f.reportId!=null&&(typeof f.reportId!=='string'||!/^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/i.test(f.reportId)))throw Error('Ungültige Hinweisnummer');if(f.delivery!=null&&!['queued','sent'].includes(f.delivery))throw Error('Ungültiger Versandstatus');if(typeof f!=='object'||Array.isArray(f)||typeof f.translation!=='string'||f.translation.length>4000||typeof f.reason!=='string'||f.reason.length>600||typeof f.suggestion!=='string'||f.suggestion.length>200||f.status!=='draft'||typeof f.updatedAt!=='string'||f.updatedAt.length>40||!Number.isFinite(Date.parse(f.updatedAt)))throw Error('Ungültiger Übersetzungshinweis');}
   }
   if(x.cycle.scopes){
-   if(typeof x.cycle.scopes!=='object'||Array.isArray(x.cycle.scopes))throw Error('Некоректні цикли');
-   for(const value of Object.values(x.cycle.scopes))if(!value||!Array.isArray(value.seen)||value.seen.some(k=>typeof k!=='string'))throw Error('Некоректний цикл');
+   if(typeof x.cycle.scopes!=='object'||Array.isArray(x.cycle.scopes))throw Error('Ungültige Lernzyklen');
+   for(const value of Object.values(x.cycle.scopes))if(!value||!Array.isArray(value.seen)||value.seen.some(k=>typeof k!=='string'))throw Error('Ungültiger Lernzyklus');
   }
   return clone(x);
  }

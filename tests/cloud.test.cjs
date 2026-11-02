@@ -20,7 +20,7 @@ test('empty account never automatically imports or resets legacy progress',async
 test('cloud writes are durable and versioned; offline edits retry',async()=>{const h=setup();await h.login();await h.initialize();h.offline=true;const s=empty();s.stats.wort={correct:4};h.save(s);await h.settle();assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,true);h.offline=false;await h.sync();assert.equal(h.row.state.stats.wort.correct,4);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,false);});
 test('stale device cannot overwrite a newer cloud version',async()=>{const h=setup();await h.login();await h.initialize();h.row={revision:10,state:{...empty(),stats:{remote:{correct:99}}}};const s=empty();s.stats.local={correct:3};h.save(s);await h.settle();assert(h.locked);assert.equal(h.row.state.stats.remote.correct,99);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).state.stats.local.correct,3);});
 test('clean idle device loads progress from another device',async()=>{const h=setup();await h.login();await h.initialize();h.row={revision:10,state:{...empty(),stats:{remote:{correct:99}}}};await h.sync();assert.equal(h.applied.stats.remote.correct,99);});
-test('import refuses to overwrite a nonempty cloud account',async()=>{const h=setup();await h.login();h.row={revision:5,state:empty()};await h.initialize();assert.equal(h.row.revision,5);assert(h.elements.syncStatus.textContent.includes('уже існує'));});
+test('import refuses to overwrite a nonempty cloud account',async()=>{const h=setup();await h.login();h.row={revision:5,state:empty()};await h.initialize();assert.equal(h.row.revision,5);assert(h.elements.syncStatus.textContent.includes('existiert bereits'));});
 
 test('active training receives remote progress without waiting for the round to close',async()=>{const h=setup();await h.login();await h.initialize();h.adapter.active=()=>true;let options;h.adapter.apply=(s,o)=>{options=o};h.row={revision:8,state:{...empty(),stats:{phone:{correct:6}}}};await h.sync();assert.equal(options.resume,true);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).state.stats.phone.correct,6);});
 test('remote read arriving after a local answer never overwrites the pending answer',async()=>{const h=setup();await h.login();await h.initialize();h.row={revision:8,state:{...empty(),stats:{phone:{correct:6}}}};h.readHook=()=>h.save({...empty(),stats:{mac:{correct:4}}});await h.sync();const local=JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user'));assert.equal(local.state.stats.mac.correct,4);assert.equal(local.pending,true);assert.equal(h.row.state.stats.phone.correct,6);});
@@ -43,7 +43,7 @@ test('context results survive cross-device synchronization without modifying exi
 });
 
 test('sentence lookup sends only the selected sentence through authenticated read-only function without changing progress',async()=>{
- const h=setup();assert.throws(()=>h.ctx.window.Cloud.translateSentence('Ein Satz.'),/Увійди/);await h.login();await h.initialize();const before=JSON.stringify(h.row);let call;h.ctx.fetch=async(url,options)=>{call={url,options};return {ok:true,json:async()=>({query:'Ein vollständiger Satz.',translation:'Повне речення.'})}};await h.ctx.window.Cloud.translateSentence('Ein vollständiger Satz.');assert(call.url.endsWith('/functions/v1/dictionary-lookup'));assert.deepEqual(JSON.parse(call.options.body),{q:'Ein vollständiger Satz.',kind:'sentence'});assert.equal(call.options.headers.Authorization,'Bearer access');assert.equal(JSON.stringify(h.row),before);
+ const h=setup();assert.throws(()=>h.ctx.window.Cloud.translateSentence('Ein Satz.'),/Melde dich/);await h.login();await h.initialize();const before=JSON.stringify(h.row);let call;h.ctx.fetch=async(url,options)=>{call={url,options};return {ok:true,json:async()=>({query:'Ein vollständiger Satz.',translation:'Повне речення.'})}};await h.ctx.window.Cloud.translateSentence('Ein vollständiger Satz.');assert(call.url.endsWith('/functions/v1/dictionary-lookup'));assert.deepEqual(JSON.parse(call.options.body),{q:'Ein vollständiger Satz.',kind:'sentence'});assert.equal(call.options.headers.Authorization,'Bearer access');assert.equal(JSON.stringify(h.row),before);
 });
 
 test('a personal word and its lesson assignment synchronize as shared per-word metadata with original counters and hidden state',async()=>{
@@ -60,7 +60,7 @@ test('additional translations sync offline to a second device while original cou
 });
 
 
-const feedbackRequest={id:'4b95d879-2b7c-44de-845c-6574b3e4c221',word_key:'das controlling',german:'das Controlling',translation:'контролінг',reason:'Уточнити значення',suggestion:'управлінський облік'};
+const feedbackRequest={id:'4b95d879-2b7c-44de-845c-6574b3e4c221',word_key:'das controlling',german:'das Controlling',translation:'контролінг',reason:'Уточнити vonначення',suggestion:'управлінський облік'};
 test('feedback sends in one action, retries idempotently and never changes learning progress',async()=>{
  const h=setup();await h.login();await h.initialize();await h.settle();const before=JSON.stringify(h.applied);let r=await h.ctx.window.Cloud.submitTranslationFeedback(feedbackRequest);assert.equal(r.delivery,'sent');assert.equal(h.feedbackRows.size,1);r=await h.ctx.window.Cloud.submitTranslationFeedback(feedbackRequest);assert.equal(r.delivery,'sent');assert.equal(h.feedbackRows.size,1);assert.equal(JSON.stringify(h.applied),before);
 });
@@ -75,4 +75,9 @@ test('replaced and removed meanings sync offline without resurrecting original v
 
 test('accumulated stage counts synchronize offline with legacy progress, hidden keys, lessons and archived learned state intact',async()=>{
  const a=setup();await a.login();await a.initialize();a.offline=true;const state=empty();state.stats.word={correct:18,wrong:3,streak:1,mastered:true,recallCorrect:4,articleWrong:2,learningV2:{version:2,matchingCorrect:3,matchingWrong:2,choiceCorrect:2,choiceWrong:1,writingCorrect:2,writingWrong:2},lessonMemberships:[{book:'b2',lesson:'1'}],translationVariants:['переклад'],unknown:{keep:7}};state.hidden=['another'];state.cycle={seen:['word'],scopes:{legacy:{seen:['word'],number:2}}};a.save(state);await a.settle();a.offline=false;await a.sync();const b=setup();b.row=JSON.parse(JSON.stringify(a.row));await b.login();await b.settle();assert.deepEqual(b.applied,state);assert.equal(b.ctx.window.Progress.learning(b.applied.stats.word).learned,true);
+});
+
+test('German offline and conflicting-tab messages retain visible attention alerts and do not overwrite pending progress',async()=>{
+ const h=setup();await h.login();await h.initialize();h.offline=true;const state=empty();state.stats.word={correct:8};h.save(state);await h.settle();assert(h.elements.syncStatus.textContent.startsWith('Offline / Synchronisierungsfehler:'));assert.equal(h.elements.syncAlert.hidden,false);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).state.stats.word.correct,8);
+ const other=setup();other.ctx.navigator.locks.request=(name,options,fn)=>fn(null);other.ctx.window.Cloud.init(other.adapter);assert(other.elements.syncStatus.textContent.includes('anderen Tab'));assert.equal(other.elements.syncAlert.hidden,false);
 });
