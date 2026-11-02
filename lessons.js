@@ -1003,7 +1003,8 @@
         "verlangen",
         "vielfältig",
         "wert legen auf (+ akk.)",
-        "zur verfügung stehen"
+        "zur verfügung stehen",
+        "aufgeben"
       ]
     },
     {
