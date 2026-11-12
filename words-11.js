@@ -8,5 +8,6 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"deprimieren","uk":"пригнічувати; засмучувати","type":"verb","praeteritum":"deprimierte","perfekt":"hat deprimiert","lesson":3,"addedAt":"2026-11-12"},
 {"de":"sich umhören","uk":"розпитувати; наводити довідки; дізнаватися, розпитуючи інших","type":"reflexive","praeteritum":"hörte sich um","perfekt":"hat sich umgehört","lesson":3,"addedAt":"2026-11-12"},
 {"de":"sich trauen","uk":"наважуватися; насмілюватися","type":"reflexive","praeteritum":"traute sich","perfekt":"hat sich getraut","lesson":3,"addedAt":"2026-11-12"},
-{"de":"die Eigenverantwortung","uk":"особиста відповідальність; відповідальність за власні рішення та дії","type":"noun","plural":"—","lesson":3,"addedAt":"2026-11-12"}
+{"de":"die Eigenverantwortung","uk":"особиста відповідальність; відповідальність за власні рішення та дії","type":"noun","plural":"—","lesson":3,"addedAt":"2026-11-12"},
+{"de":"sowohl","uk":"як … так і; і … і (у конструкції sowohl … als auch)","type":"other","lesson":3,"addedAt":"2026-11-12"}
 ]);
