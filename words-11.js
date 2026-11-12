@@ -11,5 +11,6 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"die Eigenverantwortung","uk":"особиста відповідальність; відповідальність за власні рішення та дії","type":"noun","plural":"—","lesson":3,"addedAt":"2026-11-12"},
 {"de":"sowohl","uk":"як … так і; і … і (у конструкції sowohl … als auch)","type":"other","lesson":3,"addedAt":"2026-11-12"},
 {"de":"die Korrektheit","uk":"правильність; коректність; точність","type":"noun","plural":"—","lesson":3,"addedAt":"2026-11-12"},
-{"de":"die Aufstiegschance","uk":"можливість кар’єрного зростання; перспектива просування по службі","type":"noun","plural":"die Aufstiegschancen","lesson":3,"addedAt":"2026-11-12"}
+{"de":"die Aufstiegschance","uk":"можливість кар’єрного зростання; перспектива просування по службі","type":"noun","plural":"die Aufstiegschancen","lesson":3,"addedAt":"2026-11-12"},
+{"de":"umsetzen","uk":"реалізовувати; втілювати; впроваджувати","type":"verb","praeteritum":"setzte um","perfekt":"hat umgesetzt","lesson":3,"addedAt":"2026-11-12"}
 ]);
