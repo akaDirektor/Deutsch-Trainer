@@ -5,5 +5,6 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"sachlich","uk":"об’єктивний; діловий; по суті, беземоційний","type":"adjective","lesson":3,"addedAt":"2026-11-12"},
 {"de":"mühsam","uk":"виснажливий; трудомісткий; важкий, що вимагає багато зусиль","type":"adjective","lesson":3,"addedAt":"2026-11-12"},
 {"de":"deprimierend","uk":"гнітючий; пригнічувальний; депресивний","type":"adjective","lesson":3,"addedAt":"2026-11-12"},
-{"de":"deprimieren","uk":"пригнічувати; засмучувати","type":"verb","praeteritum":"deprimierte","perfekt":"hat deprimiert","lesson":3,"addedAt":"2026-11-12"}
+{"de":"deprimieren","uk":"пригнічувати; засмучувати","type":"verb","praeteritum":"deprimierte","perfekt":"hat deprimiert","lesson":3,"addedAt":"2026-11-12"},
+{"de":"sich umhören","uk":"розпитувати; наводити довідки; дізнаватися, розпитуючи інших","type":"reflexive","praeteritum":"hörte sich um","perfekt":"hat sich umgehört","lesson":3,"addedAt":"2026-11-12"}
 ]);
