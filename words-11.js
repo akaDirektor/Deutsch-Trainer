@@ -2,5 +2,6 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"entlaufen","uk":"утікати; збігати (про тварину)","type":"verb","praeteritum":"entlief","perfekt":"ist entlaufen","lesson":3,"addedAt":"2026-11-12"},
 {"de":"zeugen","uk":"свідчити; породжувати","type":"verb","praeteritum":"zeugte","perfekt":"hat gezeugt","lesson":3,"addedAt":"2026-11-12"},
 {"de":"selbstständig","uk":"самостійний","type":"adjective","lesson":3,"addedAt":"2026-11-12"},
-{"de":"sachlich","uk":"об’єктивний; діловий; по суті, беземоційний","type":"adjective","lesson":3,"addedAt":"2026-11-12"}
+{"de":"sachlich","uk":"об’єктивний; діловий; по суті, беземоційний","type":"adjective","lesson":3,"addedAt":"2026-11-12"},
+{"de":"mühsam","uk":"виснажливий; трудомісткий; важкий, що вимагає багато зусиль","type":"adjective","lesson":3,"addedAt":"2026-11-12"}
 ]);
