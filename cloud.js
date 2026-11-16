@@ -26,9 +26,18 @@ window.Cloud=(()=>{
    const next=await request('/auth/v1/token?grant_type=refresh_token',{refresh_token:session.refresh_token},false);
    session={...next,expires_at:Math.floor(Date.now()/1000)+next.expires_in};localStorage.setItem(sessionKey,JSON.stringify(session));
   }
-  const res=await fetch(cfg.url+path,{method:body?'POST':'GET',signal:AbortSignal.timeout(15000),headers:{apikey:cfg.publishableKey,...(auth?{Authorization:'Bearer '+session.access_token}:{}),'Content-Type':'application/json',...extraHeaders},...(body?{body:JSON.stringify(body)}:{})});
-  if(!res.ok)throw Error('Supabase-Anfrage fehlgeschlagen (HTTP '+res.status+')');
-  return res.json();
+  // Retry reads only: a failed POST may already have reached the server.
+  for(let attempt=0;attempt<(body?1:2);attempt++){
+   try{
+    const res=await fetch(cfg.url+path,{method:body?'POST':'GET',cache:'no-store',signal:AbortSignal.timeout(30000),headers:{apikey:cfg.publishableKey,...(auth?{Authorization:'Bearer '+session.access_token}:{}),'Content-Type':'application/json',...extraHeaders},...(body?{body:JSON.stringify(body)}:{})});
+    if(!res.ok){const error=Error('Supabase-Anfrage fehlgeschlagen (HTTP '+res.status+')');error.http=true;throw error;}
+    return await res.json();
+   }catch(error){
+    if(error.http)throw error;
+    if(!body&&attempt===0)continue;
+    throw Error('Die Verbindung zur Cloud wurde unterbrochen. Erneut auf Synchronisieren tippen. Dein lokaler Fortschritt bleibt erhalten.');
+   }
+  }
  }
  let feedbackBusy=false;
  const feedbackKey=owner=>'deutsch_feedback_outbox_v1:'+owner;
@@ -63,14 +72,24 @@ window.Cloud=(()=>{
   await flushFeedback();return {delivery:feedbackQueue(owner).some(r=>r.id===payload.id)?'queued':'sent',id:payload.id};
  }
  async function pull(){return (await request('/rest/v1/trainer_progress?select=*&user_id=eq.'+encodeURIComponent(session.user.id)))[0]||null;}
+ // Postgres JSONB can return object keys in a different order.
+ const stateText=value=>JSON.stringify(value,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.entries(v).sort(([a],[b])=>a<b?-1:a>b?1:0)):v);
+ function acceptIdentical(row){
+  if(!row||stateText(Progress.validate(row.state))!==stateText(cache.state))return false;
+  const next={revision:row.revision,state:cache.state,pending:false};
+  localStorage.setItem(cacheKey(),JSON.stringify(next));cache=next;
+  blocked=false;dirty=false;ready=true;lock();el('loadCloud').disabled=true;
+  status('In der Cloud gespeichert');return true;
+ }
  function conflict(){blocked=true;lock();status('Versionskonflikt. Der lokale Fortschritt ist gesichert. Exportiere ihn vor dem Laden der Cloud-Version.');el('loadCloud').disabled=false;}
  async function sync(){
-  if(!session||!ready||blocked||busy||feedbackBusy)return;busy=true;
+  if(!session||!ready||busy||feedbackBusy)return;busy=true;
   try{
+   if(blocked){if(!acceptIdentical(await pull()))conflict();return;}
    if(cache.pending){
     const snapshot=Progress.clone(cache.state),rev=cache.revision;
     const rows=await request('/rest/v1/rpc/save_trainer_progress',{expected_revision:rev,next_state:snapshot});
-    if(!rows.length){conflict();return;}
+    if(!rows.length){if(!acceptIdentical(await pull()))conflict();return;}
     cache.revision=rows[0].revision;cache.pending=JSON.stringify(cache.state)!==JSON.stringify(snapshot);persist();
     status(cache.pending?'Synchronisierung…':'In der Cloud gespeichert');
    }else{
@@ -88,7 +107,7 @@ window.Cloud=(()=>{
   cache=JSON.parse(localStorage.getItem(cacheKey())||'null');
   try{
    const row=await pull();
-   if(cache?.pending){Progress.validate(cache.state);adapter.apply(cache.state);ready=true;if((row?.revision??-1)!==cache.revision){conflict();return;}}
+   if(cache?.pending){Progress.validate(cache.state);adapter.apply(cache.state);ready=true;if((row?.revision??-1)!==cache.revision){if(!acceptIdentical(row))conflict();return;}}
    else if(row){cache={revision:row.revision,state:Progress.validate(row.state),pending:false};persist();adapter.apply(cache.state);ready=true;}
    else{status('Die Cloud ist leer. Exportiere den Safari-Fortschritt und bestätige den Import oder erstelle ein neues Profil.');el('importProgress').disabled=false;el('newProfile').disabled=false;return;}
    lock();await sync();status(blocked?el('syncStatus').textContent:cache.pending?'Synchronisierung ausstehend':'Cloud-Profil bereit');
@@ -128,7 +147,22 @@ window.Cloud=(()=>{
    el('importFile').onchange=async e=>{el('importFileName').textContent=e.target.files[0]?.name||'Keine Datei ausgewählt';if(!e.target.files[0])return;try{const text=await e.target.files[0].text(),v=JSON.parse(text);adapter.preview(Progress.validate(v.state));previewed=true;}catch(err){status('Import abgelehnt: '+(err.name==='SyntaxError'?'Ungültige JSON-Datei.':err.message));}};
    el('importProgress').onclick=()=>{if(!exported){status('Klicke zuerst auf Export / Sicherungskopie.');return;}try{const state=adapter.importCandidate();adapter.preview(state);if(!previewed){previewed=true;status('Prüfe die Wortzahl in der Vorschau. Klicke zum Bestätigen erneut auf Import.');return;}if(confirm('Den angezeigten Fortschritt in die leere Cloud importieren? Lade zuerst eine Sicherungskopie herunter.'))initialize(state);}catch(e){status(e.message);}};
    el('newProfile').onclick=()=>{if(confirm('Ein leeres Cloud-Profil erstellen? Der Safari-Fortschritt bleibt im ursprünglichen Speicher erhalten.'))initialize({schema:1,stats:{},hidden:[],cycle:{seen:[]}});};
-   el('loadCloud').onclick=async()=>{download(cache,'deutsch-conflict-'+Date.now()+'.json');if(!confirm('Die lokale Version wurde exportiert. Cloud-Version laden?'))return;try{const row=await pull();if(!row)throw Error('Kein Cloud-Profil vorhanden');const state=Progress.validate(row.state);cache={revision:row.revision,state,pending:false};persist();adapter.apply(state);blocked=false;ready=true;lock();el('loadCloud').disabled=true;status('Aus der Cloud geladen');}catch(e){status(e.message);}};
+   el('loadCloud').onclick=async()=>{
+    if(busy)return;busy=true;el('loadCloud').disabled=true;
+    try{
+     status('Cloud-Version wird geprüft…');
+     const row=await pull();if(!row)throw Error('Kein Cloud-Profil vorhanden');
+     if(acceptIdentical(row))return;
+     const state=Progress.validate(row.state);
+     if(!confirm('Die Cloud-Version unterscheidet sich. Die lokale Version wird vorher gesichert. Cloud-Version laden?')){status('Lokale Version beibehalten.');return;}
+     localStorage.setItem(cacheKey()+':conflict-backup',JSON.stringify(cache));
+     download(cache,'deutsch-conflict-'+Date.now()+'.json');
+     const next={revision:row.revision,state,pending:false};
+     localStorage.setItem(cacheKey(),JSON.stringify(next));cache=next;
+     adapter.apply(state);blocked=false;ready=true;dirty=false;lock();status('Aus der Cloud geladen');
+    }catch(e){status('Synchronisierungsfehler: '+e.message);}
+    finally{busy=false;el('loadCloud').disabled=!blocked;}
+   };
    el('loginForm').onsubmit=async e=>{e.preventDefault();if(busy)return;try{if(ready&&cache?.pending)throw Error('Synchronisiere oder exportiere zuerst den aktuellen Fortschritt');session=await request('/auth/v1/token?grant_type=password',{email:el('email').value,password:el('password').value},false);session.expires_at=Math.floor(Date.now()/1000)+session.expires_in;localStorage.setItem(sessionKey,JSON.stringify(session));el('password').value='';await connect();}catch(err){status(err.message);}};
    el('logout').onclick=()=>{
     if(busy){status('Warte, bis die Synchronisierung abgeschlossen ist.');return;}

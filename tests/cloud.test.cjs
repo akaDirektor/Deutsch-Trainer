@@ -1,20 +1,21 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
 const empty=()=>({schema:1,stats:{},hidden:[],cycle:{seen:[]}});
 function setup({initialStore,initialRow}={}){
- const feedbackRows=new Map();let row=initialRow||null,calls=0,offline=false,adapter,applied,locked,readHook=null;const elements={},store=initialStore||new Map(),intervals=[];
- const ctx=vm.createContext({console,Date,JSON,Promise,Error,AbortSignal,Blob,URL:{createObjectURL:()=>'',revokeObjectURL(){}},navigator:{locks:{request:(name,options,fn)=>{fn({});}}},setTimeout:()=>{},setInterval:f=>intervals.push(f),addEventListener(){},confirm:()=>true,localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},document:{getElementById:id=>elements[id]??(elements[id]={value:id==='email'?'test@example.test':'password',disabled:true,textContent:''}),createElement:()=>({click(){}})},window:{CLOUD_CONFIG:{url:'https://test.supabase.co',publishableKey:'sb_publishable_test'}},fetch:async(url,options)=>{
+ const feedbackRows=new Map();let row=initialRow||null,calls=0,offline=false,adapter,applied,locked,readHook=null,failReadBody=0,confirmResult=true,downloads=0;const requests=[],elements={},store=initialStore||new Map(),intervals=[];
+ const ctx=vm.createContext({console,Date,JSON,Promise,Error,AbortSignal,Blob,URL:{createObjectURL:()=>'',revokeObjectURL(){}},navigator:{locks:{request:(name,options,fn)=>{fn({});}}},setTimeout:()=>{},setInterval:f=>intervals.push(f),addEventListener(){},confirm:()=>confirmResult,localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},document:{getElementById:id=>elements[id]??(elements[id]={value:id==='email'?'test@example.test':'password',disabled:true,textContent:''}),createElement:()=>({click(){downloads++}})},window:{CLOUD_CONFIG:{url:'https://test.supabase.co',publishableKey:'sb_publishable_test'}},fetch:async(url,options)=>{
+  requests.push({url,options});
   calls++;if(offline)throw Error('Offline');
   let value;
   if(url.includes('/token?'))value={user:{id:'one-user'},access_token:'access',refresh_token:'refresh',expires_in:3600};
   else if(url.includes('/translation_feedback_reports')){if(options.method==='POST'){const body=JSON.parse(options.body);if(feedbackRows.has(body.id))value=[];else{feedbackRows.set(body.id,body);value=[body]}}else value=[...feedbackRows.values()].filter(r=>url.includes(r.id));}
   else if(options.method==='GET'){if(readHook){const fn=readHook;readHook=null;fn();}value=row?[row]:[];}
   else{const body=JSON.parse(options.body);if(body.expected_revision===(row?.revision??-1)){row={revision:(row?.revision??-1)+1,state:body.next_state};value=[row]}else value=[];}
-  return {ok:true,json:async()=>value};
+  return {ok:true,json:async()=>{if(options.method==='GET'&&failReadBody>0){failReadBody--;throw new TypeError('Load failed');}return value;}};
  }});
  vm.runInContext(fs.readFileSync('progress.js','utf8'),ctx);ctx.Progress=ctx.window.Progress;
  vm.runInContext(fs.readFileSync('cloud.js','utf8'),ctx);
  ctx.window.Cloud.init(adapter={lock:x=>locked=x,active:()=>false,apply:s=>applied=s,snapshot:()=>applied,legacy:empty,rawLegacy:()=>({}),preview(){},importCandidate:empty});
- return {ctx,store,elements,adapter,feedbackRows,set readHook(fn){readHook=fn},get row(){return row},set row(x){row=x},get locked(){return locked},get applied(){return applied},set offline(x){offline=x},async login(){await elements.loginForm.onsubmit({preventDefault(){}})},async initialize(){await elements.newProfile.onclick();await new Promise(setImmediate)},async sync(){await elements.syncNow.onclick()},save(s){ctx.window.Cloud.save(s)},async settle(){await new Promise(setImmediate)}};
+ return {ctx,store,elements,adapter,feedbackRows,requests,set failReadBody(x){failReadBody=x},set confirmResult(x){confirmResult=x},get downloads(){return downloads},set readHook(fn){readHook=fn},get row(){return row},set row(x){row=x},get locked(){return locked},get applied(){return applied},set offline(x){offline=x},async login(){await elements.loginForm.onsubmit({preventDefault(){}})},async initialize(){await elements.newProfile.onclick();await new Promise(setImmediate)},async sync(){await elements.syncNow.onclick()},save(s){ctx.window.Cloud.save(s)},async settle(){await new Promise(setImmediate)}};
 }
 test('empty account never automatically imports or resets legacy progress',async()=>{const h=setup();await h.login();assert.equal(h.row,null);assert(h.locked);assert.equal(h.elements.importProgress.disabled,false);});
 test('cloud writes are durable and versioned; offline edits retry',async()=>{const h=setup();await h.login();await h.initialize();h.offline=true;const s=empty();s.stats.wort={correct:4};h.save(s);await h.settle();assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,true);h.offline=false;await h.sync();assert.equal(h.row.state.stats.wort.correct,4);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,false);});
@@ -80,4 +81,25 @@ test('accumulated stage counts synchronize offline with legacy progress, hidden 
 test('German offline and conflicting-tab messages retain visible attention alerts and do not overwrite pending progress',async()=>{
  const h=setup();await h.login();await h.initialize();h.offline=true;const state=empty();state.stats.word={correct:8};h.save(state);await h.settle();assert(h.elements.syncStatus.textContent.startsWith('Offline / Synchronisierungsfehler:'));assert.equal(h.elements.syncAlert.hidden,false);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).state.stats.word.correct,8);
  const other=setup();other.ctx.navigator.locks.request=(name,options,fn)=>fn(null);other.ctx.window.Cloud.init(other.adapter);assert(other.elements.syncStatus.textContent.includes('anderen Tab'));assert.equal(other.elements.syncAlert.hidden,false);
+});
+
+test('identical recovered cloud state acknowledges stale pending cache despite JSONB key order',async()=>{
+ const state={schema:1,stats:{noun:{correct:7,articleWrong:2,unknown:{keep:true}}},hidden:['noun'],cycle:{seen:['noun'],number:4}};
+ const reversed=JSON.parse(JSON.stringify(state,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.entries(v).reverse()):v));
+ const store=new Map([['deutsch_cloud_cache_v1:one-user',JSON.stringify({revision:10,state,pending:true})]]);
+ const h=setup({initialStore:store,initialRow:{revision:12,state:reversed}});await h.login();await h.settle();
+ const cache=JSON.parse(store.get('deutsch_cloud_cache_v1:one-user'));assert.equal(cache.revision,12);assert.equal(cache.pending,false);assert.equal(h.locked,false);assert.deepEqual(cache.state,state);assert.equal(h.downloads,0);assert.equal(h.requests.filter(r=>r.url.includes('/rpc/')).length,0);
+});
+test('blocked sync retries safely and unlocks only after exact recovered state is in cloud',async()=>{
+ const h=setup();await h.login();await h.initialize();const local={...empty(),stats:{word:{correct:3}}};h.row={revision:9,state:empty()};h.save(local);await h.settle();assert(h.locked);await h.sync();assert(h.locked);assert.deepEqual(h.row.state,empty());
+ h.row={revision:10,state:local};await h.sync();assert.equal(h.locked,false);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,false);
+});
+test('Safari body Load failed retries a fresh read and does not replay writes',async()=>{
+ const h=setup();await h.login();await h.initialize();h.failReadBody=1;h.row={revision:4,state:{...empty(),stats:{word:{correct:6}}}};const before=h.requests.length;await h.sync();assert.equal(h.applied.stats.word.correct,6);assert.equal(h.requests.length-before,2);assert(h.requests.slice(before).every(r=>r.options.cache==='no-store'&&r.options.method==='GET'));
+ h.offline=true;const count=h.requests.length;h.save({...empty(),stats:{word:{correct:7}}});await h.settle();assert.equal(h.requests.length-count,1);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,true);
+});
+test('manual recovery reads before export, preserves pending data on failure and allows retry',async()=>{
+ const h=setup();await h.login();await h.initialize();const local={...empty(),stats:{local:{correct:3}}};h.row={revision:9,state:{...empty(),stats:{remote:{correct:4}}}};h.save(local);await h.settle();h.offline=true;await h.elements.loadCloud.onclick();assert.equal(h.downloads,0);assert(h.locked);assert.equal(h.elements.loadCloud.disabled,false);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).state.stats.local.correct,3);
+ h.offline=false;h.confirmResult=false;await h.elements.loadCloud.onclick();assert.equal(h.downloads,0);assert(h.locked);
+ h.confirmResult=true;await h.elements.loadCloud.onclick();assert.equal(h.downloads,1);assert.equal(h.locked,false);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user:conflict-backup')).state.stats.local.correct,3);assert.equal(h.applied.stats.remote.correct,4);
 });
