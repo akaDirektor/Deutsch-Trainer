@@ -94,12 +94,27 @@ test('blocked sync retries safely and unlocks only after exact recovered state i
  const h=setup();await h.login();await h.initialize();const local={...empty(),stats:{word:{correct:3}}};h.row={revision:9,state:empty()};h.save(local);await h.settle();assert(h.locked);await h.sync();assert(h.locked);assert.deepEqual(h.row.state,empty());
  h.row={revision:10,state:local};await h.sync();assert.equal(h.locked,false);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,false);
 });
-test('Safari body Load failed retries a fresh read and does not replay writes',async()=>{
+test('Safari body Load failed retries a fresh read and only replays revision-guarded writes',async()=>{
  const h=setup();await h.login();await h.initialize();h.failReadBody=1;h.row={revision:4,state:{...empty(),stats:{word:{correct:6}}}};const before=h.requests.length;await h.sync();assert.equal(h.applied.stats.word.correct,6);assert.equal(h.requests.length-before,2);assert(h.requests.slice(before).every(r=>r.options.cache==='no-store'&&r.options.method==='GET'));
- h.offline=true;const count=h.requests.length;h.save({...empty(),stats:{word:{correct:7}}});await h.settle();assert.equal(h.requests.length-count,1);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,true);
+ h.offline=true;const count=h.requests.length;h.save({...empty(),stats:{word:{correct:7}}});await h.settle();assert.equal(h.requests.length-count,2);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,true);
 });
 test('manual recovery reads before export, preserves pending data on failure and allows retry',async()=>{
  const h=setup();await h.login();await h.initialize();const local={...empty(),stats:{local:{correct:3}}};h.row={revision:9,state:{...empty(),stats:{remote:{correct:4}}}};h.save(local);await h.settle();h.offline=true;await h.elements.loadCloud.onclick();assert.equal(h.downloads,0);assert(h.locked);assert.equal(h.elements.loadCloud.disabled,false);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).state.stats.local.correct,3);
  h.offline=false;h.confirmResult=false;await h.elements.loadCloud.onclick();assert.equal(h.downloads,0);assert(h.locked);
  h.confirmResult=true;await h.elements.loadCloud.onclick();assert.equal(h.downloads,1);assert.equal(h.locked,false);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user:conflict-backup')).state.stats.local.correct,3);assert.equal(h.applied.stats.remote.correct,4);
+});
+
+function installXHR(h,transport){
+ h.ctx.XMLHttpRequest=class{headers={};open(method,url){this.method=method;this.url=url;}setRequestHeader(k,v){this.headers[k]=v;}send(body){transport(this.url,{method:this.method,headers:this.headers,body}).then(async r=>{this.status=r.ok?200:r.status;this.responseText=JSON.stringify(await r.json());this.onload();}).catch(()=>this.onerror());}};
+}
+test('Safari fetch failure switches to XHR with the same authorization and preserves hidden words',async()=>{
+ const h=setup();await h.login();await h.initialize();const transport=h.ctx.fetch;installXHR(h,transport);h.ctx.fetch=async()=>{throw new TypeError('Load failed')};const state={...empty(),stats:{word:{correct:8}},hidden:['hidden']};h.save(state);await h.settle();await h.settle();assert.deepEqual(h.row.state,state);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,false);assert.equal(h.requests.at(-1).options.headers.Authorization,'Bearer access');
+});
+test('lost committed write response replays the exact revision once without double counting or dropping newer answers',async()=>{
+ const h=setup();await h.login();await h.initialize();const transport=h.ctx.fetch;installXHR(h,transport);let first=true;const state={...empty(),stats:{word:{correct:8}}},next={...empty(),stats:{word:{correct:9}}};
+ h.ctx.fetch=async(url,opts)=>{const r=await transport(url,opts);if(first&&url.includes('/rpc/')){first=false;h.save(next);throw new TypeError('Load failed');}return r;};h.save(state);await h.settle();await h.settle();const pending=JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user'));assert.equal(h.row.revision,1);assert.equal(pending.revision,1);assert.equal(pending.pending,true);assert.equal(pending.state.stats.word.correct,9);assert.equal(h.locked,false);await h.sync();assert.equal(h.row.revision,2);assert.equal(h.row.state.stats.word.correct,9);
+ const saves=h.requests.filter(r=>r.url.includes('/rpc/')).map(r=>JSON.parse(r.options.body));assert.equal(saves[1].expected_revision,saves[2].expected_revision);assert.deepEqual(saves[1].next_state,saves[2].next_state);
+});
+test('both Safari transports failing keep the pending snapshot and identify save rather than claiming cloud success',async()=>{
+ const h=setup();await h.login();await h.initialize();installXHR(h,async()=>{throw Error('offline')});h.ctx.fetch=async()=>{throw new TypeError('Load failed')};const before=JSON.stringify(h.row);h.save({...empty(),stats:{word:{correct:7}}});await h.settle();await h.settle();assert.equal(JSON.stringify(h.row),before);assert.equal(JSON.parse(h.store.get('deutsch_cloud_cache_v1:one-user')).pending,true);assert(h.elements.syncStatus.textContent.includes('Cloud-Speichern fehlgeschlagen [TypeError/NetworkError]'));assert.equal(h.elements.syncAlert.hidden,false);
 });

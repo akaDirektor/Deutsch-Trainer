@@ -21,21 +21,38 @@ window.Cloud=(()=>{
  const lock=()=>{adapter.lock(!ready||blocked);accountView();};
  const cacheKey=()=>`deutsch_cloud_cache_v1:${session.user.id}`;
  function persist(){localStorage.setItem(cacheKey(),JSON.stringify(cache));}
+ function xhrRequest(url,options){
+  return new Promise((resolve,reject)=>{
+   const xhr=new XMLHttpRequest();xhr.open(options.method,url);xhr.timeout=30000;
+   for(const [key,value] of Object.entries(options.headers))xhr.setRequestHeader(key,value);
+   xhr.onload=()=>resolve({ok:xhr.status>=200&&xhr.status<300,status:xhr.status,json:async()=>JSON.parse(xhr.responseText)});
+   xhr.onerror=()=>reject(Object.assign(Error('XHR network'),{name:'NetworkError'}));
+   xhr.ontimeout=()=>reject(Object.assign(Error('XHR timeout'),{name:'TimeoutError'}));
+   xhr.onabort=()=>reject(Object.assign(Error('XHR abort'),{name:'AbortError'}));
+   xhr.send(options.body||null);
+  });
+ }
  async function request(path,body,auth=true,extraHeaders={}){
   if(auth&&session.expires_at*1000<Date.now()+60000){
    const next=await request('/auth/v1/token?grant_type=refresh_token',{refresh_token:session.refresh_token},false);
    session={...next,expires_at:Math.floor(Date.now()/1000)+next.expires_in};localStorage.setItem(sessionKey,JSON.stringify(session));
   }
-  // Retry reads only: a failed POST may already have reached the server.
-  for(let attempt=0;attempt<(body?1:2);attempt++){
+  // This one RPC is safe to replay with the SAME expected revision, not a new one.
+  // A lost successful response is reconciled by reading the committed snapshot.
+  const safeRetry=!body||path==='/rest/v1/rpc/save_trainer_progress';
+  const options={method:body?'POST':'GET',cache:'no-store',headers:{apikey:cfg.publishableKey,...(auth?{Authorization:'Bearer '+session.access_token}:{}),'Content-Type':'application/json',...extraHeaders},...(body?{body:JSON.stringify(body)}:{})};
+  let firstFailure='';
+  for(let attempt=0;attempt<(safeRetry?2:1);attempt++){
    try{
-    const res=await fetch(cfg.url+path,{method:body?'POST':'GET',cache:'no-store',signal:AbortSignal.timeout(30000),headers:{apikey:cfg.publishableKey,...(auth?{Authorization:'Bearer '+session.access_token}:{}),'Content-Type':'application/json',...extraHeaders},...(body?{body:JSON.stringify(body)}:{})});
+    const res=attempt&&typeof XMLHttpRequest!=='undefined'?await xhrRequest(cfg.url+path,options):await fetch(cfg.url+path,{...options,signal:AbortSignal.timeout(30000)});
     if(!res.ok){const error=Error('Supabase-Anfrage fehlgeschlagen (HTTP '+res.status+')');error.http=true;throw error;}
     return await res.json();
    }catch(error){
     if(error.http)throw error;
-    if(!body&&attempt===0)continue;
-    throw Error('Die Verbindung zur Cloud wurde unterbrochen. Erneut auf Synchronisieren tippen. Dein lokaler Fortschritt bleibt erhalten.');
+    const kind=String(error.name||'Error').replace(/[^A-Za-z]/g,'').slice(0,30);
+    if(safeRetry&&attempt===0){firstFailure=kind;continue;}
+    const action=path.includes('save_trainer_progress')?'Speichern':path.includes('/auth/')?'Anmeldung':'Lesen';
+    throw Error('Cloud-'+action+' fehlgeschlagen ['+firstFailure+(firstFailure?'/':'')+kind+']. Fortschritt lokal gesichert.');
    }
   }
  }
@@ -89,7 +106,15 @@ window.Cloud=(()=>{
    if(cache.pending){
     const snapshot=Progress.clone(cache.state),rev=cache.revision;
     const rows=await request('/rest/v1/rpc/save_trainer_progress',{expected_revision:rev,next_state:snapshot});
-    if(!rows.length){if(!acceptIdentical(await pull()))conflict();return;}
+    if(!rows.length){
+     const row=await pull();
+     if(row&&stateText(Progress.validate(row.state))===stateText(snapshot)){
+      // The first write committed but its response was lost. Newer local answers stay pending.
+      cache.revision=row.revision;cache.pending=stateText(cache.state)!==stateText(snapshot);persist();
+      status(cache.pending?'Synchronisierung ausstehend':'In der Cloud gespeichert');return;
+     }
+     if(!acceptIdentical(row))conflict();return;
+    }
     cache.revision=rows[0].revision;cache.pending=JSON.stringify(cache.state)!==JSON.stringify(snapshot);persist();
     status(cache.pending?'Synchronisierung…':'In der Cloud gespeichert');
    }else{
