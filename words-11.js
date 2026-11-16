@@ -90,5 +90,6 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"in Anspruch nehmen","uk":"користуватися; потребувати; займати (час)","type":"phrase","addedAt":"2026-11-16"},
 {"de":"etwas in Frage stellen","uk":"ставити щось під сумнів","type":"phrase","addedAt":"2026-11-16"},
 {"de":"etwas in Kauf nehmen","uk":"свідомо миритися з чимось; приймати негативний наслідок","type":"phrase","addedAt":"2026-11-16"},
-{"de":"zum Ausdruck bringen","uk":"висловлювати; виражати","type":"phrase","addedAt":"2026-11-16"}
+{"de":"zum Ausdruck bringen","uk":"висловлювати; виражати","type":"phrase","addedAt":"2026-11-16"},
+{"de":"der Zuschuss","uk":"дотація; субсидія; фінансова допомога; доплата","type":"noun","plural":"die Zuschüsse","lesson":3,"addedAt":"2026-11-16"}
 ]);
