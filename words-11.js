@@ -91,5 +91,9 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"etwas in Frage stellen","uk":"ставити щось під сумнів","type":"phrase","addedAt":"2026-11-16"},
 {"de":"etwas in Kauf nehmen","uk":"свідомо миритися з чимось; приймати негативний наслідок","type":"phrase","addedAt":"2026-11-16"},
 {"de":"zum Ausdruck bringen","uk":"висловлювати; виражати","type":"phrase","addedAt":"2026-11-16"},
-{"de":"der Zuschuss","uk":"дотація; субсидія; фінансова допомога; доплата","type":"noun","plural":"die Zuschüsse","lesson":3,"addedAt":"2026-11-16"}
+{"de":"der Zuschuss","uk":"дотація; субсидія; фінансова допомога; доплата","type":"noun","plural":"die Zuschüsse","lesson":3,"addedAt":"2026-11-16"},
+{"de":"die Betriebsferien","uk":"виробнича відпустка; період, коли підприємство не працює","type":"noun","plural":"—","lesson":3,"addedAt":"2026-11-16"},
+{"de":"der Betriebsausweis","uk":"службове посвідчення; перепустка працівника","type":"noun","plural":"die Betriebsausweise","lesson":3,"addedAt":"2026-11-16"},
+{"de":"die Anwesenheit","uk":"присутність","type":"noun","plural":"—","lesson":3,"addedAt":"2026-11-16"},
+{"de":"die Probezeit","uk":"випробувальний термін","type":"noun","plural":"die Probezeiten","lesson":3,"addedAt":"2026-11-16"}
 ]);
