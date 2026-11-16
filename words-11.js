@@ -95,5 +95,6 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"die Betriebsferien","uk":"виробнича відпустка; період, коли підприємство не працює","type":"noun","plural":"—","lesson":3,"addedAt":"2026-11-16"},
 {"de":"der Betriebsausweis","uk":"службове посвідчення; перепустка працівника","type":"noun","plural":"die Betriebsausweise","lesson":3,"addedAt":"2026-11-16"},
 {"de":"die Anwesenheit","uk":"присутність","type":"noun","plural":"—","lesson":3,"addedAt":"2026-11-16"},
-{"de":"die Probezeit","uk":"випробувальний термін","type":"noun","plural":"die Probezeiten","lesson":3,"addedAt":"2026-11-16"}
+{"de":"die Probezeit","uk":"випробувальний термін","type":"noun","plural":"die Probezeiten","lesson":3,"addedAt":"2026-11-16"},
+{"de":"leisten","uk":"виконувати; здійснювати; надавати","type":"verb","praeteritum":"leistete","perfekt":"hat geleistet","lesson":4,"addedAt":"2026-11-16","example":"Für geleistete Überstunden gibt es einen Freizeitausgleich."}
 ]);
