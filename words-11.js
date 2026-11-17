@@ -101,5 +101,6 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"die Unterweisung","uk":"інструктаж; навчання; інструктування","type":"noun","plural":"die Unterweisungen","lesson":4,"addedAt":"2026-11-17"},
 {"de":"aushändigen","uk":"вручати; передавати особисто","type":"verb","praeteritum":"händigte aus","perfekt":"hat ausgehändigt","lesson":4,"addedAt":"2026-11-17"},
 {"de":"die Einweisung","uk":"інструктаж; введення в роботу; ознайомлення з порядком роботи","type":"noun","plural":"die Einweisungen","lesson":4,"addedAt":"2026-11-17"},
-{"de":"einweisen","uk":"інструктувати; вводити в курс справи; направляти","type":"verb","praeteritum":"wies ein","perfekt":"hat eingewiesen","lesson":4,"addedAt":"2026-11-17"}
+{"de":"einweisen","uk":"інструктувати; вводити в курс справи; направляти","type":"verb","praeteritum":"wies ein","perfekt":"hat eingewiesen","lesson":4,"addedAt":"2026-11-17"},
+{"de":"die Bestimmung","uk":"положення; припис; визначення; призначення","type":"noun","plural":"die Bestimmungen","lesson":4,"addedAt":"2026-11-17"}
 ]);
