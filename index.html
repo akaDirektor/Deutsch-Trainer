@@ -575,7 +575,7 @@ function markCycleSeen(w){
   }
 }
 function leftText(w){
-  return needsArticle(w)?nounPromptName(w):w.de;
+  return document.getElementById('mode').value==='translation'&&w.type==='noun'?nounPromptName(w):w.de;
 }
 function needsArticle(w){return document.getElementById('mode').value==='translation'&&w.type==='noun'&&['der','die','das'].includes(w.article);}
 function nounPromptName(w){
