@@ -99,5 +99,7 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"leisten","uk":"виконувати; здійснювати; надавати","type":"verb","praeteritum":"leistete","perfekt":"hat geleistet","lesson":4,"addedAt":"2026-11-16","example":"Für geleistete Überstunden gibt es einen Freizeitausgleich."},
 {"de":"verpflichten","uk":"зобов’язувати","type":"verb","praeteritum":"verpflichtete","perfekt":"hat verpflichtet","lesson":4,"addedAt":"2026-11-16"},
 {"de":"die Unterweisung","uk":"інструктаж; навчання; інструктування","type":"noun","plural":"die Unterweisungen","lesson":4,"addedAt":"2026-11-17"},
-{"de":"aushändigen","uk":"вручати; передавати особисто","type":"verb","praeteritum":"händigte aus","perfekt":"hat ausgehändigt","lesson":4,"addedAt":"2026-11-17"}
+{"de":"aushändigen","uk":"вручати; передавати особисто","type":"verb","praeteritum":"händigte aus","perfekt":"hat ausgehändigt","lesson":4,"addedAt":"2026-11-17"},
+{"de":"die Einweisung","uk":"інструктаж; введення в роботу; ознайомлення з порядком роботи","type":"noun","plural":"die Einweisungen","lesson":4,"addedAt":"2026-11-17"},
+{"de":"einweisen","uk":"інструктувати; вводити в курс справи; направляти","type":"verb","praeteritum":"wies ein","perfekt":"hat eingewiesen","lesson":4,"addedAt":"2026-11-17"}
 ]);
