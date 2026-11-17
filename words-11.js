@@ -102,5 +102,12 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"aushändigen","uk":"вручати; передавати особисто","type":"verb","praeteritum":"händigte aus","perfekt":"hat ausgehändigt","lesson":4,"addedAt":"2026-11-17"},
 {"de":"die Einweisung","uk":"інструктаж; введення в роботу; ознайомлення з порядком роботи","type":"noun","plural":"die Einweisungen","lesson":4,"addedAt":"2026-11-17"},
 {"de":"einweisen","uk":"інструктувати; вводити в курс справи; направляти","type":"verb","praeteritum":"wies ein","perfekt":"hat eingewiesen","lesson":4,"addedAt":"2026-11-17"},
-{"de":"die Bestimmung","uk":"положення; припис; визначення; призначення","type":"noun","plural":"die Bestimmungen","lesson":4,"addedAt":"2026-11-17"}
+{"de":"die Bestimmung","uk":"положення; припис; визначення; призначення","type":"noun","plural":"die Bestimmungen","lesson":4,"addedAt":"2026-11-17"},
+{"de":"die Willkommensmappe","uk":"вітальна папка; папка з інформацією для нового працівника","type":"noun","plural":"die Willkommensmappen","lesson":4,"addedAt":"2026-11-17"},
+{"de":"die Sicherheitsbestimmung","uk":"правило безпеки; припис з безпеки","type":"noun","plural":"die Sicherheitsbestimmungen","lesson":4,"addedAt":"2026-11-17"},
+{"de":"der Dienstplan","uk":"графік роботи; розклад змін","type":"noun","plural":"die Dienstpläne","lesson":4,"addedAt":"2026-11-17"},
+{"de":"der Mitarbeiterausweis","uk":"посвідчення працівника; службова перепустка","type":"noun","plural":"die Mitarbeiterausweise","lesson":4,"addedAt":"2026-11-17"},
+{"de":"die Teeküche","uk":"офісна мінікухня; кухня для працівників","type":"noun","plural":"die Teeküchen","lesson":4,"addedAt":"2026-11-17"},
+{"de":"der Arbeitsschutz","uk":"охорона праці","type":"noun","plural":"—","lesson":4,"addedAt":"2026-11-17"},
+{"de":"das Unfallrisiko","uk":"ризик нещасного випадку","type":"noun","plural":"die Unfallrisiken","lesson":4,"addedAt":"2026-11-17"}
 ]);
