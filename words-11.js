@@ -109,5 +109,6 @@ window.WORDS=(window.WORDS||[]).concat([{"de":"liegen an + Dat.","uk":"бути 
 {"de":"der Mitarbeiterausweis","uk":"посвідчення працівника; службова перепустка","type":"noun","plural":"die Mitarbeiterausweise","lesson":4,"addedAt":"2026-11-17"},
 {"de":"die Teeküche","uk":"офісна мінікухня; кухня для працівників","type":"noun","plural":"die Teeküchen","lesson":4,"addedAt":"2026-11-17"},
 {"de":"der Arbeitsschutz","uk":"охорона праці","type":"noun","plural":"—","lesson":4,"addedAt":"2026-11-17"},
-{"de":"das Unfallrisiko","uk":"ризик нещасного випадку","type":"noun","plural":"die Unfallrisiken","lesson":4,"addedAt":"2026-11-17"}
+{"de":"das Unfallrisiko","uk":"ризик нещасного випадку","type":"noun","plural":"die Unfallrisiken","lesson":4,"addedAt":"2026-11-17"},
+{"de":"begrüßen","uk":"вітати; зустрічати привітанням","type":"verb","praeteritum":"begrüßte","perfekt":"hat begrüßt","lesson":4,"addedAt":"2026-11-18"}
 ]);
