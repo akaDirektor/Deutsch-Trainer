@@ -277,7 +277,11 @@
 <script src="training-stages.js?v=20261102-german-ui"></script>
 <script>
 const StageTraining=window.StageTraining;
-const rawSeed=window.WORDS || [];
+const rawSeed=(window.WORDS || []).map(w=>{
+  if(w.type!=='noun')return w;
+  const article=/^(der|die|das)\s+/i.exec(w.de)?.[1].toLowerCase();
+  return article&&article!==w.article?{...w,article}:w;
+});
 const LessonCatalog=window.Lessons||{books:{},matches:(w,book)=>book==='all',memberships:()=>[]};
 const seenSeed=new Set();
 const seed=rawSeed.filter(w=>{const k=w.de.toLowerCase().trim();if(seenSeed.has(k))return false;seenSeed.add(k);return true;});
@@ -579,9 +583,7 @@ function leftText(w){
 }
 function needsArticle(w){return document.getElementById('mode').value==='translation'&&w.type==='noun'&&['der','die','das'].includes(w.article);}
 function nounPromptName(w){
-  const bare=w.de.replace(/^(der|die|das)\s+/i,'');
-  const ambiguous=data.some(other=>other.type==='noun'&&other.article!==w.article&&other.de.replace(/^(der|die|das)\s+/i,'')===bare);
-  return bare+(ambiguous?(w.article==='der'?' (m.)':w.article==='die'?' (f.)':''):'');
+  return w.de.replace(/^(der|die|das)\s+/i,'');
 }
 function rightText(w){
   let mode=document.getElementById('mode').value;
@@ -815,7 +817,7 @@ function addCard(col,side,w,text){
     let t=null,longPressed=false;
     e.addEventListener('pointerdown',()=>{longPressed=false;if(viewingPreviousRound)return;t=setTimeout(()=>{longPressed=true;if(hideWord(w))renderRound()},650)});
     ['pointerup','pointercancel','pointerleave'].forEach(ev=>e.addEventListener(ev,()=>{if(t)clearTimeout(t)}));
-    e.onclick=()=>{if(longPressed)return;if(e.classList.contains('done')||(selectedL&&selectedL.e===e)){showMatchExample(w);return;}if(followMatchExamples)showMatchExample(w);select(side,e,w);};
+    e.onclick=()=>{if(longPressed)return;if(e.classList.contains('done')||(selectedL&&selectedL.e===e)){if(!needsArticle(w)||e.classList.contains('done')&&!s(w).pendingArticle)showMatchExample(w);return;}if(followMatchExamples&&!needsArticle(w))showMatchExample(w);select(side,e,w);};
     e.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();e.onclick();}};
   } else {
     let held=false,timer=null,startX=0,startY=0;
@@ -885,6 +887,8 @@ document.getElementById('previousRound').onclick=togglePreviousRound;
 function finishMatchedPair(pair){
   if(!pair||pair.epoch!==roundEpoch)return;
   const {a,b,epoch}=pair;
+  recentMatched=[a.w,...recentMatched.filter(w=>key(w)!==key(a.w))].slice(0,20);renderRecentMatches();
+  if(pair.article&&followMatchExamples)showMatchExample(a.w);
   a.e.classList.remove('articlePending');b.e.classList.remove('articlePending');a.e.textContent=a.w.de;
   const error=pair.article&&s(a.w).articleNeedsReview;
   if(error){a.e.classList.add('articleMistake');b.e.classList.add('articleMistake');}
@@ -922,7 +926,6 @@ function check(){
   const epoch=roundEpoch;
   const a=selectedL,b=selectedR; const ok=key(a.w)===key(b.w); const st=s(a.w); markWorked(a.w);
   if(ok){
-    recentMatched=[a.w,...recentMatched.filter(w=>key(w)!==key(a.w))].slice(0,20);renderRecentMatches();
     a.e.classList.add('done');b.e.classList.add('done');
     st.learningV2=needsArticle(a.w)?Progress.learning(st):Progress.recordLearning(st,'matching',true);delete st.learningV2.ready;delete st.learningV2.learned;
     st.correct++;markCycleSeen(a.w);
