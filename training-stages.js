@@ -41,26 +41,40 @@ window.StageTraining=(()=>{
  }
  function cancel(){epoch++;question=null;rows=[];seen.clear();}
  function pick(words){let available=words.filter(w=>!seen.has(key(w)));if(!available.length){seen.clear();available=words;}return shuffle(available);}
- function options(w){const expected=variants(w).map(Progress.writtenKey),target=terms(w).answer,found=new Set(expected),answers=[],meanings=new Set(wordTranslationVariants(w).map(Progress.translationKey)),synonyms=new Set((exampleSynonyms(w)?.terms||[]).map(Progress.writtenKey));for(const candidate of [...shuffle(data.filter(x=>x.type===w.type)),...shuffle(data)]){if(key(candidate)===key(w)||hiddenWords.has(key(candidate)))continue;if(el('mode').value==='translation'&&(wordTranslationVariants(candidate).some(t=>meanings.has(Progress.translationKey(t)))||Progress.germanWritingForms(candidate.de).some(t=>synonyms.has(Progress.writtenKey(t)))||(exampleSynonyms(candidate)?.terms||[]).some(t=>Progress.germanWritingForms(w.de).some(v=>Progress.writtenKey(v)===Progress.writtenKey(t)))))continue;const t=terms(candidate).answer,k=Progress.writtenKey(t);if(!t||found.has(k)||variants(candidate).some(v=>expected.includes(Progress.writtenKey(v))))continue;found.add(k);answers.push(t);if(answers.length===4)break;}return answers.length===4?shuffle([target,...answers]):[];}
+ function options(w){const expected=variants(w).map(Progress.writtenKey),target=terms(w).answer,found=new Set(expected),answers=[],meanings=new Set(wordTranslationVariants(w).map(Progress.translationKey)),synonyms=new Set((exampleSynonyms(w)?.terms||[]).map(Progress.writtenKey));for(const candidate of [...shuffle(data.filter(x=>x.type===w.type)),...shuffle(data)]){if(key(candidate)===key(w)||hiddenWords.has(key(candidate)))continue;if(el('mode').value==='translation'&&(wordTranslationVariants(candidate).some(t=>meanings.has(Progress.translationKey(t)))||Progress.germanWritingForms(candidate.de).some(t=>synonyms.has(Progress.writtenKey(t)))||(exampleSynonyms(candidate)?.terms||[]).some(t=>Progress.germanWritingForms(w.de).some(v=>Progress.writtenKey(v)===Progress.writtenKey(t)))))continue;const t=terms(candidate).answer,k=Progress.writtenKey(t);if(!t||found.has(k)||variants(candidate).some(v=>expected.includes(Progress.writtenKey(v))))continue;found.add(k);answers.push({w:candidate,text:t});if(answers.length===4)break;}return answers.length===4?shuffle([{w,text:target},...answers]):[];}
  function commit(w,kind,ok){
   if(trainingLocked)throw Error('Melde dich an, um das Ergebnis zu speichern.');
   const k=key(w),before=stats[k]?Progress.clone(stats[k]):null;
   try{const st=s(w);st.learningV2=Progress.recordLearning(st,kind,ok);markWorked(w);save();}catch(error){if(before)stats[k]=before;else delete stats[k];throw error;}updateStats();
  }
  function showChoice(){
-  question=null;const words=pool('choice'),w=pick(words)[0],box=el('choiceOptions');box.innerHTML='';el('choiceFeedback').textContent='';el('choiceDetail').classList.add('hidden');el('choiceNext').hidden=true;
+  question=null;const words=pool('choice'),w=pick(words)[0],box=el('choiceOptions');box.innerHTML='';el('choiceFeedback').textContent='';el('choiceDetail').classList.add('hidden');el('choiceNext').hidden=true;el('choiceActions').hidden=true;el('choicePrompt').disabled=true;el('choicePrompt').onclick=null;el('choicePrompt').title='';el('choicePrompt').classList.remove('choiceReviewSelected');el('choicePrompt').setAttribute('aria-expanded','false');el('choiceDetail').wordDetailRequest=null;el('choiceDetail').exampleReturnFocus=null;
   el('choiceStatus').textContent='In dieser Auswahl: '+words.length+' · 2 richtige Antworten nötig, nicht unbedingt in Folge.';
   if(!w){el('choicePrompt').textContent='Keine Wörter für diese Stufe. Schließe zuerst 3 Zuordnungen ab oder wähle „Alle“ zum Wiederholen.';return;}
-  const answers=options(w);if(answers.length!==5){el('choicePrompt').textContent='Für diese Übung werden 5 verschiedene Antwortmöglichkeiten benötigt.';return;}
-  const q=question={w,answers,expected:terms(w).answer,answered:false,epoch};el('choicePrompt').textContent=terms(w).prompt;el('choicePrompt').lang=reverse()?'uk':'de';
-  for(const text of answers){const b=document.createElement('button');b.type='button';b.textContent=text;b.lang=terms(w).lang;b.onclick=()=>answerChoice(text,q);box.appendChild(b);}
+  const choices=options(w),answers=choices.map(item=>item.text);if(answers.length!==5){el('choicePrompt').textContent='Für diese Übung werden 5 verschiedene Antwortmöglichkeiten benötigt.';return;}
+  const q=question={w,choices,answers,expected:terms(w).answer,answered:false,epoch};el('choicePrompt').textContent=terms(w).prompt;el('choicePrompt').lang=reverse()?'uk':'de';
+  for(const choice of choices){const b=document.createElement('button');b.type='button';b.textContent=choice.text;b.lang=terms(w).lang;b.dataset.wordKey=key(choice.w);b.onclick=()=>q.answered?openChoiceDetail(choice.w,q,b):answerChoice(choice.text,q);box.appendChild(b);}
  }
  function answerChoice(answer,q=question){
   if(trainingLocked||!q||q!==question||q.answered||q.epoch!==epoch||type()!=='choice'||!q.answers.includes(answer))return;
   if(!pool('choice').some(w=>key(w)===key(q.w))){showChoice();return;}
   const ok=answer===q.expected;try{commit(q.w,'choice',ok)}catch(error){el('choiceFeedback').textContent=error.message;return;}q.answered=true;seen.add(key(q.w));
-  for(const b of el('choiceOptions').children){b.disabled=true;if(b.textContent===q.expected)b.classList.add('correct');else if(b.textContent===answer)b.classList.add('wrong');}
-  const v=Progress.learning(stats[key(q.w)]);el('choiceFeedback').textContent=(ok?'✓ Richtig':'✕ Richtig: '+q.expected)+' · '+Math.min(2,v.choiceCorrect)+' / 2';showMatchExample(q.w,'choiceDetail');el('choiceNext').hidden=false;
+  for(const b of el('choiceOptions').children){b.classList.add('choiceReviewable');b.title='Übersetzung und Beispiel anzeigen';b.setAttribute('aria-label',b.textContent+' — Übersetzung und Beispiel anzeigen');b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','choiceDetail');if(b.textContent===q.expected)b.classList.add('correct');else if(b.textContent===answer)b.classList.add('wrong');}
+  const v=Progress.learning(stats[key(q.w)]);el('choiceFeedback').textContent=(ok?'✓ Richtig':'✕ Richtig: '+q.expected)+' · '+Math.min(2,v.choiceCorrect)+' / 2';el('choicePrompt').disabled=false;el('choicePrompt').title='Übersetzung und Beispiel anzeigen';el('choicePrompt').setAttribute('aria-expanded','false');el('choicePrompt').setAttribute('aria-controls','choiceDetail');el('choicePrompt').onclick=()=>openChoiceDetail(q.w,q,el('choicePrompt'));el('choiceActions').hidden=false;el('choiceNext').hidden=false;
+ }
+ function closeChoiceDetail(){
+  const box=el('choiceDetail');box.classList.add('hidden');box.wordDetailRequest=null;
+  for(const b of [...el('choiceOptions').children,el('choicePrompt')]){b.classList.remove('choiceReviewSelected');b.setAttribute('aria-expanded','false');}
+  box.exampleReturnFocus?.focus();
+ }
+ function openChoiceDetail(w,q,trigger){
+  if(trainingLocked||!q||q!==question||!q.answered||q.epoch!==epoch||type()!=='choice')return;
+  const box=el('choiceDetail');
+  if(!box.classList.contains('hidden')&&box.exampleReturnFocus===trigger){closeChoiceDetail();return;}
+  for(const b of [...el('choiceOptions').children,el('choicePrompt')]){b.classList.remove('choiceReviewSelected');b.setAttribute('aria-expanded','false');}
+  showMatchExample(w,'choiceDetail');box.exampleReturnFocus=trigger;
+  trigger.classList.add('choiceReviewSelected');trigger.setAttribute('aria-expanded','true');
+  box.scrollIntoView({block:'nearest'});
  }
  function showWriting(draft={}){
   rows=[];const words=pool('writing'),size=[5,10,15,20].includes(Number(el('writingSize').value))?Number(el('writingSize').value):15;
@@ -91,7 +105,7 @@ window.StageTraining=(()=>{
  function init(){
   if(!el('exerciseType').value)el('exerciseType').value='matching';if(!el('exerciseDirection').value)el('exerciseDirection').value='uk-de';el('writingSize').value=typeof innerWidth==='number'&&innerWidth<600?'5':'15';
   el('exerciseType').onchange=()=>{cancelTraining();configure();updateStats()};el('exerciseDirection').onchange=()=>{cancelTraining();updateStats()};el('writingSize').onchange=()=>{cancelTraining();updateStats()};
-  el('choiceNext').onclick=()=>{if(question?.answered&&!trainingLocked)showChoice()};el('writingNext').onclick=()=>{if(trainingLocked)return;if(rows.some(r=>!r.answered&&r.input.value.trim())){el('writingStatus').textContent='Es gibt ungeprüfte Antworten. Prüfe sie vor der nächsten Seite.';return;}showWriting()};el('showLearnedArchive').onclick=()=>{archiveOpen=!archiveOpen;renderStats()};configure();
+  el('choiceNext').onclick=()=>{if(question?.answered&&!trainingLocked){showChoice();el('choicePrompt').scrollIntoView({block:'start'});el('choiceOptions').children[0]?.focus({preventScroll:true});}};el('writingNext').onclick=()=>{if(trainingLocked)return;if(rows.some(r=>!r.answered&&r.input.value.trim())){el('writingStatus').textContent='Es gibt ungeprüfte Antworten. Prüfe sie vor der nächsten Seite.';return;}showWriting()};el('showLearnedArchive').onclick=()=>{archiveOpen=!archiveOpen;renderStats()};configure();
  }
- return {init,start,resume,cancel,configure,pool,totals,label,renderStats,answerChoice,answerWriting,showChoice,showWriting,draft};
+ return {init,start,resume,cancel,configure,pool,totals,label,renderStats,answerChoice,answerWriting,closeChoiceDetail,showChoice,showWriting,draft};
 })();

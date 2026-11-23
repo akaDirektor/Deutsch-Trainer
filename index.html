@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/deutsch-b2-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Deutsch Trainer — B2 Beruf</title>
-<link rel="stylesheet" href="app.css?v=20261102-recent-words">
+<link rel="stylesheet" href="app.css?v=20261123-choice-review">
 </head>
 <body>
 <div class="wrap">
@@ -116,7 +116,12 @@
     <details id="recentMatches" class="recentMatches" hidden><summary>Zuletzt richtig zugeordnete Wörter</summary><div id="recentMatchWords" class="row"></div></details>
   </section>
 
-  <section id="choiceTraining" class="recall hidden" aria-label="Aktives Erinnern mit Auswahl"><h2>Aktives Erinnern</h2><p id="choiceStatus" class="muted"></p><p id="choicePrompt" class="recallWord"></p><div id="choiceOptions" class="contextOptions"></div><p id="choiceFeedback" role="status" aria-live="polite"></p><div id="choiceDetail" class="exampleBox hidden"></div><button id="choiceNext" type="button" class="primary" hidden>Nächstes Wort →</button></section>
+  <section id="choiceTraining" class="recall hidden" aria-label="Aktives Erinnern mit Auswahl">
+    <h2>Aktives Erinnern</h2>
+    <div id="choiceActions" class="choiceActions" hidden><p id="choiceFeedback" role="status" aria-live="polite"></p><button id="choiceNext" type="button" class="primary" hidden>Nächstes Wort →</button></div>
+    <p id="choiceStatus" class="muted"></p><button id="choicePrompt" type="button" class="recallWord choicePrompt" disabled></button>
+    <div id="choiceOptions" class="contextOptions"></div><div id="choiceDetail" class="exampleBox hidden"></div>
+  </section>
   <section id="writingTraining" class="recall hidden" aria-label="Schriftliches Erinnern"><h2>Wort schreiben</h2><p id="writingStatus" class="muted"></p><p class="muted">Tastatur oder Apple Pencil: direkt ins Feld schreiben. Auf dem iPad unter Apple Pencil die Funktion „Kritzeln“ aktivieren. Prüfe den erkannten Text vor dem Bestätigen.</p><div id="writingRows" class="writingRows"></div><button id="writingNext" type="button" class="primary" hidden>Nächste Seite →</button></section>
   <section id="contextTraining" class="recall hidden" aria-labelledby="contextTitle">
     <h2 id="contextTitle">Wort im Kontext</h2>
@@ -274,7 +279,7 @@
 <script src="progress.js?v=20261102-german-ui"></script>
 <script src="cloud-config.js?v=20261020-account-menu"></script>
 <script src="cloud.js?v=20261116-safari-transport"></script>
-<script src="training-stages.js?v=20261102-german-ui"></script>
+<script src="training-stages.js?v=20261123-choice-review"></script>
 <script>
 const StageTraining=window.StageTraining;
 const rawSeed=(window.WORDS || []).map(w=>{
@@ -713,7 +718,7 @@ function showMatchExample(w,boxId='matchExample',enriched=false){
   const report=document.createElement('button');report.type='button';report.className='reportTranslation';report.textContent='Übersetzung melden';report.onclick=()=>openTranslationReport(w,report);box.appendChild(report);
   const own=document.createElement('button');own.type='button';own.className='addOwnTranslation';own.textContent='Übersetzung bearbeiten';own.disabled=trainingLocked;own.onclick=()=>openExtraTranslation(w,own);box.appendChild(own);
   const close=document.createElement('button');close.type='button';close.className='exampleClose';close.textContent='×';close.setAttribute('aria-label','Beispiel schließen');close.title='Beispiel schließen';
-  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else{document.getElementById('searchLessonEditor').hidden=true;document.getElementById('wordSearchInput').focus();}};
+  close.onclick=()=>{box.classList.add('hidden');if(boxId==='matchExample'){followMatchExamples=false;if(selectedL)selectedL.e.focus();}else if(boxId==='choiceDetail'){StageTraining.closeChoiceDetail();}else{document.getElementById('searchLessonEditor').hidden=true;document.getElementById('wordSearchInput').focus();}};
   box.appendChild(close);
   box.classList.remove('hidden');
   if(boxId==='wordSearchDetail')renderSearchLessonEditor(w);
